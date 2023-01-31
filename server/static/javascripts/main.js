@@ -63,7 +63,7 @@ const makeCalendar = () => {
 
     dates[
       i
-    ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+    ] = `<div class="date" ><span class="${condition}">${date}</span></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");
@@ -101,3 +101,20 @@ const curMonth = () => {
   date = new Date();
   makeCalendar();
 };
+
+let prevClickDate = document.querySelector(".today").parentNode;
+prevClickDate.classList.add("date-onclick");
+
+function viewDetail() {
+  const detailDate = document.querySelector(".detail-timeline p");
+
+  detailDate.innerHTML = this.innerText;
+  prevClickDate.classList.remove("date-onclick");
+  prevClickDate.classList.add("date");
+  this.classList.remove("date");
+  this.classList.add("date-onclick");
+  prevClickDate = this;
+}
+
+let dateTarget = document.querySelectorAll(".date");
+dateTarget.forEach((target) => target.addEventListener("click", viewDetail));

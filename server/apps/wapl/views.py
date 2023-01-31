@@ -9,13 +9,40 @@ from django.core import serializers
 from . import forms
 from django.contrib import auth
 
+from server.apps.wapl.models import Comment
+
 
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
   plans = Plan.objects.all()
   context = {'plans': plans}
   return render(request, "main.html", context=context)
-  
+
+
+def comment(request:HttpRequest, *args, **kwargs):
+    
+    if request.method == "POST":
+        Comment.objects.create(
+            content=request.POST["content"],
+            user=request.POST["user"],
+            plan_post=request.POST["plan_post"],
+        )
+        return redirect('wapl:comment') 
+    
+    comments = Comment.objects.all()
+    
+    context = {
+        "comments" : comments,
+    }
+    
+    return render(request, "test__comment.html", context=context)
+
+def comment_delete(request:HttpRequest, pk, *args, **kwargs):
+    if request.method == "POST":
+        comment = Comment.objects.get(id=pk)
+        comment.delete()
+    return redirect('wapl:comment')
+
 
 #일정 생성 함수
 #POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
@@ -122,3 +149,4 @@ def login(request:HttpRequest, *args, **kwargs):
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+    <title>와플</title>
+  </head>
+  <body>
+    <div class="header">
+    </div>
+    <div class="main">
+      <!-- 로그인 영역 -->
+      <div class="login-container">
+        <p class="login">로그인</p>
+        {% block content %}
+        <form method="POST" action="" class="login-form">
+          {% csrf_token %} {{ form }}
+          <button class="login-btn">Login</button>
+        </form>
+        {% endblock content %}
+        <div>
+          <a href="">회원가입</a>
+          <a href="">구글 로그인</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

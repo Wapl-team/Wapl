@@ -1,0 +1,72 @@
+/*
+@import url("./font.css");
+@import url("./reset.css");
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+}
+
+.login-container {
+  background-color: wheat;
+  width: 100vw;
+  height: 100vh;
+  border: 10px solid orange;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login {
+  font-size: 2rem;
+  color: orange;
+  font-weight: bold;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 72vw;
+  height: 40vh;
+}
+
+.login-btn {
+  background-color: orange;
+  border: 10px solid orange;
+  border-radius: 5px;
+  color: white;
+  margin-top: 42vh;
+  padding: 1vh 5vw;
+  font-size: 1.3rem;
+  
+}
+
+.main a {
+  text-decoration: none;
+  color: white;
+  background-color: orange;
+  border: 10px solid orange;
+  border-radius: 5px;
+  margin: 1vw;
+  padding: 1vh 5vw;
+}

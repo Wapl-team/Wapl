@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment</title>
+</head>
+<body>
+
+    {% for comment in comments %}
+    <div>{{comment.user}}</div>
+    <div>{{comment.plan_post}}</div>
+    <div>{{comment.content}}</div>
+    <div>{{comment.created_at}}</div>
+
+    <form action="{% url 'wapl:comment_delete' comment.pk %}" method="post">
+    <!-- 상세페이지 url 따라서 수정해주어야 하는 부분 -->
+    {% csrf_token %}
+        <input type="submit" , value="삭제" />
+    </form>
+    {% endfor %}
+
+
+    <form action="{% url 'wapl:comment' %}" method="post">
+    <!-- 상세페이지 url 따라서 수정해주어야 하는 부분 -->
+    {% csrf_token %}
+    <input name="user" placeholder="사용자" />
+    <input name="plan_post" placeholder="게시글 id" />
+    <textarea name="content" placeholder="댓글 남기기"></textarea>
+    <div>
+        <input type="submit" , value="작성" />
+    </div>
+    
+    </form>
+
+
+
+</body>
+</html>

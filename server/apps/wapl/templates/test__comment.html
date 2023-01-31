@@ -12,7 +12,14 @@
     <div>{{comment.user}}</div>
     <div>{{comment.plan_post}}</div>
     <div>{{comment.content}}</div>
-    <div>{{comment.created_at}}</div>
+
+
+    {% if comment.created_string == False %}
+    {% csrf_token %}
+    <span>{{ comment.created_at|date:'m월 d일' }}</span>
+    {% else %}
+    <span>{{ comment.created_string }}</span>
+    {% endif %}
 
     <form action="{% url 'wapl:comment_delete' comment.pk %}" method="post">
     <!-- 상세페이지 url 따라서 수정해주어야 하는 부분 -->

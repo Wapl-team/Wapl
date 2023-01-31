@@ -7,3 +7,6 @@ from django.http.request import HttpRequest
 
 def main(request:HttpRequest,*args, **kwargs):
     return render(request, "main.html")
+
+def signup(request:HttpRequest,*args, **kwargs):
+    return render(request, "signup.html")

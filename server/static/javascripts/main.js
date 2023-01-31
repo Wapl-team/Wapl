@@ -118,3 +118,11 @@ function viewDetail() {
 
 let dateTarget = document.querySelectorAll(".date");
 dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
+
+function openToggle() {
+  document.getElementById("sidebar").style.width = "160px";
+}
+
+function closeToggle() {
+  document.getElementById("sidebar").style.width = "0";
+}

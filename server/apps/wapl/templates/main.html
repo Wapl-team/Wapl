@@ -11,7 +11,9 @@
   <body>
     <nav class="nav">
       <div class="nav-side">
-        <button><i class="fa-solid fa-bars fa-2x"></i></button>
+        <button onclick="openToggle()">
+          <i class="fa-solid fa-bars fa-2x"></i>
+        </button>
         <div class="year-month"></div>
       </div>
 
@@ -21,6 +23,11 @@
         </button>
       </div>
     </nav>
+
+    <div id="sidebar" class="sidebar-menu">
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
+      </a>
+   </div>
 
     <div class="main">
       <!-- 요일 영역 -->

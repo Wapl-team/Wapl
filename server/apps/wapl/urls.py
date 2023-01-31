@@ -5,4 +5,5 @@ app_name = "wapl"
 
 urlpatterns= [
     path("", views.main, name="main"),
+    path("login", views.login, name="login"),
 ]

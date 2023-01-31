@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/plan_register_modal.css' %}">
+        <script src="https://kit.fontawesome.com/5658349e28.js" crossorigin="anonymous"></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="modalContainer">
+            <button class="modalButton"><i class="fa-solid fa-plus"></i></button>
+            <div class="modal hidden">
+        
+            <div class="modal__content">
+                <div class="modal__content">
+                    제목:<input type="text" name="title" /> 
+                    날짜: <input type="date" name="date" /> 
+                    시작 시간:<input type="datetime-local" name="startTime"/>
+                    끝 시간:<input type="datetime-local" name="endTime" /> 
+                    장소:<input type="text" name="location" /> 
+                    내용: <input type="text" name="content" />
+                    <input type="submit" class="closeModal" value="등록" />
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <script>
+            const modalButton = document.querySelector(".modalButton");
+            const modal = document.querySelector(".modal");
+            const closeModal = document.querySelector(".closeModal");
+
+            modalButton.addEventListener("click", () => {
+                modal.classList.remove("hidden");
+            });
+
+            closeModal.addEventListener("click", () => {
+                modal.classList.add("hidden");
+            });
+        </script>
+
+    </body>
+</html>

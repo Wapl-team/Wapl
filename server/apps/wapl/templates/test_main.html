@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+
+    <title>와플</title>
+  </head>
+  <body>
+    <div>
+      <form id="create" name="create" method="post">
+        날짜: <input type="date" name="date" /> 시작 시간:<input
+          type="time"
+          name="startTime"
+        />
+        끝 시간:<input type="time" name="endTime" /> 장소:
+        <input type="text" name="location" /> 제목:
+        <input type="text" name="title" /> 내용:
+        <input type="text" name="content" />
+        <a href="#" onclick="plan_create()">추가</a>
+      </div>
+     </form>
+    <div class="plan-items">{% for plan in plans %} 
+      <a href="plan/{{plan.id}}">{{plan}} </a>{% endfor %}</div>
+
+    <script src="{% static 'javascripts/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </body>
+</html>

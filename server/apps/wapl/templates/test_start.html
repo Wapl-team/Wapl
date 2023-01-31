@@ -1,0 +1,12 @@
+{% load socialaccount%} {% providers_media_js %}
+{% if user.is_authenticated %}
+    {{ user.username }}님이 로그인 중
+    <br />
+    <a href="{% url 'wapl:logout' %}">로그아웃</a>
+{% else %}
+    <a href="{% url 'wapl:login' %}">로그인하기</a>
+    <br />
+    <a href="{% url 'wapl:signup' %}">회원가입</a>
+    <br />
+    <a href="{% provider_login_url 'google' %}">구글 로그인</a>
+{% endif %}

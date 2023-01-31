@@ -6,6 +6,7 @@ from django.db import migrations, models
 import django.utils.timezone
 
 
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -16,6 +17,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Plan',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('startTime', models.DateTimeField()),
+                ('endTime', models.DateTimeField()),
+                ('location', models.CharField(max_length=20)),
+                ('title', models.CharField(max_length=20)),
+                ('content', models.TextField())],
             name='User',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

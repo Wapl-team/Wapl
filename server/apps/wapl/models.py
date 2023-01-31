@@ -11,3 +11,4 @@ class User(AbstractUser):
     job = None
     desc = None
     email = models.EmailField(null=True)
+    kakao_id = models.IntegerField(default=-1)

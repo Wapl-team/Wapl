@@ -14,7 +14,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
+  min-height: 10vh;
   flex-direction: column;
 }
 
@@ -27,40 +27,46 @@ body {
 
 .login-container {
   background-color: wheat;
-  width: 70vw;
-  height: 70vh;
+  width: 100vw;
+  height: 100vh;
   border: 10px solid orange;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-  margin-top: 15vh;
 }
 
 .login {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 2rem;
   color: orange;
+  font-weight: bold;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 72vw;
+  height: 40vh;
 }
 
 .login-btn {
   background-color: orange;
   border: 10px solid orange;
   border-radius: 5px;
-  color: wheat;
-  margin-top: 20vh;
+  color: white;
+  margin-top: 42vh;
+  padding: 1vh 5vw;
+  font-size: 1.3rem;
+  
 }
 
 .main a {
   text-decoration: none;
-  color: wheat;
+  color: white;
   background-color: orange;
+  border: 10px solid orange;
   border-radius: 5px;
+  margin: 1vw;
+  padding: 1vh 5vw;
 }

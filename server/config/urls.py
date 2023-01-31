@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("server.apps.wapl.urls")),
+    path('',include("server.apps.wapl.urls")),
+    path('accounts/', include('allauth.urls')), # 소셜 로그인 관련
 ]
 
 if settings.DEBUG:

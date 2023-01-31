@@ -9,14 +9,25 @@
     <title>와플</title>
   </head>
   <body>
-    <div class="header">
-      <div class="year-month"></div>
-      <div class="nav">
-        <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
-        <button class="nav-btn go-today" onclick="curMonth()">Today</button>
-        <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+    <nav class="nav">
+      <div class="nav-side">
+        <button onclick="openToggle()">
+          <i class="fa-solid fa-bars fa-2x"></i>
+        </button>
+        <div class="year-month"></div>
       </div>
-    </div>
+
+      <div>
+        <button class="create-btn">
+          <i class="fa-solid fa-plus fa-2x"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div id="sidebar" class="sidebar-menu">
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
+      </a>
+   </div>
 
     <div class="main">
       <!-- 요일 영역 -->
@@ -33,7 +44,26 @@
       <div class="dates">
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
+      <div class="detail">
+        <div class="detail-date">
+          <div class="detail-timeline">
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              Perferendis cum tempore, officia veritatis natus et. Quae est
+              laboriosam nisi recusandae fugiat impedit cumque velit vero
+              ratione. Optio aperiam veniam voluptas. Lorem, ipsum dolor sit
+              amet consectetur adipisicing elit. Omnis tempora eveniet voluptas
+              dolore accusantium rerum tenetur fuga sint sit, perferendis, nemo
+              vero aliquid id sapiente quidem. Omnis quae voluptatum animi?
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
+    <script
+      src="https://kit.fontawesome.com/6fbcf91afd.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="{% static 'javascripts/main.js' %}"></script>
   </body>
 </html>

@@ -32,7 +32,6 @@ body {
   border: 10px solid orange;
   border-radius: 10px;
   display: flex;
-  justify-content: space-around;
   align-items: center;
   flex-direction: column;
 }
@@ -55,6 +54,5 @@ body {
   border: 10px solid orange;
   border-radius: 5px;
   color: white;
-  margin-top: 40vh;
   font-size: 1.4rem;
 }

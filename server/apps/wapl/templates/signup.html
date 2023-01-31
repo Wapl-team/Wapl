@@ -9,8 +9,7 @@
     <title>와플</title>
   </head>
   <body>
-    <div class="header">
-    </div>
+    <div class="header"></div>
     <div class="main">
       <!-- 회원가입 영역 -->
       <div class="signup-container">
@@ -18,7 +17,7 @@
         {% block content %}
         <form method="POST" action="" class="signup-form">
           {% csrf_token %} {{ form }}
-          <input type="submit" value="SignUp" class="signup-btn"/>
+          <input type="submit" value="SignUp" class="signup-btn" />
         </form>
         {% endblock content %}
       </div>

@@ -19,7 +19,7 @@ def signup(request:HttpRequest, *args, **kwargs):
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, template_name="test_success.html")
+            return redirect('wapl:login')
         else:
             return redirect('wapl:signup')
     else:
@@ -27,7 +27,7 @@ def signup(request:HttpRequest, *args, **kwargs):
         context = {
             'form': form,
         }
-        return render(request, template_name='test_signup.html', context=context)
+        return render(request, template_name='signup.html', context=context)
 
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
@@ -37,18 +37,18 @@ def login(request:HttpRequest, *args, **kwargs):
             user = form.get_user()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             print("로그인 성공~~~~~~~~~")
-            return redirect('wapl:start')
+            return redirect('wapl:main')
         else:
             context = {
                 'form': form,
             }
-            return render(request, template_name='test_login.html', context=context)
+            return render(request, template_name='login.html', context=context)
     else:
         form = forms.LoginForm()
         context = {
             'form': form,
         }
-        return render(request, template_name='test_login.html', context=context)
+        return render(request, template_name='login.html', context=context)
 
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)

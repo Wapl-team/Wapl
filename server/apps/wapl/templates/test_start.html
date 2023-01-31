@@ -1,12 +1,13 @@
-{% load socialaccount%} {% providers_media_js %}
-{% if user.is_authenticated %}
-    {{ user.username }}님이 로그인 중
-    <br />
-    <a href="{% url 'wapl:logout' %}">로그아웃</a>
-{% else %}
-    <a href="{% url 'wapl:login' %}">로그인하기</a>
-    <br />
-    <a href="{% url 'wapl:signup' %}">회원가입</a>
-    <br />
-    <a href="{% provider_login_url 'google' %}">구글 로그인</a>
+{% load socialaccount%} {% providers_media_js %} {% if user.is_authenticated %}
+<p>로그인중</p>
+<a href="{% url 'wapl:main' %}">메인으로가기</a>
+<div><a href="{% url 'wapl:logout' %}">로그아웃</a></div>
+
+{% comment %} {{ user.username }}님이 로그인 중
+<br />
+<a href="{% url 'wapl:logout' %}">로그아웃</a> {% endcomment %} {% else %} 설명
+페이지
+<br />
+<a href="{% url 'wapl:login' %}">로그인하러가기</a>
+<br />
 {% endif %}

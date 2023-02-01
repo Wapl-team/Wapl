@@ -63,10 +63,12 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         
         )
         return redirect('wapl:main') 
-
-    context = {}
+    category_list = Meeting.MEETING_CHOICE
+    context = {
+        "category_list":category_list
+    }
     
-    return render(request, "test_meeting_create.html", context=context)
+    return render(request, "meeting_create.html", context=context)
 
 def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
     meeting = Meeting.objects.get(id=pk)

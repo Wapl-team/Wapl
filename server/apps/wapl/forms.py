@@ -12,6 +12,14 @@ class SignupForm(UserCreationForm):
 			'nickname': '닉네임',		
 			'username': '아이디',
 		}
+        
+    def __init__(self, name, nickname, username, password1, password2, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.name = name
+        self.nickname = nickname
+        self.username = username
+        self.password1 = password1
+        self.password2 = password2
 
 class LoginForm(AuthenticationForm):
     error_messages = {
@@ -20,7 +28,9 @@ class LoginForm(AuthenticationForm):
         ),
     }
 
-    def __init__(self, request=None, *args, **kwargs):
+    def __init__(self, username, password, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].label = '아이디'
         self.fields['password'].label = '비밀번호'
+        self.username = username
+        self.password = password

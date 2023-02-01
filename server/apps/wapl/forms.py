@@ -20,7 +20,9 @@ class LoginForm(AuthenticationForm):
         ),
     }
 
-    def __init__(self, request=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].label = '아이디'
         self.fields['password'].label = '비밀번호'
+        # self.username = username
+        # self.password = password

@@ -115,15 +115,11 @@ def signup(request:HttpRequest, *args, **kwargs):
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:login')
+            return redirect('wapl:main')
         else:
             return redirect('wapl:signup')
     else:
-        form = forms.SignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='signup.html', context=context)
+        return render(request, template_name='signup.html')
 
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
@@ -133,16 +129,9 @@ def login(request:HttpRequest, *args, **kwargs):
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
-            context = {
-                'form': form,
-            }
-            return render(request, template_name='login.html', context=context)
+            return render(request, template_name='login.html')
     else:
-        form = forms.LoginForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='login.html', context=context)
+        return render(request, template_name='login.html')
 
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)

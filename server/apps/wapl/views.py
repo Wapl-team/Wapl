@@ -9,13 +9,18 @@ from django.core import serializers
 from . import forms
 from django.contrib import auth
 
-from server.apps.wapl.models import Comment
+from server.apps.wapl.models import Comment, Meeting
 
 
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
   plans = Plan.objects.all()
-  context = {'plans': plans}
+  meetings = Meeting.objects.all()
+  
+  context = {
+            'plans' : plans,
+            'meetings' : meetings, }
+  
   return render(request, "main.html", context=context)
 
 
@@ -43,6 +48,40 @@ def comment_delete(request:HttpRequest, pk, *args, **kwargs):
         comment.delete()
     return redirect('wapl:comment')
 
+# 미팅 pt 입니다--------------------------------------------------------------
+
+def meeting_create(request:HttpRequest, *args, **kwargs):
+    
+    if request.method == 'POST':
+        Meeting.objects.create(
+            
+        meeting_name = request.POST["meeting_name"],
+        content = request.POST["content"],
+        category = request.POST["category"],
+        user = request.POST["user"],
+        plan = request.POST["plan"],
+        
+        )
+        return redirect('wapl:main') 
+
+    context = {}
+    
+    return render(request, "test_meeting_create.html", context=context)
+
+def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
+    meeting = Meeting.objects.get(id=pk)
+    context = {
+        "meeting" : meeting
+    }
+    return render(request, "test_meeting_detail.html", context=context)
+
+def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
+    if request.method == "POST":
+        meeting = Meeting.objects.get(id=pk)
+        meeting.delete()
+        return redirect('wapl:main')
+
+# ------------------------------------------------------------------------------
 
 #일정 생성 함수
 #POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장

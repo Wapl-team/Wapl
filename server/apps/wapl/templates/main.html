@@ -16,18 +16,30 @@
         </button>
         <div class="year-month"></div>
       </div>
-
       <div>
         <button class="modalButton">
           <i class="fa-solid fa-plus fa-2x"></i>
         </button>
       </div>
     </nav>
+
+
+    <!-- 사이드바 => 모임 생성 버튼 + 모임 목록 출력 -->
+
     <div id="sidebar" class="sidebar-menu">
       <p>{{ user.username}} 님 로그인 중</p>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
       </a>
-   </div>
+
+      <a href="{% url 'wapl:meeting_create' %}">모임 생성 버튼</a>
+
+      {% for meeting in meetings %}
+      <h1><a href="{% url 'wapl:meeting_detail' meeting.pk %}">{{meeting.meeting_name}}</a></h1>
+      {% endfor %}
+
+    </div>
+
+
 
     <div class="modal hidden">
       <div class="modal__content">

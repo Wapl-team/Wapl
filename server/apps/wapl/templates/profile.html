@@ -21,12 +21,15 @@
           enctype="multipart/form-data"
         >
           {% csrf_token %}
-          {% comment %}
-          <!--  {% if user.photo %}
-          <img src="{{ user.photo.url }}" width="100" />
-          {% endif %} -->
-          {% endcomment %}
-          <p><input type="file" name="photo" /></p>
+          {% if user.image %}
+          현재 프로필 이미지: <img src="{{ user.image.url }}" width="100" />
+          <input type="checkbox" name="image-clear" id="image-clear_id">
+          <label for="image-clear_id">취소</label>
+          <br />
+          {% else %}
+          <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+          {% endif %}
+          <p>새 프로필 이미지: <input type="file" name="image" accept="image/*" /></p>
           <p>
             사용자 이름: <input type="text" name="name" value="{{user.name}}" />
           </p>

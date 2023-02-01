@@ -52,4 +52,4 @@ class User(AbstractUser):
     job = None
     desc = None
     email = models.EmailField(null=True)
-
+    image = models.ImageField(blank=True, upload_to='profile')

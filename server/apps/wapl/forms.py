@@ -5,8 +5,9 @@ from .models import User
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name', 'nickname', 'username', 'password1', 'password2']
+        fields = ['image', 'name', 'nickname', 'username', 'password1', 'password2']
         labels = {
+            'image': '프로필 이미지',
 			'name': '이름',		
 			'nickname': '닉네임',		
 			'username': '아이디',
@@ -28,4 +29,4 @@ class EditProfileForm(UserChangeForm):
     password = None
     class Meta:
         model = User
-        fields = ['name', 'nickname']
+        fields = ['name', 'nickname', 'image']

@@ -15,8 +15,12 @@
       <div class="signup-container">
         <p class="signup">회원가입</p>
         {% block content %}
-        <form method="POST" action="" class="signup-form">
+        <form method="POST" action="" class="signup-form" enctype="multipart/form-data">
           {% csrf_token %}
+          <br />
+          <p>
+            프로필 이미지: <input type="file" name="image" accept="image/*" />
+          </p>
           <br />
           <p>사용자 이름: <input type="text" name="name" /></p>
           <br />

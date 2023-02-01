@@ -112,7 +112,7 @@ def start(request:HttpRequest, *args, **kwargs):
 
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
-        form = forms.SignupForm(request.POST)
+        form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')

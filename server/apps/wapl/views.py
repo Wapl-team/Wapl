@@ -142,4 +142,5 @@ def view_plan(request):
   year = req['year']
   month = req['month'] + 1
 
-  
+def profile(request:HttpRequest, *args, **kwargs):
+    return render(request, "profile.html")

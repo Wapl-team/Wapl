@@ -61,6 +61,8 @@ const makeCalendar = () => {
     "Content-Type",
     "applcation/x-www-form-urlencoded"
   );
+
+  //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
   requestPlan.send(
     JSON.stringify({ year: viewYear, month: viewMonth, meeting: "개인" })
   );

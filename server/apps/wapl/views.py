@@ -1,22 +1,36 @@
-from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Plan
+from .models import Plan, Comment, Meeting
 import json
 from django.core import serializers
+from datetime import datetime
 from . import forms
 from django.contrib import auth
 
-from server.apps.wapl.models import Comment
+# 인자로 넘어온 기준으로 일정을 필터링 하는 함수
+# 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
+# 리턴: plan QuerySet
+def findPlan(user, category, year, month):  
+  meetingObj = Meeting.objects.all().filter(user=user).get(meeting_name=category)
+  data = Plan.objects.all().filter(meeting=meetingObj, startTime__month = month, startTime__year = year)
+  print(data)
+  return data
 
-
+# main 페이지 접속 시 실행 함수
+# 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  plans = Plan.objects.all()
+  category = '개인' # 디폴트가 개인 => 향후 수정 가능
+
+  plans = findPlan(request.user, category, datetime.now().year, datetime.now().month)
   context = {'plans': plans}
+  
   return render(request, "main.html", context=context)
+
+
+
 
 
 def comment(request:HttpRequest, *args, **kwargs):
@@ -42,6 +56,11 @@ def comment_delete(request:HttpRequest, pk, *args, **kwargs):
         comment = Comment.objects.get(id=pk)
         comment.delete()
     return redirect('wapl:comment')
+
+
+
+
+
 
 
 #일정 생성 함수
@@ -106,6 +125,29 @@ def detail(request, pk, *args, **kwargs):
   context = {'plan': plan}
   return render(request, 'test_detail.html', context=context)
 
+
+# 모임 변경 시 실행 함수
+# 해당 모임에 존재하는 모든 일정들을 불러와 리턴
+# 일정 필터링 순서: 현재 로그인 유저가 소유한 모임인가? -> 유저가 선택한 카테고리인가? -> 해당 모임에 존재하는 일정인가?
+@csrf_exempt
+def view_plan(request):
+  req = json.loads(request.body)
+  year = req['year']
+  month = req['month'] + 1
+  category = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
+  
+  plans = findPlan(request.user, category, year, month)
+  
+  plans = serializers.serialize('json', plans)
+  return JsonResponse({'plans': plans})
+
+
+
+
+
+
+
+
 def start(request:HttpRequest, *args, **kwargs):
     return render(request, "test_start.html")
 
@@ -149,10 +191,5 @@ def login(request:HttpRequest, *args, **kwargs):
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
-
-def view_plan(request):
-  req = json.loads(request.body)
-  year = req['year']
-  month = req['month'] + 1
 
   

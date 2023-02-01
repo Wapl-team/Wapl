@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta name="viewport" content="width=0, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <title>와플</title>
   </head>
@@ -24,7 +24,7 @@
       </div>
     </nav>
     <div id="sidebar" class="sidebar-menu">
-      <p>{{ user.username}} 님 로그인 중</p>
+      <p>{{user.username}} 님 로그인 중</p>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
       </a>
    </div>
@@ -69,7 +69,7 @@
           <div class="detail-timeline">
             <p>
               {% for plan in plans %} 
-      <a href="plan/{{plan.id}}">{{plan}}</a>{% endfor %}
+              <a href="plan/{{plan.id}}">{{plan}}</a>{% endfor %}
             </p>
           </div>
         </div>

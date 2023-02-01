@@ -61,10 +61,22 @@ const makeCalendar = () => {
     "Content-Type",
     "applcation/x-www-form-urlencoded"
   );
-  requestPlan.send(JSON.stringify({ year: viewYear, month: viewMonth }));
+  requestPlan.send(
+    JSON.stringify({ year: viewYear, month: viewMonth, meeting: "개인" })
+  );
+
+  requestPlan.onreadystatechange = () => {
+    if (requestPlan.readyState === XMLHttpRequest.DONE) {
+      if (requestPlan.status < 400) {
+        const { plans } = JSON.parse(requestPlan.response);
+        const temp = JSON.parse(plans);
+        console.log(temp);
+      }
+    }
+  };
 
   dates.forEach((date, i) => {
-    // 삼한연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
+    // 삼항연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
     const condition =
       i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
     //this

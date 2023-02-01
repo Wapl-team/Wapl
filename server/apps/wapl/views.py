@@ -128,11 +128,9 @@ def signup(request:HttpRequest, *args, **kwargs):
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.LoginForm(data=request.POST)
-        print(form.is_valid())
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            print("로그인 성공~~~~~~~~~")
             return redirect('wapl:main')
         else:
             context = {

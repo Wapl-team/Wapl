@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <title>와플</title>
+  </head>
+  <body>
+    <div class="header"></div>
+    <div class="main">
+      <!-- 개인 정보 수정 페이지 영역 -->
+      <div class="profile-container">
+        <p class="profile">개인 정보 페이지</p>
+        <form
+          action=""
+          method="post"
+          class="profile-form"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %} {% if user.photo %}
+          <img src="{{ user.photo.url }}" width="100" />
+          {% endif %}
+          <p><input type="file" name="photo" /></p>
+          <p>
+            사용자 이름: <input type="text" name="name" value="{{user.name}}" />
+          </p>
+          <p>
+            닉네임:
+            <input type="text" name="nickname" value="{{user.nickname}}" />
+          </p>
+          <p>
+            아이디:
+            <input type="text" name="username" value="{{user.username}}" />
+          </p>
+          <p>비밀번호: <input type="password" name="password1" /></p>
+
+          <div>
+            <input type="submit" value="수정" class="profile-btn" />
+            <a href="" class="profile-btn">취소</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

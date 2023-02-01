@@ -1,6 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from .models import User
 
 class SignupForm(UserCreationForm):
@@ -24,5 +23,8 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].label = '아이디'
         self.fields['password'].label = '비밀번호'
-        # self.username = username
-        # self.password = password
+
+class EditProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['name', 'nickname']

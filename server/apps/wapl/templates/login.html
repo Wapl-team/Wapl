@@ -17,8 +17,8 @@
         {% block content %}
         <form method="POST" action="" class="login-form">
           {% csrf_token %}
-          <p>아이디: <input type="text" name="id" /></p>
-          <p>비밀번호: <input type="text" name="password" /></p>
+          <p>아이디: <input type="text" name="username" /></p>
+          <p>비밀번호: <input type="password" name="password" /></p>
           <button class="login-btn">Login</button>
         </form>
         {% endblock content %}

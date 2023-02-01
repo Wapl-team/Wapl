@@ -41,11 +41,13 @@
         </button>
       </div>
 
-      {% for meeting in meetings %}
+      <div class="groups">
+        {% for meeting in meetings %}
         <div class="groupName">
           <a href="{% url 'wapl:meeting_detail' meeting.pk %}" >{{meeting.meeting_name}}</a>
         </div>
       {% endfor %}
+      </div>
     </div>
 
 

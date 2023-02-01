@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.core.validators import MinLengthValidator
 
 # 유저
 # 필드: 본명, 닉네임, 이메일, 이미지
@@ -15,7 +16,6 @@ class User(AbstractUser):
     job = None
     desc = None
     email = models.EmailField(null=True)
-    image = models.ImageField(null=True)
 
 # 모임
 # 필드: 카테고리, 모임 이름, 내용, 모임 소융 유저

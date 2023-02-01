@@ -20,9 +20,12 @@
           class="profile-form"
           enctype="multipart/form-data"
         >
-          {% csrf_token %} {% if user.photo %}
+          {% csrf_token %}
+          {% comment %}
+          <!--  {% if user.photo %}
           <img src="{{ user.photo.url }}" width="100" />
-          {% endif %}
+          {% endif %} -->
+          {% endcomment %}
           <p><input type="file" name="photo" /></p>
           <p>
             사용자 이름: <input type="text" name="name" value="{{user.name}}" />
@@ -33,13 +36,13 @@
           </p>
           <p>
             아이디:
-            <input type="text" name="username" value="{{user.username}}" />
+            <input type="text" name="username" value="{{user.username}}" readonly />
           </p>
-          <p>비밀번호: <input type="password" name="password1" /></p>
+          <!-- <p>비밀번호: <input type="password" name="password" value="{{user.password}}"/></p> -->
 
           <div>
             <input type="submit" value="수정" class="profile-btn" />
-            <a href="" class="profile-btn">취소</a>
+            <a href="{% url 'wapl:main' %}" class="profile-btn">취소</a>
           </div>
         </form>
       </div>

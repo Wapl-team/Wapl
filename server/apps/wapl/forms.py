@@ -25,6 +25,7 @@ class LoginForm(AuthenticationForm):
         self.fields['password'].label = '비밀번호'
 
 class EditProfileForm(UserChangeForm):
+    password = None
     class Meta:
         model = User
         fields = ['name', 'nickname']

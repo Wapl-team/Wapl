@@ -9,10 +9,8 @@ from django.core import serializers
 from . import forms
 from django.contrib import auth
 from server.apps.wapl.models import Comment
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt
@@ -145,23 +143,20 @@ def view_plan(request):
   year = req['year']
   month = req['month'] + 1
 
+# 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):
-    return render(request, "profile.html")
-def profile_detail(request, *args, **kwargs):
-    context = {
-        'user': request.user,
-    }
-    return render(request, 'profile_detail.html', context=context)
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
 
-@login_required
-def profile_update(request, *args, **kwargs):
     if request.method == "POST":
-        form = forms.SignupForm(request.POST)
+        form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('wapl:profile_update')
+            return render(request, 'profile.html')
+        else:
+            return redirect('wapl:profile')
     else:
         context = {
             'user': request.user,
         }
-        return render(request, 'profile_update.html', context=context)
+        return render(request, 'profile.html', context=context)

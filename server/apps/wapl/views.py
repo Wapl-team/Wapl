@@ -160,3 +160,18 @@ def profile(request:HttpRequest, *args, **kwargs):
             'user': request.user,
         }
         return render(request, 'profile.html', context=context)
+
+def update_password(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
+
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('wapl:profile')
+        else:
+            redirect('wapl:update_password')
+    else:
+        return render(request, 'update_password.html')

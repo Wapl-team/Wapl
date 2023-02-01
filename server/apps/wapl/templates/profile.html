@@ -42,7 +42,7 @@
             <input type="text" name="username" value="{{user.username}}" readonly />
           </p>
           <!-- <p>비밀번호: <input type="password" name="password" value="{{user.password}}"/></p> -->
-
+          <a href="{% url 'wapl:update_password' %}">비밀번호 변경</a>
           <div>
             <input type="submit" value="수정" class="profile-btn" />
             <a href="{% url 'wapl:main' %}" class="profile-btn">취소</a>

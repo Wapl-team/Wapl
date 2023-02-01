@@ -32,7 +32,7 @@ body {
   border: 10px solid orange;
   border-radius: 10px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -41,6 +41,7 @@ body {
   font-size: 2rem;
   color: orange;
   font-weight: bold;
+  margin-bottom: 5vh;
 }
 
 .profile-form {

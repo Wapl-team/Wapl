@@ -150,3 +150,9 @@ def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
 
+def view_plan(request):
+  req = json.loads(request.body)
+  year = req['year']
+  month = req['month'] + 1
+
+  

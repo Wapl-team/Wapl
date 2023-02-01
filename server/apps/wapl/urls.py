@@ -13,8 +13,9 @@ urlpatterns= [
     path("update", views.update, name="update"), 
     path("retrieve", views.retrieve, name="retrieve"), 
     path("delete", views.delete, name="delete"), 
-    path('plan/<int:pk>', views.detail, name='detail')
+    path('plan/<int:pk>', views.detail, name='detail'),
     path("comment/", views.comment, name="comment"),
     path("comment/<int:pk>/delete", views.comment_delete, name="comment_delete"),
+    path('view_plan/', views.view_plan, name='view_plan'),
 ]
 

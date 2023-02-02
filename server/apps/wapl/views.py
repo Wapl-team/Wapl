@@ -18,9 +18,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 # 인자로 넘어온 기준으로 일정을 필터링 하는 함수
 # 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
 # 리턴: Plan 모델 QuerySet
-def findPlan(user, category, year, month):  
-  meetingObj = Meeting.objects.all().filter(user=user).get(meeting_name=category)
-  data = Plan.objects.all().filter(meeting=meetingObj, startTime__month = month, startTime__year = year)
+def findPlan(user, year, month):  
+#   meetingObj = Meeting.objects.all().filter(user=user).get(meeting_name=category)
+  data = Plan.objects.all().filter(user=user, startTime__month = month, startTime__year = year)
   
   return data
 
@@ -28,9 +28,7 @@ def findPlan(user, category, year, month):
 # 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  category = '친구들' # 디폴트가 개인 => 향후 수정 가능
-
-  plans = findPlan(request.user, category, datetime.now().year, datetime.now().month)
+  plans = findPlan(request.user, datetime.now().year, datetime.now().month)
 #   plans = Plan.objects.all()
   meetings = Meeting.objects.all()
   
@@ -214,7 +212,7 @@ def view_plan(request):
   category = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
   
   username = request.user.username;
-  plans = findPlan(request.user, category, year, month)
+  plans = findPlan(request.user,year, month)
 
   plans = serializers.serialize('json', plans)
   return JsonResponse({'plans': plans, 'username':username})

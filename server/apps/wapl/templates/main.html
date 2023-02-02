@@ -25,7 +25,11 @@
 
     <div class="modal hidden">
       <div class="modal__content">
-        <form id="create" name="create" method="post">
+        <div class="modal-close-btn">
+          <button class="closeModal">X</button>
+        </div>
+        <form id="create" name="create" method="post" class="planRegister">
+          <div class="modal__title">일정 등록</div>
           <input
             type="text"
             name="title"
@@ -39,13 +43,11 @@
             id="plan_location"
           />
           <br />
-          날짜
-          <input type="date" name="date" placeholder="날짜" id="plan_date" />
+          <p>시작 시간</p>
+          <input type="datetime-local" name="date" id="plan_startTime" />
           <br />
-          시작 시간 <input type="time" name="startTime" id="plan_startTime" />
-          <br />
-          끝 시간
-          <input type="time" name="endTime" id="plan_endTime" />
+          <p>끝 시간</p>
+          <input type="datetime-local" name="date" id="plan_endTime" />
           <br />
           <input
             type="text"
@@ -55,7 +57,8 @@
           />
           <a
             href="#"
-            class="closeModal"
+            id="closeModal"
+            class="closeModal2"
             onclick="plan_create(`{{user.username}}`)"
             >추가</a
           >
@@ -68,15 +71,13 @@
     <div id="sidebar" class="sidebar-menu">
       <div class="profile">
         <a href="{% url 'wapl:profile' %}">
-        {% if user.image %}
+          {% if user.image %}
           <img src="{{ user.image.url }}" width="65" />
           {% else %}
-          <img src="{{ user.default_image }}" width="65">
+          <img src="{{ user.default_image }}" width="65" />
           {% endif %}
         </a>
-        <a href="{% url 'wapl:profile' %}">
-          {{ user.username}} 님
-        </a>
+        <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>
       </div>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
         ><i class="fa-solid fa-x"></i
@@ -99,11 +100,9 @@
             >{{meeting.meeting_name}}</a
           >
         </div>
-      {% endfor %}
+        {% endfor %}
       </div>
     </div>
-
-    
 
     <div class="main">
       <!-- 요일 영역 -->

@@ -16,7 +16,6 @@
         </button>
         <div class="year-month"></div>
       </div>
-
       <div>
         <button class="modalButton">
           <i class="fa-solid fa-plus fa-2x"></i>
@@ -24,10 +23,69 @@
       </div>
     </nav>
     <div id="sidebar" class="sidebar-menu">
-      <p>{{user.username}} 님 로그인 중</p>
+      <p>{{ user.username}} 님 로그인 중</p>
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+        ><i class="fa-solid fa-x"></i
+      ></a>
+    </div>
+
+    <div class="modal hidden">
+      <div class="modal__content">
+        <form id="create" name="create" method="post">
+          날짜:<input type="date" name="date" /> 시작 시간:<input
+            type="time"
+            name="startTime"
+          />
+          끝 시간:<input type="time" name="endTime" /> 장소:<input
+            type="text"
+            name="location"
+          />
+          제목:<input type="text" name="title" /> 내용:
+          <input type="text" name="content" />
+          <a href="#" class="closeModal" onclick="plan_create()">추가</a>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
+
+    <div id="sidebar" class="sidebar-menu">
+      <div class="profile">
+        {% if user.image %}
+        <a href="{% url 'wapl:profile' %}">
+          <img src="{{ user.image.url }}" width="65" />
+        </a>
+        {% else %}
+        <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+        {% endif %}
+        <a href="{% url 'wapl:profile' %}">
+          {{ user.username}} 님
+        </a>
+      </div>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
       </a>
-   </div>
+
+      <div class="groupBtn">
+        <button class="createGroup">
+          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+        </button>
+
+        <button class="joinGroup">
+          <a href="">모임 참가</a>
+        </button>
+      </div>
+
+      <div class="groups">
+        {% for meeting in meetings %}
+        <div class="groupName">
+          <a href="{% url 'wapl:meeting_detail' meeting.pk %}" >{{meeting.meeting_name}}</a>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+
 
     <div class="modal hidden">
       <div class="modal__content">
@@ -65,12 +123,34 @@
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
       <div class="detail">
-        <div class="detail-date">
-          <div class="detail-timeline">
-            <p>
-              {% for plan in plans %} 
-              <a href="plan/{{plan.id}}">{{plan}}</a>{% endfor %}
-            </p>
+        <div class="detail-member"></div>
+        <div class="detail-timeline">
+          <div class="detail-time">
+            <div>0</div>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+            <div>19</div>
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
           </div>
         </div>
       </div>

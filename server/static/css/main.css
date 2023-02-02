@@ -62,11 +62,10 @@ body {
   padding-top: 60px;
 }
 
-.sidebar-menu a {
+.sidebar-menu p {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 25px;
-  color: black;
+  font-size: 20px;
   display: block;
   transition: 0.3s;
 }
@@ -76,9 +75,58 @@ body {
   top: 0;
   right: 15px;
   font-size: 25px;
+  color: black;
   margin-left: 50px;
 }
+/* --------모임 생성/참가 ------- */
 
+.groupBtn{
+  display: flex;
+  justify-content: center;
+  margin:10px 0;
+}
+
+.groupBtn button{
+  width:90px;
+  height: 30px;
+  padding:5px;
+  margin:5px;
+  border:none;
+  border-radius: 10px;
+  background-color:white;
+}
+
+.groupBtn a{
+  text-decoration: none;
+  color:black;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.groups{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.groupName {
+  display: flex;
+  justify-content: end;
+  margin-top:10px;
+  background-color: wheat;
+  border-radius: 10px;
+  width:80%;
+  padding:5px;
+}
+
+.groupName a{
+  justify-content: end;
+  text-decoration: none;
+  color:black;
+  font-size:20px;
+}
+
+/* ----------------------------- */
 .modalContainer {
   display: flex;
   justify-content: end;
@@ -206,14 +254,33 @@ body {
 } */
 
 .detail {
-  background-color: #f6cf84;
+  background-color: white;
   height: 37vh;
+  display: flex;
+}
+
+.detail-member {
+  padding-top: 35px;
 }
 
 .detail-timeline {
-  margin-top: 10px;
+  position: relative;
+  padding-top: 10px;
   background-color: white;
-  height: 100px;
   overflow-x: auto;
   white-space: nowrap;
 }
+
+.detail-time {
+  display: flex;
+  width: 1500px;
+}
+
+.detail-time div {
+  width: 60px;
+}
+
+.profile {
+  display: flex;
+}
+

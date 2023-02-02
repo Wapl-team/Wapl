@@ -9,6 +9,10 @@ from datetime import datetime
 from . import forms
 from django.contrib import auth
 from .validators import *
+from django.core import serializers
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 # 인자로 넘어온 기준으로 일정을 필터링 하는 함수
 # 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
@@ -19,7 +23,6 @@ def findPlan(user, category, year, month):
   
   return data
 
-
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
 @csrf_exempt
@@ -27,8 +30,12 @@ def main(request:HttpRequest,*args, **kwargs):
   category = '개인' # 디폴트가 개인 => 향후 수정 가능
 
   plans = findPlan(request.user, category, datetime.now().year, datetime.now().month)
-  context = {'plans': plans}
+  meetings = Meeting.objects.all()
   
+  context = {
+            'plans' : plans,
+            'meetings' : meetings, }
+
   return render(request, "main.html", context=context)
 
 
@@ -59,6 +66,42 @@ def comment_delete(request:HttpRequest, pk, *args, **kwargs):
         comment.delete()
     return redirect('wapl:comment')
 
+# 미팅 pt 입니다--------------------------------------------------------------
+
+def meeting_create(request:HttpRequest, *args, **kwargs):
+    
+    if request.method == 'POST':
+        Meeting.objects.create(
+            
+        meeting_name = request.POST["meeting_name"],
+        content = request.POST["content"],
+        category = request.POST["category"],
+        user = request.POST["user"],
+        plan = request.POST["plan"],
+        
+        )
+        return redirect('wapl:main') 
+    category_list = Meeting.MEETING_CHOICE
+    context = {
+        "category_list":category_list
+    }
+    
+    return render(request, "meeting_create.html", context=context)
+
+def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
+    meeting = Meeting.objects.get(id=pk)
+    context = {
+        "meeting" : meeting
+    }
+    return render(request, "test_meeting_detail.html", context=context)
+
+def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
+    if request.method == "POST":
+        meeting = Meeting.objects.get(id=pk)
+        meeting.delete()
+        return redirect('wapl:main')
+
+# ------------------------------------------------------------------------------
 
 
 
@@ -125,6 +168,48 @@ def detail(request, pk, *args, **kwargs):
   return render(request, 'test_detail.html', context=context)
 
 
+
+
+
+
+
+
+
+
+
+def start(request:HttpRequest, *args, **kwargs):
+    return render(request, "test_start.html")
+
+def signup(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        form = forms.SignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('wapl:main')
+        else:
+            return redirect('wapl:signup')
+    else:
+        return render(request, template_name='signup.html')
+
+def login(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        form = forms.LoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('wapl:main')
+        else:
+            return render(request, template_name='login.html')
+    else:
+        return render(request, template_name='login.html')
+
+def logout(request:HttpRequest, *args, **kwargs):
+    auth.logout(request)
+    return redirect('wapl:start')
+
+  
+@csrf_exempt
 # 모임 변경 시 실행 함수
 # 해당 모임에 존재하는 모든 일정들을 불러와 리턴
 # 일정 필터링 순서: 현재 로그인 유저가 소유한 모임인가? -> 유저가 선택한 카테고리인가? -> 해당 모임에 존재하는 일정인가?
@@ -140,55 +225,49 @@ def view_plan(request):
   plans = serializers.serialize('json', plans)
   return JsonResponse({'plans': plans})
 
+  
+@csrf_exempt
+def view_explan(request):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    day = req['day']
 
+    plans = Plan.objects.filter(startTime__year=year,startTime__month=month,startTime__day=day);
+    plans = plans.order_by('startTime');
+    username = request.user.username;
 
+    plans = serializers.serialize('json', plans) 
+    return JsonResponse({'plans': plans, 'username':username})
+# 프로필 업데이트 함수
+def profile(request:HttpRequest, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
 
+    if request.method == "POST":
+        form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return render(request, 'profile.html')
+        else:
+            return redirect('wapl:profile')
+    else:
+        context = {
+            'user': request.user,
+        }
+        return render(request, 'profile.html', context=context)
 
+def update_password(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
 
-
-
-def start(request:HttpRequest, *args, **kwargs):
-    return render(request, "test_start.html")
-
-def signup(request:HttpRequest, *args, **kwargs):
-    if request.method == 'POST':
-        form = forms.SignupForm(request.POST)
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:login')
+            update_session_auth_hash(request, user)
+            return redirect('wapl:profile')
         else:
-            return redirect('wapl:signup')
+            redirect('wapl:update_password')
     else:
-        form = forms.SignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='signup.html', context=context)
-
-def login(request:HttpRequest, *args, **kwargs):
-    if request.method == 'POST':
-        form = forms.LoginForm(data=request.POST)
-        print(form.is_valid())
-        if form.is_valid():
-            user = form.get_user()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            print("로그인 성공~~~~~~~~~")
-            return redirect('wapl:main')
-        else:
-            context = {
-                'form': form,
-            }
-            return render(request, template_name='login.html', context=context)
-    else:
-        form = forms.LoginForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='login.html', context=context)
-
-def logout(request:HttpRequest, *args, **kwargs):
-    auth.logout(request)
-    return redirect('wapl:start')
-
-  
+        return render(request, 'update_password.html')

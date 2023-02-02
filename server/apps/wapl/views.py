@@ -13,7 +13,7 @@ from .validators import *
 from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
+import random
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
@@ -165,6 +165,7 @@ def start(request:HttpRequest, *args, **kwargs):
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
+        print(request.POST)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -172,7 +173,11 @@ def signup(request:HttpRequest, *args, **kwargs):
         else:
             return redirect('wapl:signup')
     else:
-        return render(request, template_name='signup.html')
+        default_image_index = random.randint(1, 4)
+        context = {
+            'default_src': f'static/default_image/{default_image_index}.png'
+        }
+        return render(request, template_name='signup.html', context=context)
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):

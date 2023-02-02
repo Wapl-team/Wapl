@@ -4,7 +4,6 @@ from . import views
 app_name = "wapl"
 
 urlpatterns= [
-
     path("main", views.main, name="main"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
@@ -19,4 +18,11 @@ urlpatterns= [
     path("comment/<int:pk>/delete", views.comment_delete, name="comment_delete"),
     path('view_plan/', views.view_plan, name='view_plan'),
     path('view_explan/', views.view_explan, name='view_explan'),
+    path('profile', views.profile, name='profile'),
+    path('password/update', views.update_password, name='update_password'),
+    path("main/meeting/create", views.meeting_create, name="meeting_create"),
+    path("meeting/<int:pk>", views.meeting_detail, name="meeting_detail"),
+    path("meeting/<int:pk>/delete", views.meeting_delete, name="meeting_delete"),
+
 ]
+

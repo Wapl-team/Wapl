@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <title>Plan detail Test</title>
+  </head>
+  <body>
+    날짜: <input type="date" name="date" /> 시작 시간:<input
+      type="time"
+      name="startTime"
+      value="{{plan.startTime}}"
+    />
+    끝 시간:<input type="time" name="endTime" value="{{plan.endTime}}" /> 장소:
+    <input type="text" name="location" value="{{plan.location}}" /> 제목:
+    <input type="text" name="title" value="{{plan.title}}" /> 내용:
+    <input type="text" name="content" value="{{plan.content}}" />
+
+    <a href="#" onclick="plan_delete({{plan.id}})">삭제</a>
+    <a href="#" onclick="plan_update({{plan.id}})">수정</a>
+    <script src="{% static 'javascripts/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </body>
+</html>

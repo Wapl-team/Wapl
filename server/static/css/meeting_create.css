@@ -1,0 +1,31 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+}
+
+h2{
+    color:orange;
+    margin:50px;
+}
+
+.meetingCreate{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.meetingCreate input,textarea,select{
+    width:240px;
+    height: 30px;
+    background-color: wheat;
+    border:none
+}
+
+.meetingCreate div input{
+    background-color: orange;
+    color:white;
+}

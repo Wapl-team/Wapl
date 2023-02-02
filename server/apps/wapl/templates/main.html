@@ -11,12 +11,13 @@
   <body>
     <nav class="nav">
       <div class="nav-side">
-        <button><i class="fa-solid fa-bars fa-2x"></i></button>
+        <button onclick="openToggle()">
+          <i class="fa-solid fa-bars fa-2x"></i>
+        </button>
         <div class="year-month"></div>
       </div>
-
       <div>
-        <button class="create-btn">
+        <button class="modalButton">
           <i class="fa-solid fa-plus fa-2x"></i>
         </button>
       </div>
@@ -45,6 +46,66 @@
         </form>
       </div>
     </div>
+
+
+    <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
+
+    <div id="sidebar" class="sidebar-menu">
+      <div class="profile">
+        {% if user.image %}
+        <a href="{% url 'wapl:profile' %}">
+          <img src="{{ user.image.url }}" width="65" />
+        </a>
+        {% else %}
+        <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+        {% endif %}
+        <a href="{% url 'wapl:profile' %}">
+          {{ user.username}} 님
+        </a>
+      </div>
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
+      </a>
+
+      <div class="groupBtn">
+        <button class="createGroup">
+          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+        </button>
+
+        <button class="joinGroup">
+          <a href="">모임 참가</a>
+        </button>
+      </div>
+
+      <div class="groups">
+        {% for meeting in meetings %}
+        <div class="groupName">
+          <a href="{% url 'wapl:meeting_detail' meeting.pk %}" >{{meeting.meeting_name}}</a>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+
+
+    <div class="modal hidden">
+      <div class="modal__content">
+        <form id="create" name="create" method="post">
+        날짜:<input type="date" name="date" /> 
+        시작 시간:<input type="time" name="startTime"
+        />
+        끝 시간:<input type="time" name="endTime" /> 
+        장소:<input
+          type="text"
+          name="location"
+        />
+        제목:<input type="text" name="title" /> 
+        내용: <input type="text" name="content" />
+        <a href="#" class="closeModal" onclick="plan_create()">추가</a>
+      </form>
+      </div>
+    </div>
+
+
 
     <div class="main">
       <!-- 요일 영역 -->
@@ -99,5 +160,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="{% static 'javascripts/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </body>
 </html>

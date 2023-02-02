@@ -53,7 +53,7 @@ const makeCalendar = () => {
   }
 
   //날짜 그리기
-
+  // 지금 보여지는 달력에 나타나는 일들
   const dates = prevDates.concat(thisDates, nextDates);
 
   const firstDateIndex = dates.indexOf(1);
@@ -144,8 +144,8 @@ function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
 }
 
-const modalButton = document.querySelector(".modalButton");
 
+const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
 const closeModal = document.querySelector(".closeModal");
 

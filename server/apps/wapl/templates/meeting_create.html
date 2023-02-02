@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/meeting_create.css' %}">
+    <title>와플</title>
+</head>
+<body>
+    <h2>모임 생성</h2>
+    <form action="{% url 'wapl:meeting_create' %}" method="post" class="meetingCreate">
+        {% csrf_token %}
+        <input name="meeting_name" placeholder="모임 이름" />
+        <br />
+        <select name="category" class="categorySelect">
+            <option>==카테고리 선택==</option>
+            {% for t1,t2 in category_list %}
+                <option value="{{ t1 }}">{{ t2 }}</option>
+            {% endfor %}
+        </select>
+        <br />
+        <textarea name="content" placeholder="모임 소개"></textarea>
+        <br />
+        <input name="user" placeholder="멤버" />
+        <br />
+        <input name="plan" placeholder="일정" />
+        <br />
+        <div>
+            <input type="submit" value="모임 생성">
+        </div>
+
+    </form>
+</body>
+</html>

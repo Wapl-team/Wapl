@@ -8,8 +8,10 @@ import json
 from django.core import serializers
 from . import forms
 from django.contrib import auth
-
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from server.apps.wapl.models import Comment, Meeting
+
 
 
 @csrf_exempt
@@ -152,40 +154,27 @@ def start(request:HttpRequest, *args, **kwargs):
 
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
-        form = forms.SignupForm(request.POST)
+        form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:login')
+            return redirect('wapl:main')
         else:
             return redirect('wapl:signup')
     else:
-        form = forms.SignupForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='signup.html', context=context)
+        return render(request, template_name='signup.html')
 
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.LoginForm(data=request.POST)
-        print(form.is_valid())
         if form.is_valid():
             user = form.get_user()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            print("로그인 성공~~~~~~~~~")
             return redirect('wapl:main')
         else:
-            context = {
-                'form': form,
-            }
-            return render(request, template_name='login.html', context=context)
+            return render(request, template_name='login.html')
     else:
-        form = forms.LoginForm()
-        context = {
-            'form': form,
-        }
-        return render(request, template_name='login.html', context=context)
+        return render(request, template_name='login.html')
 
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
@@ -196,4 +185,35 @@ def view_plan(request):
   year = req['year']
   month = req['month'] + 1
 
-  
+# 프로필 업데이트 함수
+def profile(request:HttpRequest, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
+
+    if request.method == "POST":
+        form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return render(request, 'profile.html')
+        else:
+            return redirect('wapl:profile')
+    else:
+        context = {
+            'user': request.user,
+        }
+        return render(request, 'profile.html', context=context)
+
+def update_password(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("wapl:login")
+
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            return redirect('wapl:profile')
+        else:
+            redirect('wapl:update_password')
+    else:
+        return render(request, 'update_password.html')

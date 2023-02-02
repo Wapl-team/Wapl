@@ -27,7 +27,18 @@
     <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
 
     <div id="sidebar" class="sidebar-menu">
-      <p>{{ user.username}} 님 로그인 중</p>
+      <div class="profile">
+        {% if user.image %}
+        <a href="{% url 'wapl:profile' %}">
+          <img src="{{ user.image.url }}" width="65" />
+        </a>
+        {% else %}
+        <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+        {% endif %}
+        <a href="{% url 'wapl:profile' %}">
+          {{ user.username}} 님
+        </a>
+      </div>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
       </a>
 

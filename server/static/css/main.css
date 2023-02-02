@@ -265,3 +265,7 @@ body {
   overflow-x: auto;
   white-space: nowrap;
 }
+
+.profile {
+  display: flex;
+}

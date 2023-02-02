@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <title>와플</title>
+  </head>
+  <body>
+    <div class="header"></div>
+    <div class="main">
+      <!-- 개인 정보 수정 페이지 영역 -->
+      <div class="profile-container">
+        <p class="profile">개인 정보 페이지</p>
+        <form
+          action=""
+          method="post"
+          class="profile-form"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %} {% if user.image %} 현재 프로필 이미지:
+          <img src="{{ user.image.url }}" width="100" />
+          <input type="checkbox" name="image-clear" id="image-clear_id" />
+          <label for="image-clear_id">취소</label>
+          <br />
+          {% else %}
+          <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+          {% endif %}
+          <p>
+            새 프로필 이미지:
+            <input type="file" name="image" accept="image/*" />
+          </p>
+          <p>
+            사용자 이름: <input type="text" name="name" value="{{user.name}}" />
+          </p>
+          <p>
+            닉네임:
+            <input type="text" name="nickname" value="{{user.nickname}}" />
+          </p>
+          <p>
+            아이디:
+            <input
+              type="text"
+              name="username"
+              value="{{user.username}}"
+              readonly
+            />
+          </p>
+          <!-- <p>비밀번호: <input type="password" name="password" value="{{user.password}}"/></p> -->
+          <div class="update_password">
+            <a href="{% url 'wapl:update_password' %}">비밀번호 변경</a>
+          </div>
+          <div>
+            <input type="submit" value="수정" class="profile-btn" />
+            <a href="{% url 'wapl:main' %}" class="profile-btn">취소</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

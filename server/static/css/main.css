@@ -137,6 +137,7 @@ body {
   border: 0;
   margin: 0.5rem;
 }
+
 .modal {
   position: fixed;
   display: flex;
@@ -147,6 +148,7 @@ body {
   top: 0;
   left: 0;
 }
+
 .modal__content {
   display: flex;
   flex-direction: column;
@@ -154,23 +156,56 @@ body {
   text-align: center;
   align-items: center;
   background-color: white;
-  padding: 15px;
+  padding: 10vw 20vh;
   border-radius: 15px;
-  top: 0;
   width: 70%;
   box-shadow: 2px 5px 5px 2px gray;
+  margin-top: 2vh;
 }
+
+.modal__title{
+  color:orange;
+  font-weight: bold;
+  font-size: 6vw;
+  margin-bottom: 4vh;
+}
+
+.planRegister input{
+  width: 60vw;
+  height: 4vh;
+  background-color: wheat;
+  border:none;
+  margin: 1vh -5vw;
+  margin-bottom: 2vh;
+  text-align: center;
+}
+
+.modal__time {
+  display: flex;
+  width: 50vw;
+}
+
+.modal__time input{
+  width: 60vw;
+  height: 4vh;
+  background-color: wheat;
+  border:none;
+  margin: 0vh 1vw;
+  margin-bottom: 2vh;
+}
+
 .hidden {
   display: none;
 }
 
 .closeModal {
-  background-color: rgb(255, 209, 116);
-  color: black;
-  padding: 5px;
+  background-color: orange;
+  color:white;
+  padding: 1vh 21vw;
   border-radius: 10px;
-  border: none;
   cursor: pointer;
+  text-decoration: none;
+  margin-top: 1px;  
 }
 
 .go-today {
@@ -282,4 +317,20 @@ body {
 
 .profile {
   display: flex;
+  justify-content: center;
+    align-items: center;
+    text-decoration: none;
 }
+
+.profile a {
+  text-decoration: none;
+  color: black;
+  font-size: 22px;
+}
+
+
+.profileImage {
+  margin-right: 3vw;
+  margin-bottom: 2vh;
+}
+

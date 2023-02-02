@@ -219,6 +219,9 @@ def view_plan(request):
   plans = serializers.serialize('json', plans)
   return JsonResponse({'plans': plans, 'username':username})
 
+# if문에 개인달력 출력하는 부분 
+# 모델 -> plan 공개여부
+# 공유달력 출력 
   
 @csrf_exempt
 def view_explan(request):

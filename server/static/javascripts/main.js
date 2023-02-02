@@ -69,12 +69,13 @@ const makeCalendar = () => {
 
   //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
   requestPlan.send(
-    JSON.stringify({ year: viewYear, month: viewMonth, meeting: "" })
+    JSON.stringify({ year: viewYear, month: viewMonth, meeting: " " })
   );
 
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
+        console.log("here");
         const { plans, username } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
         let isPlan = new Array(dates.length).fill(false);
@@ -213,7 +214,7 @@ modalButton.addEventListener("click", () => {
 closeModal.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
-
+/*
 
   일정 삭제 클릭 시 실행 함수
   선택한 일정의 id 값을 인자로 넘김
@@ -264,102 +265,95 @@ return: err_msg
         에러가 아닌 경우 value 값에 "" 이 둘어가 있음.
         ex) err_msg.data.time_err
 */
-
-  let prevClickDate = document.querySelector(".today").parentNode;
-  prevClickDate.classList.add("date-onclick");
-
-  const requestExplan = new XMLHttpRequest();
-
-  function viewDetail() {
-    const detailMember = document.querySelector(".detail-member");
-    const day = this.childNodes[0].innerText;
-
-    const url = "/view_explan/";
-    requestExplan.open("POST", url, true);
-    requestExplan.setRequestHeader(
-      "Content-Type",
-      "applcation/x-www-form-urlencoded"
-    );
-    requestExplan.send(
-      JSON.stringify({
-        year: currentYear,
-        month: currentMonth,
-        day: day,
-        meetingName: "친구들", //-> 모임 이름 넣는 부분
-      })
-    );
-
-    requestExplan.onreadystatechange = () => {
-      if (requestExplan.readyState === XMLHttpRequest.DONE) {
-        if (requestExplan.status < 400) {
-          const { plans, username } = JSON.parse(requestExplan.response);
-          const plansArray = JSON.parse(plans);
-          const timeline = document.querySelector(".detail-timeline");
-          const memberlist = document.querySelector(".detail-member");
-          const newmember = document.createElement("div");
-          memberlist.innerHTML = "";
-          newmember.innerText = `${username}`;
-          newmember.style.height = "50px";
-          memberlist.appendChild(newmember);
-          timeline.innerHTML = `<div class="detail-time">
-          <div>0</div>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
-          <div>5</div>
-          <div>6</div>
-          <div>7</div>
-          <div>8</div>
-          <div>9</div>
-          <div>10</div>
-          <div>11</div>
-          <div>12</div>
-          <div>13</div>
-          <div>14</div>
-          <div>15</div>
-          <div>16</div>
-          <div>17</div>
-          <div>18</div>
-          <div>19</div>
-          <div>20</div>
-          <div>21</div>
-          <div>22</div>
-          <div>23</div>
-          <div>24</div>
-        </div>`;
-          plansArray.forEach((plan) => {
-            startTime = plan.fields.startTime;
-            endTime = plan.fields.endTime;
-            hours = endTime.slice(11, 13) - startTime.slice(11, 13);
-            minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
-            let newplan = document.createElement("a");
-            const start =
-              parseInt(startTime.slice(11, 13) * 60) +
-              parseInt(startTime.slice(14, 16));
-            const width = hours * 60 + minutes;
-            newplan.href = `plan/${plan.pk}`;
-            newplan.style.position = "absolute";
-            newplan.style.width = `${width}px`;
-            newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid black";
-            newplan.style.backgroundColor = "black";
-            newplan.style.color = "white";
-            newplan.style.height = "50px";
-            newplan.innerText = `${plan.fields.title}`;
-            timeline.appendChild(newplan);
-          });
-        }
-      }
-    };
-
-    prevClickDate.classList.remove("date-onclick");
-    prevClickDate.classList.add("date");
-    this.classList.remove("date");
-    this.classList.add("date-onclick");
-    prevClickDate = this;
-  }
-
-  let dateTarget = document.querySelectorAll(".date");
-  dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
+  // let prevClickDate = document.querySelector(".today").parentNode;
+  // prevClickDate.classList.add("date-onclick");
+  // const requestExplan = new XMLHttpRequest();
+  // function viewDetail() {
+  //   const detailMember = document.querySelector(".detail-member");
+  //   const day = this.childNodes[0].innerText;
+  //   const url = "/view_explan/";
+  //   requestExplan.open("POST", url, true);
+  //   requestExplan.setRequestHeader(
+  //     "Content-Type",
+  //     "applcation/x-www-form-urlencoded"
+  //   );
+  //   requestExplan.send(
+  //     JSON.stringify({
+  //       year: currentYear,
+  //       month: currentMonth,
+  //       day: day,
+  //       meetingName: "친구들", //-> 모임 이름 넣는 부분
+  //     })
+  //   );
+  //   requestExplan.onreadystatechange = () => {
+  //     if (requestExplan.readyState === XMLHttpRequest.DONE) {
+  //       if (requestExplan.status < 400) {
+  //         const { plans, username } = JSON.parse(requestExplan.response);
+  //         const plansArray = JSON.parse(plans);
+  //         const timeline = document.querySelector(".detail-timeline");
+  //         const memberlist = document.querySelector(".detail-member");
+  //         const newmember = document.createElement("div");
+  //         memberlist.innerHTML = "";
+  //         newmember.innerText = `${username}`;
+  //         newmember.style.height = "50px";
+  //         memberlist.appendChild(newmember);
+  //         timeline.innerHTML = `<div class="detail-time">
+  //         <div>0</div>
+  //         <div>1</div>
+  //         <div>2</div>
+  //         <div>3</div>
+  //         <div>4</div>
+  //         <div>5</div>
+  //         <div>6</div>
+  //         <div>7</div>
+  //         <div>8</div>
+  //         <div>9</div>
+  //         <div>10</div>
+  //         <div>11</div>
+  //         <div>12</div>
+  //         <div>13</div>
+  //         <div>14</div>
+  //         <div>15</div>
+  //         <div>16</div>
+  //         <div>17</div>
+  //         <div>18</div>
+  //         <div>19</div>
+  //         <div>20</div>
+  //         <div>21</div>
+  //         <div>22</div>
+  //         <div>23</div>
+  //         <div>24</div>
+  //       </div>`;
+  //         plansArray.forEach((plan) => {
+  //           startTime = plan.fields.startTime;
+  //           endTime = plan.fields.endTime;
+  //           hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+  //           minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+  //           let newplan = document.createElement("a");
+  //           const start =
+  //             parseInt(startTime.slice(11, 13) * 60) +
+  //             parseInt(startTime.slice(14, 16));
+  //           const width = hours * 60 + minutes;
+  //           newplan.href = `plan/${plan.pk}`;
+  //           newplan.style.position = "absolute";
+  //           newplan.style.width = `${width}px`;
+  //           newplan.style.left = `${start}px`;
+  //           newplan.style.border = "1px solid black";
+  //           newplan.style.backgroundColor = "black";
+  //           newplan.style.color = "white";
+  //           newplan.style.height = "50px";
+  //           newplan.innerText = `${plan.fields.title}`;
+  //           timeline.appendChild(newplan);
+  //         });
+  //       }
+  //     }
+  //   };
+  //   prevClickDate.classList.remove("date-onclick");
+  //   prevClickDate.classList.add("date");
+  //   this.classList.remove("date");
+  //   this.classList.add("date-onclick");
+  //   prevClickDate = this;
+  // }
+  // let dateTarget = document.querySelectorAll(".date");
+  // dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
 };

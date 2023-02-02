@@ -19,10 +19,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 # 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  plans = findPlan(request.user, datetime.now().year, datetime.now().month)
   meetings = Meeting.objects.all()
-  temp = Plan.objects.get(id=1).meeting.meeting_plan.all()
-  print(temp)
   context = {            
             'meetings' : meetings, }
   
@@ -205,6 +202,7 @@ def view_plan(request):
   username = request.user.username
 
   if meeting_name == ' ':
+
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
     meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)

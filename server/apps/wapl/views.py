@@ -113,12 +113,14 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
 def create(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
-    
-    result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
+
+    startTime = req['startTime'];
+    endTime = req['endTime'];
+    result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
         newPlan = Plan(startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
         newPlan.save()
-    return JsonResponse(err_msg)
+    return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.image.url})
 
 
 # 일정 수정 함수

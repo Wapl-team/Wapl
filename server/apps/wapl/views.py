@@ -15,25 +15,15 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
 
-# 인자로 넘어온 기준으로 일정을 필터링 하는 함수
-# 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
-# 리턴: Plan 모델 QuerySet
-def findPlan(user, year, month):  
-#   meetingObj = Meeting.objects.all().filter(user=user).get(meeting_name=category)
-  data = Plan.objects.all().filter(user=user, startTime__month = month, startTime__year = year)
-  
-  return data
-
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
   plans = findPlan(request.user, datetime.now().year, datetime.now().month)
-#   plans = Plan.objects.all()
   meetings = Meeting.objects.all()
-  
-  context = {
-            'plans' : plans,
+  temp = Plan.objects.get(id=1).meeting.meeting_plan.all()
+  print(temp)
+  context = {            
             'meetings' : meetings, }
   
   return render(request, "main.html", context=context)
@@ -69,13 +59,11 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
     
     if request.method == 'POST':
         Meeting.objects.create(
-            
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
         category = request.POST["category"],
         user = request.POST["user"],
         plan = request.POST["plan"],
-        
         )
         return redirect('wapl:main') 
     category_list = Meeting.MEETING_CHOICE
@@ -118,7 +106,7 @@ def create(request, *args, **kwargs):
     endTime = req['endTime'];
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
-        newPlan = Plan(startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
+        newPlan = Plan(user=request.user, startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
         newPlan.save()
     return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.image.url})
 
@@ -176,6 +164,7 @@ def detail(request, pk, *args, **kwargs):
 def start(request:HttpRequest, *args, **kwargs):
     return render(request, "test_start.html")
 
+@csrf_exempt
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
@@ -188,6 +177,7 @@ def signup(request:HttpRequest, *args, **kwargs):
     else:
         return render(request, template_name='signup.html')
 
+@csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.LoginForm(data=request.POST)
@@ -211,13 +201,18 @@ def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
-  category = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
-  
-  username = request.user.username;
-  plans = findPlan(request.user,year, month)
+  meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
+  username = request.user.username
+
+  if meeting_name == ' ':
+    plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
+  else:
+    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
+    plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    
 
   plans = serializers.serialize('json', plans)
-  return JsonResponse({'plans': plans, 'username':username})
+  return JsonResponse({'plans': plans, 'username': username})
 
 # if문에 개인달력 출력하는 부분 
 # 모델 -> plan 공개여부
@@ -229,13 +224,16 @@ def view_explan(request):
     year = req['year']
     month = req['month']
     day = req['day']
-
-    plans = Plan.objects.filter(startTime__year=year,startTime__month=month,startTime__day=day);
-    plans = plans.order_by('startTime');
-    username = request.user.username;
+    meeting_name = req['meetingName']
+    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
+    plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year, startTime__day = day)
+    plans = plans.order_by('startTime')
+    username = request.user.username
 
     plans = serializers.serialize('json', plans) 
     return JsonResponse({'plans': plans, 'username':username})
+  
+
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):
     if not request.user.is_authenticated:

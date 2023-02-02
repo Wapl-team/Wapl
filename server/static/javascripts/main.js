@@ -214,7 +214,7 @@ closeModal.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
 
-/*
+
   일정 삭제 클릭 시 실행 함수
   선택한 일정의 id 값을 인자로 넘김
   method: POST
@@ -281,7 +281,12 @@ return: err_msg
       "applcation/x-www-form-urlencoded"
     );
     requestExplan.send(
-      JSON.stringify({ year: currentYear, month: currentMonth, day: day })
+      JSON.stringify({
+        year: currentYear,
+        month: currentMonth,
+        day: day,
+        meetingName: "친구들", //-> 모임 이름 넣는 부분
+      })
     );
 
     requestExplan.onreadystatechange = () => {

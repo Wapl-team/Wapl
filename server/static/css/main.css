@@ -254,18 +254,33 @@ body {
 } */
 
 .detail {
-  background-color: #f6cf84;
+  background-color: white;
   height: 37vh;
+  display: flex;
+}
+
+.detail-member {
+  padding-top: 35px;
 }
 
 .detail-timeline {
-  margin-top: 10px;
+  position: relative;
+  padding-top: 10px;
   background-color: white;
-  height: 100px;
   overflow-x: auto;
   white-space: nowrap;
+}
+
+.detail-time {
+  display: flex;
+  width: 1500px;
+}
+
+.detail-time div {
+  width: 60px;
 }
 
 .profile {
   display: flex;
 }
+

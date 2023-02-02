@@ -1,22 +1,37 @@
-from django.shortcuts import render
+
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Plan
+from .models import Plan, Comment, Meeting
 import json
 from django.core import serializers
+from datetime import datetime
 from . import forms
 from django.contrib import auth
+from .validators import *
+from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from server.apps.wapl.models import Comment, Meeting
 import random
 
+# 인자로 넘어온 기준으로 일정을 필터링 하는 함수
+# 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
+# 리턴: Plan 모델 QuerySet
+def findPlan(user, category, year, month):  
+  meetingObj = Meeting.objects.all().filter(user=user).get(meeting_name=category)
+  data = Plan.objects.all().filter(meeting=meetingObj, startTime__month = month, startTime__year = year)
+  
+  return data
 
+# main 페이지 접속 시 실행 함수
+# 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  plans = Plan.objects.all()
+  category = '친구들' # 디폴트가 개인 => 향후 수정 가능
+
+  plans = findPlan(request.user, category, datetime.now().year, datetime.now().month)
+#   plans = Plan.objects.all()
   meetings = Meeting.objects.all()
   
   context = {
@@ -87,36 +102,46 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
 
 # ------------------------------------------------------------------------------
 
-#일정 생성 함수
-#POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
-#리턴하는 값 X (js에서 작업 필요)
+
+
+
+
+
+# 일정 생성 함수
+# POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
+# 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
+# ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 @csrf_exempt
 def create(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
-    newPlan = Plan(startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
-    newPlan.save()
-    context = {'newPlan': newPlan}
-    return JsonResponse({})
+    
+    result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
+    if result:
+        newPlan = Plan(startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
+        newPlan.save()
+    return JsonResponse(err_msg)
 
 
-#일정 수정 함수
-#POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
-#리턴하는 값 X (js에서 작업 필요)
+# 일정 수정 함수
+# POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
+# 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
+# ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 @csrf_exempt
 def update(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
-    pk = req['id']
-    updatedPlan = Plan.objects.all().get(id=pk)
-    updatedPlan.startTime = req['startTime']
-    updatedPlan.endTime = req['endTime']
-    updatedPlan.location = req['location']
-    updatedPlan.title = req['title']
-    updatedPlan.content = req['content']
-    updatedPlan.save()
-    context = {'updatedPlan': updatedPlan}
-    return JsonResponse({})
+    result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
+    if result:
+        pk = req['id']
+        updatedPlan = Plan.objects.all().get(id=pk)
+        updatedPlan.startTime = req['startTime']
+        updatedPlan.endTime = req['endTime']
+        updatedPlan.location = req['location']
+        updatedPlan.title = req['title']
+        updatedPlan.content = req['content']
+        updatedPlan.save()
+        return JsonResponse(err_msg)
 
 
 #일정 생성 함수
@@ -145,7 +170,6 @@ def detail(request, pk, *args, **kwargs):
   plan = Plan.objects.all().get(id=pk)
   
   startTime = str(plan.startTime)
-  print(startTime.split(" "))
   context = {'plan': plan}
   return render(request, 'test_detail.html', context=context)
 
@@ -185,11 +209,35 @@ def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
 
+  
+
+@csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
+  category = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
+  
+  username = request.user.username;
+  plans = findPlan(request.user, category, year, month)
 
+  plans = serializers.serialize('json', plans)
+  return JsonResponse({'plans': plans, 'username':username})
+
+  
+@csrf_exempt
+def view_explan(request):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    day = req['day']
+
+    plans = Plan.objects.filter(startTime__year=year,startTime__month=month,startTime__day=day);
+    plans = plans.order_by('startTime');
+    username = request.user.username;
+
+    plans = serializers.serialize('json', plans) 
+    return JsonResponse({'plans': plans, 'username':username})
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):
     if not request.user.is_authenticated:

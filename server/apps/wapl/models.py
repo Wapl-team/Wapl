@@ -16,6 +16,7 @@ class User(AbstractUser):
     job = None
     desc = None
     email = models.EmailField(null=True)
+    image = models.ImageField(blank=True, upload_to='profile')
 
 # 모임
 # 필드: 카테고리, 모임 이름, 내용, 모임 소융 유저

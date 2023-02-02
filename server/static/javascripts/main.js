@@ -69,7 +69,7 @@ const makeCalendar = () => {
 
   //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
   requestPlan.send(
-    JSON.stringify({ year: viewYear, month: viewMonth, meeting: "개인" })
+    JSON.stringify({ year: viewYear, month: viewMonth, meeting: "친구들" })
   );
 
   requestPlan.onreadystatechange = () => {
@@ -147,7 +147,6 @@ function openToggle() {
 function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
 }
-
 
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
@@ -251,7 +250,6 @@ window.onload = function () {
         if (requestExplan.status < 400) {
           const { plans, username } = JSON.parse(requestExplan.response);
           const plansArray = JSON.parse(plans);
-          console.log(plansArray);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
           const newmember = document.createElement("div");

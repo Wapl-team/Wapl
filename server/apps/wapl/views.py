@@ -14,10 +14,12 @@ from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
+
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
+  plans = findPlan(request.user, datetime.now().year, datetime.now().month)
   meetings = Meeting.objects.all()
   temp = Plan.objects.get(id=1).meeting.meeting_plan.all()
   print(temp)
@@ -199,16 +201,20 @@ def view_plan(request):
   month = req['month'] + 1
   meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
   username = request.user.username
-  
+
   if meeting_name == ' ':
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
     meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
+
   plans = serializers.serialize('json', plans)
   return JsonResponse({'plans': plans, 'username': username})
 
+# if문에 개인달력 출력하는 부분 
+# 모델 -> plan 공개여부
+# 공유달력 출력 
   
 @csrf_exempt
 def view_explan(request):

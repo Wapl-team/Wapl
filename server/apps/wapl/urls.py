@@ -11,7 +11,6 @@ urlpatterns= [
     path("", views.start, name="start"),
     path("create", views.create, name="create"), 
     path("update", views.update, name="update"), 
-    path("retrieve", views.retrieve, name="retrieve"), 
     path("delete", views.delete, name="delete"), 
     path('plan/<int:pk>', views.detail, name='detail'),
     path("comment/", views.comment, name="comment"),

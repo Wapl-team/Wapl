@@ -66,7 +66,11 @@ const makeCalendar = () => {
     "Content-Type",
     "applcation/x-www-form-urlencoded"
   );
-  requestPlan.send(JSON.stringify({ year: viewYear, month: viewMonth }));
+
+  //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
+  requestPlan.send(
+    JSON.stringify({ year: viewYear, month: viewMonth, meeting: "개인" })
+  );
 
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
@@ -161,8 +165,11 @@ closeModal.addEventListener("click", () => {
 일정 생성 클릭 시 실행 함수
 input 태그를 배열로 가져와(inputs) 순서대로 변수에 저장
 순서: startTime, endTime, location, title, content (이후 데이터 추가 시 순서 주의)
-저장 후 Js에서 일정 화면에 추가 해야할 듯 함
 method: POST
+return: err_msg
+        에러 메세지 접근 방법: err_msg.data.{모델 필드 이름}_err
+        에러가 아닌 경우 value 값에 "" 이 둘어가 있음.
+        ex) err_msg.data.time_err
 */
 
 const plan_create = async () => {
@@ -176,26 +183,33 @@ const plan_create = async () => {
     content: inputs[5].value,
   };
 
-  const { newPlan } = await axios.post(url, data);
+  const err_msg = await axios.post(url, data);
+  console.log(err_msg.data.time_err);
 };
 
 /*
   일정 삭제 클릭 시 실행 함수
   선택한 일정의 id 값을 인자로 넘김
   method: POST
-  */
+*/
 const plan_delete = async (id) => {
   const url = "/delete";
   await axios.post(url, {
     id,
   });
 };
+
 /*
-    일정 수정 버튼 클릭 시 실행 함수
-    일정 생성과 로직은 동일하며 추가로 일정 객체의 id 값을 추가로 넘김
-    순서: startTime, endTime, location, title, content (이후 데이터 추가 시 순서 주의)
-    method: POST
-    */
+  일정 수정 버튼 클릭 시 실행 함수
+  일정 생성과 로직은 동일하며 추가로 일정 객체의 id 값을 추가로 넘김
+  순서: startTime, endTime, location, title, content (이후 데이터 추가 시 순서 주의)
+  method: POST
+  return: err_msg
+          에러 메세지 접근 방법: err_msg.data.{모델 필드 이름}_err
+          에러가 아닌 경우 value 값에 "" 이 둘어가 있음.
+          ex) err_msg.data.time_err
+
+*/
 const plan_update = async (id) => {
   const url = "/update";
   inputs = document.getElementsByTagName("input");
@@ -208,7 +222,8 @@ const plan_update = async (id) => {
     content: inputs[5].value,
   };
 
-  const { newPlan } = await axios.post(url, data);
+  const err_msg = await axios.post(url, data);
+  console.log(err_msg.data.time_err);
 };
 
 window.onload = function () {

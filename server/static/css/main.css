@@ -318,8 +318,8 @@ body {
 .profile {
   display: flex;
   justify-content: center;
-    align-items: center;
-    text-decoration: none;
+  align-items: center;
+  text-decoration: none;
 }
 
 .profile a {
@@ -332,5 +332,6 @@ body {
 .profileImage {
   margin-right: 3vw;
   margin-bottom: 2vh;
+  border-radius: 70%;
 }
 

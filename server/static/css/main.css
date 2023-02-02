@@ -316,5 +316,18 @@ body {
 
 .profile {
   display: flex;
+  justify-content: center;
+    align-items: center;
+    text-decoration: none;
 }
 
+.profile a {
+  text-decoration: none;
+  color: black;
+  font-size: 22px;
+}
+
+.profileImage {
+  margin-right: 3vw;
+  margin-bottom: 2vh;
+}

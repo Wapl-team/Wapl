@@ -289,11 +289,12 @@ window.onload = function () {
             endTime = plan.fields.endTime;
             hours = endTime.slice(11, 13) - startTime.slice(11, 13);
             minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
-            let newplan = document.createElement("div");
+            let newplan = document.createElement("a");
             const start =
               parseInt(startTime.slice(11, 13) * 60) +
               parseInt(startTime.slice(14, 16));
             const width = hours * 60 + minutes;
+            newplan.href = `plan/${plan.pk}`;
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;

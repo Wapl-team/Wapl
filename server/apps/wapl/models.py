@@ -76,3 +76,4 @@ class User(AbstractUser):
     desc = None
     email = models.EmailField(null=True)
     image = models.ImageField(blank=True, upload_to='profile')
+    default_image = models.CharField(null=True, max_length=200)

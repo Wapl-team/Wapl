@@ -17,6 +17,7 @@ urlpatterns= [
     path("comment/", views.comment, name="comment"),
     path("comment/<int:pk>/delete", views.comment_delete, name="comment_delete"),
     path('view_plan/', views.view_plan, name='view_plan'),
+    path('view_explan/', views.view_explan, name='view_explan'),
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),
     path("main/meeting/create", views.meeting_create, name="meeting_create"),

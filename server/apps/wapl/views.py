@@ -8,10 +8,10 @@ import json
 from django.core import serializers
 from . import forms
 from django.contrib import auth
+from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from server.apps.wapl.models import Comment, Meeting
-
 
 
 @csrf_exempt
@@ -180,11 +180,33 @@ def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
 
+@csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
 
+  plans = Plan.objects.filter(startTime__month=month)
+  username = request.user.username;
+
+  #1. plans 객체를 필터링 해서 json 직렬화 하여 리턴
+  plans = serializers.serialize('json', plans) # => plans == string
+  return JsonResponse({'plans': plans, 'username':username})
+
+  
+@csrf_exempt
+def view_explan(request):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    day = req['day']
+
+    plans = Plan.objects.filter(startTime__year=year,startTime__month=month,startTime__day=day);
+    plans = plans.order_by('startTime');
+    username = request.user.username;
+
+    plans = serializers.serialize('json', plans) 
+    return JsonResponse({'plans': plans, 'username':username})
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):
     if not request.user.is_authenticated:
@@ -217,3 +239,4 @@ def update_password(request, *args, **kwargs):
             redirect('wapl:update_password')
     else:
         return render(request, 'update_password.html')
+

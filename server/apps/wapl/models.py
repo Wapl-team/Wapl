@@ -17,6 +17,7 @@ class User(AbstractUser):
     desc = None
     email = models.EmailField(null=True)
     image = models.ImageField(blank=True, upload_to='profile')
+    default_image = models.CharField(null=True, max_length=200)
 
 # 모임
 # 필드: 카테고리, 모임 이름, 내용, 모임 소융 유저
@@ -51,7 +52,7 @@ class Plan(models.Model):
   def __str__(self):
     return self.title
 
-    
+
 # 댓글
 # 필드: 내용, 생성시간, 작성 유저, 일정
 class Comment(models.Model):
@@ -75,4 +76,5 @@ class Comment(models.Model):
             return str(time.days) + '일 전'
         else:
             return False
+
 

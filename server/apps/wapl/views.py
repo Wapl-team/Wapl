@@ -13,7 +13,7 @@ from .validators import *
 from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
+import random
 
 # 인자로 넘어온 기준으로 일정을 필터링 하는 함수
 # 필터 기준(인자): user 객체, 모임 이름, 얀도, 월
@@ -179,6 +179,7 @@ def start(request:HttpRequest, *args, **kwargs):
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
+        print(request.POST)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -186,7 +187,11 @@ def signup(request:HttpRequest, *args, **kwargs):
         else:
             return redirect('wapl:signup')
     else:
-        return render(request, template_name='signup.html')
+        default_image_index = random.randint(1, 4)
+        context = {
+            'default_src': f'static/default_image/{default_image_index}.png'
+        }
+        return render(request, template_name='signup.html', context=context)
 
 def login(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':

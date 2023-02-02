@@ -170,10 +170,10 @@ return: err_msg
         에러가 아닌 경우 value 값에 "" 이 둘어가 있음.
         ex) err_msg.data.time_err
 */
-
 const plan_create = async () => {
   const url = "/create";
   inputs = document.getElementsByTagName("input");
+  console.log(inputs[0].value + " " + inputs[1].value);
   const data = {
     startTime: inputs[0].value + " " + inputs[1].value,
     endTime: inputs[0].value + " " + inputs[2].value,
@@ -242,7 +242,12 @@ window.onload = function () {
       "applcation/x-www-form-urlencoded"
     );
     requestExplan.send(
-      JSON.stringify({ year: currentYear, month: currentMonth, day: day })
+      JSON.stringify({
+        year: currentYear,
+        month: currentMonth,
+        day: day,
+        meetingName: "친구들", //-> 모임 이름 넣는 부분
+      })
     );
 
     requestExplan.onreadystatechange = () => {

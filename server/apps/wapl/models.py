@@ -35,7 +35,7 @@ class Meeting(models.Model):
     meeting_name = models.CharField(max_length=20)
     content = models.TextField()
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="meeting_user")
+    user = models.ManyToManyField(User, related_name="meeting_user")
     
     
 # 일정
@@ -47,7 +47,7 @@ class Plan(models.Model):
   title = models.CharField(max_length=20)
   content = models.TextField(blank=True)
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_plan', default=1)
-  meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='meeting_plan', default=1)
+  meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='meeting_plan', blank=True, null=True)
   
   def __str__(self):
     return self.title

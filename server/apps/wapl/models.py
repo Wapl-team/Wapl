@@ -29,6 +29,29 @@ class Comment(models.Model):
         else:
             return False
 
+
+class Meeting(models.Model):
+
+    MEETING_CHOICE = [
+        ('family', '가족'),
+        ('couple', '연인'),
+        ('club', '동아리'),
+        ('friend', '친구'),
+        ('school', '학교'),
+        ('company', '회사'),
+    ]
+    
+    meeting_name = models.CharField(max_length=20)
+    content = models.TextField()
+    category = models.CharField(choices=MEETING_CHOICE, max_length=20)
+    user = models.CharField(max_length=20)
+    plan = models.CharField(max_length=20)
+    
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="meeting_user")
+    # plan_post=models.ForeignKey(Plan, on_delete=models.CASCADE, related_name="meeting_post")
+
+
+
 #멤버 변수: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(User)
 class Plan(models.Model):
   startTime = models.DateTimeField(null=False)

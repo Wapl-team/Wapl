@@ -19,5 +19,9 @@ urlpatterns= [
     path('view_plan/', views.view_plan, name='view_plan'),
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),
+    path("main/meeting/create", views.meeting_create, name="meeting_create"),
+    path("meeting/<int:pk>", views.meeting_detail, name="meeting_detail"),
+    path("meeting/<int:pk>/delete", views.meeting_delete, name="meeting_delete"),
+
 ]
 

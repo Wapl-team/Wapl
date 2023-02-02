@@ -13,18 +13,39 @@ from .validators import *
 from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 import random
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
+# 슈퍼유저랑 모임 생성 유저는 자동으로 users에 들어감
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
   meetings = Meeting.objects.all()
+  data = []
+  for meeting in meetings:
+    if request.user in meeting.users.all():
+      data.append(meeting)  
+  print(data)
   context = {            
-            'meetings' : meetings, }
+            'meetings' : data, 
+            'meeting_name': ''}
   
   return render(request, "main.html", context=context)
 
+@csrf_exempt
+def meeting_calendar(request, pk, *args, **kwargs):
+  cur_meeting = Meeting.objects.all().get(id=pk)
+  meetings = Meeting.objects.all()
+  data = []
+  for meeting in meetings:
+    if request.user in meeting.users.all():
+      data.append(meeting)
+      
+  context = {'meeting_name': cur_meeting.meeting_name,
+             'meetings': data}
+  return render(request, "main.html", context=context)
 
 def comment(request:HttpRequest, *args, **kwargs):
     
@@ -51,18 +72,19 @@ def comment_delete(request:HttpRequest, pk, *args, **kwargs):
     return redirect('wapl:comment')
 
 # 미팅 pt 입니다--------------------------------------------------------------
-
+@csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
-    
     if request.method == 'POST':
-        Meeting.objects.create(
+        newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
+        owner = request.user,
         category = request.POST["category"],
-        user = request.POST["user"],
-        plan = request.POST["plan"],
         )
-        return redirect('wapl:main') 
+        
+        newMeeting.users.add(request.user)
+        
+        return redirect(reverse(''))
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
@@ -99,8 +121,8 @@ def create(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
 
-    startTime = req['startTime'];
-    endTime = req['endTime'];
+    startTime = req['startTime']
+    endTime = req['endTime']
     
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
@@ -210,16 +232,15 @@ def view_plan(request):
   year = req['year']
   month = req['month'] + 1
   meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
+
   username = request.user.username
 
-  if meeting_name == ' ':
-
+  if meeting_name == '':
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
-    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
+    meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
-
   plans = serializers.serialize('json', plans)
   return JsonResponse({'plans': plans, 'username': username})
 

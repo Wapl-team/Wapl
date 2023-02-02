@@ -101,11 +101,17 @@ def create(request, *args, **kwargs):
 
     startTime = req['startTime'];
     endTime = req['endTime'];
+    
+
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
         newPlan = Plan(user=request.user, startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
         newPlan.save()
-    return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.image.url})
+    
+    if request.user.image == "":
+        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.image.url})
 
 
 # 일정 수정 함수

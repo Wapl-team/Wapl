@@ -177,6 +177,7 @@ body {
   border:none;
   margin: 1vh -5vw;
   margin-bottom: 2vh;
+  text-align: center;
 }
 
 .modal__time {

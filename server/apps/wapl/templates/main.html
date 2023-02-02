@@ -21,6 +21,30 @@
         </button>
       </div>
     </nav>
+    <div id="sidebar" class="sidebar-menu">
+      <p>{{ user.username}} 님 로그인 중</p>
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+        ><i class="fa-solid fa-x"></i
+      ></a>
+    </div>
+
+    <div class="modal hidden">
+      <div class="modal__content">
+        <form id="create" name="create" method="post">
+          날짜:<input type="date" name="date" /> 시작 시간:<input
+            type="time"
+            name="startTime"
+          />
+          끝 시간:<input type="time" name="endTime" /> 장소:<input
+            type="text"
+            name="location"
+          />
+          제목:<input type="text" name="title" /> 내용:
+          <input type="text" name="content" />
+          <a href="#" class="closeModal" onclick="plan_create()">추가</a>
+        </form>
+      </div>
+    </div>
 
     <div class="main">
       <!-- 요일 영역 -->
@@ -38,17 +62,34 @@
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
       <div class="detail">
-        <div class="detail-date">
-          <div class="detail-timeline">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Perferendis cum tempore, officia veritatis natus et. Quae est
-              laboriosam nisi recusandae fugiat impedit cumque velit vero
-              ratione. Optio aperiam veniam voluptas. Lorem, ipsum dolor sit
-              amet consectetur adipisicing elit. Omnis tempora eveniet voluptas
-              dolore accusantium rerum tenetur fuga sint sit, perferendis, nemo
-              vero aliquid id sapiente quidem. Omnis quae voluptatum animi?
-            </p>
+        <div class="detail-member"></div>
+        <div class="detail-timeline">
+          <div class="detail-time">
+            <div>0</div>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+            <div>19</div>
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
           </div>
         </div>
       </div>

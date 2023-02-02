@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from . import forms
 from django.contrib import auth
-
+from server.apps.wapl.models import Comment
+from django.core import serializers
 
 # Create your views here.
 
@@ -53,3 +54,32 @@ def login(request:HttpRequest, *args, **kwargs):
 def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
+
+@csrf_exempt
+def view_plan(request):
+  req = json.loads(request.body)
+  year = req['year']
+  month = req['month'] + 1
+
+
+  plans = Plan.objects.filter(startTime__month=month)
+  username = request.user.username;
+
+  #1. plans 객체를 필터링 해서 json 직렬화 하여 리턴
+  plans = serializers.serialize('json', plans) # => plans == string
+  return JsonResponse({'plans': plans, 'username':username})
+
+  
+@csrf_exempt
+def view_explan(request):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    day = req['day']
+
+    plans = Plan.objects.filter(startTime__year=year,startTime__month=month,startTime__day=day);
+    plans = plans.order_by('startTime');
+    username = request.user.username;
+
+    plans = serializers.serialize('json', plans) 
+    return JsonResponse({'plans': plans, 'username':username})

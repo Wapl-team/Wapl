@@ -313,15 +313,22 @@ body {
 }
 
 .detail-timeline {
+  display: flex;
+  flex-direction: column;
   padding-top: 10px;
   background-color: white;
   overflow-x: auto;
   white-space: nowrap;
 }
 
+.detail-timeline div {
+  position: relative;
+  width: 1445px;
+}
+
 .detail-time {
   display: flex;
-  width: 1500px;
+  width: 1300px;
 }
 
 .detail-time div {

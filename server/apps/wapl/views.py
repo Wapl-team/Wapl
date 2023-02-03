@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Plan, Comment, Meeting
 import json
 from django.core import serializers
-from datetime import datetime
+from datetime import date, timedelta, datetime
 from . import forms
 from django.contrib import auth
 from .validators import *
@@ -231,12 +231,10 @@ def view_plan(request):
   month = req['month'] + 1
   meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
 
-  username = request.user.username
 
   if meeting_name == '':
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
-    print("Here")
     meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
@@ -255,17 +253,26 @@ def view_plan(request):
 @csrf_exempt
 def view_explan(request):
     req = json.loads(request.body)
-    year = req['year']
-    month = req['month']
-    day = req['day']
+    year =int(req['year'])
+    month = int(req['month'])
+    day = int(req['day'])
     meeting_name = req['meetingName']
-    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
-    plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year, startTime__day = day)
-    plans = plans.order_by('startTime')
-    username = request.user.username
 
-    plans = serializers.serialize('json', plans) 
-    return JsonResponse({'plans': plans, 'username':username})
+    today = date(year,month,day)
+
+    if meeting_name == '':
+        plans= Plan.objects.all().filter(user = request.user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+    else:
+        meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
+        plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    
+    plans = serializers.serialize('json', plans)
+
+    if request.user.image == "":
+        return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+
   
 
 # 프로필 업데이트 함수

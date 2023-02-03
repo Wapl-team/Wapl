@@ -120,20 +120,18 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
 def create(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
+    startTime = req['startTime'].replace('T',' ')+":00"
+    endTime = req['endTime'].replace('T',' ')+":00"
 
-    startTime = req['startTime']
-    endTime = req['endTime']
-    
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
 
-    result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    if result:
-        newPlan = Plan(user=request.user, startTime = req['startTime'], endTime = req['endTime'], location = req['location'], title = req['title'], content = req['content'])
-        newPlan.save()
+    newPlan = Plan(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    newPlan.save()
     
     if request.user.image == "":
-        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.default_image})
+        return JsonResponse({'startTime':startTime, 'endTime':endTime,'userimg':request.user.default_image})
     else:
-        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'err_msg':err_msg, 'userimg':request.user.image.url})
+        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'userimg':request.user.image.url})
 
 
 # 일정 수정 함수
@@ -242,7 +240,12 @@ def view_plan(request):
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
   plans = serializers.serialize('json', plans)
-  return JsonResponse({'plans': plans, 'username': username})
+
+  if request.user.image == "":
+    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+  else:
+    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+
 
 # if문에 개인달력 출력하는 부분 
 # 모델 -> plan 공개여부

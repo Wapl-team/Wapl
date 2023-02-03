@@ -75,15 +75,20 @@ const makeCalendar = (meeting) => {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { plans, username } = JSON.parse(requestPlan.response);
+        const { plans, userimg } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
         let isPlan = new Array(dates.length).fill(false);
         console.log(plansArray);
         plansArray.forEach((plan) => {
-          const day = parseInt(
+          const startDay = parseInt(
             plan.fields.startTime[8] + plan.fields.startTime[9]
           );
-          isPlan[day + firstDateIndex - 1] = true;
+          const endDay = parseInt(
+            plan.fields.endTime[8] + plan.fields.endTime[9]
+          );
+          for (let i = startDay; i <= endDay; i++) {
+            isPlan[i + firstDateIndex - 1] = true;
+          }
         });
 
         dates.forEach((date, i) => {
@@ -92,11 +97,12 @@ const makeCalendar = (meeting) => {
             i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
           //this
           //other
-          const planning = isPlan[i] == true ? `<p>${username}</p>` : "";
+          const planning =
+            isPlan[i] == true ? `<img src="${userimg}" width="15" />` : "";
 
           dates[
             i
-          ] = `<div class="date"><span class="${condition}">${date} </span>${planning}</div>`;
+          ] = `<div class="date"><span class="${condition}">${date} ${planning}</span></div>`;
         });
 
         document.querySelector(".dates").innerHTML = dates.join("");
@@ -155,10 +161,8 @@ const plan_create = (username) => {
 
   const title = document.getElementById("plan_title").value;
   const location = document.getElementById("plan_location").value;
-  const date = document.getElementById("plan_date").value;
-  const startTime =
-    date + " " + document.getElementById("plan_startTime").value;
-  const endTime = date + " " + document.getElementById("plan_endTime").value;
+  const startTime = document.getElementById("plan_startTime").value;
+  const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
   requestNewPlan.send(
     JSON.stringify({
@@ -175,21 +179,33 @@ const plan_create = (username) => {
 requestNewPlan.onreadystatechange = () => {
   if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
     if (requestNewPlan.status < 400) {
-      const { startTime, endTime, err_msg, userimg } = JSON.parse(
+      const { startTime, endTime, userimg } = JSON.parse(
         requestNewPlan.response
       );
-      const newYear = startTime.slice(0, 4);
-      const newMonth = startTime.slice(5, 7);
-      const newDate = parseInt(startTime.slice(8, 10));
+      const newStartYear = startTime.slice(0, 4);
+      const newStartMonth = startTime.slice(5, 7);
+      const newStartDate = parseInt(startTime.slice(8, 10));
 
-      if (newYear == currentYear && newMonth == currentMonth) {
+      const newEndYear = endTime.slice(0, 4);
+      const newEndMonth = endTime.slice(5, 7);
+      const newEndDate = parseInt(endTime.slice(8, 10));
+
+      if (
+        newStartYear <= currentYear &&
+        currentYear <= newEndYear &&
+        newStartMonth <= currentMonth &&
+        currentMonth <= newEndMonth
+      ) {
+        console.log("Here");
         const dateArray = document.querySelectorAll(".date");
         dateArray.forEach((date) => {
+          const thisdate = date.childNodes[0].innerText;
           if (
-            parseInt(date.childNodes[0].innerText) == newDate &&
+            parseInt(date.childNodes[0].innerText) <= newEndDate &&
+            newStartDate <= parseInt(date.childNodes[0].innerText) &&
             date.childNodes[0].classList.contains("this")
           ) {
-            date.childNodes[0].innerHTML = `${newDate}  <img src="${userimg}" width="15" />`;
+            date.childNodes[0].innerHTML = `${thisdate}  <img src="${userimg}" width="15" />`;
           }
         });
       }
@@ -208,12 +224,16 @@ function closeToggle() {
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
 const closeModal = document.querySelector(".closeModal");
+const closeModal2 = document.querySelector(".closeModal2");
 
 modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
 });
 
 closeModal.addEventListener("click", () => {
+  modal.classList.add("hidden");
+});
+closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
 /*

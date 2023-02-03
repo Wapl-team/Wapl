@@ -97,13 +97,9 @@ const makeCalendar = (meeting) => {
           //this
           //other
           const planning =
-<<<<<<< Updated upstream
-            isPlan[i] == true ? `<img src="${userimg}" width="15" />` : "";
-=======
             isPlan[i] == true
               ? `<img src="${userimg}" width="15" class="profileImagePlan" />`
               : "";
->>>>>>> Stashed changes
 
           dates[
             i

@@ -22,7 +22,8 @@ urlpatterns= [
     path("main/meeting/create", views.meeting_create, name="meeting_create"),
     path("meeting/<int:pk>", views.meeting_calendar, name="meeting_calendar"),
     path("meeting/<int:pk>/delete", views.meeting_delete, name="meeting_delete"),
-    
+    path("meeting/info/<int:pk>", views.meeting_info, name="meeting_info"),
+
     # url(r'', views.)
 
 ]

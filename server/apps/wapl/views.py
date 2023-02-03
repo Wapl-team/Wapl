@@ -201,7 +201,7 @@ def signup(request:HttpRequest, *args, **kwargs):
     else:
         default_image_index = random.randint(1, 4)
         context = {
-            'default_src': f'static/default_image/{default_image_index}.png'
+            'default_src': f'/static/default_image/{default_image_index}.png'
         }
         return render(request, template_name='signup.html', context=context)
 
@@ -300,3 +300,12 @@ def update_password(request, *args, **kwargs):
             redirect('wapl:update_password')
     else:
         return render(request, 'update_password.html')
+
+def meeting_info(request, pk, *args, **kwargs):
+    meeting = Meeting.objects.get(id=pk)
+    users = meeting.users.all()
+    context = {
+        'meeting': meeting,
+        'users': users,
+    }
+    return render(request, 'meeting_info.html', context=context)

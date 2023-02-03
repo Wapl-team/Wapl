@@ -1,0 +1,15 @@
+모임 이름 : {{ meeting.meeting_name }}
+<br />
+카테고리 : {{ meeting.category }}
+<br />
+모임 소개 : {{ meeting.content }}
+<br />
+모임 관리자 : {{ meeting.owner }}
+<br />
+멤버
+<br />
+{% for user in users %}
+{{ user }}
+<br />
+{% endfor %}
+<br />

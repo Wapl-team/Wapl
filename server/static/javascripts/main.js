@@ -97,9 +97,8 @@ const makeCalendar = (meeting) => {
           //this
           //other
           const planning =
-            isPlan[i] == true
-              ? `<img src="${userimg}" width="15" class="profileImagePlan" />`
-              : "";
+            isPlan[i] == true ? `<img src="${userimg}" width="15" class="profileImagePlan" />` : "";
+
 
           dates[
             i
@@ -210,7 +209,7 @@ requestNewPlan.onreadystatechange = () => {
             newStartDate <= parseInt(date.childNodes[0].innerText) &&
             date.childNodes[0].classList.contains("this")
           ) {
-            date.childNodes[0].innerHTML = `${thisdate}  <img src="${userimg}" width="15" />`;
+            date.childNodes[0].innerHTML = `${thisdate}  <img src="${userimg}" width="15" class="profileImagePlan" />`;
           }
         });
         if (currentPreview >= newStartDate && currentPreview <= newEndDate) {

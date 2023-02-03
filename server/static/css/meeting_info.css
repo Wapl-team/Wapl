@@ -1,0 +1,46 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+}
+
+h2{
+    color:orange;
+    font-size: 25px;
+}
+
+.meetingInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: orange;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.meetingInfo p{
+    width:240px;
+    height: 30px;
+    background-color: wheat;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.meetingInfo div a{
+    background-color: orange;
+    color:white;
+    width:240px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.meetingInfo div{
+    display: flex;
+}

@@ -52,6 +52,7 @@ class Migration(migrations.Migration):
                 ('meeting_name', models.CharField(max_length=20)),
                 ('content', models.TextField()),
                 ('category', models.CharField(choices=[('family', '가족'), ('couple', '연인'), ('club', '동아리'), ('friend', '친구'), ('school', '학교'), ('company', '회사')], max_length=20)),
+                ('invitation_code', models.CharField(max_length=20, null=True)),
                 ('owner', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='meeting', to=settings.AUTH_USER_MODEL)),
                 ('users', models.ManyToManyField(related_name='meeting_user', to=settings.AUTH_USER_MODEL)),
             ],

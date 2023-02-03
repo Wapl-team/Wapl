@@ -19,6 +19,7 @@
       {{ meeting.content }}
       <p>모임 관리자</p>
       {{ meeting.owner }}
+      <p>초대 링크 : http://localhost:8000/meeting/invite/{{ meeting.invitation_code }}</p>
       <p>멤버</p>
       {% for user in users %} {{ user }}
       <br />

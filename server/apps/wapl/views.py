@@ -219,6 +219,7 @@ def logout(request:HttpRequest, *args, **kwargs):
 
 # 모임 별 일정들 union 하는 함수
 # 추후 더 좋은 방법 있으면 수정 예정
+# 리턴: QuerySet  (objects가 없으면 빈 리스트)
 def unionQuerySet(objects):
   data = ''
   cnt = len(objects)
@@ -244,11 +245,10 @@ def view_plan(request):
   
   if meeting_name == '':
     # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-    # PublicPlan에서 로그인 유저가 속한 모임의 Plan들 필터링
     
+    # PublicPlan에서 로그인 유저가 속한 모임의 Plan들 필터링
     meetings = login_user.user_meetings.all()
     plans = unionQuerySet(list(meetings))
-    print(plans)
   else:
     meetingObj = Meeting.objects.all().get(id=meeting_pk)
     plans = meetingObj.plans.all()

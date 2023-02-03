@@ -84,7 +84,7 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         
         newMeeting.users.add(request.user)
         
-        return redirect(reverse(''))
+        return redirect('wapl:main')
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
@@ -236,6 +236,7 @@ def view_plan(request):
   if meeting_name == '':
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
+    print("Here")
     meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     

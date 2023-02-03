@@ -1,9 +1,8 @@
-
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Plan, Comment, Meeting
+from .models import PublicPlan, Comment, Meeting
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -22,33 +21,29 @@ import codecs
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
-# 슈퍼유저랑 모임 생성 유저는 자동으로 users에 들어감
+# 모임 생성 유저는 자동으로 users에 들어감
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  meetings = Meeting.objects.all()
-  data = []
-  for meeting in meetings:
-    if request.user in meeting.users.all():
-      data.append(meeting)  
-  print(data)
+  login_user = request.user
+  meetings = login_user.user_meetings.all()
   context = {            
-            'meetings' : data, 
+            'meetings' : meetings, 
             'meeting_name': ''}
   
   return render(request, "main.html", context=context)
 
 @csrf_exempt
 def meeting_calendar(request, pk, *args, **kwargs):
+  login_user = request.user
   cur_meeting = Meeting.objects.all().get(id=pk)
-  meetings = Meeting.objects.all()
-  data = []
-  for meeting in meetings:
-    if request.user in meeting.users.all():
-      data.append(meeting)
-      
-  context = {'meeting_name': cur_meeting.meeting_name,
-             'meetings': data}
+  meetings = login_user.user_meetings.all()
+  
+  context = {'cur_meeting': cur_meeting,
+             'meetings': meetings}
   return render(request, "main.html", context=context)
+
+
+
 
 def comment(request:HttpRequest, *args, **kwargs):
     
@@ -141,9 +136,8 @@ def create(request, *args, **kwargs):
     endTime = req['endTime'].replace('T',' ')+":00"
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-
-    newPlan = Plan(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
-    newPlan.save()
+    # public private 따로 구현 예정
+    newPlan = PublicPlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
 
     if request.user.image == "":
@@ -163,7 +157,8 @@ def update(request, *args, **kwargs):
     result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
     if result:
         pk = req['id']
-        updatedPlan = Plan.objects.all().get(id=pk)
+        #Public Private 따로 구현 예정
+        updatedPlan = PublicPlan.objects.all().get(id=pk)
         updatedPlan.startTime = req['startTime']
         updatedPlan.endTime = req['endTime']
         updatedPlan.location = req['location']
@@ -178,7 +173,7 @@ def update(request, *args, **kwargs):
 #리턴하는 값 X (js에서 작업 필요)
 @csrf_exempt
 def retrieve(request, *args, **kwargs):
-  plans = serializers.serialize('json', Plan.objects.all())
+  plans = serializers.serialize('json', PublicPlan.objects.all())
   return JsonResponse({'plans': plans})
 
 
@@ -189,14 +184,14 @@ def retrieve(request, *args, **kwargs):
 def delete(request, *args, **kwargs):
   if request.method == 'POST':
     pk = json.loads(request.body)['id']
-    Plan.objects.all().get(id=pk).delete()
+    PublicPlan.objects.all().get(id=pk).delete()
   return JsonResponse({})
   
 
 #일정 상세보기 함수
 #delete 테스트를 위해 임시로 넣은 함수
 def detail(request, pk, *args, **kwargs):
-  plan = Plan.objects.all().get(id=pk)
+  plan = PublicPlan.objects.all().get(id=pk)
   
   startTime = str(plan.startTime)
   context = {'plan': plan}
@@ -240,34 +235,50 @@ def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
 
-  
+# 모임 별 일정들 union 하는 함수
+# 추후 더 좋은 방법 있으면 수정 예정
+# 리턴: QuerySet  (objects가 없으면 빈 리스트)
+def unionQuerySet(objects):
+  data = ''
+  cnt = len(objects)
+  if cnt > 1:
+    data = objects[0].plans.all()
+    for i in range(cnt):
+      if i <  cnt - 1:
+        data = data.union(objects[i+1].plans.all())
+  elif cnt == 1:
+    data = objects[0].plans.all()
+  else:
+    data = []
+  return data
 
 @csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
-  meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
-
-
+  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
+  meeting_name = req['meetingName'] #현재 유저가 보고있는 모임 이름
+  login_user = request.user
+  
   if meeting_name == '':
-    plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
+    # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
+    meetings = login_user.user_meetings.all()
+    plans = unionQuerySet(list(meetings))
   else:
-    meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
-    plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
-    
+    meetingObj = Meeting.objects.all().get(id=meeting_pk)
+    plans = meetingObj.plans.all()
+  
   plans = serializers.serialize('json', plans)
-
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image})
   else:
     return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
 
 
-# if문에 개인달력 출력하는 부분 
-# 모델 -> plan 공개여부
-# 공유달력 출력 
-  
+# 날짜 클릭 시 호출 함수
+# 해당 날짜에 해당하는 일정들 정보를 넘겨줌
+# 추후 수정 예정(현재 클릭 불가로 수정X)  
 @csrf_exempt
 def view_explan(request):
     req = json.loads(request.body)
@@ -275,6 +286,10 @@ def view_explan(request):
     month = int(req['month'])
     day = int(req['day'])
     meeting_name = req['meetingName']
+    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
+    plans = PublicPlan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year, startTime__day = day)
+    plans = plans.order_by('startTime')
+    username = request.user.username
 
     today = date(year,month,day)
 

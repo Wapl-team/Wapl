@@ -19,7 +19,7 @@ import random
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
-# 슈퍼유저랑 모임 생성 유저는 자동으로 users에 들어감
+# 모임 생성 유저는 자동으로 users에 들어감
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
   meetings = Meeting.objects.all()
@@ -27,7 +27,6 @@ def main(request:HttpRequest,*args, **kwargs):
   for meeting in meetings:
     if request.user in meeting.users.all():
       data.append(meeting)  
-  print(data)
   context = {            
             'meetings' : data, 
             'meeting_name': ''}
@@ -127,9 +126,8 @@ def create(request, *args, **kwargs):
     endTime = req['endTime'].replace('T',' ')+":00"
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-
-    newPlan = Plan(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
-    newPlan.save()
+    # 모임 저장하는 기능 추가 예정
+    newPlan = Plan.objects.create(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
     if request.user.image == "":
         return JsonResponse({'startTime':startTime, 'endTime':endTime,'userimg':request.user.default_image})
@@ -235,15 +233,29 @@ def view_plan(request):
   meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
   meeting_name = req['meetingName']
   username = request.user.username
-
+  data = []
   if meeting_name == '':
-    plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
+    meetings = Meeting.objects.all()
+    
+    meeting_list = []   # => meeting_list: 로그인 유저가 속한 모임 리스트
+    plan_queryset = []
+    for meeting in meetings:
+      if request.user in meeting.users.all():
+        plan_queryset.append(Plan.objects.all().filter(meeting = meeting, startTime__month = month, startTime__year = year))
+    plans = ''
+    if len(plan_queryset) > 1:
+      for i in range(len(plan_queryset)):
+        if i < len(plan_queryset) - 1:
+          plans = plan_queryset[i].union(plan_queryset[i+1])
+    elif len(plan_queryset) == 1:
+      plans = plan_queryset[0]
+    else:
+      plans = []
   else:
     meetingObj = Meeting.objects.all().get(id=meeting_pk)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
-    
+  
   plans = serializers.serialize('json', plans)
-  print(plans)
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image})
   else:

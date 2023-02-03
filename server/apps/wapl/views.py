@@ -16,6 +16,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import random
+import uuid
+import base64
+import codecs
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
@@ -80,6 +83,7 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         content = request.POST["content"],
         owner = request.user,
         category = request.POST["category"],
+        invitation_code = generate_invitation_code()
         )
         
         newMeeting.users.add(request.user)
@@ -105,6 +109,19 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
         meeting.delete()
         return redirect('wapl:main')
 
+def meeting_join(request:HttpRequest, *args, **kwargs):
+    if request.method == "POST":
+        code = request.POST["code"]
+        try:
+            meeting = Meeting.objects.get(invitation_code=code)
+            meeting.users.add(request.user)
+            url = reverse('wapl:meeting_calendar', args=[meeting.id])
+            return redirect(url)
+        except:
+            return redirect('wapl:meeting_join')
+
+    else:
+        return render(request, 'meeting_join.html')
 # ------------------------------------------------------------------------------
 
 
@@ -309,3 +326,8 @@ def meeting_info(request, pk, *args, **kwargs):
         'users': users,
     }
     return render(request, 'meeting_info.html', context=context)
+
+def generate_invitation_code(length=10):
+    return base64.urlsafe_b64encode(
+        codecs.encode(uuid.uuid4().bytes, "base64").rstrip()
+    ).decode()[:length]

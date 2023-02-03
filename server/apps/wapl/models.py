@@ -35,7 +35,11 @@ class Meeting(models.Model):
     meeting_name = models.CharField(max_length=20)
     content = models.TextField()
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
-    user = models.ManyToManyField(User, related_name="meeting_user")
+    owner = models.ForeignKey(User, related_name="meeting", on_delete=models.CASCADE, default=1)
+    users = models.ManyToManyField(User, related_name="meeting_user", symmetrical=False)
+    
+    def __str__(self):
+        return self.meeting_name
     
     
 # 일정

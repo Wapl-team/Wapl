@@ -15,6 +15,7 @@
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
         <div class="year-month"></div>
+        <div class="meeting-name">{{meeting_name}}</div>
       </div>
       <div>
         <button class="modalButton">
@@ -96,7 +97,7 @@
       <div class="groups">
         {% for meeting in meetings %}
         <div class="groupName">
-          <a href="{% url 'wapl:meeting_detail' meeting.pk %}"
+          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
             >{{meeting.meeting_name}}</a
           >
         </div>

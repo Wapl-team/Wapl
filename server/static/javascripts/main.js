@@ -13,7 +13,7 @@ let date = new Date();
 let currentYear = date.getFullYear();
 let currentMonth = date.getMonth();
 
-const makeCalendar = () => {
+const makeCalendar = (meeting) => {
   // 캘린더에 보이는 년도와 달을 보여주기 위해
   const viewYear = date.getFullYear();
   const viewMonth = date.getMonth();
@@ -69,7 +69,7 @@ const makeCalendar = () => {
 
   //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
   requestPlan.send(
-    JSON.stringify({ year: viewYear, month: viewMonth, meeting: " " })
+    JSON.stringify({ year: viewYear, month: viewMonth, meeting: meetingName })
   );
 
   requestPlan.onreadystatechange = () => {
@@ -78,6 +78,7 @@ const makeCalendar = () => {
         const { plans, userimg } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
         let isPlan = new Array(dates.length).fill(false);
+        console.log(plansArray);
         plansArray.forEach((plan) => {
           const startDay = parseInt(
             plan.fields.startTime[8] + plan.fields.startTime[9]
@@ -124,7 +125,9 @@ const makeCalendar = () => {
   };
 };
 
-makeCalendar();
+const meetingName = document.querySelector(".meeting-name").innerHTML;
+
+makeCalendar(meetingName);
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {

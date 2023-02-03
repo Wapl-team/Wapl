@@ -27,12 +27,15 @@ class Plan(models.Model):
   location = models.CharField(max_length=20, blank=True)
   title = models.CharField(max_length=20)
   content = models.TextField(blank=True)
-  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plan', default=1)
+  
   
   class Meta:
     abstract = True
   def __str__(self):
     return self.title
+
+class PrivatePlan(Plan):
+  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plan', default=1)
   
 class PublicPlan(Plan):
   pass
@@ -56,7 +59,6 @@ class Meeting(models.Model):
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
     owner = models.ForeignKey(User, related_name="meeting", on_delete=models.DO_NOTHING, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
-    plans = models.ManyToManyField(PublicPlan, related_name='plan_meetings', blank=True, null=True)
     invitation_code = models.CharField(max_length=20, null=True)
 
     def __str__(self):

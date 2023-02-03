@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PublicPlan, Comment, Meeting
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -41,8 +41,6 @@ def meeting_calendar(request, pk, *args, **kwargs):
   context = {'cur_meeting': cur_meeting,
              'meetings': meetings}
   return render(request, "main.html", context=context)
-
-
 
 
 def comment(request:HttpRequest, *args, **kwargs):
@@ -137,7 +135,7 @@ def create(request, *args, **kwargs):
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     # public private 따로 구현 예정
-    newPlan = PublicPlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
 
     if request.user.image == "":
@@ -158,7 +156,7 @@ def update(request, *args, **kwargs):
     if result:
         pk = req['id']
         #Public Private 따로 구현 예정
-        updatedPlan = PublicPlan.objects.all().get(id=pk)
+        updatedPlan = PrivatePlan.objects.all().get(id=pk)
         updatedPlan.startTime = req['startTime']
         updatedPlan.endTime = req['endTime']
         updatedPlan.location = req['location']
@@ -173,7 +171,7 @@ def update(request, *args, **kwargs):
 #리턴하는 값 X (js에서 작업 필요)
 @csrf_exempt
 def retrieve(request, *args, **kwargs):
-  plans = serializers.serialize('json', PublicPlan.objects.all())
+  plans = serializers.serialize('json', PrivatePlan.objects.all())
   return JsonResponse({'plans': plans})
 
 
@@ -184,14 +182,14 @@ def retrieve(request, *args, **kwargs):
 def delete(request, *args, **kwargs):
   if request.method == 'POST':
     pk = json.loads(request.body)['id']
-    PublicPlan.objects.all().get(id=pk).delete()
+    PrivatePlan.objects.all().get(id=pk).delete()
   return JsonResponse({})
   
 
 #일정 상세보기 함수
 #delete 테스트를 위해 임시로 넣은 함수
 def detail(request, pk, *args, **kwargs):
-  plan = PublicPlan.objects.all().get(id=pk)
+  plan = PrivatePlan.objects.all().get(id=pk)
   
   startTime = str(plan.startTime)
   context = {'plan': plan}
@@ -253,7 +251,26 @@ def unionQuerySet(objects):
   return data
 
 @csrf_exempt
+# 개인달력 출력 
 def view_plan(request):
+  req = json.loads(request.body)
+  year = req['year']
+  month = req['month'] + 1
+  login_user = request.user
+  
+    # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
+#   meetings = login_user.user_meetings.all()
+#   plans = unionQuerySet(list(meetings))
+  plans = PrivatePlan.objects.filter(owner=login_user)
+  plans = serializers.serialize('json', plans)
+
+  if request.user.image == "":
+    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+  else:
+    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+
+@csrf_exempt
+def view_teamplan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
@@ -275,12 +292,32 @@ def view_plan(request):
   else:
     return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
 
-
 # 날짜 클릭 시 호출 함수
 # 해당 날짜에 해당하는 일정들 정보를 넘겨줌
 # 추후 수정 예정(현재 클릭 불가로 수정X)  
 @csrf_exempt
 def view_explan(request):
+    req = json.loads(request.body)
+    year =int(req['year'])
+    month = int(req['month'])
+    day = int(req['day'])
+    user = request.user
+    plans = PrivatePlan.objects.all().filter(owner=user, startTime__month = month, startTime__year = year, startTime__day = day)
+    plans = plans.order_by('startTime')
+    
+
+    today = date(year,month,day)
+
+    plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+    plans = serializers.serialize('json', plans)
+
+    if request.user.image == "":
+        return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+
+@csrf_exempt
+def view_teamexplan(request):
     req = json.loads(request.body)
     year =int(req['year'])
     month = int(req['month'])

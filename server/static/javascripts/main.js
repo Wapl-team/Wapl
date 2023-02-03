@@ -72,8 +72,6 @@ const makeCalendar = (meeting) => {
     JSON.stringify({
       year: viewYear,
       month: viewMonth,
-      meetingName: meetingName,
-      meetingPK: meetingPK,
     })
   );
 
@@ -102,8 +100,9 @@ const makeCalendar = (meeting) => {
           //this
           //other
           const planning =
-            isPlan[i] == true ? `<img src="${userimg}" width="15" class="profileImagePlan" />` : "";
-
+            isPlan[i] == true
+              ? `<img src="${userimg}" width="15" class="profileImagePlan" />`
+              : "";
 
           dates[
             i
@@ -308,6 +307,11 @@ requestNewPlan.onreadystatechange = () => {
           timeline.appendChild(newDiv);
         }
       }
+      document.getElementById("plan_title").value = "";
+      document.getElementById("plan_location").value = "";
+      document.getElementById("plan_startTime").value = "";
+      document.getElementById("plan_endTime").value = "";
+      document.getElementById("plan_content").value = "";
     }
   }
 };
@@ -402,7 +406,6 @@ return: err_msg
         year: currentYear,
         month: currentMonth,
         day: day,
-        meetingName: meetingName, //-> 모임 이름 넣는 부분
       })
     );
     requestExplan.onreadystatechange = () => {

@@ -42,10 +42,13 @@ def meeting_calendar(request, pk, *args, **kwargs):
   for meeting in meetings:
     if request.user in meeting.users.all():
       data.append(meeting)
-      
-  context = {'meeting_name': cur_meeting.meeting_name,
+  
+  context = {'cur_meeting': cur_meeting,
              'meetings': data}
   return render(request, "main.html", context=context)
+
+
+
 
 def comment(request:HttpRequest, *args, **kwargs):
     
@@ -229,19 +232,18 @@ def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
-  meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
-
+  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
+  meeting_name = req['meetingName']
   username = request.user.username
 
   if meeting_name == '':
     plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
   else:
-    print("Here")
-    meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
+    meetingObj = Meeting.objects.all().get(id=meeting_pk)
     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
   plans = serializers.serialize('json', plans)
-
+  print(plans)
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image})
   else:

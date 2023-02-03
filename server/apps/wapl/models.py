@@ -37,7 +37,8 @@ class Meeting(models.Model):
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
     owner = models.ForeignKey(User, related_name="meeting", on_delete=models.CASCADE, default=1)
     users = models.ManyToManyField(User, related_name="meeting_user", symmetrical=False)
-    
+    invitation_code = models.CharField(max_length=20, null=True)
+
     def __str__(self):
         return self.meeting_name
     

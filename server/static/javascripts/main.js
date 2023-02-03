@@ -78,7 +78,6 @@ const makeCalendar = (meeting) => {
         const { plans, userimg } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
         let isPlan = new Array(dates.length).fill(false);
-        console.log(plansArray);
         plansArray.forEach((plan) => {
           const startDay = parseInt(
             plan.fields.startTime[8] + plan.fields.startTime[9]
@@ -182,6 +181,9 @@ requestNewPlan.onreadystatechange = () => {
       const { startTime, endTime, userimg } = JSON.parse(
         requestNewPlan.response
       );
+      console.log(startTime);
+      console.log(endTime);
+
       const newStartYear = startTime.slice(0, 4);
       const newStartMonth = startTime.slice(5, 7);
       const newStartDate = parseInt(startTime.slice(8, 10));
@@ -196,7 +198,6 @@ requestNewPlan.onreadystatechange = () => {
         newStartMonth <= currentMonth &&
         currentMonth <= newEndMonth
       ) {
-        console.log("Here");
         const dateArray = document.querySelectorAll(".date");
         dateArray.forEach((date) => {
           const thisdate = date.childNodes[0].innerText;
@@ -287,95 +288,142 @@ return: err_msg
         에러가 아닌 경우 value 값에 "" 이 둘어가 있음.
         ex) err_msg.data.time_err
 */
-  // let prevClickDate = document.querySelector(".today").parentNode;
-  // prevClickDate.classList.add("date-onclick");
-  // const requestExplan = new XMLHttpRequest();
-  // function viewDetail() {
-  //   const detailMember = document.querySelector(".detail-member");
-  //   const day = this.childNodes[0].innerText;
-  //   const url = "/view_explan/";
-  //   requestExplan.open("POST", url, true);
-  //   requestExplan.setRequestHeader(
-  //     "Content-Type",
-  //     "applcation/x-www-form-urlencoded"
-  //   );
-  //   requestExplan.send(
-  //     JSON.stringify({
-  //       year: currentYear,
-  //       month: currentMonth,
-  //       day: day,
-  //       meetingName: "친구들", //-> 모임 이름 넣는 부분
-  //     })
-  //   );
-  //   requestExplan.onreadystatechange = () => {
-  //     if (requestExplan.readyState === XMLHttpRequest.DONE) {
-  //       if (requestExplan.status < 400) {
-  //         const { plans, username } = JSON.parse(requestExplan.response);
-  //         const plansArray = JSON.parse(plans);
-  //         const timeline = document.querySelector(".detail-timeline");
-  //         const memberlist = document.querySelector(".detail-member");
-  //         const newmember = document.createElement("div");
-  //         memberlist.innerHTML = "";
-  //         newmember.innerText = `${username}`;
-  //         newmember.style.height = "50px";
-  //         memberlist.appendChild(newmember);
-  //         timeline.innerHTML = `<div class="detail-time">
-  //         <div>0</div>
-  //         <div>1</div>
-  //         <div>2</div>
-  //         <div>3</div>
-  //         <div>4</div>
-  //         <div>5</div>
-  //         <div>6</div>
-  //         <div>7</div>
-  //         <div>8</div>
-  //         <div>9</div>
-  //         <div>10</div>
-  //         <div>11</div>
-  //         <div>12</div>
-  //         <div>13</div>
-  //         <div>14</div>
-  //         <div>15</div>
-  //         <div>16</div>
-  //         <div>17</div>
-  //         <div>18</div>
-  //         <div>19</div>
-  //         <div>20</div>
-  //         <div>21</div>
-  //         <div>22</div>
-  //         <div>23</div>
-  //         <div>24</div>
-  //       </div>`;
-  //         plansArray.forEach((plan) => {
-  //           startTime = plan.fields.startTime;
-  //           endTime = plan.fields.endTime;
-  //           hours = endTime.slice(11, 13) - startTime.slice(11, 13);
-  //           minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
-  //           let newplan = document.createElement("a");
-  //           const start =
-  //             parseInt(startTime.slice(11, 13) * 60) +
-  //             parseInt(startTime.slice(14, 16));
-  //           const width = hours * 60 + minutes;
-  //           newplan.href = `plan/${plan.pk}`;
-  //           newplan.style.position = "absolute";
-  //           newplan.style.width = `${width}px`;
-  //           newplan.style.left = `${start}px`;
-  //           newplan.style.border = "1px solid black";
-  //           newplan.style.backgroundColor = "black";
-  //           newplan.style.color = "white";
-  //           newplan.style.height = "50px";
-  //           newplan.innerText = `${plan.fields.title}`;
-  //           timeline.appendChild(newplan);
-  //         });
-  //       }
-  //     }
-  //   };
-  //   prevClickDate.classList.remove("date-onclick");
-  //   prevClickDate.classList.add("date");
-  //   this.classList.remove("date");
-  //   this.classList.add("date-onclick");
-  //   prevClickDate = this;
-  // }
-  // let dateTarget = document.querySelectorAll(".date");
-  // dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
+  let prevClickDate = document.querySelector(".today").parentNode;
+  prevClickDate.classList.add("date-onclick");
+  const requestExplan = new XMLHttpRequest();
+  function viewDetail() {
+    const day = this.childNodes[0].innerText;
+    const url = "/view_explan/";
+    requestExplan.open("POST", url, true);
+    requestExplan.setRequestHeader(
+      "Content-Type",
+      "applcation/x-www-form-urlencoded"
+    );
+    requestExplan.send(
+      JSON.stringify({
+        year: currentYear,
+        month: currentMonth,
+        day: day,
+        meetingName: meetingName, //-> 모임 이름 넣는 부분
+      })
+    );
+    requestExplan.onreadystatechange = () => {
+      if (requestExplan.readyState === XMLHttpRequest.DONE) {
+        if (requestExplan.status < 400) {
+          const { plans, today, userimg } = JSON.parse(requestExplan.response);
+          const plansArray = JSON.parse(plans);
+          const timeline = document.querySelector(".detail-timeline");
+          const memberlist = document.querySelector(".detail-member");
+          if (plansArray.length != 0) {
+            const newmember = document.createElement("div");
+            memberlist.innerHTML = "";
+            newmember.innerHTML = `<img src="${userimg}" width="40" />`;
+            newmember.style.height = "50px";
+            newmember.style.width = "50px";
+            memberlist.appendChild(newmember);
+            timeline.innerHTML = `<div class="detail-time">
+          <div>0</div>
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+          <div>5</div>
+          <div>6</div>
+          <div>7</div>
+          <div>8</div>
+          <div>9</div>
+          <div>10</div>
+          <div>11</div>
+          <div>12</div>
+          <div>13</div>
+          <div>14</div>
+          <div>15</div>
+          <div>16</div>
+          <div>17</div>
+          <div>18</div>
+          <div>19</div>
+          <div>20</div>
+          <div>21</div>
+          <div>22</div>
+          <div>23</div>
+        </div>`;
+            plansArray.forEach((plan) => {
+              endTime = plan.fields.endTime;
+              endDay = endTime.slice(8, 10);
+              startTime = plan.fields.startTime;
+              startDay = startTime.slice(8, 10);
+              let start = "";
+              let hours = "";
+              let minutes = "";
+              if (parseInt(endDay) == parseInt(today)) {
+                if (parseInt(startDay) < parseInt(today)) {
+                  // 앞쪽에서 부터 겹치는 경우
+                  console.log("1");
+                  start = 0;
+                  hours = endTime.slice(11, 13);
+                  minutes = endTime.slice(14, 16);
+                } else if (parseInt(startDay) == parseInt(today)) {
+                  // 가운데 있는 경우
+                  console.log("2");
+                  start =
+                    parseInt(startTime.slice(11, 13) * 60) +
+                    parseInt(startTime.slice(14, 16));
+                  hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+                  minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+                }
+              } else if (parseInt(endDay) > parseInt(today)) {
+                if (parseInt(startDay) == parseInt(today)) {
+                  // 뒤로 겹치는 경우
+                  console.log("3");
+                  start =
+                    parseInt(startTime.slice(11, 13) * 60) +
+                    parseInt(startTime.slice(14, 16));
+                  if (startTime.slice(14, 16) == "00") {
+                    minutes = "00";
+                    hours = "24" - startTime.slice(11, 13);
+                  } else {
+                    minutes = "60" - startTime.slice(14, 16);
+                    hours = "23" - startTime.slice(11, 13);
+                  }
+                } else if (parseInt(startDay) < parseInt(today)) {
+                  // 통으로 겹치는 경우
+                  console.log("4");
+                  start = 0;
+                  hours = "24";
+                  minutes = "00";
+                }
+              }
+              console.log(start);
+              console.log(hours);
+              console.log(minutes);
+              let newDiv = document.createElement("div");
+              let newplan = document.createElement("a");
+              const width = parseInt(hours) * 60 + parseInt(minutes);
+              newplan.href = `plan/${plan.pk}`;
+              newplan.style.position = "absolute";
+              newplan.style.width = `${width}px`;
+              newplan.style.left = `${start}px`;
+              newplan.style.border = "1px solid black";
+              newplan.style.backgroundColor = "black";
+              newplan.style.color = "white";
+              newplan.style.height = "50px";
+              newplan.innerText = `${plan.fields.title}`;
+              newDiv.appendChild(newplan);
+              timeline.appendChild(newDiv);
+            });
+          } else {
+            timeline.innerHTML = "";
+            memberlist.innerHTML = "";
+          }
+        }
+      }
+    };
+    prevClickDate.classList.remove("date-onclick");
+    prevClickDate.classList.add("date");
+    this.classList.remove("date");
+    this.classList.add("date-onclick");
+    prevClickDate = this;
+  }
+  let dateTarget = document.querySelectorAll(".date");
+  dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
 };

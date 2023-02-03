@@ -73,9 +73,9 @@
       <div class="profile">
         <a href="{% url 'wapl:profile' %}">
           {% if user.image %}
-          <img src="{{ user.image.url }}" width="65" />
+          <img src="{{ user.image.url }}" width="65" class="profileImage" />
           {% else %}
-          <img src="{{ user.default_image }}" width="65" />
+          <img src="{{ user.default_image }}" width="65" class="profileImage" />
           {% endif %}
         </a>
         <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>

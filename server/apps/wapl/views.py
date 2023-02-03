@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import PublicPlan, Comment, Meeting
 import json
 from django.core import serializers
-from datetime import datetime
+from datetime import date, timedelta, datetime
 from . import forms
 from django.contrib import auth
 from .validators import *
@@ -15,6 +15,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import random
+import uuid
+import base64
+import codecs
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
@@ -75,6 +78,7 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         content = request.POST["content"],
         owner = request.user,
         category = request.POST["category"],
+        invitation_code = generate_invitation_code()
         )
         
         newMeeting.users.add(request.user)
@@ -100,6 +104,19 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
         meeting.delete()
         return redirect('wapl:main')
 
+def meeting_join(request:HttpRequest, *args, **kwargs):
+    if request.method == "POST":
+        code = request.POST["code"]
+        try:
+            meeting = Meeting.objects.get(invitation_code=code)
+            meeting.users.add(request.user)
+            url = reverse('wapl:meeting_calendar', args=[meeting.id])
+            return redirect(url)
+        except:
+            return redirect('wapl:meeting_join')
+
+    else:
+        return render(request, 'meeting_join.html')
 # ------------------------------------------------------------------------------
 
 
@@ -122,10 +139,11 @@ def create(request, *args, **kwargs):
     # public private 따로 구현 예정
     newPlan = PublicPlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
+
     if request.user.image == "":
-        return JsonResponse({'startTime':startTime, 'endTime':endTime,'userimg':request.user.default_image})
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
     else:
-        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'userimg':request.user.image.url})
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
 
 
 # 일정 수정 함수
@@ -196,7 +214,7 @@ def signup(request:HttpRequest, *args, **kwargs):
     else:
         default_image_index = random.randint(1, 4)
         context = {
-            'default_src': f'static/default_image/{default_image_index}.png'
+            'default_src': f'/static/default_image/{default_image_index}.png'
         }
         return render(request, template_name='signup.html', context=context)
 
@@ -245,8 +263,6 @@ def view_plan(request):
   
   if meeting_name == '':
     # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-    
-    # PublicPlan에서 로그인 유저가 속한 모임의 Plan들 필터링
     meetings = login_user.user_meetings.all()
     plans = unionQuerySet(list(meetings))
   else:
@@ -266,17 +282,30 @@ def view_plan(request):
 @csrf_exempt
 def view_explan(request):
     req = json.loads(request.body)
-    year = req['year']
-    month = req['month']
-    day = req['day']
+    year =int(req['year'])
+    month = int(req['month'])
+    day = int(req['day'])
     meeting_name = req['meetingName']
     meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
     plans = PublicPlan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year, startTime__day = day)
     plans = plans.order_by('startTime')
     username = request.user.username
 
-    plans = serializers.serialize('json', plans) 
-    return JsonResponse({'plans': plans, 'username':username})
+    today = date(year,month,day)
+
+    if meeting_name == '':
+        plans= Plan.objects.all().filter(user = request.user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+    else:
+        meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
+        plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    
+    plans = serializers.serialize('json', plans)
+
+    if request.user.image == "":
+        return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+
   
 
 # 프로필 업데이트 함수
@@ -311,3 +340,17 @@ def update_password(request, *args, **kwargs):
             redirect('wapl:update_password')
     else:
         return render(request, 'update_password.html')
+
+def meeting_info(request, pk, *args, **kwargs):
+    meeting = Meeting.objects.get(id=pk)
+    users = meeting.users.all()
+    context = {
+        'meeting': meeting,
+        'users': users,
+    }
+    return render(request, 'meeting_info.html', context=context)
+
+def generate_invitation_code(length=10):
+    return base64.urlsafe_b64encode(
+        codecs.encode(uuid.uuid4().bytes, "base64").rstrip()
+    ).decode()[:length]

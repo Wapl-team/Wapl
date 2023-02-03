@@ -158,9 +158,9 @@ body {
   align-items: center;
   background-color: white;
   padding: 1vh 10vw 3vh 10vw;
-  border-radius: 15px;
+  border-radius: 1em;
   width: 70%;
-  box-shadow: 2px 5px 5px 2px gray;
+  box-shadow: 0.1em 0.3em 0.3em 0.1em gray;
   margin-top: 2vh;
 }
 .modal-close-btn {
@@ -172,7 +172,7 @@ body {
 
 .modal-close-btn button {
   position: absolute;
-  right: -30px;
+  right: -2em;
   background-color: white;
   border: 0;
 }
@@ -219,7 +219,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin-top: 1px;
+  margin-top: 0.3em;
 }
 
 .go-today {
@@ -313,15 +313,22 @@ body {
 }
 
 .detail-timeline {
+  display: flex;
+  flex-direction: column;
   padding-top: 10px;
   background-color: white;
   overflow-x: auto;
   white-space: nowrap;
 }
 
+.detail-timeline div {
+  position: relative;
+  width: 1445px;
+}
+
 .detail-time {
   display: flex;
-  width: 1500px;
+  width: 1300px;
 }
 
 .detail-time div {
@@ -345,4 +352,9 @@ body {
   margin-right: 3vw;
   margin-bottom: 2vh;
   border-radius: 70%;
+}
+
+.profileImagePlan {
+  border-radius: 10px;
+  margin: 4px;
 }

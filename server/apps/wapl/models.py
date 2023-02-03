@@ -57,7 +57,8 @@ class Meeting(models.Model):
     owner = models.ForeignKey(User, related_name="meeting", on_delete=models.DO_NOTHING, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
     plans = models.ManyToManyField(PublicPlan, related_name='plan_meetings', blank=True, null=True)
-    
+    invitation_code = models.CharField(max_length=20, null=True)
+
     def __str__(self):
         return self.meeting_name
       

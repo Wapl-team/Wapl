@@ -74,9 +74,9 @@
       <div class="profile">
         <a href="{% url 'wapl:profile' %}">
           {% if user.image %}
-          <img src="{{ user.image.url }}" width="65" />
+          <img src="{{ user.image.url }}" width="65" class="profileImage" />
           {% else %}
-          <img src="{{ user.default_image }}" width="65" />
+          <img src="{{ user.default_image }}" width="65" class="profileImage" />
           {% endif %}
         </a>
         <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>
@@ -91,16 +91,20 @@
         </button>
 
         <button class="joinGroup">
-          <a href="">모임 참가</a>
+          <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
         </button>
       </div>
 
       <div class="groups">
+        <div class="groupName">
+          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+        </div>
         {% for meeting in meetings %}
         <div class="groupName">
           <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
             >{{meeting.meeting_name}}</a
           >
+          <a href="{% url 'wapl:meeting_info' meeting.pk %}">정보</a>
         </div>
         {% endfor %}
       </div>
@@ -123,35 +127,7 @@
       </div>
       <div class="detail">
         <div class="detail-member"></div>
-        <div class="detail-timeline">
-          <div class="detail-time">
-            <div>0</div>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
-            <div>11</div>
-            <div>12</div>
-            <div>13</div>
-            <div>14</div>
-            <div>15</div>
-            <div>16</div>
-            <div>17</div>
-            <div>18</div>
-            <div>19</div>
-            <div>20</div>
-            <div>21</div>
-            <div>22</div>
-            <div>23</div>
-            <div>24</div>
-          </div>
-        </div>
+        <div class="detail-timeline"></div>
       </div>
     </div>
     <script

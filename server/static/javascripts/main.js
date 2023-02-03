@@ -99,6 +99,7 @@ const makeCalendar = (meeting) => {
           const planning =
             isPlan[i] == true ? `<img src="${userimg}" width="15" class="profileImagePlan" />` : "";
 
+
           dates[
             i
           ] = `<div class="date"><span class="${condition}">${date} ${planning}</span></div>`;
@@ -178,11 +179,9 @@ const plan_create = (username) => {
 requestNewPlan.onreadystatechange = () => {
   if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
     if (requestNewPlan.status < 400) {
-      const { startTime, endTime, userimg } = JSON.parse(
+      const { planName, startTime, endTime, pk, userimg } = JSON.parse(
         requestNewPlan.response
       );
-      console.log(startTime);
-      console.log(endTime);
 
       const newStartYear = startTime.slice(0, 4);
       const newStartMonth = startTime.slice(5, 7);
@@ -192,13 +191,17 @@ requestNewPlan.onreadystatechange = () => {
       const newEndMonth = endTime.slice(5, 7);
       const newEndDate = parseInt(endTime.slice(8, 10));
 
+      const currentPreview =
+        document.querySelector(".date-onclick").childNodes[0].innerText;
+
       if (
         newStartYear <= currentYear &&
         currentYear <= newEndYear &&
         newStartMonth <= currentMonth &&
         currentMonth <= newEndMonth
       ) {
-        const dateArray = document.querySelectorAll(".date");
+        const dateArray = document.querySelectorAll(".date, .date-onclick");
+        console.log(dateArray);
         dateArray.forEach((date) => {
           const thisdate = date.childNodes[0].innerText;
           if (
@@ -209,6 +212,96 @@ requestNewPlan.onreadystatechange = () => {
             date.childNodes[0].innerHTML = `${thisdate}  <img src="${userimg}" width="15" class="profileImagePlan" />`;
           }
         });
+        if (currentPreview >= newStartDate && currentPreview <= newEndDate) {
+          const timeline = document.querySelector(".detail-timeline");
+          const memberlist = document.querySelector(".detail-member");
+
+          const newmember = document.createElement("div");
+          memberlist.innerHTML = "";
+          newmember.innerHTML = `<img src="${userimg}" width="40" />`;
+          newmember.style.height = "50px";
+          newmember.style.width = "50px";
+          memberlist.appendChild(newmember);
+          timeline.innerHTML = `<div class="detail-time">
+          <div>0</div>
+          <div>1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+          <div>5</div>
+          <div>6</div>
+          <div>7</div>
+          <div>8</div>
+          <div>9</div>
+          <div>10</div>
+          <div>11</div>
+          <div>12</div>
+          <div>13</div>
+          <div>14</div>
+          <div>15</div>
+          <div>16</div>
+          <div>17</div>
+          <div>18</div>
+          <div>19</div>
+          <div>20</div>
+          <div>21</div>
+          <div>22</div>
+          <div>23</div>
+        </div>`;
+          let start = "";
+          let hours = "";
+          let minutes = "";
+
+          if (parseInt(newEndDate) == parseInt(currentPreview)) {
+            if (parseInt(newStartDate) < parseInt(currentPreview)) {
+              // 앞쪽에서 부터 겹치는 경우
+              start = 0;
+              hours = endTime.slice(11, 13);
+              minutes = endTime.slice(14, 16);
+            } else if (parseInt(newStartDate) == parseInt(currentPreview)) {
+              // 가운데 있는 경우
+
+              start =
+                parseInt(startTime.slice(11, 13) * 60) +
+                parseInt(startTime.slice(14, 16));
+              hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+              minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+            }
+          } else if (parseInt(newEndDate) > parseInt(currentPreview)) {
+            if (parseInt(newStartDate) == parseInt(currentPreview)) {
+              // 뒤로 겹치는 경우
+              start =
+                parseInt(startTime.slice(11, 13) * 60) +
+                parseInt(startTime.slice(14, 16));
+              if (startTime.slice(14, 16) == "00") {
+                minutes = "00";
+                hours = "24" - startTime.slice(11, 13);
+              } else {
+                minutes = "60" - startTime.slice(14, 16);
+                hours = "23" - startTime.slice(11, 13);
+              }
+            } else if (parseInt(newStartDate) < parseInt(currentPreview)) {
+              // 통으로 겹치는 경우
+              start = 0;
+              hours = "24";
+              minutes = "00";
+            }
+          }
+          let newDiv = document.createElement("div");
+          let newplan = document.createElement("a");
+          const width = parseInt(hours) * 60 + parseInt(minutes);
+          newplan.href = `plan/${pk}`;
+          newplan.style.position = "absolute";
+          newplan.style.width = `${width}px`;
+          newplan.style.left = `${start}px`;
+          newplan.style.border = "1px solid black";
+          newplan.style.backgroundColor = "white";
+          newplan.style.color = "black";
+          newplan.style.height = "50px";
+          newplan.innerText = `${planName}`;
+          newDiv.appendChild(newplan);
+          timeline.appendChild(newDiv);
+        }
       }
     }
   }
@@ -358,13 +451,12 @@ return: err_msg
               if (parseInt(endDay) == parseInt(today)) {
                 if (parseInt(startDay) < parseInt(today)) {
                   // 앞쪽에서 부터 겹치는 경우
-                  console.log("1");
                   start = 0;
                   hours = endTime.slice(11, 13);
                   minutes = endTime.slice(14, 16);
                 } else if (parseInt(startDay) == parseInt(today)) {
                   // 가운데 있는 경우
-                  console.log("2");
+
                   start =
                     parseInt(startTime.slice(11, 13) * 60) +
                     parseInt(startTime.slice(14, 16));
@@ -374,7 +466,6 @@ return: err_msg
               } else if (parseInt(endDay) > parseInt(today)) {
                 if (parseInt(startDay) == parseInt(today)) {
                   // 뒤로 겹치는 경우
-                  console.log("3");
                   start =
                     parseInt(startTime.slice(11, 13) * 60) +
                     parseInt(startTime.slice(14, 16));
@@ -387,15 +478,11 @@ return: err_msg
                   }
                 } else if (parseInt(startDay) < parseInt(today)) {
                   // 통으로 겹치는 경우
-                  console.log("4");
                   start = 0;
                   hours = "24";
                   minutes = "00";
                 }
               }
-              console.log(start);
-              console.log(hours);
-              console.log(minutes);
               let newDiv = document.createElement("div");
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
@@ -404,8 +491,8 @@ return: err_msg
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
               newplan.style.border = "1px solid black";
-              newplan.style.backgroundColor = "black";
-              newplan.style.color = "white";
+              newplan.style.backgroundColor = "white";
+              newplan.style.color = "black";
               newplan.style.height = "50px";
               newplan.innerText = `${plan.fields.title}`;
               newDiv.appendChild(newplan);

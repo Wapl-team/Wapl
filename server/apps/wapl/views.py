@@ -145,10 +145,11 @@ def create(request, *args, **kwargs):
     newPlan = Plan(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     newPlan.save()
     
+
     if request.user.image == "":
-        return JsonResponse({'startTime':startTime, 'endTime':endTime,'userimg':request.user.default_image})
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
     else:
-        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'userimg':request.user.image.url})
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
 
 
 # 일정 수정 함수

@@ -1,0 +1,9 @@
+<form action="{% url 'wapl:meeting_join' %}" method="post">
+    {% csrf_token %}
+    <input name="code" placeholder="초대 코드" />
+    <br />
+    <div>
+        <input type="submit" value="모임 참가">
+    </div>
+
+</form>

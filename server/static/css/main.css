@@ -346,3 +346,8 @@ body {
   margin-bottom: 2vh;
   border-radius: 70%;
 }
+
+.profileImagePlan {
+  border-radius: 10px;
+  margin: 4px;
+}

@@ -206,7 +206,6 @@ requestNewPlan.onreadystatechange = () => {
         currentMonth <= newEndMonth
       ) {
         const dateArray = document.querySelectorAll(".date, .date-onclick");
-        console.log(dateArray);
         dateArray.forEach((date) => {
           const thisdate = date.childNodes[0].innerText;
           if (

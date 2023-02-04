@@ -40,7 +40,7 @@ def meeting_calendar(request, pk, *args, **kwargs):
   
   context = {'cur_meeting': cur_meeting,
              'meetings': meetings}
-  return render(request, "main.html", context=context)
+  return render(request, "meeting_main.html", context=context)
 
 
 def comment(request:HttpRequest, *args, **kwargs):
@@ -127,7 +127,7 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 @csrf_exempt
-def create(request, *args, **kwargs):
+def create_private_plan(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
     startTime = req['startTime'].replace('T',' ')+":00"
@@ -143,6 +143,21 @@ def create(request, *args, **kwargs):
     else:
         return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
 
+@csrf_exempt
+def create_public_plan(request, *args, **kwargs):
+  if request.method == 'POST':
+    req = json.loads(request.body)
+    startTime = req['startTime'].replace('T',' ')+":00"
+    endTime = req['endTime'].replace('T',' ')+":00"
+
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
+    newPlan = PublicPlan.objects.create(startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    
+
+    if request.user.image == "":
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
 
 # 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
@@ -259,8 +274,8 @@ def view_plan(request):
   login_user = request.user
   
     # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-#   meetings = login_user.user_meetings.all()
-#   plans = unionQuerySet(list(meetings))
+  meetings = login_user.user_meetings.all()
+  plans = unionQuerySet(list(meetings))
   plans = PrivatePlan.objects.filter(owner=login_user)
   plans = serializers.serialize('json', plans)
 
@@ -270,21 +285,15 @@ def view_plan(request):
     return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
 
 @csrf_exempt
-def view_teamplan(request):
+def view_team_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
   meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
-  meeting_name = req['meetingName'] #현재 유저가 보고있는 모임 이름
   login_user = request.user
   
-  if meeting_name == '':
-    # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-    meetings = login_user.user_meetings.all()
-    plans = unionQuerySet(list(meetings))
-  else:
-    meetingObj = Meeting.objects.all().get(id=meeting_pk)
-    plans = meetingObj.plans.all()
+  meetingObj = Meeting.objects.all().get(id=meeting_pk)
+  plans = meetingObj.plans.all()
   
   plans = serializers.serialize('json', plans)
   if request.user.image == "":
@@ -317,7 +326,7 @@ def view_explan(request):
         return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
 
 @csrf_exempt
-def view_teamexplan(request):
+def view_team_explan(request):
     req = json.loads(request.body)
     year =int(req['year'])
     month = int(req['month'])

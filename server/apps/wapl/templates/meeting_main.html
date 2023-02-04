@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=0, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/meeting_main.css' %}" />
+    <title>와플</title>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-side">
+        <button onclick="openToggle()">
+          <i class="fa-solid fa-bars fa-2x"></i>
+        </button>
+        <div class="year-month"></div>
+        <div class="meeting-name">{{cur_meeting.meeting_name}}</div>
+        <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
+      </div>
+      <div>
+        <button class="modalButton">
+          <i class="fa-solid fa-plus fa-2x"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="modal hidden">
+      <div class="modal__content">
+        <div class="modal-close-btn">
+          <button class="closeModal">X</button>
+        </div>
+        <form id="create" name="create" method="post" class="planRegister">
+          <div class="modal__title">일정 등록</div>
+          <input
+            type="text"
+            name="title"
+            placeholder="새로운 일정"
+            id="plan_title"
+          />
+          <input
+            type="text"
+            name="location"
+            placeholder="장소"
+            id="plan_location"
+          />
+          <br />
+          <p>시작 시간</p>
+          <input type="datetime-local" name="date" id="plan_startTime" />
+          <br />
+          <p>끝 시간</p>
+          <input type="datetime-local" name="date" id="plan_endTime" />
+          <br />
+          <input
+            type="text"
+            name="content"
+            placeholder="내용"
+            id="plan_content"
+          />
+          <a
+            href="#"
+            id="closeModal"
+            class="closeModal2"
+            onclick="plan_create(`{{user.username}}`)"
+            >추가</a
+          >
+        </form>
+      </div>
+    </div>
+
+    <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
+
+    <div id="sidebar" class="sidebar-menu">
+      <div class="profile">
+        <a href="{% url 'wapl:profile' %}">
+          {% if user.image %}
+          <img src="{{ user.image.url }}" width="65" class="profileImage" />
+          {% else %}
+          <img src="{{ user.default_image }}" width="65" class="profileImage" />
+          {% endif %}
+        </a>
+        <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>
+      </div>
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+        ><i class="fa-solid fa-x"></i
+      ></a>
+
+      <div class="groupBtn">
+        <button class="createGroup">
+          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+        </button>
+
+        <button class="joinGroup">
+          <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+        </button>
+      </div>
+
+      <div class="groups">
+        <div class="groupName">
+          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+        </div>
+        {% for meeting in meetings %}
+        <div class="groupName">
+          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
+            >{{meeting.meeting_name}}</a
+          >
+          <a href="{% url 'wapl:meeting_info' meeting.pk %}">정보</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- 요일 영역 -->
+      <div class="days">
+        <div class="day">일</div>
+        <div class="day">월</div>
+        <div class="day">화</div>
+        <div class="day">수</div>
+        <div class="day">목</div>
+        <div class="day">금</div>
+        <div class="day">토</div>
+      </div>
+      <!-- 날짜 영역 -->
+      <div class="dates">
+        <!-- 자바스크립트로 넣어줄거에요 ! -->
+      </div>
+      <div class="detail">
+        <div class="detail-member"></div>
+        <div class="detail-timeline"></div>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/6fbcf91afd.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'javascripts/meeting_main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </body>
+</html>

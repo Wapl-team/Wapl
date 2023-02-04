@@ -34,13 +34,6 @@ class Plan(models.Model):
   def __str__(self):
     return self.title
 
-class PrivatePlan(Plan):
-  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plan', default=1)
-  
-class PublicPlan(Plan):
-  pass
-
-
 # 모임
 # 필드: 카테고리, 모임 이름, 내용, 모임 소융 유저
 class Meeting(models.Model):
@@ -57,12 +50,19 @@ class Meeting(models.Model):
     meeting_name = models.CharField(max_length=20)
     content = models.TextField()
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
-    owner = models.ForeignKey(User, related_name="meeting", on_delete=models.DO_NOTHING, default=1)
+    owner = models.ForeignKey(User, related_name="meetings", on_delete=models.DO_NOTHING, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
     invitation_code = models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return self.meeting_name
+      
+class PrivatePlan(Plan):
+  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plans', default=1)
+  
+class PublicPlan(Plan):
+  meetings = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='plans', default=1)
+  pass      
       
       
 # 댓글

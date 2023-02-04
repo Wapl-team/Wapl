@@ -13,7 +13,7 @@ let date = new Date();
 let currentYear = date.getFullYear();
 let currentMonth = date.getMonth();
 
-const makeCalendar = (meetingName, meetingPK) => {
+const makeCalendar = (meetingPK) => {
   // 캘린더에 보이는 년도와 달을 보여주기 위해
   const viewYear = date.getFullYear();
   const viewMonth = date.getMonth();
@@ -58,81 +58,34 @@ const makeCalendar = (meetingName, meetingPK) => {
 
   const firstDateIndex = dates.indexOf(1);
   const lastDateIndex = dates.lastIndexOf(thisDate);
+  dates.forEach((date, i) => {
+    // 삼한연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
+    const condition =
+      i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
+    //this
+    //other
 
-  const requestPlan = new XMLHttpRequest();
-  const url = "/view_team_plan/";
-  requestPlan.open("POST", url, true);
-  requestPlan.setRequestHeader(
-    "Content-Type",
-    "applcation/x-www-form-urlencoded"
-  );
+    dates[
+      i
+    ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+  });
 
-  //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
-  requestPlan.send(
-    JSON.stringify({
-      year: viewYear,
-      month: viewMonth,
-      meetingPK: meetingPK,
-    })
-  );
+  document.querySelector(".dates").innerHTML = dates.join("");
 
-  requestPlan.onreadystatechange = () => {
-    if (requestPlan.readyState === XMLHttpRequest.DONE) {
-      if (requestPlan.status < 400) {
-        const { plans, userimg } = JSON.parse(requestPlan.response);
-        const plansArray = JSON.parse(plans);
-        let isPlan = new Array(dates.length).fill(false);
-        plansArray.forEach((plan) => {
-          const startDay = parseInt(
-            plan.fields.startTime[8] + plan.fields.startTime[9]
-          );
-          const endDay = parseInt(
-            plan.fields.endTime[8] + plan.fields.endTime[9]
-          );
-          for (let i = startDay; i <= endDay; i++) {
-            isPlan[i + firstDateIndex - 1] = true;
-          }
-        });
+  const today = new Date();
 
-        dates.forEach((date, i) => {
-          // 삼한연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
-          const condition =
-            i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
-          //this
-          //other
-          const planning =
-            isPlan[i] == true
-              ? `<img src="${userimg}" width="15" class="profileImagePlan" />`
-              : "";
-
-          dates[
-            i
-          ] = `<div class="date"><span class="${condition}">${date} ${planning}</span></div>`;
-        });
-
-        document.querySelector(".dates").innerHTML = dates.join("");
-
-        const today = new Date();
-
-        if (
-          viewMonth === today.getMonth() &&
-          viewYear === today.getFullYear()
-        ) {
-          for (let date of document.querySelectorAll(".this")) {
-            if (+date.innerText === today.getDate()) {
-              date.classList.add("today");
-              break;
-            }
-          }
-        }
+  if (viewMonth === today.getMonth() && viewYear === today.getFullYear()) {
+    for (let date of document.querySelectorAll(".this")) {
+      if (+date.innerText === today.getDate()) {
+        date.classList.add("today");
+        break;
       }
     }
-  };
+  }
 };
 
 const meetingPK = document.querySelector(".meeting-pk").innerHTML;
-const meetingName = document.querySelector(".meeting-name").innerHTML;
-makeCalendar(meetingName, meetingPK);
+makeCalendar(meetingPK);
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {
@@ -380,6 +333,50 @@ const plan_update = async (id) => {
 };
 
 window.onload = function () {
+  const requestPlan = new XMLHttpRequest();
+  const url = "/view_team_plan/";
+  requestPlan.open("POST", url, true);
+  requestPlan.setRequestHeader(
+    "Content-Type",
+    "applcation/x-www-form-urlencoded"
+  );
+
+  //meeting: 현재 유저가 보고 있는 모임 이름(meeting_name)
+  requestPlan.send(
+    JSON.stringify({
+      year: currentYear,
+      month: currentMonth,
+      meetingPK: meetingPK,
+    })
+  );
+  requestPlan.onreadystatechange = () => {
+    if (requestPlan.readyState === XMLHttpRequest.DONE) {
+      if (requestPlan.status < 400) {
+        const { plans, userimg } = JSON.parse(requestPlan.response);
+        const plansArray = JSON.parse(plans);
+        let isPlan = new Array(
+          new Date(currentYear, currentMonth, 0).getDate()
+        ).fill(false);
+        plansArray.forEach((plan) => {
+          const startDay = parseInt(
+            plan.fields.startTime[8] + plan.fields.startTime[9]
+          );
+          const endDay = parseInt(
+            plan.fields.endTime[8] + plan.fields.endTime[9]
+          );
+          for (let i = startDay; i <= endDay; i++) {
+            isPlan[i] = true;
+          }
+        });
+        const currentDays = document.querySelectorAll(".this");
+        currentDays.forEach((day, i) => {
+          if (isPlan[i + 1]) {
+            day.parentNode.innerHTML += `<img src="${userimg}" width="15"/>`;
+          }
+        });
+      }
+    }
+  };
   /*
 일정 생성 클릭 시 실행 함수
 input 태그를 배열로 가져와(inputs) 순서대로 변수에 저장
@@ -395,7 +392,7 @@ return: err_msg
   const requestExplan = new XMLHttpRequest();
   function viewDetail() {
     const day = this.childNodes[0].innerText;
-    const url = "/view_explan/";
+    const url = "/view_team_explan/";
     requestExplan.open("POST", url, true);
     requestExplan.setRequestHeader(
       "Content-Type",
@@ -406,6 +403,7 @@ return: err_msg
         year: currentYear,
         month: currentMonth,
         day: day,
+        meetingPK: meetingPK,
       })
     );
     requestExplan.onreadystatechange = () => {

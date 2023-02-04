@@ -13,7 +13,7 @@ let date = new Date();
 let currentYear = date.getFullYear();
 let currentMonth = date.getMonth();
 
-const makeCalendar = (meeting) => {
+const makeCalendar = (meetingName, meetingPK) => {
   // 캘린더에 보이는 년도와 달을 보여주기 위해
   const viewYear = date.getFullYear();
   const viewMonth = date.getMonth();
@@ -60,7 +60,7 @@ const makeCalendar = (meeting) => {
   const lastDateIndex = dates.lastIndexOf(thisDate);
 
   const requestPlan = new XMLHttpRequest();
-  const url = "/view_plan/";
+  const url = "/view_team_plan/";
   requestPlan.open("POST", url, true);
   requestPlan.setRequestHeader(
     "Content-Type",
@@ -72,6 +72,7 @@ const makeCalendar = (meeting) => {
     JSON.stringify({
       year: viewYear,
       month: viewMonth,
+      meetingPK: meetingPK,
     })
   );
 
@@ -156,7 +157,7 @@ const curMonth = () => {
 const requestNewPlan = new XMLHttpRequest();
 
 const plan_create = (username) => {
-  const url = "/create-private-plan";
+  const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
   requestNewPlan.setRequestHeader(
     "Content-Type",

@@ -9,7 +9,9 @@ urlpatterns= [
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),
     path("", views.start, name="start"),
-    path("create", views.create, name="create"), 
+    
+    path("create-private-plan", views.create_private_plan, name="create_private_plan"), 
+    path("create-public-plan", views.create_public_plan, name="create_public_plan"), 
     path("update", views.update, name="update"), 
     path("delete", views.delete, name="delete"), 
     path('plan/<int:pk>', views.detail, name='detail'),
@@ -17,6 +19,9 @@ urlpatterns= [
     path("comment/<int:pk>/delete", views.comment_delete, name="comment_delete"),
     path('view_plan/', views.view_plan, name='view_plan'),
     path('view_explan/', views.view_explan, name='view_explan'),
+    path('view_team_plan/', views.view_team_plan, name='view_team_plan'),
+    path('view_team_explan/', views.view_team_explan, name='view_team_explan'),
+    
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),
     path("main/meeting/create", views.meeting_create, name="meeting_create"),

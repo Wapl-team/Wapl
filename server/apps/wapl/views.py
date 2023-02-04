@@ -111,8 +111,8 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
 def create(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
-    startTime = req['startTime'].replace('T',' ')+":00"
-    endTime = req['endTime'].replace('T',' ')+":00"
+    startTime = req['startTime']
+    endTime = req['endTime']
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
 
@@ -130,22 +130,37 @@ def create(request, *args, **kwargs):
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 
-# 이건 일단 보류 -> 디자인 보고 아예 페이지 새로 하나 만들지 or ajax로 할지
-@csrf_exempt
-def update(request, *args, **kwargs):
-  if request.method == 'POST':
-    req = json.loads(request.body)
-    result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
-    if result:
-        pk = req['id']
-        updatedPlan = Plan.objects.all().get(id=pk)
-        updatedPlan.startTime = req['startTime']
-        updatedPlan.endTime = req['endTime']
-        updatedPlan.location = req['location']
-        updatedPlan.title = req['title']
-        updatedPlan.content = req['content']
-        updatedPlan.save()
-        return JsonResponse(err_msg)
+# @csrf_exempt
+# def update(request, *args, **kwargs):
+#   if request.method == 'POST':
+#     req = json.loads(request.body)
+#     result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
+#     if result:
+#         pk = req['id']
+#         updatedPlan = Plan.objects.all().get(id=pk)
+#         updatedPlan.startTime = req['startTime']
+#         updatedPlan.endTime = req['endTime']
+#         updatedPlan.location = req['location']
+#         updatedPlan.title = req['title']
+#         updatedPlan.content = req['content']
+#         updatedPlan.save()
+#         return JsonResponse(err_msg)
+
+def update(request:HttpRequest, pk, *args, **kwargs):
+    plan = Plan.objects.get(id=pk)
+    plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
+    plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
+    
+    if request.method == "POST":
+        plan.startTime = request.POST["startTime"]
+        plan.endTime = request.POST["endTime"]
+        plan.location = request.POST["location"]
+        plan.title = request.POST["title"]
+        plan.content = request.POST["content"]
+        plan.save()
+        
+        return redirect('wapl:detail', pk) 
+    return render(request, "test_plan_update.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 
 #일정 생성 함수

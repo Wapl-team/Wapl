@@ -23,6 +23,10 @@
           <input type="submit" , value="삭제하기" />
     </form>
 
+    <div>
+      <a href="{% url 'wapl:update' plan.pk %}">수정하기</a>
+    </div>
+
     <!-- 여기부터 Comment------------------------------------------------ -->
 
     {% for comment in comments %}

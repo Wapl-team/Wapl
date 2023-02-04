@@ -217,7 +217,6 @@ def start(request:HttpRequest, *args, **kwargs):
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
-        print(request.POST)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -273,10 +272,11 @@ def view_plan(request):
   month = req['month'] + 1
   login_user = request.user
   
-    # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
   meetings = login_user.user_meetings.all()
-  plans = unionQuerySet(list(meetings))
-  plans = PrivatePlan.objects.filter(owner=login_user)
+  public_plans = unionQuerySet(list(meetings))
+  # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
+  private_plans = PrivatePlan.objects.filter(owner=login_user)
+  plans = private_plans.union(public_plans)
   plans = serializers.serialize('json', plans)
 
   if request.user.image == "":
@@ -294,7 +294,6 @@ def view_team_plan(request):
   
   meetingObj = Meeting.objects.all().get(id=meeting_pk)
   plans = meetingObj.plans.all()
-  
   plans = serializers.serialize('json', plans)
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image})
@@ -306,24 +305,29 @@ def view_team_plan(request):
 # 추후 수정 예정(현재 클릭 불가로 수정X)  
 @csrf_exempt
 def view_explan(request):
-    req = json.loads(request.body)
-    year =int(req['year'])
-    month = int(req['month'])
-    day = int(req['day'])
-    user = request.user
-    plans = PrivatePlan.objects.all().filter(owner=user, startTime__month = month, startTime__year = year, startTime__day = day)
-    plans = plans.order_by('startTime')
-    
+  req = json.loads(request.body)
+  year =int(req['year'])
+  month = int(req['month'])
+  day = int(req['day'])
+  login_user = request.user
+  meetings = login_user.user_meetings.all()
+  today = date(year,month,day)
+  
+  private_plans = PrivatePlan.objects.all().filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+  # 여기서 필터링 방법을 아래처럼 해야할 것 같은데 혹시 몰라서 그냥 위처럼 놔둠
+  # plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+  
+  public_plans = unionQuerySet(list(meetings))  
+  plans = private_plans.union(public_plans)
+  plans = plans.order_by('startTime')
 
-    today = date(year,month,day)
+  
+  plans = serializers.serialize('json', plans)
 
-    plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-    plans = serializers.serialize('json', plans)
-
-    if request.user.image == "":
-        return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
-    else:
-        return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+  if request.user.image == "":
+      return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+  else:
+      return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
 
 @csrf_exempt
 def view_team_explan(request):
@@ -331,19 +335,18 @@ def view_team_explan(request):
     year =int(req['year'])
     month = int(req['month'])
     day = int(req['day'])
-    meeting_name = req['meetingName']
-    meetingObj = Meeting.objects.all().filter(user = request.user).get(meeting_name = meeting_name)
-    plans = PublicPlan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year, startTime__day = day)
-    plans = plans.order_by('startTime')
+    meeting_pk = req['meetingPK']
+    meetingObj = Meeting.objects.all().get(id=meeting_pk)
     username = request.user.username
 
     today = date(year,month,day)
 
-    if meeting_name == '':
-        plans= Plan.objects.all().filter(user = request.user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-    else:
-        meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
-        plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    # if meeting_name == '':
+    plans= PublicPlan.objects.all().filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+    # else:
+    
+    #     meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
+    #     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
     plans = serializers.serialize('json', plans)
 

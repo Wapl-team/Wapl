@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+}
+
+  .header i{
+    color:orange;
+  }
+
+  .plan-detail-container{
+    border:1px solid black;
+    border-radius: 20px;
+    padding:1em;
+    width: 80vw;
+    height: auto;
+  }
+
+  .plan-detail-title{
+    font-size: 2rem;
+    font-weight: bold;
+    margin:0.3em 0;
+  }
+
+  .plan-detail-place > span{
+    font-size:1.3rem;
+  }
+
+  .plan-detail-time{
+    margin:1em 0;
+    font-weight: bold;
+  }
+
+  .plan-detail-content{
+    font-size: 1.3em;
+    padding:10px;
+  }
+
+  hr{
+    border:1px solid black;
+    margin:1em 0;
+  }
+
+  .leave-comment form textarea{
+    width: 100%;
+    height: 2em;
+    border: none;
+    resize: none;
+    background-color: wheat;
+    padding:0.3em;
+  }
+
+  .comment-container{
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .leave-comment input{
+    border:none;
+    background-color: transparent;
+    font-weight: bold;
+    color:orange;
+    padding:0.3em;
+  }
+
+  /* show-comment 파트 */
+  .show-comment{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .user-comment{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-comment-info{
+    display: flex;
+    align-items: center;
+  }
+
+  .user-comment-user{
+    font-weight:bold;
+  }
+
+  .user-comment-time{
+    font-size:0.7em;
+    color:darkgray;
+    margin-left: 0.3em;
+  }
+
+  .delete-comment form input{
+    border:none;
+    background-color: transparent;
+    font-weight: bold;
+    padding:0.3em;
+  }
+  /* ================================= */
+  
+  .control-container{
+    display: flex;
+    justify-content: end;
+  }
+
+  .control-container input{
+    font-size: 16px;
+    border:none;
+    border-radius:15px;
+    background-color: orange;
+    color:white;
+    padding:0.5em;
+    margin:0.2em;
+  }
+
+  .control-container a{
+    font-size: 16px;
+    text-decoration:none;
+    border:none;
+    border-radius:15px;
+    background-color: orange;
+    color:white;
+    padding:0.5em;
+    margin:0.2em;
+  }

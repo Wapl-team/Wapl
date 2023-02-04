@@ -160,7 +160,7 @@ def update(request:HttpRequest, pk, *args, **kwargs):
         plan.save()
         
         return redirect('wapl:detail', pk) 
-    return render(request, "test_plan_update.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
+    return render(request, "plan_update.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 
 #일정 생성 함수
@@ -200,7 +200,7 @@ def detail(request, pk, *args, **kwargs):
     context = {
         "plan": plan,
         "comments" : comments,}
-    return render(request, 'test_detail.html', context=context)
+    return render(request, 'plan_detail.html', context=context)
 
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     if request.method == "POST":

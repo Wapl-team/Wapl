@@ -52,7 +52,7 @@ body {
   margin-bottom: 0;
 }
 
-.profile-form p{
+.profile-form p {
   padding:0.3em;
   text-align: center;
   color: orange;
@@ -60,7 +60,7 @@ body {
   font-weight: bold;
 }
 
-.profile-form p input{
+.profile-form p input {
   width:240px;
   height: 3em;
   background-color: wheat;
@@ -71,11 +71,11 @@ body {
   border-radius: 3px;
 }
 
-#profileImage{
+#profileImage {
   color: black;
 }
 
-#profileCheckbox{
+#profileCheckbox {
   flex-direction: row;
   margin-bottom: 0;
 }
@@ -99,16 +99,15 @@ body {
   margin:10px;
 }
 
-.main a{
+.main a {
   padding:0.3em;
   color: orange;
   font-size: 17px;
   font-weight: bold;
 }
 
-.return{
+.return {
   background-color: wheat;
-  color:white;
   width:240px;
   height: 30px;
   text-align: center;

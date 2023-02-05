@@ -12,7 +12,7 @@ from .validators import *
 from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.http import HttpResponseRedirect
+from itertools import chain
 from django.urls import reverse
 import random
 import uuid
@@ -36,7 +36,9 @@ def main(request:HttpRequest,*args, **kwargs):
 def meeting_calendar(request, pk, *args, **kwargs):
   login_user = request.user
   cur_meeting = Meeting.objects.all().get(id=pk)
+  print(cur_meeting)
   meetings = login_user.user_meetings.all()
+  print(meetings)
   
   context = {'cur_meeting': cur_meeting,
              'meetings': meetings}
@@ -149,9 +151,10 @@ def create_public_plan(request, *args, **kwargs):
     req = json.loads(request.body)
     startTime = req['startTime'].replace('T',' ')+":00"
     endTime = req['endTime'].replace('T',' ')+":00"
+    meeting = Meeting.objects.get(meeting_name=req['meeting_name'])
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    newPlan = PublicPlan.objects.create(startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    newPlan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
 
     if request.user.image == "":
@@ -312,14 +315,20 @@ def view_explan(request):
   login_user = request.user
   meetings = login_user.user_meetings.all()
   today = date(year,month,day)
-  
-  private_plans = PrivatePlan.objects.all().filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+
+  private_plans = PrivatePlan.objects.filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+
+
   # 여기서 필터링 방법을 아래처럼 해야할 것 같은데 혹시 몰라서 그냥 위처럼 놔둠
   # plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-  
-  public_plans = unionQuerySet(list(meetings))  
-  plans = private_plans.union(public_plans)
-  plans = plans.order_by('startTime')
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+      print(meeting, public_plan)
+    
+  public_plans = unionQuerySet(list(meetings))
+  plans = list(public_plans)+list(private_plans)
+#   plans = plans.order_by('startTime')
 
   
   plans = serializers.serialize('json', plans)

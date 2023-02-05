@@ -109,7 +109,7 @@ const curMonth = () => {
 
 const requestNewPlan = new XMLHttpRequest();
 
-const plan_create = (username) => {
+const plan_create = (username, meeting_name) => {
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
   requestNewPlan.setRequestHeader(
@@ -124,6 +124,7 @@ const plan_create = (username) => {
   const content = document.getElementById("plan_content").value;
   requestNewPlan.send(
     JSON.stringify({
+      meeting_name: meeting_name,
       username: username,
       title: title,
       location: location,
@@ -392,6 +393,7 @@ return: err_msg
   const requestExplan = new XMLHttpRequest();
   function viewDetail() {
     const day = this.childNodes[0].innerText;
+    console.log("here");
     const url = "/view_team_explan/";
     requestExplan.open("POST", url, true);
     requestExplan.setRequestHeader(

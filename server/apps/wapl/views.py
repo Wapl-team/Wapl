@@ -322,12 +322,16 @@ def view_explan(request):
   # 여기서 필터링 방법을 아래처럼 해야할 것 같은데 혹시 몰라서 그냥 위처럼 놔둠
   # plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
+  public_plans = []
+
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-      print(meeting, public_plan)
+      public_plans += list(public_plan)
     
-  public_plans = unionQuerySet(list(meetings))
-  plans = list(public_plans)+list(private_plans)
+
+    
+#   public_plans = unionQuerySet(list(meetings))
+  plans = public_plans+list(private_plans)
 #   plans = plans.order_by('startTime')
 
   

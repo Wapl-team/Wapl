@@ -412,6 +412,7 @@ return: err_msg
           const plansArray = JSON.parse(plans);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
+          console.log(plansArray);
           if (plansArray.length != 0) {
             const newmember = document.createElement("div");
             memberlist.innerHTML = "";

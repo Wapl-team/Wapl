@@ -131,6 +131,7 @@ const plan_create = (username) => {
       startTime: startTime,
       endTime: endTime,
       content: content,
+      shareMeetings: ["친구들", "와플 팀"],
     })
   );
 };

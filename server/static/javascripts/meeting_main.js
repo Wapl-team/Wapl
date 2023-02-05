@@ -355,6 +355,7 @@ window.onload = function () {
       if (requestPlan.status < 400) {
         const { plans, userimg } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
+        console.log(plansArray);
         let isPlan = new Array(
           new Date(currentYear, currentMonth, 0).getDate()
         ).fill(false);

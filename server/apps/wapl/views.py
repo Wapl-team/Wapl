@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -39,9 +39,9 @@ def main(request:HttpRequest,*args, **kwargs):
 def meeting_calendar(request, pk, *args, **kwargs):
   login_user = request.user
   cur_meeting = Meeting.objects.all().get(id=pk)
-  print(cur_meeting)
+  
   meetings = login_user.user_meetings.all()
-  print(meetings)
+  
   
   context = {'cur_meeting': cur_meeting,
              'meetings': meetings}
@@ -111,12 +111,16 @@ def create_private_plan(request, *args, **kwargs):
     req = json.loads(request.body)
     startTime = req['startTime']
     endTime = req['endTime']
-
-    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    # public private 따로 구현 예정
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
+    shareMeetings = req['shareMeetings']
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])    
     newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
+    for shareMeeting in shareMeetings:
+      new_share = Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
 
+    
     if request.user.image == "":
         return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
     else:
@@ -283,8 +287,8 @@ def unionQuerySet(objects):
     data = []
   return data
 
-@csrf_exempt
 # 개인달력 출력 
+@csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
@@ -293,7 +297,6 @@ def view_plan(request):
   
   meetings = login_user.user_meetings.all()
   public_plans = unionQuerySet(list(meetings))
-  # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
   private_plans = PrivatePlan.objects.filter(owner=login_user)
   plans = private_plans.union(public_plans)
   plans = serializers.serialize('json', plans)
@@ -312,7 +315,13 @@ def view_team_plan(request):
   login_user = request.user
   
   meetingObj = Meeting.objects.all().get(id=meeting_pk)
-  plans = meetingObj.plans.all()
+  share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
+  share_plans = []
+  for share in share_list:
+    share_plans.append(share.plan)
+  
+  plans = list(meetingObj.plans.all())
+  plans.extend(share_plans)
   plans = serializers.serialize('json', plans)
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image})
@@ -321,7 +330,6 @@ def view_team_plan(request):
 
 # 날짜 클릭 시 호출 함수
 # 해당 날짜에 해당하는 일정들 정보를 넘겨줌
-# 추후 수정 예정(현재 클릭 불가로 수정X)  
 @csrf_exempt
 def view_explan(request):
   req = json.loads(request.body)
@@ -334,23 +342,13 @@ def view_explan(request):
 
   private_plans = PrivatePlan.objects.filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
-
-  # 여기서 필터링 방법을 아래처럼 해야할 것 같은데 혹시 몰라서 그냥 위처럼 놔둠
-  # plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-
   public_plans = []
 
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
     
-
-    
-#   public_plans = unionQuerySet(list(meetings))
   plans = public_plans+list(private_plans)
-#   plans = plans.order_by('startTime')
-
-  
   plans = serializers.serialize('json', plans)
 
   if request.user.image == "":
@@ -358,6 +356,21 @@ def view_explan(request):
   else:
       return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
 
+def list_to_queryset(model, data):
+    from django.db.models.base import ModelBase
+
+    if not isinstance(model, ModelBase):
+        raise ValueError(
+            "%s must be Model" % model
+        )
+    if not isinstance(data, list):
+        raise ValueError(
+            "%s must be List Object" % data
+        )
+
+    pk_list = [obj.pk for obj in data]
+    return model.objects.filter(pk__in=pk_list)
+  
 @csrf_exempt
 def view_team_explan(request):
     req = json.loads(request.body)
@@ -367,18 +380,18 @@ def view_team_explan(request):
     meeting_pk = req['meetingPK']
     meetingObj = Meeting.objects.all().get(id=meeting_pk)
     username = request.user.username
-
     today = date(year,month,day)
 
-    # if meeting_name == '':
-    plans= PublicPlan.objects.all().filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-    # else:
+    share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
+    share_plans = [obj.plan for obj in share_list]
+    share_plans = list_to_queryset(PrivatePlan, share_plans)
     
-    #     meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
-    #     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    plans= list(PublicPlan.objects.filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today))
+    share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
     
+    plans.extend(share_plans)
     plans = serializers.serialize('json', plans)
-
+    
     if request.user.image == "":
         return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
     else:

@@ -330,7 +330,6 @@ const plan_update = async (id) => {
   };
 
   const err_msg = await axios.post(url, data);
-  console.log(err_msg.data.time_err);
 };
 
 window.onload = function () {
@@ -352,27 +351,71 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { plans, userimg } = JSON.parse(requestPlan.response);
-        const plansArray = JSON.parse(plans);
-        let isPlan = new Array(
-          new Date(currentYear, currentMonth, 0).getDate()
-        ).fill(false);
-        plansArray.forEach((plan) => {
-          const startDay = parseInt(
-            plan.fields.startTime[8] + plan.fields.startTime[9]
-          );
-          const endDay = parseInt(
-            plan.fields.endTime[8] + plan.fields.endTime[9]
-          );
-          for (let i = startDay; i <= endDay; i++) {
-            isPlan[i] = true;
-          }
-        });
+        const { public_plans, private_plans, userimg } = JSON.parse(
+          requestPlan.response
+        );
+        const publicPlansArray = JSON.parse(public_plans);
+        const privatePlansArray = JSON.parse(private_plans);
+        // let isPlan = new Array(
+        //   new Date(currentYear, currentMonth, 0).getDate()
+        // ).fill(false);
+        // plansArray.forEach((plan) => {
+        //   const startDay = parseInt(
+        //     plan.fields.startTime[8] + plan.fields.startTime[9]
+        //   );
+        //   const endDay = parseInt(
+        //     plan.fields.endTime[8] + plan.fields.endTime[9]
+        //   );
+        //   for (let i = startDay; i <= endDay; i++) {
+        //     isPlan[i] = true;
+        //   }
+        // });
         const currentDays = document.querySelectorAll(".this");
-        currentDays.forEach((day, i) => {
-          if (isPlan[i + 1]) {
-            day.parentNode.innerHTML += `<img src="${userimg}" width="15"/>`;
-          }
+        console.log(currentDays);
+        currentDays.forEach((day) => {
+          privatePlansArray.forEach((plan) => {
+            const startTime = new Date(plan.fields.startTime);
+            const endTime = new Date(plan.fields.endTime);
+            const today = new Date(
+              currentYear,
+              currentMonth - 1,
+              day.innerText
+            );
+            if (
+              startTime.setHours(0, 0, 0, 0) <= today &&
+              today <= endTime.setHours(0, 0, 0, 0)
+            ) {
+              if (day.nextSibling == null) {
+                const newImg = document.createElement("img");
+                newImg.src = `${userimg}`;
+                newImg.style.width = "15px";
+                day.after(newImg);
+              }
+            }
+          });
+          let already = [];
+          publicPlansArray.forEach((plan) => {
+            const startTime = new Date(plan.fields.startTime);
+            const endTime = new Date(plan.fields.endTime);
+            const today = new Date(
+              currentYear,
+              currentMonth - 1,
+              day.innerText
+            );
+            if (
+              startTime.setHours(0, 0, 0, 0) <= today &&
+              today <= endTime.setHours(0, 0, 0, 0)
+            ) {
+              if (already.indexOf(`${plan.fields.meetings}`) == -1) {
+                const newImg = document.createElement("img");
+                newImg.src = `${userimg}`;
+                newImg.alt = `${plan.fields.title}`;
+                newImg.style.width = "15px";
+                day.after(newImg);
+                already.push(`${plan.fields.meetings}`);
+              }
+            }
+          });
         });
       }
     }
@@ -412,7 +455,6 @@ return: err_msg
           const plansArray = JSON.parse(plans);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
-          console.log(plansArray);
           if (plansArray.length != 0) {
             const newmember = document.createElement("div");
             memberlist.innerHTML = "";

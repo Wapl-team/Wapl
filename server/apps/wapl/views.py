@@ -290,23 +290,32 @@ def unionQuerySet(objects):
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
-  month = req['month'] + 1
+  month = req['month'] 
   login_user = request.user
   
+  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__month__lte=month, endTime__month__gte=month)
+
   meetings = login_user.user_meetings.all()
-  public_plans = unionQuerySet(list(meetings))
+
+  public_plans = []
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__month__lte = month , endTime__month__gte = month)
+      public_plans += list(public_plan)
+
+
+  private_plans = serializers.serialize('json', private_plans)
+
+  public_plans = serializers.serialize('json', public_plans)
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-  private_plans = PrivatePlan.objects.filter(owner=login_user)
-  if len(public_plans)!=0: 
-    plans = private_plans.union(public_plans)
-  else :
-     plans = private_plans
-  plans = serializers.serialize('json', plans)
+
 
   if request.user.image == "":
-    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+    return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'userimg':request.user.default_image})
   else:
-    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+    return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans, 'userimg':request.user.image.url})
 
 @csrf_exempt
 def view_team_plan(request):

@@ -297,7 +297,10 @@ def view_plan(request):
   public_plans = unionQuerySet(list(meetings))
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
   private_plans = PrivatePlan.objects.filter(owner=login_user)
-  plans = private_plans.union(public_plans)
+  if len(public_plans)!=0: 
+    plans = private_plans.union(public_plans)
+  else :
+     plans = private_plans
   plans = serializers.serialize('json', plans)
 
   if request.user.image == "":

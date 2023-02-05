@@ -10,9 +10,11 @@
 </head>
 <body>
     <h2>모임 생성</h2>
-    <form action="{% url 'wapl:meeting_create' %}" method="post" class="meetingCreate">
+    <form action="{% url 'wapl:meeting_create' %}" method="post" class="meetingCreate" enctype="multipart/form-data">
         {% csrf_token %}
         <input name="meeting_name" placeholder="모임 이름" />
+        <br />
+        <input type="file" name="image" accept="image/*" />
         <br />
         <select name="category" class="categorySelect">
             <option>==카테고리 선택==</option>

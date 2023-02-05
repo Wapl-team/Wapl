@@ -11,6 +11,11 @@
   <body>
     <h2>모임 정보</h2>
     <div class="meetingInfo">
+      {% if meeting.image %}
+        <img src="{{ meeting.image.url }}" width="100" />
+      {% else %}
+        <img src="{{ meeting.default_image }}" width="100">
+      {% endif %}
       <p>모임 이름</p>
       {{ meeting.meeting_name }}
       <p>카테고리</p>

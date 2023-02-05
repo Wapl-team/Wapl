@@ -59,9 +59,10 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         content = request.POST["content"],
         owner = request.user,
         category = request.POST["category"],
-        invitation_code = generate_invitation_code()
+        invitation_code = generate_invitation_code(),
+        image = request.FILES.get("image"),
+        default_image_index = random.randint(1, 4),
         )
-        
         newMeeting.users.add(request.user)
         
         return redirect('wapl:main')

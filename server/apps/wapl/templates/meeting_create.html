@@ -14,6 +14,8 @@
         {% csrf_token %}
         <input name="meeting_name" placeholder="모임 이름" />
         <br />
+        <input type="file" name="image" accept="image/*" />
+        <br />
         <select name="category" class="categorySelect">
             <option>==카테고리 선택==</option>
             {% for t1,t2 in category_list %}

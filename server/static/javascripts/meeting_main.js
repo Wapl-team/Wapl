@@ -355,7 +355,6 @@ window.onload = function () {
       if (requestPlan.status < 400) {
         const { plans, userimg } = JSON.parse(requestPlan.response);
         const plansArray = JSON.parse(plans);
-        console.log(plansArray);
         let isPlan = new Array(
           new Date(currentYear, currentMonth, 0).getDate()
         ).fill(false);
@@ -394,7 +393,6 @@ return: err_msg
   const requestExplan = new XMLHttpRequest();
   function viewDetail() {
     const day = this.childNodes[0].innerText;
-    console.log("here");
     const url = "/view_team_explan/";
     requestExplan.open("POST", url, true);
     requestExplan.setRequestHeader(

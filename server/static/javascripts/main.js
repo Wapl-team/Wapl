@@ -132,7 +132,6 @@ const plan_create = (username) => {
       shareMeetingList.push(data[i].value);
     }
   }
-  console.log(shareMeetingList);
 
   requestNewPlan.send(
     JSON.stringify({
@@ -427,7 +426,6 @@ return: err_msg
           const plansArray = JSON.parse(plans);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
-          console.log(plansArray);
           if (plansArray.length != 0) {
             const newmember = document.createElement("div");
             memberlist.innerHTML = "";
@@ -541,7 +539,8 @@ const makeMeetingList = (meetingList) => {
 
   let contentString = "";
   meetingList.forEach((meeting) => {
-    contentString += `<option value=${meeting.fields.meeting_name}>${meeting.fields.meeting_name}</option>`;
+    console.log(meeting.fields.meeting_name);
+    contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
   });
 
   menu.innerHTML = contentString;

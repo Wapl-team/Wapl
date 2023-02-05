@@ -113,12 +113,14 @@ def create_private_plan(request, *args, **kwargs):
     endTime = req['endTime']
     login_user = request.user
     meetings = login_user.user_meetings.all()
+    print(meetings)
     shareMeetings = req['shareMeetings']
-    print(shareMeetings)
+
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])    
     newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
     for shareMeeting in shareMeetings:
+      print(shareMeeting)
       new_share = Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
 
     
@@ -302,7 +304,6 @@ def view_plan(request):
   plans = private_plans.union(public_plans)
   plans = serializers.serialize('json', plans)
   meeting_list = serializers.serialize('json', meetings)
-  print(meeting_list)
   
   if request.user.image == "":
     return JsonResponse({'plans': plans,'userimg':request.user.default_image, 'meetingList': meeting_list})

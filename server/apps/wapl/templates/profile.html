@@ -63,7 +63,7 @@
           </div>
           <div>
             <input type="submit" value="수정" class="profile-btn" />
-            <a href="{{ request.META.HTTP_REFERER }}" class="return">취소</a>
+            <a href="{% url 'wapl:main' %}" class="return">취소</a>
           </div>
         </form>
       </div>

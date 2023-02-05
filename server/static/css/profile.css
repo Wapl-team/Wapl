@@ -26,45 +26,70 @@ body {
 }
 
 .profile-container {
-  background-color: wheat;
-  width: 100vw;
-  height: 100vh;
-  border: 10px solid orange;
-  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 80vh;
+  border-radius: 5px;
   flex-direction: column;
 }
 
 .profile {
-  font-size: 2rem;
+  font-size: 25px;
   color: orange;
   font-weight: bold;
-  margin-bottom: 5vh;
+  margin-top: 15vh;
 }
 
 .profile-form {
   display: flex;
+  align-items: center;
   flex-direction: column;
   width: 72vw;
-  height: 40vh;
+  margin: 2vh 0;
 }
+.profileCheckbox{
+  display: flex;
+}
+
+.profile-form input{
+  width:240px;
+  height: 3em;
+  background-color: wheat;
+  border:none;
+  padding:0.3em;
+}
+
 
 .profile-btn {
   background-color: orange;
-  border: 10px solid orange;
+  border:none;
   border-radius: 5px;
   color: white;
   padding: 1vh 5vw;
   font-size: 1.3rem;
-  margin-top: 20vh;
-  text-decoration: none;
-  margin: 10vh 3vw;
+  margin-bottom: 1em;
+  width:240px;
 }
 
-.update_password {
-  text-decoration: none;
-  color: black;
+.main div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin:10px;
 }
 
+.main a{
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.2em;
+  color: white;
+  background-color: orange;
+  border-radius: 5px;
+  padding:3px;
+  width:240px;
+  height: 2em;
+  margin-bottom: 0.3em;
+}

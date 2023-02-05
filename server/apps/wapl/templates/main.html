@@ -30,9 +30,10 @@
         <div class="modal-close-btn">
           <button class="closeModal">X</button>
         </div>
+        <div class="modal__title">일정 등록</div>
         <form id="create" name="create" method="post" class="planRegister">
-          <div class="modal__title">일정 등록</div>
-          <input
+          <div class="planRegister-basic">
+            <input
             type="text"
             name="title"
             placeholder="새로운 일정"
@@ -44,26 +45,37 @@
             placeholder="장소"
             id="plan_location"
           />
-          <br />
-          <p>시작 시간</p>
+          <div>시작 시간</div>
           <input type="datetime-local" name="date" id="plan_startTime" />
-          <br />
-          <p>끝 시간</p>
+          <div>끝 시간</div>
           <input type="datetime-local" name="date" id="plan_endTime" />
-          <br />
           <input
             type="text"
             name="content"
             placeholder="내용"
             id="plan_content"
           />
-          <a
+          </div>
+          <div>공개범위</div>
+          <div class="planRegister-publicscope">
+            {% for meeting in meetings %}
+              <div class="scope-check">
+                <label><input 
+                  type="checkbox"
+                  id="plan_publicScope"
+                  value="{{ meeting.meeting_name}}"
+                  >{{meeting.meeting_name}}</label>
+              </div>
+              {% endfor %}
+          </div>
+          <div class="planRegister-submit">
+            <a
             href="#"
             id="closeModal"
             class="closeModal2"
             onclick="plan_create(`{{user.username}}`)"
-            >추가</a
-          >
+            >추가</a>
+          </div>
         </form>
       </div>
     </div>

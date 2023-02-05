@@ -365,23 +365,31 @@ def view_explan(request):
 
   public_plans = []
 
+  meeting_img = {}
+
+  for i in range(len(meetings)) :
+     if meetings[i].image == "":
+        meeting_img[meetings[i].pk] = meetings[i].default_image
+     else:
+        meeting_img[meetings[i].pk] = meetings[i].image.url
+
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
     
 
-    
-#   public_plans = unionQuerySet(list(meetings))
-  plans = public_plans+list(private_plans)
-#   plans = plans.order_by('startTime')
+  private_plans = serializers.serialize('json', private_plans)
 
-  
-  plans = serializers.serialize('json', plans)
+  public_plans = serializers.serialize('json', public_plans)
 
   if request.user.image == "":
-      return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+      return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'today': day,'userimg':request.user.default_image,
+                         'meetingimg':meeting_img})
   else:
-      return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+      return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans, 'today': day,'userimg':request.user.image.url,
+                         'meetingimg':meeting_img})
 
 @csrf_exempt
 def view_team_explan(request):

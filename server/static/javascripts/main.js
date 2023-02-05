@@ -353,7 +353,6 @@ window.onload = function () {
           requestPlan.response
         );
 
-        console.log(meetingimg[9]);
         const publicPlansArray = JSON.parse(public_plans);
         const privatePlansArray = JSON.parse(private_plans);
         // let isPlan = new Array(
@@ -388,7 +387,6 @@ window.onload = function () {
                 const newImg = document.createElement("img");
                 newImg.src = `${userimg}`;
                 newImg.style.width = "15px";
-                console.log(day.parentElement);
                 day.parentElement.appendChild(newImg);
                 // day.after(newImg);
               }
@@ -453,17 +451,14 @@ return: err_msg
     requestExplan.onreadystatechange = () => {
       if (requestExplan.readyState === XMLHttpRequest.DONE) {
         if (requestExplan.status < 400) {
-          const { plans, today, userimg } = JSON.parse(requestExplan.response);
-          const plansArray = JSON.parse(plans);
+          const { public_plans, private_plans, today, userimg, meetingimg } =
+            JSON.parse(requestExplan.response);
+          const publicPlansArray = JSON.parse(public_plans);
+          const privatePlansArray = JSON.parse(private_plans);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
-          if (plansArray.length != 0) {
-            const newmember = document.createElement("div");
+          if (publicPlansArray.length != 0 || privatePlansArray.length != 0) {
             memberlist.innerHTML = "";
-            newmember.innerHTML = `<img src="${userimg}" width="40" />`;
-            newmember.style.height = "50px";
-            newmember.style.width = "50px";
-            memberlist.appendChild(newmember);
             timeline.innerHTML = `<div class="detail-time">
           <div>0</div>
           <div>1</div>
@@ -490,7 +485,89 @@ return: err_msg
           <div>22</div>
           <div>23</div>
         </div>`;
-            plansArray.forEach((plan) => {
+            if (privatePlansArray.length != 0) {
+              let newDiv = document.createElement("div");
+              const newmember = document.createElement("div");
+              newmember.innerHTML = `<img src="${userimg}" width="40" />`;
+              newmember.style.height = "50px";
+              newmember.style.width = "50px";
+              memberlist.appendChild(newmember);
+
+              privatePlansArray.forEach((plan) => {
+                endTime = plan.fields.endTime;
+                endDay = endTime.slice(8, 10);
+                startTime = plan.fields.startTime;
+                startDay = startTime.slice(8, 10);
+                let start = "";
+                let hours = "";
+                let minutes = "";
+                if (parseInt(endDay) == parseInt(today)) {
+                  if (parseInt(startDay) < parseInt(today)) {
+                    // 앞쪽에서 부터 겹치는 경우
+                    start = 0;
+                    hours = endTime.slice(11, 13);
+                    minutes = endTime.slice(14, 16);
+                  } else if (parseInt(startDay) == parseInt(today)) {
+                    // 가운데 있는 경우
+
+                    start =
+                      parseInt(startTime.slice(11, 13) * 60) +
+                      parseInt(startTime.slice(14, 16));
+                    hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+                    minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+                  }
+                } else if (parseInt(endDay) > parseInt(today)) {
+                  if (parseInt(startDay) == parseInt(today)) {
+                    // 뒤로 겹치는 경우
+                    start =
+                      parseInt(startTime.slice(11, 13) * 60) +
+                      parseInt(startTime.slice(14, 16));
+                    if (startTime.slice(14, 16) == "00") {
+                      minutes = "00";
+                      hours = "24" - startTime.slice(11, 13);
+                    } else {
+                      minutes = "60" - startTime.slice(14, 16);
+                      hours = "23" - startTime.slice(11, 13);
+                    }
+                  } else if (parseInt(startDay) < parseInt(today)) {
+                    // 통으로 겹치는 경우
+                    start = 0;
+                    hours = "24";
+                    minutes = "00";
+                  }
+                }
+                newDiv.style.height = "50px";
+                let newplan = document.createElement("a");
+                const width = parseInt(hours) * 60 + parseInt(minutes);
+                newplan.href = `plan/${plan.pk}`;
+                newplan.style.position = "absolute";
+                newplan.style.width = `${width}px`;
+                newplan.style.left = `${start}px`;
+                newplan.style.border = "1px solid black";
+                newplan.style.backgroundColor = "white";
+                newplan.style.color = "black";
+                newplan.style.height = "50px";
+                newplan.innerText = `${plan.fields.title}`;
+                newDiv.appendChild(newplan);
+                timeline.appendChild(newDiv);
+              });
+            }
+            let already = [];
+            publicPlansArray.forEach((plan) => {
+              if (already.indexOf(`${plan.fields.meetings}`) == -1) {
+                const newmember = document.createElement("div");
+                newmember.innerHTML = `<img src="${
+                  meetingimg[plan.fields.meetings]
+                }" width="40" />`;
+                newmember.style.height = "50px";
+                newmember.style.width = "50px";
+                memberlist.appendChild(newmember);
+                let newDiv = document.createElement("div");
+                newDiv.style.height = "50px";
+                newDiv.classList.add(`meeting-${plan.fields.meetings}`);
+                timeline.appendChild(newDiv);
+                already.push(`${plan.fields.meetings}`);
+              }
               endTime = plan.fields.endTime;
               endDay = endTime.slice(8, 10);
               startTime = plan.fields.startTime;
@@ -533,7 +610,7 @@ return: err_msg
                   minutes = "00";
                 }
               }
-              let newDiv = document.createElement("div");
+
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
               newplan.href = `plan/${plan.pk}`;
@@ -545,8 +622,9 @@ return: err_msg
               newplan.style.color = "black";
               newplan.style.height = "50px";
               newplan.innerText = `${plan.fields.title}`;
-              newDiv.appendChild(newplan);
-              timeline.appendChild(newDiv);
+              document
+                .querySelector(`.meeting-${plan.fields.meetings}`)
+                .appendChild(newplan);
             });
           } else {
             timeline.innerHTML = "";

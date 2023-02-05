@@ -54,14 +54,16 @@ def meeting_calendar(request, pk, *args, **kwargs):
 @csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
+        default_image_index = random.randint(1, 4)
         newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
         owner = request.user,
         category = request.POST["category"],
-        invitation_code = generate_invitation_code()
+        invitation_code = generate_invitation_code(),
+        image = request.FILES.get("image"),
+        default_image = f'/static/default_image/t{default_image_index}.png',
         )
-        
         newMeeting.users.add(request.user)
         
         return redirect('wapl:main')
@@ -295,7 +297,10 @@ def view_plan(request):
   public_plans = unionQuerySet(list(meetings))
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
   private_plans = PrivatePlan.objects.filter(owner=login_user)
-  plans = private_plans.union(public_plans)
+  if len(public_plans)!=0: 
+    plans = private_plans.union(public_plans)
+  else :
+     plans = private_plans
   plans = serializers.serialize('json', plans)
 
   if request.user.image == "":

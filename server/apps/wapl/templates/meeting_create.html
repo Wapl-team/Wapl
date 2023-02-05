@@ -10,6 +10,7 @@
   </head>
   <body>
     <h2>모임 생성</h2>
+
     <form
       action="{% url 'wapl:meeting_create' %}"
       method="post"
@@ -37,6 +38,7 @@
       <div>
         <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
       </div>
+
     </form>
   </body>
 </html>

@@ -75,7 +75,7 @@ class Comment(models.Model):
     
     @property
     def created_string(self):
-        time = datetime.now(tz=timezone.utc) - self.created_at
+        time = timezone.now() - self.created_at
 
         if time < timedelta(minutes=1):
             return '방금 전'

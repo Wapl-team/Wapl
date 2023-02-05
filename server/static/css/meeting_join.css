@@ -1,0 +1,58 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+}
+
+h2{
+    color:orange;
+    font-size: 25px;
+}
+
+.meetingJoin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: orange;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.meetingJoin input{
+    width:240px;
+    height: 30px;
+    background-color: wheat;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.meetingJoin div input{
+    background-color: orange;
+    color:white;
+    width:240px;
+    height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold; 
+    border: none;
+    font-size: 17px;
+}
+
+.meetingJoin div a{
+    background-color: wheat;
+    color:white;
+    width:240px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vh;
+    font-weight: normal;
+    font-size: 17px;
+}

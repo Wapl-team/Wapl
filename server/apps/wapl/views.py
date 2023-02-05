@@ -1,9 +1,11 @@
 
+
 from django.shortcuts import render, redirect, get_object_or_404
+
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Plan, Comment, Meeting
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -13,7 +15,7 @@ from .validators import *
 from django.core import serializers
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.http import HttpResponseRedirect
+from itertools import chain
 from django.urls import reverse
 import random
 import uuid
@@ -22,33 +24,29 @@ import codecs
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
-# 슈퍼유저랑 모임 생성 유저는 자동으로 users에 들어감
+# 모임 생성 유저는 자동으로 users에 들어감
 @csrf_exempt
 def main(request:HttpRequest,*args, **kwargs):
-  meetings = Meeting.objects.all()
-  data = []
-  for meeting in meetings:
-    if request.user in meeting.users.all():
-      data.append(meeting)  
-  print(data)
+  login_user = request.user
+  meetings = login_user.user_meetings.all()
   context = {            
-            'meetings' : data, 
+            'meetings' : meetings, 
             'meeting_name': ''}
   
   return render(request, "main.html", context=context)
 
 @csrf_exempt
 def meeting_calendar(request, pk, *args, **kwargs):
+  login_user = request.user
   cur_meeting = Meeting.objects.all().get(id=pk)
-  meetings = Meeting.objects.all()
-  data = []
-  for meeting in meetings:
-    if request.user in meeting.users.all():
-      data.append(meeting)
-      
-  context = {'meeting_name': cur_meeting.meeting_name,
-             'meetings': data}
-  return render(request, "main.html", context=context)
+  print(cur_meeting)
+  meetings = login_user.user_meetings.all()
+  print(meetings)
+  
+  context = {'cur_meeting': cur_meeting,
+             'meetings': meetings}
+  return render(request, "meeting_main.html", context=context)
+
 
 
 
@@ -108,43 +106,43 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 @csrf_exempt
-def create(request, *args, **kwargs):
+def create_private_plan(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
     startTime = req['startTime']
     endTime = req['endTime']
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-
-    newPlan = Plan(user=request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
-    newPlan.save()
+    # public private 따로 구현 예정
+    newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
-    if request.user.image == "":
-        return JsonResponse({'startTime':startTime, 'endTime':endTime,'userimg':request.user.default_image})
-    else:
-        return JsonResponse({'startTime':startTime, 'endTime':endTime, 'userimg':request.user.image.url})
 
+    if request.user.image == "":
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
+
+@csrf_exempt
+def create_public_plan(request, *args, **kwargs):
+  if request.method == 'POST':
+    req = json.loads(request.body)
+    startTime = req['startTime'].replace('T',' ')+":00"
+    endTime = req['endTime'].replace('T',' ')+":00"
+    meeting = Meeting.objects.get(meeting_name=req['meeting_name'])
+
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
+    newPlan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    
+
+    if request.user.image == "":
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
+    else:
+        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
 
 # 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
-
-# @csrf_exempt
-# def update(request, *args, **kwargs):
-#   if request.method == 'POST':
-#     req = json.loads(request.body)
-#     result, err_msg = validate_plan(startTime = req['startTime'], endTime = req['endTime'], title = req['title'])
-#     if result:
-#         pk = req['id']
-#         updatedPlan = Plan.objects.all().get(id=pk)
-#         updatedPlan.startTime = req['startTime']
-#         updatedPlan.endTime = req['endTime']
-#         updatedPlan.location = req['location']
-#         updatedPlan.title = req['title']
-#         updatedPlan.content = req['content']
-#         updatedPlan.save()
-#         return JsonResponse(err_msg)
 
 def update(request:HttpRequest, pk, *args, **kwargs):
     plan = Plan.objects.get(id=pk)
@@ -168,18 +166,20 @@ def update(request:HttpRequest, pk, *args, **kwargs):
 #리턴하는 값 X (js에서 작업 필요)
 @csrf_exempt
 def retrieve(request, *args, **kwargs):
-  plans = serializers.serialize('json', Plan.objects.all())
+  plans = serializers.serialize('json', PrivatePlan.objects.all())
   return JsonResponse({'plans': plans})
 
 
 #일정 삭제 함수
 #POST로 넘어온 id값으로 객체 삭제
 @csrf_exempt
+
 def delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
         plan = Plan.objects.get(id=pk)
         plan.delete()
         return redirect('wapl:main')
+
 
 #일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
@@ -217,7 +217,6 @@ def start(request:HttpRequest, *args, **kwargs):
 def signup(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
-        print(request.POST)
         if form.is_valid():
             user = form.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -248,22 +247,36 @@ def logout(request:HttpRequest, *args, **kwargs):
     auth.logout(request)
     return redirect('wapl:start')
 
-  
+# 모임 별 일정들 union 하는 함수
+# 추후 더 좋은 방법 있으면 수정 예정
+# 리턴: QuerySet  (objects가 없으면 빈 리스트)
+def unionQuerySet(objects):
+  data = ''
+  cnt = len(objects)
+  if cnt > 1:
+    data = objects[0].plans.all()
+    for i in range(cnt):
+      if i <  cnt - 1:
+        data = data.union(objects[i+1].plans.all())
+  elif cnt == 1:
+    data = objects[0].plans.all()
+  else:
+    data = []
+  return data
 
 @csrf_exempt
+# 개인달력 출력 
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
   month = req['month'] + 1
-  meeting_name = req['meeting'] # 화면에서 유저가 선택한 카테고리 이름(meeting_name)을 넘겨야 함
-
-
-  if meeting_name == '':
-    plans = Plan.objects.all().filter(user = request.user, startTime__month = month, startTime__year = year)
-  else:
-    meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
-    plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
-    
+  login_user = request.user
+  
+  meetings = login_user.user_meetings.all()
+  public_plans = unionQuerySet(list(meetings))
+  # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
+  private_plans = PrivatePlan.objects.filter(owner=login_user)
+  plans = private_plans.union(public_plans)
   plans = serializers.serialize('json', plans)
 
   if request.user.image == "":
@@ -271,26 +284,79 @@ def view_plan(request):
   else:
     return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
 
-
-# if문에 개인달력 출력하는 부분 
-# 모델 -> plan 공개여부
-# 공유달력 출력 
+@csrf_exempt
+def view_team_plan(request):
+  req = json.loads(request.body)
+  year = req['year']
+  month = req['month'] + 1
+  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
+  login_user = request.user
   
+  meetingObj = Meeting.objects.all().get(id=meeting_pk)
+  plans = meetingObj.plans.all()
+  plans = serializers.serialize('json', plans)
+  if request.user.image == "":
+    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+  else:
+    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+
+# 날짜 클릭 시 호출 함수
+# 해당 날짜에 해당하는 일정들 정보를 넘겨줌
+# 추후 수정 예정(현재 클릭 불가로 수정X)  
 @csrf_exempt
 def view_explan(request):
+  req = json.loads(request.body)
+  year =int(req['year'])
+  month = int(req['month'])
+  day = int(req['day'])
+  login_user = request.user
+  meetings = login_user.user_meetings.all()
+  today = date(year,month,day)
+
+  private_plans = PrivatePlan.objects.filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+
+
+  # 여기서 필터링 방법을 아래처럼 해야할 것 같은데 혹시 몰라서 그냥 위처럼 놔둠
+  # plans= PrivatePlan.objects.all().filter(owner = user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+
+  public_plans = []
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+      public_plans += list(public_plan)
+    
+
+    
+#   public_plans = unionQuerySet(list(meetings))
+  plans = public_plans+list(private_plans)
+#   plans = plans.order_by('startTime')
+
+  
+  plans = serializers.serialize('json', plans)
+
+  if request.user.image == "":
+      return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+  else:
+      return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+
+@csrf_exempt
+def view_team_explan(request):
     req = json.loads(request.body)
     year =int(req['year'])
     month = int(req['month'])
     day = int(req['day'])
-    meeting_name = req['meetingName']
+    meeting_pk = req['meetingPK']
+    meetingObj = Meeting.objects.all().get(id=meeting_pk)
+    username = request.user.username
 
     today = date(year,month,day)
 
-    if meeting_name == '':
-        plans= Plan.objects.all().filter(user = request.user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
-    else:
-        meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
-        plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
+    # if meeting_name == '':
+    plans= PublicPlan.objects.all().filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+    # else:
+    
+    #     meetingObj = Meeting.objects.all().filter(owner = request.user).get(meeting_name = meeting_name)
+    #     plans = Plan.objects.all().filter(meeting = meetingObj, startTime__month = month, startTime__year = year)
     
     plans = serializers.serialize('json', plans)
 

@@ -13,7 +13,7 @@ let date = new Date();
 let currentYear = date.getFullYear();
 let currentMonth = date.getMonth();
 
-const makeCalendar = () => {
+const makeCalendar = (meetingPK) => {
   // 캘린더에 보이는 년도와 달을 보여주기 위해
   const viewYear = date.getFullYear();
   const viewMonth = date.getMonth();
@@ -85,8 +85,7 @@ const makeCalendar = () => {
 };
 
 const meetingPK = document.querySelector(".meeting-pk").innerHTML;
-const meetingName = document.querySelector(".meeting-name").innerHTML;
-makeCalendar(meetingName, meetingPK);
+makeCalendar(meetingPK);
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {
@@ -110,8 +109,8 @@ const curMonth = () => {
 
 const requestNewPlan = new XMLHttpRequest();
 
-const plan_create = (username) => {
-  const url = "/create-private-plan";
+const plan_create = (username, meeting_name) => {
+  const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
   requestNewPlan.setRequestHeader(
     "Content-Type",
@@ -125,6 +124,7 @@ const plan_create = (username) => {
   const content = document.getElementById("plan_content").value;
   requestNewPlan.send(
     JSON.stringify({
+      meeting_name: meeting_name,
       username: username,
       title: title,
       location: location,
@@ -335,7 +335,7 @@ const plan_update = async (id) => {
 
 window.onload = function () {
   const requestPlan = new XMLHttpRequest();
-  const url = "/view_plan/";
+  const url = "/view_team_plan/";
   requestPlan.open("POST", url, true);
   requestPlan.setRequestHeader(
     "Content-Type",
@@ -347,6 +347,7 @@ window.onload = function () {
     JSON.stringify({
       year: currentYear,
       month: currentMonth,
+      meetingPK: meetingPK,
     })
   );
   requestPlan.onreadystatechange = () => {
@@ -392,7 +393,8 @@ return: err_msg
   const requestExplan = new XMLHttpRequest();
   function viewDetail() {
     const day = this.childNodes[0].innerText;
-    const url = "/view_explan/";
+    console.log("here");
+    const url = "/view_team_explan/";
     requestExplan.open("POST", url, true);
     requestExplan.setRequestHeader(
       "Content-Type",
@@ -403,6 +405,7 @@ return: err_msg
         year: currentYear,
         month: currentMonth,
         day: day,
+        meetingPK: meetingPK,
       })
     );
     requestExplan.onreadystatechange = () => {
@@ -412,7 +415,6 @@ return: err_msg
           const plansArray = JSON.parse(plans);
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
-          console.log(plansArray);
           if (plansArray.length != 0) {
             const newmember = document.createElement("div");
             memberlist.innerHTML = "";

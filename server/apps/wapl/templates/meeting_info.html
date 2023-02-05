@@ -32,7 +32,7 @@
       {% endfor %}
       <br />
       <div>
-        <a href="{% url 'wapl:main' %}">돌아가기</a>
+        <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
       </div>
     </div>
   </body>

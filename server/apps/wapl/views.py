@@ -123,7 +123,6 @@ def create_private_plan(request, *args, **kwargs):
       print(shareMeeting)
       new_share = Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
 
-    
     if request.user.image == "":
         return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
     else:

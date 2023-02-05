@@ -539,7 +539,6 @@ const makeMeetingList = (meetingList) => {
 
   let contentString = "";
   meetingList.forEach((meeting) => {
-    console.log(meeting.fields.meeting_name);
     contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
   });
 

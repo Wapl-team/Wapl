@@ -184,7 +184,26 @@ def delete(request:HttpRequest, pk, *args, **kwargs):
 #일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
     # plan = Plan.objects.all().get(id=pk)
-    plan = get_object_or_404(Plan, pk=pk)
+    plan = get_object_or_404(PrivatePlan, pk=pk)
+    
+    startTime = str(plan.startTime)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            Comment.objects.create(
+                content=request.POST["content"],
+                user=request.user,
+                plan_post=plan,
+            )
+            return redirect('wapl:detail', pk) 
+    
+    context = {
+        "plan": plan,
+   }
+    return render(request, 'plan_detail.html', context=context)
+
+def public_detail(request, pk, *args, **kwargs):
+    # plan = Plan.objects.all().get(id=pk)
+    plan = get_object_or_404(PrivatePlan, pk=pk)
     
     startTime = str(plan.startTime)
     if request.user.is_authenticated:

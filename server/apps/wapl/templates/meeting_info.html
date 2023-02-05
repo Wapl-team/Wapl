@@ -11,20 +11,22 @@
   <body>
     <h2>모임 정보</h2>
     <div class="meetingInfo">
-      <p>모임 이름</p>
-      {{ meeting.meeting_name }}
-      <p>카테고리</p>
-      {{ meeting.category }}
-      <p>모임 소개</p>
-      {{ meeting.content }}
-      <p>모임 관리자</p>
-      {{ meeting.owner }}
-      <p>초대 코드</p>
-      {{ meeting.invitation_code }}
-      <p>멤버</p>
-      {% for user in users %} {{ user }}
-      <br />
-      {% endfor %}
+      모임 이름
+      <p>{{ meeting.meeting_name }}</p>
+      카테고리
+      <p>{{ meeting.category }}</p>
+      모임 소개
+      <p>{{ meeting.content }}</p>
+      모임 관리자
+      <p>{{ meeting.owner }}</p>
+      초대 코드
+      <p>{{ meeting.invitation_code }}</p>
+      멤버
+      <p>
+        {% for user in users %} {{ user }}
+        <br />
+        {% endfor %}
+      </p>
       <br />
       <div>
         <a href="{% url 'wapl:main' %}">돌아가기</a>

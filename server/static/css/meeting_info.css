@@ -10,6 +10,8 @@ body{
 h2{
     color:orange;
     font-size: 25px;
+    margin-bottom: 4vh;
+    margin-top: 11vh;
 }
 
 .meetingInfo{
@@ -24,15 +26,14 @@ h2{
 .meetingInfo p{
     width:240px;
     height: 30px;
-    background-color: wheat;
-    color: white;
+    /*background-color: wheat;*/
+    color: black;
     text-align: center;
-    font-weight: bold;
     border-radius: 10px;
 }
 
 .meetingInfo div a{
-    background-color: orange;
+    background-color: wheat;
     color:white;
     width:240px;
     height: 30px;

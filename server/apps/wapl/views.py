@@ -299,6 +299,15 @@ def view_plan(request):
 
   public_plans = []
 
+  meeting_img = {}
+
+  for i in range(len(meetings)) :
+     if meetings[i].image == "":
+        meeting_img[meetings[i].pk] = meetings[i].default_image
+     else:
+        meeting_img[meetings[i].pk] = meetings[i].image.url
+
+
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__month__lte = month , endTime__month__gte = month)
       public_plans += list(public_plan)
@@ -312,10 +321,12 @@ def view_plan(request):
 
   if request.user.image == "":
     return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'userimg':request.user.default_image})
+                         'private_plans':private_plans,'userimg':request.user.default_image,
+                         'meetingimg':meeting_img})
   else:
     return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans, 'userimg':request.user.image.url})
+                         'private_plans':private_plans, 'userimg':request.user.image.url,
+                         'meetingimg':meeting_img})
 
 @csrf_exempt
 def view_team_plan(request):

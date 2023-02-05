@@ -65,9 +65,7 @@ const makeCalendar = () => {
     //this
     //other
 
-    dates[
-      i
-    ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+    dates[i] = `<div class="date"><p class="${condition}">${date}</p></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");
@@ -351,9 +349,11 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, private_plans, userimg } = JSON.parse(
+        const { public_plans, private_plans, userimg, meetingimg } = JSON.parse(
           requestPlan.response
         );
+
+        console.log(meetingimg[9]);
         const publicPlansArray = JSON.parse(public_plans);
         const privatePlansArray = JSON.parse(private_plans);
         // let isPlan = new Array(
@@ -371,7 +371,6 @@ window.onload = function () {
         //   }
         // });
         const currentDays = document.querySelectorAll(".this");
-        console.log(currentDays);
         currentDays.forEach((day) => {
           privatePlansArray.forEach((plan) => {
             const startTime = new Date(plan.fields.startTime);
@@ -389,7 +388,9 @@ window.onload = function () {
                 const newImg = document.createElement("img");
                 newImg.src = `${userimg}`;
                 newImg.style.width = "15px";
-                day.after(newImg);
+                console.log(day.parentElement);
+                day.parentElement.appendChild(newImg);
+                // day.after(newImg);
               }
             }
           });
@@ -408,10 +409,11 @@ window.onload = function () {
             ) {
               if (already.indexOf(`${plan.fields.meetings}`) == -1) {
                 const newImg = document.createElement("img");
-                newImg.src = `${userimg}`;
+                meetingimg[plan.fields.meetings];
+                newImg.src = `${meetingimg[plan.fields.meetings]}`;
                 newImg.alt = `${plan.fields.title}`;
                 newImg.style.width = "15px";
-                day.after(newImg);
+                day.parentElement.appendChild(newImg);
                 already.push(`${plan.fields.meetings}`);
               }
             }

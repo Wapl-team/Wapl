@@ -114,6 +114,7 @@ def create_private_plan(request, *args, **kwargs):
     login_user = request.user
     meetings = login_user.user_meetings.all()
     shareMeetings = req['shareMeetings']
+    print(shareMeetings)
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])    
     newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
     
@@ -300,11 +301,13 @@ def view_plan(request):
   private_plans = PrivatePlan.objects.filter(owner=login_user)
   plans = private_plans.union(public_plans)
   plans = serializers.serialize('json', plans)
-
+  meeting_list = serializers.serialize('json', meetings)
+  print(meeting_list)
+  
   if request.user.image == "":
-    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+    return JsonResponse({'plans': plans,'userimg':request.user.default_image, 'meetingList': meeting_list})
   else:
-    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+    return JsonResponse({'plans': plans, 'userimg':request.user.image.url, 'meetingList': meeting_list})
 
 @csrf_exempt
 def view_team_plan(request):

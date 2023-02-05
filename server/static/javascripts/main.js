@@ -123,6 +123,17 @@ const plan_create = (username) => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
+  const selectObj = document.querySelectorAll("#share");
+
+  data = selectObj.item(0).options;
+  shareMeetingList = [];
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].selected == true) {
+      shareMeetingList.push(data[i].value);
+    }
+  }
+  console.log(shareMeetingList);
+
   requestNewPlan.send(
     JSON.stringify({
       username: username,
@@ -131,7 +142,7 @@ const plan_create = (username) => {
       startTime: startTime,
       endTime: endTime,
       content: content,
-      shareMeetings: ["친구들", "와플 팀"],
+      shareMeetings: shareMeetingList,
     })
   );
 };
@@ -353,8 +364,11 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { plans, userimg } = JSON.parse(requestPlan.response);
+        const { plans, userimg, meetingList } = JSON.parse(
+          requestPlan.response
+        );
         const plansArray = JSON.parse(plans);
+        makeMeetingList(JSON.parse(meetingList));
         let isPlan = new Array(
           new Date(currentYear, currentMonth, 0).getDate()
         ).fill(false);
@@ -520,4 +534,15 @@ return: err_msg
   }
   let dateTarget = document.querySelectorAll(".date");
   dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
+};
+
+const makeMeetingList = (meetingList) => {
+  const menu = document.querySelector("#share");
+
+  let contentString = "";
+  meetingList.forEach((meeting) => {
+    contentString += `<option value=${meeting.fields.meeting_name}>${meeting.fields.meeting_name}</option>`;
+  });
+
+  menu.innerHTML = contentString;
 };

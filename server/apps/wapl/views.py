@@ -54,6 +54,7 @@ def meeting_calendar(request, pk, *args, **kwargs):
 @csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
+        default_image_index = random.randint(1, 4)
         newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
@@ -61,7 +62,7 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         category = request.POST["category"],
         invitation_code = generate_invitation_code(),
         image = request.FILES.get("image"),
-        default_image_index = random.randint(1, 4),
+        default_image = f'/static/default_image/t{default_image_index}.png',
         )
         newMeeting.users.add(request.user)
         

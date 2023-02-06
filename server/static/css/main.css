@@ -60,6 +60,7 @@ body {
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
+  border:0px solid orange;
 }
 
 .sidebar-menu p {
@@ -234,8 +235,8 @@ body {
 
 .go-today {
   width: 75px;
-  border-left: 5px solid #f6cf84;
-  border-right: 5px solid #f6cf84;
+  border-left: 1px solid orange;
+  border-right: 1px solid orange;
 }
 
 .days {
@@ -251,10 +252,11 @@ body {
   display: flex;
   flex-flow: row wrap;
   height: 55vh;
-  border-top: 8px solid #f6cf84;
-  border-right: 8px solid #f6cf84;
-  background-color: #f5bb5e;
+  border-top: 1px solid orange;
+  border-right: 1px solid orange;
+  background-color: white;
   border-radius: 5px;
+  margin-top:1em;
 }
 
 .date {
@@ -262,19 +264,18 @@ body {
   height: calc(100% / 5);
   padding: 8px;
   text-align: right;
-  border-bottom: 8px solid #f6cf84;
-  border-left: 8px solid #f6cf84;
-  box-shadow: inset -9px 7px 3px 0px #f2a336;
+  border-bottom: 1px solid orange;
+  border-left: 1px solid orange;
 }
 
 .date-onclick {
   width: calc(100% / 7);
   padding: 8px;
   text-align: right;
-  border-bottom: 8px solid #f6cf84;
-  border-left: 8px solid #f6cf84;
+  border-bottom:1px solid orange;
+  border-left: 1px solid orange;
   box-shadow: none;
-  background-color: #f6cf84;
+  background-color: antiquewhite;
 }
 
 /* 일요일은 빨간색, 토요일은 파란색으로 */
@@ -294,7 +295,7 @@ body {
 
 .today {
   position: relative;
-  color: white;
+  color: black;
   border-radius: 15px;
   padding: 2px;
 }

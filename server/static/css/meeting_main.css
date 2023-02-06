@@ -56,7 +56,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: rgb(255, 205, 97);
+  background-color: #f6ead2;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -73,10 +73,11 @@ body {
 .sidebar-menu .closeBtn {
   position: absolute;
   top: 0;
-  right: 15px;
-  font-size: 25px;
+  right: 0;
+  font-size: 21px;
   color: black;
-  margin-left: 50px;
+  margin-top: 2vh;
+  margin-right: 4vw;;
 }
 /* --------모임 생성/참가 ------- */
 
@@ -124,6 +125,7 @@ body {
   text-decoration: none;
   color: black;
   font-size: 20px;
+  margin-right: 1vw;
 }
 
 /* ----------------------------- */

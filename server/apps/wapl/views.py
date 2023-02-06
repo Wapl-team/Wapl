@@ -302,8 +302,8 @@ def view_plan(request):
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__month__lte=month, endTime__month__gte=month)
 
   meetings = login_user.user_meetings.all()
+  
   meeting_list = serializers.serialize('json', meetings)
-
   public_plans = []
 
   meeting_img = {}
@@ -329,11 +329,13 @@ def view_plan(request):
   if request.user.image == "":
     return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans,'userimg':request.user.default_image,
-                         'meetingimg':meeting_img})
+                         'meetingimg':meeting_img,
+                         'meetingList': meeting_list})
   else:
     return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans, 'userimg':request.user.image.url,
-                         'meetingimg':meeting_img})
+                         'meetingimg':meeting_img,
+                         'meetingList': meeting_list})
 
 @csrf_exempt
 def view_team_plan(request):
@@ -349,13 +351,17 @@ def view_team_plan(request):
   for share in share_list:
     share_plans.append(share.plan)
   
-  plans = list(meetingObj.plans.all())
-  plans.extend(share_plans)
-  plans = serializers.serialize('json', plans)
+  public_plans = list(meetingObj.plans.all())
+  private_plans = share_plans
+  
+  # private_plans = serializers.serialize('json', private_plans)
+  public_plans.extend(private_plans)
+  public_plans = serializers.serialize('json', public_plans)
+  
   if request.user.image == "":
-    return JsonResponse({'plans': plans,'userimg':request.user.default_image})
+    return JsonResponse({'plans': public_plans, 'userimg':request.user.default_image})
   else:
-    return JsonResponse({'plans': plans, 'userimg':request.user.image.url})
+    return JsonResponse({'plans': public_plans, 'userimg':request.user.image.url})
 
 # 날짜 클릭 시 호출 함수
 # 해당 날짜에 해당하는 일정들 정보를 넘겨줌
@@ -428,16 +434,21 @@ def view_team_explan(request):
     share_plans = [obj.plan for obj in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
     
-    plans= list(PublicPlan.objects.filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today))
+    public_plans= list(PublicPlan.objects.filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today))
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
     
-    plans.extend(share_plans)
-    plans = serializers.serialize('json', plans)
+    public_plans.extend(share_plans)
+    public_plans = serializers.serialize('json', public_plans)
+    # private_plans = serializers.serialize('json', share_plans)
     
     if request.user.image == "":
-        return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+        return JsonResponse({'plans': public_plans,                             
+                             'today': day,
+                             'userimg':request.user.default_image})
     else:
-        return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+        return JsonResponse({'plans': public_plans,                        
+                            'today': day,
+                            'userimg':request.user.image.url})
 
   
 

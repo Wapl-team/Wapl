@@ -300,7 +300,7 @@ def view_plan(request):
   meetings = login_user.user_meetings.all()
   public_plans = unionQuerySet(list(meetings))
   private_plans = PrivatePlan.objects.filter(owner=login_user)
-  plans = private_plans.union(public_plans)
+  plans = public_plans.union(private_plans)
   plans = serializers.serialize('json', plans)
   meeting_list = serializers.serialize('json', meetings)
   

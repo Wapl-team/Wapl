@@ -367,6 +367,7 @@ window.onload = function () {
           requestPlan.response
         );
         const plansArray = JSON.parse(plans);
+        console.log(plansArray);
         makeMeetingList(JSON.parse(meetingList));
         let isPlan = new Array(
           new Date(currentYear, currentMonth, 0).getDate()

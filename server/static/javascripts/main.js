@@ -165,20 +165,32 @@ requestNewPlan.onreadystatechange = () => {
             newStartDate <= parseInt(date.childNodes[0].innerText) &&
             date.childNodes[0].classList.contains("this")
           ) {
-            date.childNodes[0].innerHTML = `${thisdate}  <img src="${userimg}" width="15" class="profileImagePlan" />`;
+            if (
+              !date.childNodes[1] ||
+              !date.childNodes[1].classList.contains("private")
+            ) {
+              const newimg = document.createElement("img");
+              newimg.classList.add("private");
+              newimg.classList.add("profileImagePlan");
+              newimg.src = `${userimg}`;
+              newimg.style.width = "15px";
+              date.childNodes[0].after(newimg);
+            }
           }
         });
         if (currentPreview >= newStartDate && currentPreview <= newEndDate) {
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
 
-          const newmember = document.createElement("div");
-          memberlist.innerHTML = "";
-          newmember.innerHTML = `<img src="${userimg}" width="40" />`;
-          newmember.style.height = "50px";
-          newmember.style.width = "50px";
-          memberlist.appendChild(newmember);
-          timeline.innerHTML = `<div class="detail-time">
+          if (timeline.childNodes.length == 0) {
+            console.log("1");
+            const newmember = document.createElement("div");
+            memberlist.innerHTML = "";
+            newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+            newmember.style.height = "50px";
+            newmember.style.width = "50px";
+            memberlist.appendChild(newmember);
+            timeline.innerHTML = `<div class="detail-time">
           <div>0</div>
           <div>1</div>
           <div>2</div>
@@ -204,59 +216,175 @@ requestNewPlan.onreadystatechange = () => {
           <div>22</div>
           <div>23</div>
         </div>`;
-          let start = "";
-          let hours = "";
-          let minutes = "";
+            let start = "";
+            let hours = "";
+            let minutes = "";
+            if (parseInt(newEndDate) == parseInt(currentPreview)) {
+              if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 앞쪽에서 부터 겹치는 경우
+                start = 0;
+                hours = endTime.slice(11, 13);
+                minutes = endTime.slice(14, 16);
+              } else if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 가운데 있는 경우
 
-          if (parseInt(newEndDate) == parseInt(currentPreview)) {
-            if (parseInt(newStartDate) < parseInt(currentPreview)) {
-              // 앞쪽에서 부터 겹치는 경우
-              start = 0;
-              hours = endTime.slice(11, 13);
-              minutes = endTime.slice(14, 16);
-            } else if (parseInt(newStartDate) == parseInt(currentPreview)) {
-              // 가운데 있는 경우
-
-              start =
-                parseInt(startTime.slice(11, 13) * 60) +
-                parseInt(startTime.slice(14, 16));
-              hours = endTime.slice(11, 13) - startTime.slice(11, 13);
-              minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
-            }
-          } else if (parseInt(newEndDate) > parseInt(currentPreview)) {
-            if (parseInt(newStartDate) == parseInt(currentPreview)) {
-              // 뒤로 겹치는 경우
-              start =
-                parseInt(startTime.slice(11, 13) * 60) +
-                parseInt(startTime.slice(14, 16));
-              if (startTime.slice(14, 16) == "00") {
-                minutes = "00";
-                hours = "24" - startTime.slice(11, 13);
-              } else {
-                minutes = "60" - startTime.slice(14, 16);
-                hours = "23" - startTime.slice(11, 13);
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+                minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
               }
-            } else if (parseInt(newStartDate) < parseInt(currentPreview)) {
-              // 통으로 겹치는 경우
-              start = 0;
-              hours = "24";
-              minutes = "00";
+            } else if (parseInt(newEndDate) > parseInt(currentPreview)) {
+              if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 뒤로 겹치는 경우
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                if (startTime.slice(14, 16) == "00") {
+                  minutes = "00";
+                  hours = "24" - startTime.slice(11, 13);
+                } else {
+                  minutes = "60" - startTime.slice(14, 16);
+                  hours = "23" - startTime.slice(11, 13);
+                }
+              } else if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 통으로 겹치는 경우
+                start = 0;
+                hours = "24";
+                minutes = "00";
+              }
             }
+            let newDiv = document.createElement("div");
+            newDiv.classList.add("private");
+            newDiv.style.height = "50px";
+            let newplan = document.createElement("a");
+            const width = parseInt(hours) * 60 + parseInt(minutes);
+            newplan.href = `plan/${pk}`;
+            newplan.style.position = "absolute";
+            newplan.style.width = `${width}px`;
+            newplan.style.left = `${start}px`;
+            newplan.style.border = "1px solid black";
+            newplan.style.backgroundColor = "white";
+            newplan.style.color = "black";
+            newplan.style.height = "50px";
+            newplan.innerText = `${planName}`;
+            newDiv.appendChild(newplan);
+            timeline.appendChild(newDiv);
+          } else if (timeline.childNodes[1].classList.contains("private")) {
+            console.log("2");
+            let start = "";
+            let hours = "";
+            let minutes = "";
+            if (parseInt(newEndDate) == parseInt(currentPreview)) {
+              if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 앞쪽에서 부터 겹치는 경우
+                start = 0;
+                hours = endTime.slice(11, 13);
+                minutes = endTime.slice(14, 16);
+              } else if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 가운데 있는 경우
+
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+                minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+              }
+            } else if (parseInt(newEndDate) > parseInt(currentPreview)) {
+              if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 뒤로 겹치는 경우
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                if (startTime.slice(14, 16) == "00") {
+                  minutes = "00";
+                  hours = "24" - startTime.slice(11, 13);
+                } else {
+                  minutes = "60" - startTime.slice(14, 16);
+                  hours = "23" - startTime.slice(11, 13);
+                }
+              } else if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 통으로 겹치는 경우
+                start = 0;
+                hours = "24";
+                minutes = "00";
+              }
+            }
+            let newplan = document.createElement("a");
+            const width = parseInt(hours) * 60 + parseInt(minutes);
+            newplan.href = `plan/${pk}`;
+            newplan.style.position = "absolute";
+            newplan.style.width = `${width}px`;
+            newplan.style.left = `${start}px`;
+            newplan.style.border = "1px solid black";
+            newplan.style.backgroundColor = "white";
+            newplan.style.color = "black";
+            newplan.style.height = "50px";
+            newplan.innerText = `${planName}`;
+            timeline.childNodes[1].appendChild(newplan);
+          } else {
+            console.log("3");
+            const newmember = document.createElement("div");
+            newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+            newmember.style.height = "50px";
+            newmember.style.width = "50px";
+            memberlist.firstChild.before(newmember);
+
+            let start = "";
+            let hours = "";
+            let minutes = "";
+            if (parseInt(newEndDate) == parseInt(currentPreview)) {
+              if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 앞쪽에서 부터 겹치는 경우
+                start = 0;
+                hours = endTime.slice(11, 13);
+                minutes = endTime.slice(14, 16);
+              } else if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 가운데 있는 경우
+
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                hours = endTime.slice(11, 13) - startTime.slice(11, 13);
+                minutes = endTime.slice(14, 16) - startTime.slice(14, 16);
+              }
+            } else if (parseInt(newEndDate) > parseInt(currentPreview)) {
+              if (parseInt(newStartDate) == parseInt(currentPreview)) {
+                // 뒤로 겹치는 경우
+                start =
+                  parseInt(startTime.slice(11, 13) * 60) +
+                  parseInt(startTime.slice(14, 16));
+                if (startTime.slice(14, 16) == "00") {
+                  minutes = "00";
+                  hours = "24" - startTime.slice(11, 13);
+                } else {
+                  minutes = "60" - startTime.slice(14, 16);
+                  hours = "23" - startTime.slice(11, 13);
+                }
+              } else if (parseInt(newStartDate) < parseInt(currentPreview)) {
+                // 통으로 겹치는 경우
+                start = 0;
+                hours = "24";
+                minutes = "00";
+              }
+            }
+            let newDiv = document.createElement("div");
+            newDiv.classList.add("private");
+            newDiv.style.height = "50px";
+            let newplan = document.createElement("a");
+            const width = parseInt(hours) * 60 + parseInt(minutes);
+            newplan.href = `plan/${pk}`;
+            newplan.style.position = "absolute";
+            newplan.style.width = `${width}px`;
+            newplan.style.left = `${start}px`;
+            newplan.style.border = "1px solid black";
+            newplan.style.backgroundColor = "white";
+            newplan.style.color = "black";
+            newplan.style.height = "50px";
+            newplan.innerText = `${planName}`;
+            newDiv.appendChild(newplan);
+            timeline.childNodes[1].before(newDiv);
           }
-          let newDiv = document.createElement("div");
-          let newplan = document.createElement("a");
-          const width = parseInt(hours) * 60 + parseInt(minutes);
-          newplan.href = `plan/${pk}`;
-          newplan.style.position = "absolute";
-          newplan.style.width = `${width}px`;
-          newplan.style.left = `${start}px`;
-          newplan.style.border = "1px solid black";
-          newplan.style.backgroundColor = "white";
-          newplan.style.color = "black";
-          newplan.style.height = "50px";
-          newplan.innerText = `${planName}`;
-          newDiv.appendChild(newplan);
-          timeline.appendChild(newDiv);
         }
       }
       document.getElementById("plan_title").value = "";
@@ -385,6 +513,8 @@ window.onload = function () {
             ) {
               if (day.nextSibling == null) {
                 const newImg = document.createElement("img");
+                newImg.classList.add(`private`);
+                newImg.classList.add(`profileImagePlan`);
                 newImg.src = `${userimg}`;
                 newImg.style.width = "15px";
                 day.parentElement.appendChild(newImg);
@@ -409,6 +539,7 @@ window.onload = function () {
                 const newImg = document.createElement("img");
                 meetingimg[plan.fields.meetings];
                 newImg.src = `${meetingimg[plan.fields.meetings]}`;
+                newImg.classList.add("profileImagePlan");
                 newImg.alt = `${plan.fields.title}`;
                 newImg.style.width = "15px";
                 day.parentElement.appendChild(newImg);
@@ -487,8 +618,10 @@ return: err_msg
         </div>`;
             if (privatePlansArray.length != 0) {
               let newDiv = document.createElement("div");
+              newDiv.classList.add("private");
+              newDiv.style.height = "50px";
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img src="${userimg}" width="40" />`;
+              newmember.innerHTML = `<img class="profileImagePreview"src="${userimg}" width="40" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
               memberlist.appendChild(newmember);
@@ -556,7 +689,7 @@ return: err_msg
             publicPlansArray.forEach((plan) => {
               if (already.indexOf(`${plan.fields.meetings}`) == -1) {
                 const newmember = document.createElement("div");
-                newmember.innerHTML = `<img src="${
+                newmember.innerHTML = `<img class="profileImagePreview"src="${
                   meetingimg[plan.fields.meetings]
                 }" width="40" />`;
                 newmember.style.height = "50px";

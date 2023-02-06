@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}" />
-    <title>와플</title>
+    <title>개인 일정 상세 페이지</title>
   </head>
   <body>
     <div class="plan-detail-container">
         <div class="header">
             <a href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a> <br>
         </div>
+        
         <div class="main">
             <div class="plan-detail-title">
                 {{plan.title}}
@@ -33,7 +34,6 @@
         <!-- 여기부터 Comment------------------------------------------------ -->
         <div class="leave-comment">
           <form action="{% url 'wapl:detail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
-              <!-- 상세페이지 url 따라서 수정해주어야 하는 부분 -->
               {% csrf_token %}
               <textarea name="content" placeholder="댓글 남기기"></textarea>
               <div>

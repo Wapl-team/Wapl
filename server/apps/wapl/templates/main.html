@@ -27,9 +27,9 @@
 
     <div class="modal hidden">
       <div class="modal__content">
-        <div class="modal-close-btn">
-          <button class="closeModal">X</button>
-        </div>
+          <button class="closeModal">
+            <i class="fa-solid fa-x"></i>
+          </button>
         <div class="modal__title">일정 등록</div>
         <form id="create" name="create" method="post" class="planRegister">
           <div class="planRegister-basic">
@@ -60,16 +60,14 @@
           <div class="planRegister-publicscope">
             <select name="share-meeting-list" id="share" multiple></select>
           </div>
-          <div class="planRegister-submit">
-            <a
-              href="#"
-              id="closeModal"
-              class="closeModal2"
-              onclick="plan_create(`{{user.username}}`)"
-              >추가</a
-            >
-          </div>
         </form>
+        <a
+        href="#"
+        id="closeModal"
+        class="closeModal2"
+        onclick="plan_create(`{{user.username}}`)"
+        >추가
+      </a>
       </div>
     </div>
 
@@ -90,7 +88,6 @@
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
         ><i class="fa-solid fa-x"></i
       ></a>
-
       <div class="groupBtn">
         <button class="createGroup">
           <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
@@ -100,7 +97,6 @@
           <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
         </button>
       </div>
-
       <div class="groups">
         <div class="groupName">
           <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>

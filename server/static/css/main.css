@@ -83,23 +83,23 @@ body {
 
 .groupBtn {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: center;
   margin: 10px 0;
 }
 
 .groupBtn button {
   width: 90px;
   height: 30px;
-  padding: 5px;
-  margin: 5px;
+  margin: 3px;
   border: none;
   border-radius: 10px;
-  background-color: #fef0d6;
+  background-color:#fef0d6;
 }
 
 .groupBtn a {
   text-decoration: none;
-  color: orange;
+  color:black;
   font-size: 17px;
   font-weight: 600;
 }
@@ -164,30 +164,32 @@ body {
   align-items: center;
   background-color: white;
   padding: 1vh 10vw 3vh 10vw;
-  border-radius: 1em;
+  border-radius: 7px;
   width: 90vw;
-  box-shadow: 0.1em 0.3em 0.3em 0.1em gray;
+  box-shadow: 0px 3px 9px rgba(0,0,0,.5);
   margin-top: 2vh;
 }
-.modal-close-btn {
+
+.closeModal{
   position: relative;
+  right: -1em;
   display: flex;
   width: 100%;
   justify-content: end;
+  margin-top:15px;
+  background-color: transparent;
+  border:none;
 }
-
-.modal-close-btn button {
-  position: absolute;
-  right: -2em;
-  background-color: white;
-  border: 0;
+.closeModal i{
+  font-size: 21px;
+  color:orange;
 }
 
 .modal__title {
   color: orange;
   font-weight: bold;
-  font-size: 2em;
-  margin-bottom: 4vh;
+  font-size: 1.7em;
+  margin-bottom: 3vh;
 }
 
 .planRegister {
@@ -195,7 +197,6 @@ body {
   flex-direction: column;
   align-items: center;
   width:70vw;
-  height: 50vh;
   overflow-y: auto;
 }
 
@@ -209,20 +210,12 @@ body {
   text-align: center;
 }
 
-.planRegister-publicscope{
-  display: flex;
-  flex-direction: column;
-  margin:1em 0;
-}
-
-.scope-check{
-  display: flex;
-  align-items: center;
-}
-
-.scope-check input{
-  width:20px;
-  height:20px;
+#share{
+  width: 60vw;
+  height: 4vh;
+  background-color: wheat;
+  border: none;
+  margin: 1vh -5vw;
 }
 
 .hidden {
@@ -232,11 +225,11 @@ body {
 #closeModal {
   background-color: orange;
   color: white;
-  padding: 1vh 21vw;
+  padding: 1vh 5vw;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin: 0.3em;
+  margin-top:15px;
 }
 
 .go-today {
@@ -357,12 +350,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-decoration: none;
 }
 
 .profile a {
   text-decoration: none;
-  color: orange;
+  color:black;
   font-size: 22px;
   font-weight: bold;
 }

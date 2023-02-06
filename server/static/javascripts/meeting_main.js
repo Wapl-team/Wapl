@@ -372,7 +372,7 @@ window.onload = function () {
         const currentDays = document.querySelectorAll(".this");
         currentDays.forEach((day, i) => {
           if (isPlan[i + 1]) {
-            day.parentNode.innerHTML += `<img src="${userimg}" width="15"/>`;
+            day.parentNode.innerHTML += `<img src="${userimg}" width="15" class="profileImagePlan" />`;
           }
         });
       }

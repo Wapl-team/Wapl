@@ -109,7 +109,9 @@
           <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
             >{{meeting.meeting_name}}</a
           >
-          <a href="{% url 'wapl:meeting_info' meeting.pk %}">정보</a>
+          <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+            <i class="fa-solid fa-angle-right"></i>
+          </a>
         </div>
         {% endfor %}
       </div>

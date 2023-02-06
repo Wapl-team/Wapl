@@ -54,14 +54,16 @@ def meeting_calendar(request, pk, *args, **kwargs):
 @csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
+        default_image_index = random.randint(1, 4)
         newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
         owner = request.user,
         category = request.POST["category"],
-        invitation_code = generate_invitation_code()
+        invitation_code = generate_invitation_code(),
+        image = request.FILES.get("image"),
+        default_image = f'/static/default_image/t{default_image_index}.png',
         )
-        
         newMeeting.users.add(request.user)
         
         return redirect('wapl:main')
@@ -294,20 +296,44 @@ def unionQuerySet(objects):
 def view_plan(request):
   req = json.loads(request.body)
   year = req['year']
-  month = req['month'] + 1
+  month = req['month'] 
   login_user = request.user
   
+  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__month__lte=month, endTime__month__gte=month)
+
   meetings = login_user.user_meetings.all()
-  public_plans = unionQuerySet(list(meetings))
-  private_plans = PrivatePlan.objects.filter(owner=login_user)
-  plans = public_plans.union(private_plans)
-  plans = serializers.serialize('json', plans)
   meeting_list = serializers.serialize('json', meetings)
-  
+
+  public_plans = []
+
+  meeting_img = {}
+
+  for i in range(len(meetings)) :
+     if meetings[i].image == "":
+        meeting_img[meetings[i].pk] = meetings[i].default_image
+     else:
+        meeting_img[meetings[i].pk] = meetings[i].image.url
+
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__month__lte = month , endTime__month__gte = month)
+      public_plans += list(public_plan)
+
+
+  private_plans = serializers.serialize('json', private_plans)
+
+  public_plans = serializers.serialize('json', public_plans)
+  # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
+
+
   if request.user.image == "":
-    return JsonResponse({'plans': plans,'userimg':request.user.default_image, 'meetingList': meeting_list})
+    return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'userimg':request.user.default_image,
+                         'meetingimg':meeting_img})
   else:
-    return JsonResponse({'plans': plans, 'userimg':request.user.image.url, 'meetingList': meeting_list})
+    return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans, 'userimg':request.user.image.url,
+                         'meetingimg':meeting_img})
 
 @csrf_exempt
 def view_team_plan(request):
@@ -347,17 +373,30 @@ def view_explan(request):
 
   public_plans = []
 
+  meeting_img = {}
+
+  for i in range(len(meetings)) :
+     if meetings[i].image == "":
+        meeting_img[meetings[i].pk] = meetings[i].default_image
+     else:
+        meeting_img[meetings[i].pk] = meetings[i].image.url
+
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
     
-  plans = public_plans+list(private_plans)
-  plans = serializers.serialize('json', plans)
+
+  private_plans = serializers.serialize('json', private_plans)
+  public_plans = serializers.serialize('json', public_plans)
 
   if request.user.image == "":
-      return JsonResponse({'plans': plans, 'today': day,'userimg':request.user.default_image})
+      return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'today': day,'userimg':request.user.default_image,
+                         'meetingimg':meeting_img})
   else:
-      return JsonResponse({'plans': plans,'today': day,'userimg':request.user.image.url})
+      return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans, 'today': day,'userimg':request.user.image.url,
+                         'meetingimg':meeting_img})
 
 def list_to_queryset(model, data):
     from django.db.models.base import ModelBase

@@ -260,7 +260,8 @@ body {
 
 .date {
   width: calc(100% / 7);
-  padding: 15px;
+  height: calc(100% / 5);
+  padding: 8px;
   text-align: right;
   border-bottom: 8px solid #f6cf84;
   border-left: 8px solid #f6cf84;
@@ -269,7 +270,7 @@ body {
 
 .date-onclick {
   width: calc(100% / 7);
-  padding: 15px;
+  padding: 8px;
   text-align: right;
   border-bottom: 8px solid #f6cf84;
   border-left: 8px solid #f6cf84;
@@ -367,5 +368,8 @@ body {
 
 .profileImagePlan {
   border-radius: 10px;
-  margin: 4px;
+}
+
+.profileImagePreview {
+  border-radius: 40px;
 }

@@ -53,6 +53,8 @@ class Meeting(models.Model):
     owner = models.ForeignKey(User, related_name="meetings", on_delete=models.DO_NOTHING, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
     invitation_code = models.CharField(max_length=20, null=True)
+    image = models.ImageField(blank=True, upload_to='team_profile')
+    default_image = models.CharField(null=True, max_length=200)
 
     def __str__(self):
         return self.meeting_name

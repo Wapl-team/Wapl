@@ -79,7 +79,8 @@
           <img src="{{ user.default_image }}" width="65" class="profileImage" />
           {% endif %}
         </a>
-        <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>
+        <a href="{% url 'wapl:profile' %}"> {{user.username}} </a>
+        <div class="nim">님</div>
       </div>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
         ><i class="fa-solid fa-x"></i

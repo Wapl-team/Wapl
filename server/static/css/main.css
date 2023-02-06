@@ -60,7 +60,8 @@ body {
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
-  border:0px solid orange;
+  border: none;
+  border-left: none;
 }
 
 .sidebar-menu p {
@@ -95,7 +96,7 @@ body {
   margin: 3px;
   border: none;
   border-radius: 10px;
-  background-color:#fef0d6;
+  background-color:white;
 }
 
 .groupBtn a {
@@ -115,10 +116,10 @@ body {
   display: flex;
   justify-content: end;
   margin-top: 10px;
-  background-color: #fef0d6;
   border-radius: 10px;
   width: 80%;
-  padding: 5px;
+  padding: 10px;
+  border: 1px solid orange;
 }
 
 .groupName a {
@@ -127,6 +128,26 @@ body {
   color: black;
   font-size: 20px;
   margin-right: 1vw;
+}
+
+.privategroup {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  border-radius: 10px;
+  width: 80%;
+  padding: 10px;
+  border: 1px solid orange;
+  background-color: orange;
+}
+
+.privategroup a {
+  justify-content: end;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  margin-right: 1vw;
+  background-color: orange;
 }
 
 .orange {
@@ -143,6 +164,7 @@ body {
   background-color: white;
   border: 0;
   margin: 0.5rem;
+  color: orange;
 }
 
 .modal {
@@ -345,6 +367,10 @@ body {
 
 .detail-time div {
   width: 60px;
+}
+
+.background {
+  background-color:white;
 }
 
 .profile {

@@ -63,7 +63,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #f6ead2;
+  background-color: #fef0d6;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -82,7 +82,7 @@ body {
   top: 0;
   right: 0;
   font-size: 21px;
-  color: black;
+  color: orange;
   margin-top: 2vh;
   margin-right: 4vw;;
 }
@@ -106,7 +106,7 @@ body {
 
 .groupBtn a {
   text-decoration: none;
-  color: black;
+  color: orange;
   font-size: 17px;
   font-weight: 600;
 }
@@ -121,7 +121,7 @@ body {
   display: flex;
   justify-content: end;
   margin-top: 10px;
-  background-color: wheat;
+  background-color: white;
   border-radius: 10px;
   width: 80%;
   padding: 5px;
@@ -133,6 +133,10 @@ body {
   color: black;
   font-size: 20px;
   margin-right: 1vw;
+}
+
+.orange {
+  color: orange;
 }
 
 /* ----------------------------- */

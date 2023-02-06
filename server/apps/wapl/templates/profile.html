@@ -24,7 +24,7 @@
           <img src="{{ user.image.url }}" width="100" />
           <div id="profileCheckbox">
             <input type="checkbox" name="image-clear" id="image-clear_id" />
-            <label for="image-clear_id">취소</label>
+            <label for="image-clear_id" class="clear">취소</label>
           </div>
 
           <br />
@@ -58,8 +58,10 @@
             />
           </p>
           <!-- <p>비밀번호: <input type="password" name="password" value="{{user.password}}"/></p> -->
-          <div class="update_password">
-            <a href="{% url 'wapl:update_password' %}">비밀번호 변경</a>
+          <div>
+            <a href="{% url 'wapl:update_password' %}" class="update_password"
+              >비밀번호 변경</a
+            >
           </div>
           <div>
             <input type="submit" value="수정" class="profile-btn" />

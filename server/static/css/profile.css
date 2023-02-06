@@ -80,6 +80,10 @@ body {
   margin-bottom: 0;
 }
 
+.clear {
+  margin-left: 4vw;
+}
+
 .profile-btn {
   background-color: orange;
   border:none;
@@ -99,11 +103,11 @@ body {
   margin:10px;
 }
 
-.main a {
+.update_password {
   padding:0.3em;
+  font-weight: bold;
   color: orange;
   font-size: 17px;
-  font-weight: bold;
 }
 
 .return {
@@ -116,4 +120,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
+  font-size: 16px;
+  padding:0.3em;
 }

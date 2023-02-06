@@ -393,7 +393,6 @@ return: err_msg
   const requestExplan = new XMLHttpRequest();
   function viewDetail() {
     const day = this.childNodes[0].innerText;
-    console.log("here");
     const url = "/view_team_explan/";
     requestExplan.open("POST", url, true);
     requestExplan.setRequestHeader(

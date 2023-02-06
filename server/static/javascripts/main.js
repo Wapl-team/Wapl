@@ -121,6 +121,16 @@ const plan_create = (username) => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
+  const selectObj = document.querySelectorAll("#share");
+
+  data = selectObj.item(0).options;
+  shareMeetingList = [];
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].selected == true) {
+      shareMeetingList.push(data[i].value);
+    }
+  }
+
   requestNewPlan.send(
     JSON.stringify({
       username: username,
@@ -129,6 +139,7 @@ const plan_create = (username) => {
       startTime: startTime,
       endTime: endTime,
       content: content,
+      shareMeetings: shareMeetingList,
     })
   );
 };
@@ -589,6 +600,7 @@ return: err_msg
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
           if (publicPlansArray.length != 0 || privatePlansArray.length != 0) {
+
             memberlist.innerHTML = "";
             timeline.innerHTML = `<div class="detail-time">
           <div>0</div>
@@ -774,4 +786,15 @@ return: err_msg
   }
   let dateTarget = document.querySelectorAll(".date");
   dateTarget.forEach((target) => target.addEventListener("click", viewDetail));
+};
+
+const makeMeetingList = (meetingList) => {
+  const menu = document.querySelector("#share");
+
+  let contentString = "";
+  meetingList.forEach((meeting) => {
+    contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
+  });
+
+  menu.innerHTML = contentString;
 };

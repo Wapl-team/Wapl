@@ -355,6 +355,10 @@ body {
   white-space: nowrap;
 }
 
+.detail-timeline a{
+  text-decoration: none;
+}
+
 .detail-timeline div {
   position: relative;
   width: 1445px;

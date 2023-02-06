@@ -67,7 +67,7 @@ const makeCalendar = (meetingPK) => {
 
     dates[
       i
-    ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+    ] = `<div class="date"><p class="${condition}">${date}</p></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");

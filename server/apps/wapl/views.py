@@ -181,7 +181,7 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
         plan.save()
         
         return redirect('wapl:pubdetail', pk) 
-    return render(request, "test_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
+    return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 #일정 생성 함수 => 이건 언제 쓰는 건지? 필요없으면 삭제
 #POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
@@ -251,7 +251,7 @@ def public_detail(request, pk, *args, **kwargs):
     context = {
         "plan": plan,
         "comments" : comments,}
-    return render(request, 'test_pubDetail.html', context=context)
+    return render(request, 'plan_pubDetail.html', context=context)
 
 #개인 댓글 삭제
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):

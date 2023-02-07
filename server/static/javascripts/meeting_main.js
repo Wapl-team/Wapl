@@ -13,18 +13,19 @@ let date = new Date();
 let currentYear = date.getFullYear();
 let currentMonth = date.getMonth();
 
-const makeCalendar = (meetingPK) => {
+const makeCalendar = (meetingPK, viewYear, viewMonth) => {
   // 캘린더에 보이는 년도와 달을 보여주기 위해
-  const viewYear = date.getFullYear();
-  const viewMonth = date.getMonth();
+  // const viewYear = date.getFullYear();
+  // const viewMonth = date.getMonth();
 
   currentYear = viewYear;
-  currentMonth = viewMonth + 1;
+  currentMonth = viewMonth;
+  viewMonth -= 1;
 
   // 캘린더 년도 달 채우기
-  document.querySelector(".year-month").textContent = `${viewYear}년 ${
-    viewMonth + 1
-  }월`;
+  // document.querySelector(".year-month").textContent = `${viewYear}년 ${
+  //   viewMonth + 1
+  // }월`;
 
   // 지난 달 마지막 날짜와 요일
   const prevLast = new Date(viewYear, viewMonth, 0);
@@ -84,8 +85,11 @@ const makeCalendar = (meetingPK) => {
   }
 };
 
+const viewDate = document.querySelector(".year-month").innerHTML.split("년");
+const viewYear = parseInt(viewDate[0]);
+const viewMonth = parseInt(viewDate[1].substring(0, 2));
 const meetingPK = document.querySelector(".meeting-pk").innerHTML;
-makeCalendar(meetingPK);
+makeCalendar(meetingPK, viewYear, viewMonth);
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {

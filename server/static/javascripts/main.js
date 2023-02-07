@@ -496,9 +496,14 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, private_plans, userimg, meetingimg } = JSON.parse(
-          requestPlan.response
-        );
+        const {
+          public_plans,
+          private_plans,
+          userimg,
+          meetingimg,
+          meetingList,
+        } = JSON.parse(requestPlan.response);
+        makeMeetingList(JSON.parse(meetingList));
 
         const publicPlansArray = JSON.parse(public_plans);
         const privatePlansArray = JSON.parse(private_plans);
@@ -608,7 +613,6 @@ return: err_msg
           const timeline = document.querySelector(".detail-timeline");
           const memberlist = document.querySelector(".detail-member");
           if (publicPlansArray.length != 0 || privatePlansArray.length != 0) {
-
             memberlist.innerHTML = "";
             timeline.innerHTML = `<div class="detail-time">
           <div>0</div>

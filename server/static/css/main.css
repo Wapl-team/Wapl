@@ -360,7 +360,6 @@ body {
 }
 
 .detail-timeline div {
-  position: relative;
   width: 1445px;
 }
 
@@ -371,6 +370,10 @@ body {
 
 .detail-time div {
   width: 60px;
+}
+
+.timeline div {
+  position: relative;
 }
 
 .background {

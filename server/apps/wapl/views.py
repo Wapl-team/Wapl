@@ -13,6 +13,7 @@ from . import forms
 from django.contrib import auth
 from .validators import *
 from django.core import serializers
+from django.forms.models import model_to_dict
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from itertools import chain
@@ -134,24 +135,33 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
 def create_private_plan(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
+    title = req['title']
+    location = req['location']
     startTime = req['startTime']
     endTime = req['endTime']
-    login_user = request.user
-    meetings = login_user.user_meetings.all()
-    print(meetings)
+    content = req['content']
     shareMeetings = req['shareMeetings']
 
-    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])    
-    newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
+
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])  
+    # 새로운 plan 모델 생성  
+    newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
     
+    # 새로운 share 모델 생성
     for shareMeeting in shareMeetings:
-      print(shareMeeting)
-      new_share = Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
+      Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
 
     if request.user.image == "":
-        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
+       userimg = request.user.default_image
     else:
-        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
+       userimg = request.user.image.url
+
+    newPlan=model_to_dict(newPlan)
+
+
+    return JsonResponse({'plan':newPlan, 'userimg':userimg})
 
 @csrf_exempt
 def create_public_plan(request, *args, **kwargs):
@@ -325,7 +335,8 @@ def view_plan(request):
   year = login_user.current_date.year
   month = login_user.current_date.month
   
-  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte = year, endTime__year__gte = year, startTime__month__lte=month, endTime__month__gte=month)
+  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year, startTime__month__lte=month, endTime__month__gte=month)
+
   meetings = login_user.user_meetings.all()
   
   meeting_list = serializers.serialize('json', meetings)
@@ -339,27 +350,26 @@ def view_plan(request):
      else:
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
+  if request.user.image == "":
+       userimg = request.user.default_image
+  else:
+       userimg = request.user.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__year__lte = year, endTime__year__gte = year, startTime__month__lte = month , endTime__month__gte = month)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month)
       public_plans += list(public_plan)
 
   private_plans = serializers.serialize('json', private_plans)
-
   public_plans = serializers.serialize('json', public_plans)
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
   print(private_plans)
 
-  if request.user.image == "":
-    return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'userimg':request.user.default_image,
+
+  return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'userimg':userimg,
                          'meetingimg':meeting_img,
                          'meetingList': meeting_list})
-  else:
-    return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans, 'userimg':request.user.image.url,
-                         'meetingimg':meeting_img,
-                         'meetingList': meeting_list})
+
 
 @csrf_exempt
 def view_team_plan(request):
@@ -404,6 +414,11 @@ def view_explan(request):
 
   public_plans = []
 
+  if request.user.image == "":
+       userimg = request.user.default_image
+  else:
+       userimg = request.user.image.url
+
   meeting_img = {}
 
   for i in range(len(meetings)) :
@@ -420,13 +435,9 @@ def view_explan(request):
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
 
-  if request.user.image == "":
-      return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'today': day,'userimg':request.user.default_image,
-                         'meetingimg':meeting_img})
-  else:
-      return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans, 'today': day,'userimg':request.user.image.url,
+
+  return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'today': day,'userimg':userimg,
                          'meetingimg':meeting_img})
 
 def list_to_queryset(model, data):

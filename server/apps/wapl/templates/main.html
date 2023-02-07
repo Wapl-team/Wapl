@@ -15,8 +15,6 @@
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
         <div class="year-month"></div>
-        <div class="meeting-name">{{cur_meeting.meeting_name}}</div>
-        <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
       </div>
       <div>
         <button class="modalButton">
@@ -60,47 +58,45 @@
           <div class="planRegister-publicscope">
             <select name="share-meeting-list" id="share" multiple></select>
           </div>
+          <div class="planRegister-submit">
+            <a
+              href="#"
+              id="closeModal"
+              class="closeModal2"
+              onclick="plan_create(`{{user.username}}`)"
+              >추가</a
+            >
+          </div>
         </form>
-        <a
-          href="#"
-          id="closeModal"
-          class="closeModal2"
-          onclick="plan_create(`{{user.username}}`)"
-          >추가
-        </a>
       </div>
     </div>
 
     <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
 
     <div id="sidebar" class="sidebar-menu">
-      <div class="background">
-        <div class="profile">
-          <a href="{% url 'wapl:profile' %}">
-            {% if user.image %}
-            <img src="{{ user.image.url }}" width="65" class="profileImage" />
-            {% else %}
-            <img
-              src="{{ user.default_image }}"
-              width="65"
-              class="profileImage"
-            />
-            {% endif %}
-          </a>
-          <a href="{% url 'wapl:profile' %}">{{user.username}}</a>
-          <div class="nim">님</div>
-        </div>
-        <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
-          ><i class="fa-solid fa-x"></i
-        ></a>
-        <div class="groupBtn">
-          <button class="createGroup">
-            <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
-          </button>
-          <button class="joinGroup">
-            <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
-          </button>
-        </div>
+      <div class="profile">
+        <a href="{% url 'wapl:profile' %}">
+          {% if user.image %}
+          <img src="{{ user.image.url }}" width="65" class="profileImage" />
+          {% else %}
+          <img src="{{ user.default_image }}" width="65" class="profileImage" />
+          {% endif %}
+        </a>
+        <a href="{% url 'wapl:profile' %}">{{user.username}}</a>
+        <div class="nim">님</div>
+      </div>
+      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+        ><i class="fa-solid fa-x"></i
+      ></a>
+
+      <div class="groupBtn">
+        <button class="createGroup">
+          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+        </button>
+
+        <button class="joinGroup">
+          <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+        </button>
       </div>
 
       <div class="groups">

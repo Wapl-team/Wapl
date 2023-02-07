@@ -82,9 +82,7 @@ const makeCalendar = () => {
   }
 };
 
-const meetingPK = document.querySelector(".meeting-pk").innerHTML;
-const meetingName = document.querySelector(".meeting-name").innerHTML;
-makeCalendar(meetingName, meetingPK);
+makeCalendar();
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {

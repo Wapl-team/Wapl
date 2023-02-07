@@ -96,12 +96,12 @@ body {
   margin: 3px;
   border: none;
   border-radius: 10px;
-  background-color:white;
+  background-color: white;
 }
 
 .groupBtn a {
   text-decoration: none;
-  color:black;
+  color: black;
   font-size: 17px;
   font-weight: 600;
 }
@@ -189,23 +189,23 @@ body {
   padding: 1vh 10vw 3vh 10vw;
   border-radius: 7px;
   width: 90vw;
-  box-shadow: 0px 3px 9px rgba(0,0,0,.5);
+  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
   margin-top: 2vh;
 }
 
-.closeModal{
+.closeModal {
   position: relative;
   right: -1em;
   display: flex;
   width: 100%;
   justify-content: end;
-  margin-top:15px;
+  margin-top: 15px;
   background-color: transparent;
-  border:none;
+  border: none;
 }
-.closeModal i{
+.closeModal i {
   font-size: 21px;
-  color:orange;
+  color: orange;
 }
 
 .modal__title {
@@ -219,7 +219,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:70vw;
+  width: 70vw;
   overflow-y: auto;
 }
 
@@ -233,7 +233,7 @@ body {
   text-align: center;
 }
 
-#share{
+#share {
   width: 60vw;
   height: 4vh;
   background-color: wheat;
@@ -252,7 +252,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin-top:15px;
+  margin-top: 15px;
 }
 
 .go-today {
@@ -278,7 +278,7 @@ body {
   border-right: 1px solid orange;
   background-color: white;
   border-radius: 5px;
-  margin-top:1em;
+  margin-top: 1em;
 }
 
 .date {
@@ -294,7 +294,7 @@ body {
   width: calc(100% / 7);
   padding: 8px;
   text-align: right;
-  border-bottom:1px solid orange;
+  border-bottom: 1px solid orange;
   border-left: 1px solid orange;
   box-shadow: none;
   background-color: antiquewhite;
@@ -355,7 +355,7 @@ body {
   white-space: nowrap;
 }
 
-.detail-timeline a{
+.detail-timeline a {
   text-decoration: none;
 }
 
@@ -374,7 +374,7 @@ body {
 }
 
 .background {
-  background-color:white;
+  background-color: white;
 }
 
 .profile {
@@ -385,7 +385,7 @@ body {
 
 .profile a {
   text-decoration: none;
-  color:orange;
+  color: orange;
   font-size: 22px;
   font-weight: bold;
 }

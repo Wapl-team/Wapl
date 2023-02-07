@@ -91,11 +91,10 @@ const makeMeetingList = (meetingList) => {
   menu.innerHTML = contentString;
 };
 
-  // 캘린더에 보이는 년도와 달을 보여주기 위해
-  // const viewYear = date.getFullYear();
-  // const viewMonth = date.getMonth();
+// 캘린더에 보이는 년도와 달을 보여주기 위해
+// const viewYear = date.getFullYear();
+// const viewMonth = date.getMonth();
 const makeCalendar = (viewYear, viewMonth) => {
-
   currentYear = viewYear;
   currentMonth = viewMonth;
   viewMonth -= 1;
@@ -160,6 +159,8 @@ const makeCalendar = (viewYear, viewMonth) => {
         break;
       }
     }
+  } else {
+    document.querySelector(".day-1").classList.add("today");
   }
 };
 
@@ -257,11 +258,12 @@ const plan_create = () => {
 
         // 새로운 일정이 내가 현재 보고있는 달력의 일정이라면 thumbnail 추가
         if (
-          startDate.getFullYear() <= date.getFullYear() &&
-          date.getFullYear() <= endDate.getFullYear() &&
-          startDate.getMonth() <= date.getMonth() &&
-          date.getMonth() <= endDate.getMonth()
+          startDate.getFullYear() <= viewYear &&
+          viewYear <= endDate.getFullYear() &&
+          startDate.getMonth() + 1 <= viewMonth &&
+          viewMonth <= endDate.getMonth() + 1
         ) {
+          console.log("Here");
           for (let i = startDate.getDate(); i <= endDate.getDate(); i++) {
             const day = document.querySelector(`.day-${i}`);
             if (
@@ -425,7 +427,7 @@ window.onload = function () {
               currentYear,
               currentMonth - 1,
               day.innerText
-              );
+            );
             if (
               startTime.setHours(0, 0, 0, 0) <= today &&
               today <= endTime.setHours(0, 0, 0, 0)
@@ -485,7 +487,7 @@ window.onload = function () {
       "Content-Type",
       "applcation/x-www-form-urlencoded"
     );
-    console.log(currentMonth)
+    console.log(currentMonth);
     requestExplan.send(
       JSON.stringify({
         year: currentYear,
@@ -596,4 +598,3 @@ window.onload = function () {
     target.parentNode.addEventListener("click", viewDetail)
   );
 };
-

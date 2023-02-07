@@ -22,6 +22,7 @@ import random
 import uuid
 import base64
 import codecs
+from datetime import datetime
 
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
@@ -30,9 +31,21 @@ import codecs
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
+  try:
+    viewDate = request.GET['select-date'].split('-')
+    year = viewDate[0]
+    month = viewDate[1]
+    login_user.current_date = f"{year}-{month}-01"
+    login_user.save()
+  except:
+    year = login_user.current_date.year
+    month = login_user.current_date.month
   context = {            
             'meetings' : meetings, 
-            'meeting_name': ''}
+            'meeting_name': '',
+            'view_year': year,
+            'view_month': month,
+            }
   
   return render(request, "main.html", context=context)
 
@@ -42,10 +55,20 @@ def meeting_calendar(request, pk, *args, **kwargs):
   cur_meeting = Meeting.objects.all().get(id=pk)
   
   meetings = login_user.user_meetings.all()
-  
-  
+  try:
+    viewDate = request.GET['select-date'].split('-')
+    year = viewDate[0]
+    month = viewDate[1]
+    login_user.current_date = f"{year}-{month}-01"
+    login_user.save()
+  except:
+        year = login_user.current_date.year
+        month = login_user.current_date.month
   context = {'cur_meeting': cur_meeting,
-             'meetings': meetings}
+             'meetings': meetings,
+             'view_year': year,
+            'view_month': month,
+            }
   return render(request, "meeting_main.html", context=context)
 
 
@@ -281,6 +304,9 @@ def login(request:HttpRequest, *args, **kwargs):
         return render(request, template_name='login.html')
 
 def logout(request:HttpRequest, *args, **kwargs):
+    login_user = request.user
+    login_user.current_date = f'{datetime.now().year}-{datetime.now().month}-01'
+    login_user.save()
     auth.logout(request)
     return redirect('wapl:start')
 
@@ -305,9 +331,9 @@ def unionQuerySet(objects):
 @csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
-  year = req['year']
-  month = req['month'] 
   login_user = request.user
+  year = login_user.current_date.year
+  month = login_user.current_date.month
   
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year, startTime__month__lte=month, endTime__month__gte=month)
 
@@ -333,11 +359,10 @@ def view_plan(request):
       public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month)
       public_plans += list(public_plan)
 
-
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-
+  print(private_plans)
 
 
   return JsonResponse({'public_plans': public_plans,
@@ -349,17 +374,18 @@ def view_plan(request):
 @csrf_exempt
 def view_team_plan(request):
   req = json.loads(request.body)
-  year = req['year']
-  month = req['month'] + 1
-  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
   login_user = request.user
+  year = login_user.current_date.year
+  month = login_user.current_date.month
+  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
   
   meetingObj = Meeting.objects.all().get(id=meeting_pk)
   share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
   share_plans = []
   for share in share_list:
-    share_plans.append(share.plan)
-  
+    if share.plan.startTime.year <= year and share.plan.endTime.year >= year and share.plan.startTime.month <= month and share.plan.endTime.month >= month:
+        share_plans.append(share.plan)
+
   public_plans = list(meetingObj.plans.all())
   private_plans = share_plans
   
@@ -508,3 +534,25 @@ def generate_invitation_code(length=10):
     return base64.urlsafe_b64encode(
         codecs.encode(uuid.uuid4().bytes, "base64").rstrip()
     ).decode()[:length]
+
+def select_date_main(request, *args, **kwargs):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    login_user = request.user
+    login_user.current_date = f"{year}-{month}-01"
+    login_user.save()
+
+    return redirect('wapl:main')
+
+def select_date_meeting(request, *args, **kwargs):
+    req = json.loads(request.body)
+    year = req['year']
+    month = req['month']
+    meeting_id = req['meeting_id']
+    login_user = request.user
+    login_user.current_date = f"{year}-{month}-01"
+    login_user.save()
+
+    url = reverse('wapl:meeting_calendar', args=[meeting_id])
+    return redirect(url)

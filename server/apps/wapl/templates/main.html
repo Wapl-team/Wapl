@@ -14,8 +14,12 @@
         <button onclick="openToggle()">
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
-        <div class="year-month"></div>
       </div>
+      <div class="year-month">{{view_year}}년{{view_month}}월</div>
+      <form action="/main">
+      <input type="date" name="select-date" />
+      <input type="submit" value="선택하기" />
+      </form>
       <div>
         <button class="modalButton">
           <i class="fa-solid fa-plus fa-2x"></i>

@@ -22,6 +22,8 @@ urlpatterns= [
     path('view_explan/', views.view_explan, name='view_explan'),
     path('view_team_plan/', views.view_team_plan, name='view_team_plan'),
     path('view_team_explan/', views.view_team_explan, name='view_team_explan'),
+    path('select_date_main/', views.select_date_main, name='select_date_main'),
+    path('select_date_meeting/', views.select_date_meeting, name='select_date_meeting'),
     
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),

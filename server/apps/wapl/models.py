@@ -18,6 +18,7 @@ class User(AbstractUser):
   email = models.EmailField(null=True)
   image = models.ImageField(blank=True, upload_to='profile')
   default_image = models.CharField(null=True, max_length=200)
+  current_date = models.DateField(auto_now_add=True, null=True)
     
 # 일정
 # 필드: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(owner)

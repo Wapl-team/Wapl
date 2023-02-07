@@ -88,21 +88,22 @@ const makeMeetingList = (meetingList) => {
   meetingList.forEach((meeting) => {
     contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
   });
-
   menu.innerHTML = contentString;
 };
-// 달력이 만들어지는 함수 :
-// ajax 사용 x -> 달력이 모두 만들어진 후에 뒤의 코드가 실행되기 때문에
-// onload가 필요 없을 것으로 예상
-const makeCalendar = () => {
+
   // 캘린더에 보이는 년도와 달을 보여주기 위해
-  const viewYear = date.getFullYear();
-  const viewMonth = date.getMonth();
+  // const viewYear = date.getFullYear();
+  // const viewMonth = date.getMonth();
+const makeCalendar = (viewYear, viewMonth) => {
+
+  currentYear = viewYear;
+  currentMonth = viewMonth;
+  viewMonth -= 1;
 
   // 캘린더 년도 달 채우기
-  document.querySelector(".year-month").textContent = `${viewYear}년 ${
-    viewMonth + 1
-  }월`;
+  // document.querySelector(".year-month").textContent = `${viewYear}년 ${
+  //   viewMonth + 1
+  // }월`;
 
   // 지난 달 마지막 날짜와 요일
   const prevLast = new Date(viewYear, viewMonth, 0);
@@ -162,7 +163,10 @@ const makeCalendar = () => {
   }
 };
 
-makeCalendar();
+const viewDate = document.querySelector(".year-month").innerHTML.split("년");
+const viewYear = parseInt(viewDate[0]);
+const viewMonth = parseInt(viewDate[1].substring(0, 2));
+makeCalendar(viewYear, viewMonth);
 
 // // 이전 달 그리는 함수
 // const prevMonth = () => {
@@ -421,7 +425,7 @@ window.onload = function () {
               currentYear,
               currentMonth - 1,
               day.innerText
-            );
+              );
             if (
               startTime.setHours(0, 0, 0, 0) <= today &&
               today <= endTime.setHours(0, 0, 0, 0)
@@ -481,6 +485,7 @@ window.onload = function () {
       "Content-Type",
       "applcation/x-www-form-urlencoded"
     );
+    console.log(currentMonth)
     requestExplan.send(
       JSON.stringify({
         year: currentYear,
@@ -591,3 +596,4 @@ window.onload = function () {
     target.parentNode.addEventListener("click", viewDetail)
   );
 };
+

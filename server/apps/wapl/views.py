@@ -334,8 +334,23 @@ def view_plan(request):
   login_user = request.user
   year = login_user.current_date.year
   month = login_user.current_date.month
+
+
+  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
+
   
-  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year, startTime__month__lte=month, endTime__month__gte=month)
+  private_plans = list(private_plans)
+  private_plans_filtered = []
+  for i in range(len(private_plans)):
+      if private_plans[i].startTime.year == private_plans[i].endTime.year:
+        if private_plans[i].startTime.month <= private_plans[i].endTime.month:
+            private_plans_filtered.append(private_plans[i])
+      else:
+        private_plans_filtered.append(private_plans[i])
+        
+      
+  print(private_plans_filtered)
+    
 
   meetings = login_user.user_meetings.all()
   

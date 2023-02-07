@@ -7,42 +7,67 @@ const memberlist = document.querySelector(".detail-member");
 const detailtime = document.querySelector(".detail-time");
 
 // 타임라인 바 길이 계산 함수
-function calcTime(startDate, endDate, currentDate) {
+function calcTime(startDatetime, endDatetime, currentDatetime) {
   let start = "";
   let hours = "";
   let minutes = "";
 
-  if (parseInt(endDate.getDate()) == parseInt(currentDate)) {
+  const startDate = new Date(startDatetime);
+  startDate.setHours(0, 0, 0, 0);
+  const endDate = new Date(endDatetime);
+  endDate.setHours(0, 0, 0, 0);
+
+  const currentDate = new Date(viewYear, viewMonth - 1, currentDatetime);
+
+  if (
+    endDate.getFullYear() == currentDate.getFullYear() &&
+    endDate.getMonth() == currentDate.getMonth() &&
+    endDate.getDate() == currentDate.getDate()
+  ) {
+    console.log("here");
     // 앞쪽에서부터 겹치는 경우
 
-    if (parseInt(startDate.getDate()) < parseInt(currentDate)) {
+    if (startDate < currentDate) {
       start = 0;
-      hours = endDate.getHours();
-      minutes = endDate.getMinutes();
+      hours = endDatetime.getHours();
+      minutes = endDatetime.getMinutes();
     }
     // 가운데에 있는 경우
-    else if (parseInt(startDate.getDate()) == parseInt(currentDate)) {
+    else if (
+      startDate.getFullYear() == currentDate.getFullYear() &&
+      startDate.getMonth() == currentDate.getMonth() &&
+      startDate.getDate() == currentDate.getDate()
+    ) {
       start =
-        parseInt(startDate.getHours() * 60) + parseInt(startDate.getMinutes());
-      hours = endDate.getHours() - startDate.getHours();
-      minutes = endDate.getMinutes() - startDate.getMinutes();
+        parseInt(startDatetime.getHours() * 60) +
+        parseInt(startDatetime.getMinutes());
+      hours = endDatetime.getHours() - startDatetime.getHours();
+      minutes = endDatetime.getMinutes() - startDatetime.getMinutes();
     }
-  } else if (parseInt(endDate.getDate()) > parseInt(currentDate)) {
+  } else if (endDate > currentDate) {
+    console.log("here");
     // 뒤로 겹치는 경우
 
-    if (parseInt(startDate.getDate()) == parseInt(currentDate)) {
+    if (
+      startDate.getFullYear() == currentDate.getFullYear() &&
+      startDate.getMonth() == currentDate.getMonth() &&
+      startDate.getDate() == currentDate.getDate()
+    ) {
+      console.log("here");
       start =
-        parseInt(startDate.getHours() * 60) + parseInt(startDate.getMinutes());
-      if (startDate.getMinutes() == "00") {
+        parseInt(startDatetime.getHours() * 60) +
+        parseInt(startDatetime.getMinutes());
+      if (startDatetime.getMinutes() == "00") {
         minutes = "00";
-        hours = "24" - startDate.getHours();
+        hours = "24" - startDatetime.getHours();
       } else {
-        minutes = "60" - startDate.getMinutes();
-        hours = "23" - startDate.getHours();
+        minutes = "60" - startDatetime.getMinutes();
+        hours = "23" - startDatetime.getHours();
       }
     }
     // 통으로 겹치는 경우
-    else if (parseInt(startDate.getDate()) < parseInt(currentDate)) {
+    else if (startDate < currentDate) {
+      console.log("here2");
       start = 0;
       hours = "24";
       minutes = "00";
@@ -252,6 +277,7 @@ const plan_create = () => {
 
         // 새로운 일정이 내가 현재 보고있는 달력의 일정이라면 thumbnail 추가
         if (
+          // 월초월 년초월 ajax 해결 요망
           startDate.getFullYear() <= viewYear &&
           viewYear <= endDate.getFullYear() &&
           startDate.getMonth() + 1 <= viewMonth &&
@@ -500,6 +526,7 @@ window.onload = function () {
           // 이미 타임라인에 있는 라인인지 확인
           let already = [];
 
+          console.log(private_plans);
           privatePlansArray.forEach((plan) => {
             if (already.indexOf(`private`) == -1) {
               let newDiv = document.createElement("div");

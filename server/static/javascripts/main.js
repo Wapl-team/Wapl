@@ -11,21 +11,17 @@ function calcTime(startDate, endDate, currentDate) {
   let start = "";
   let hours = "";
   let minutes = "";
-  console.log(parseInt(startDate.getDate()));
-  console.log(parseInt(endDate.getDate()));
-  console.log(parseInt(currentDate));
+
   if (parseInt(endDate.getDate()) == parseInt(currentDate)) {
     // 앞쪽에서부터 겹치는 경우
-    console.log("1");
+
     if (parseInt(startDate.getDate()) < parseInt(currentDate)) {
-      console.log("2");
       start = 0;
       hours = endDate.getHours();
       minutes = endDate.getMinutes();
     }
     // 가운데에 있는 경우
     else if (parseInt(startDate.getDate()) == parseInt(currentDate)) {
-      console.log("3");
       start =
         parseInt(startDate.getHours() * 60) + parseInt(startDate.getMinutes());
       hours = endDate.getHours() - startDate.getHours();
@@ -33,9 +29,8 @@ function calcTime(startDate, endDate, currentDate) {
     }
   } else if (parseInt(endDate.getDate()) > parseInt(currentDate)) {
     // 뒤로 겹치는 경우
-    console.log("4");
+
     if (parseInt(startDate.getDate()) == parseInt(currentDate)) {
-      console.log("5");
       start =
         parseInt(startDate.getHours() * 60) + parseInt(startDate.getMinutes());
       if (startDate.getMinutes() == "00") {
@@ -48,7 +43,6 @@ function calcTime(startDate, endDate, currentDate) {
     }
     // 통으로 겹치는 경우
     else if (parseInt(startDate.getDate()) < parseInt(currentDate)) {
-      console.log("6");
       start = 0;
       hours = "24";
       minutes = "00";
@@ -263,7 +257,6 @@ const plan_create = () => {
           startDate.getMonth() + 1 <= viewMonth &&
           viewMonth <= endDate.getMonth() + 1
         ) {
-          console.log("Here");
           for (let i = startDate.getDate(); i <= endDate.getDate(); i++) {
             const day = document.querySelector(`.day-${i}`);
             if (
@@ -487,7 +480,7 @@ window.onload = function () {
       "Content-Type",
       "applcation/x-www-form-urlencoded"
     );
-    console.log(currentMonth);
+
     requestExplan.send(
       JSON.stringify({
         year: currentYear,

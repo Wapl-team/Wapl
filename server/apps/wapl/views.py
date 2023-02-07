@@ -362,7 +362,7 @@ def view_plan(request):
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
   # PrivatePlan에서 owner가 로그인 유저인 Plan 필터링 예정
-  print(private_plans)
+
 
 
   return JsonResponse({'public_plans': public_plans,

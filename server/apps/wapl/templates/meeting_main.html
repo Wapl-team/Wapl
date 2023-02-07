@@ -79,7 +79,8 @@
           <img src="{{ user.default_image }}" width="65" class="profileImage" />
           {% endif %}
         </a>
-        <a href="{% url 'wapl:profile' %}"> {{ user.username}} 님 </a>
+        <a href="{% url 'wapl:profile' %}"> {{user.username}} </a>
+        <div class="nim">님</div>
       </div>
       <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
         ><i class="fa-solid fa-x"></i
@@ -96,7 +97,7 @@
       </div>
 
       <div class="groups">
-        <div class="groupName">
+        <div class="privategroup">
           <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
         </div>
         {% for meeting in meetings %}
@@ -104,7 +105,9 @@
           <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
             >{{meeting.meeting_name}}</a
           >
-          <a href="{% url 'wapl:meeting_info' meeting.pk %}">정보</a>
+          <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+            <i class="fa-solid fa-angle-right orange"></i>
+          </a>
         </div>
         {% endfor %}
       </div>

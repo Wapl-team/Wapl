@@ -67,7 +67,7 @@ const makeCalendar = (meetingPK) => {
 
     dates[
       i
-    ] = `<div class="date"><span class="${condition}">${date}</span></div>`;
+    ] = `<div class="date"><p class="${condition}">${date}</p></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");
@@ -272,10 +272,18 @@ requestNewPlan.onreadystatechange = () => {
 
 function openToggle() {
   document.getElementById("sidebar").style.width = "250px";
+  document.getElementById("sidebar").style.border = "2px solid orange";
+  document.getElementById("sidebar").style.borderLeft = "none";
+  document.getElementById("sidebar").style.borderTop = "none";
+  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
+  document.getElementById("sidebar").style.border = "none";
+  document.getElementById("sidebar").style.borderLeft = "none";
+  document.getElementById("sidebar").style.borderTop = "none";
+  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 const modalButton = document.querySelector(".modalButton");
@@ -372,7 +380,7 @@ window.onload = function () {
         const currentDays = document.querySelectorAll(".this");
         currentDays.forEach((day, i) => {
           if (isPlan[i + 1]) {
-            day.parentNode.innerHTML += `<img src="${userimg}" width="15"/>`;
+            day.parentNode.innerHTML += `<img src="${userimg}" width="15" class="profileImagePlan" />`;
           }
         });
       }

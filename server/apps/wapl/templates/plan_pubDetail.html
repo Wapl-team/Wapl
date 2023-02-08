@@ -33,7 +33,7 @@
         <hr>
         <!-- 여기부터 Comment------------------------------------------------ -->
         <div class="leave-comment">
-          <form action="{% url 'wapl:detail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
+          <form action="{% url 'wapl:pubdetail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
               {% csrf_token %}
               <textarea name="content" placeholder="댓글 남기기"></textarea>
               <div>

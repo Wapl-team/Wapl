@@ -46,6 +46,9 @@ h2{
     align-items: center;
     justify-content: center;
     font-weight: normal;
+    position: fixed;
+    bottom: 9vh;
+    left: 21vw;
 }
 
 .meetingInfo div{

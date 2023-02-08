@@ -14,13 +14,13 @@
         <button onclick="openToggle()">
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
-        <div class="meeting-name">{{cur_meeting.meeting_name}}</div>
-        <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
       </div>
+      <div class="meeting-name">{{cur_meeting.meeting_name}}</div>
+      <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
       <div class="year-month">{{view_year}}년{{view_month}}월</div>
       <form action="/main">
-      <input type="date" name="select-date" />
-      <input type="submit" value="선택하기" />
+        <input type="date" name="select-date" />
+        <input type="submit" value="선택하기" />
       </form>
       <div>
         <button class="modalButton">
@@ -31,43 +31,44 @@
 
     <div class="modal hidden">
       <div class="modal__content">
-        <div class="modal-close-btn">
-          <button class="closeModal">X</button>
-        </div>
+        <button class="closeModal">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <div class="modal__title">일정 등록</div>
         <form id="create" name="create" method="post" class="planRegister">
-          <div class="modal__title">일정 등록</div>
-          <input
-            type="text"
-            name="title"
-            placeholder="새로운 일정"
-            id="plan_title"
-          />
-          <input
-            type="text"
-            name="location"
-            placeholder="장소"
-            id="plan_location"
-          />
-          <br />
-          <p>시작 시간</p>
-          <input type="datetime-local" name="date" id="plan_startTime" />
-          <br />
-          <p>끝 시간</p>
-          <input type="datetime-local" name="date" id="plan_endTime" />
-          <br />
-          <input
-            type="text"
-            name="content"
-            placeholder="내용"
-            id="plan_content"
-          />
-          <a
-            href="#"
-            id="closeModal"
-            class="closeModal2"
-            onclick="plan_create(`{{user.username}}`, `{{cur_meeting.meeting_name}}`)"
-            >추가</a
-          >
+          <div class="planRegister-basic">
+            <input
+              type="text"
+              name="title"
+              placeholder="새로운 일정"
+              id="plan_title"
+            />
+            <input
+              type="text"
+              name="location"
+              placeholder="장소"
+              id="plan_location"
+            />
+            <div>시작 시간</div>
+            <input type="datetime-local" name="date" id="plan_startTime" />
+            <div>끝 시간</div>
+            <input type="datetime-local" name="date" id="plan_endTime" />
+            <input
+              type="text"
+              name="content"
+              placeholder="내용"
+              id="plan_content"
+            />
+          </div>
+          <div class="planRegister-submit">
+            <a
+              href="#"
+              id="closeModal"
+              class="closeModal2"
+              onclick="plan_create()"
+              >추가</a
+            >
+          </div>
         </form>
       </div>
     </div>

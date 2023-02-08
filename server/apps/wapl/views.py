@@ -40,20 +40,22 @@ def main(request:HttpRequest,*args, **kwargs):
   except:
     year = login_user.current_date.year
     month = login_user.current_date.month
-  context = {            
-            'meetings' : meetings, 
+  context = {
+            'meetings' : meetings,
             'meeting_name': '',
             'view_year': year,
             'view_month': month,
             }
-  
+
   return render(request, "main.html", context=context)
 
 @csrf_exempt
 def meeting_calendar(request, pk, *args, **kwargs):
   login_user = request.user
+  # Review : login_user가 없으면 에러 발생. 핸들링 필요
+  # Review : 혹은 @login_required 데코레이터 필요
   cur_meeting = Meeting.objects.all().get(id=pk)
-  
+
   meetings = login_user.user_meetings.all()
   try:
     viewDate = request.GET['select-date'].split('-')
@@ -79,6 +81,7 @@ def meeting_calendar(request, pk, *args, **kwargs):
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         default_image_index = random.randint(1, 4)
+        # Review : 변수명 CamelCase vs snake_head 통일 필요
         newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
         content = request.POST["content"],
@@ -89,13 +92,13 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         default_image = f'/static/default_image/t{default_image_index}.png',
         )
         newMeeting.users.add(request.user)
-        
+
         return redirect('wapl:main')
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
     }
-    
+
     return render(request, "meeting_create.html", context=context)
 
 def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
@@ -124,7 +127,7 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
 
     else:
         return render(request, 'meeting_join.html')
-    
+
 # 일정+Comment pt 입니다-----------------------------------------------------------------
 
 # 일정 생성 함수
@@ -145,10 +148,10 @@ def create_private_plan(request, *args, **kwargs):
     login_user = request.user
     meetings = login_user.user_meetings.all()
 
-    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])  
-    # 새로운 plan 모델 생성  
+    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
+    # 새로운 plan 모델 생성
     newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
-    
+
     # 새로운 share 모델 생성
     for shareMeeting in shareMeetings:
       Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
@@ -173,7 +176,7 @@ def create_public_plan(request, *args, **kwargs):
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     newPlan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
-    
+
 
     if request.user.image == "":
         return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
@@ -189,7 +192,7 @@ def update(request:HttpRequest, pk, *args, **kwargs):
     plan = Plan.objects.get(id=pk)
     plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
-    
+
     if request.method == "POST":
         plan.startTime = request.POST["startTime"]
         plan.endTime = request.POST["endTime"]
@@ -197,8 +200,8 @@ def update(request:HttpRequest, pk, *args, **kwargs):
         plan.title = request.POST["title"]
         plan.content = request.POST["content"]
         plan.save()
-        
-        return redirect('wapl:detail', pk) 
+
+        return redirect('wapl:detail', pk)
     return render(request, "plan_update.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 
@@ -226,7 +229,7 @@ def delete(request:HttpRequest, pk, *args, **kwargs):
 def detail(request, pk, *args, **kwargs):
     # plan = Plan.objects.all().get(id=pk)
     plan = get_object_or_404(PrivatePlan, pk=pk)
-    
+
     startTime = str(plan.startTime)
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -235,8 +238,8 @@ def detail(request, pk, *args, **kwargs):
                 user=request.user,
                 plan_post=plan,
             )
-            return redirect('wapl:detail', pk) 
-    
+            return redirect('wapl:detail', pk)
+
     context = {
         "plan": plan,
    }
@@ -245,7 +248,7 @@ def detail(request, pk, *args, **kwargs):
 def public_detail(request, pk, *args, **kwargs):
     # plan = Plan.objects.all().get(id=pk)
     plan = get_object_or_404(PrivatePlan, pk=pk)
-    
+    # Review : CamelCase vs snake_head 변수명 통일 필요
     startTime = str(plan.startTime)
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -254,8 +257,8 @@ def public_detail(request, pk, *args, **kwargs):
                 user=request.user,
                 plan_post=plan,
             )
-            return redirect('wapl:detail', pk) 
-    
+            return redirect('wapl:detail', pk)
+
     comments = Comment.objects.all().filter(plan_post=plan)
     context = {
         "plan": plan,
@@ -263,10 +266,11 @@ def public_detail(request, pk, *args, **kwargs):
     return render(request, 'plan_detail.html', context=context)
 
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
+    # Review : pk만 있으면 누구나 삭제 가능한데, 의도한 바가 맞나요?
     if request.method == "POST":
         comment = Comment.objects.get(id=pk)
         comment.delete()
-        
+
     return redirect('wapl:detail', ak)
 
 # -------------------------------------------------------------------------
@@ -327,18 +331,33 @@ def unionQuerySet(objects):
     data = []
   return data
 
-# 개인달력 출력 
+# 개인달력 출력
 @csrf_exempt
 def view_plan(request):
   req = json.loads(request.body)
   login_user = request.user
   year = login_user.current_date.year
   month = login_user.current_date.month
-  
-  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year, startTime__month__lte=month, endTime__month__gte=month)
+
+
+  private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
+
+
+  private_plans = list(private_plans)
+  private_plans_filtered = []
+  for i in range(len(private_plans)):
+      if private_plans[i].startTime.year == private_plans[i].endTime.year:
+        if private_plans[i].startTime.month <= private_plans[i].endTime.month:
+            private_plans_filtered.append(private_plans[i])
+      else:
+        private_plans_filtered.append(private_plans[i])
+
+
+  print(private_plans_filtered)
+
 
   meetings = login_user.user_meetings.all()
-  
+
   meeting_list = serializers.serialize('json', meetings)
   public_plans = []
 
@@ -378,7 +397,7 @@ def view_team_plan(request):
   year = login_user.current_date.year
   month = login_user.current_date.month
   meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
-  
+
   meetingObj = Meeting.objects.all().get(id=meeting_pk)
   share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
   share_plans = []
@@ -388,11 +407,11 @@ def view_team_plan(request):
 
   public_plans = list(meetingObj.plans.all())
   private_plans = share_plans
-  
+
   # private_plans = serializers.serialize('json', private_plans)
   public_plans.extend(private_plans)
   public_plans = serializers.serialize('json', public_plans)
-  
+
   if request.user.image == "":
     return JsonResponse({'plans': public_plans, 'userimg':request.user.default_image})
   else:
@@ -430,7 +449,7 @@ def view_explan(request):
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
-    
+
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -454,7 +473,7 @@ def list_to_queryset(model, data):
 
     pk_list = [obj.pk for obj in data]
     return model.objects.filter(pk__in=pk_list)
-  
+
 @csrf_exempt
 def view_team_explan(request):
     req = json.loads(request.body)
@@ -469,24 +488,24 @@ def view_team_explan(request):
     share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
     share_plans = [obj.plan for obj in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
-    
+
     public_plans= list(PublicPlan.objects.filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today))
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
-    
+
     public_plans.extend(share_plans)
     public_plans = serializers.serialize('json', public_plans)
     # private_plans = serializers.serialize('json', share_plans)
-    
+
     if request.user.image == "":
-        return JsonResponse({'plans': public_plans,                             
+        return JsonResponse({'plans': public_plans,
                              'today': day,
                              'userimg':request.user.default_image})
     else:
-        return JsonResponse({'plans': public_plans,                        
+        return JsonResponse({'plans': public_plans,
                             'today': day,
                             'userimg':request.user.image.url})
 
-  
+
 
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):
@@ -522,6 +541,7 @@ def update_password(request, *args, **kwargs):
         return render(request, 'update_password.html')
 
 def meeting_info(request, pk, *args, **kwargs):
+    # Review : pk만 있으면 누구나 미팅을 볼 수 있는데, 의도한 바가 맞나요?
     meeting = Meeting.objects.get(id=pk)
     users = meeting.users.all()
     context = {

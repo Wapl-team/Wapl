@@ -493,7 +493,7 @@ return: err_msg
               let newDiv = document.createElement("div");
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
-              newplan.href = `plan/${plan.pk}`;
+              newplan.href = `../pubplan/${plan.pk}`;
               newplan.style.position = "absolute";
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;

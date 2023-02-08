@@ -10,7 +10,7 @@
 </head>
 <body>
     <h2>일정 수정</h2>
-    <form action="{% url 'wapl:update' plan.pk %}" method="post" enctype="multipart/form-data" class="planUpdate">
+    <form action="{% url 'wapl:pubupdate' plan.pk %}" method="post" enctype="multipart/form-data" class="planUpdate">
         {% csrf_token %}
         <div>제목</div>
         <input type="text" name="title" value="{{plan.title}}" /> 

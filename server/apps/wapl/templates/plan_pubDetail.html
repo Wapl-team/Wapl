@@ -71,7 +71,7 @@
             {% csrf_token %}
             <input type="submit" , value="삭제하기" />
          </form>
-         <a href="{% url 'wapl:update' plan.pk %}" class="update-plan">수정하기</a>
+         <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan">수정하기</a>
         </div>
     </div>
     

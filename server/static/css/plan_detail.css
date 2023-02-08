@@ -60,7 +60,7 @@ body{
   }
 
   .comment-container{
-    max-height: 300px;
+    max-height: 150px;
     overflow-y: scroll;
   }
   .leave-comment input,
@@ -99,11 +99,6 @@ body{
     margin-left: 0.3em;
   }
 
-
-  .delete-comment{
-    display: flex;
-    flex-direction: row;
-  }
   
   .delete-comment form input,
   .delete-comment input{

@@ -58,31 +58,31 @@
             </div>
 
             <div class="delete-comment">
-              <form action="{% url 'wapl:comment_delete' plan.pk comment.pk %}" method="post">
+              <form action="{% url 'wapl:pubcomment_delete' plan.pk comment.pk %}" method="post">
                 {% csrf_token %}
-                    <input type="submit" value="삭제" />|
-              </form>
-              <input type="submit" value="답글" class="reply_button"/>
+                    <input type="submit" value="삭제" />
+              </form>   
+              <input type="submit" value="답글" class="reply_button"  style="color:darkgray"/>
             </div>
-            </div>
+          </div>
+          
 
-            <!-- 대댓글 보여주는 구간 -->
-            <div>
-            {% for reply in replys %}
-            {% if reply.comment_post.id == comment.id %}
-            <div class="show-comment"> 
-              <div class="user-comment">
-                <div class="user-comment-info">
-                  <div class="user-comment-user">↪ {{reply.user}}</div> 
-                  {% if reply.created_string == False %}
-                  {% csrf_token %}
-                  <span class="user-comment-time">{{ reply.created_at|date:'m월 d일' }}</span>
-                  {% else %}
-                  <span class="user-comment-time">{{ reply.created_string }}</span>
-                  {% endif %}
-                </div>
-                <div class="user-comment-content">↪ {{reply.content}}</div>
+          <!-- 대댓글 보여주는 구간 -->
+          <div>
+          {% for reply in replys %}
+          {% if reply.comment_post.id == comment.id %}
+          <div class="show-comment"> 
+            <div class="user-comment">
+              <div class="user-comment-info">
+                <div class="user-comment-user">↪ {{reply.user}}</div> 
+                {% if reply.created_string == False %}
+                {% csrf_token %}
+                <span class="user-comment-time">{{ reply.created_at|date:'m월 d일' }}</span>
+                {% else %}
+                <span class="user-comment-time">{{ reply.created_string }}</span>
+                {% endif %}
               </div>
+              <div class="user-comment-content">&emsp;{{reply.content}}</div>
             </div>
 
             <div class="delete-comment">
@@ -90,24 +90,26 @@
                 {% csrf_token %}
                     <input type="submit" value="삭제" />
               </form>
-            </div>
-              {% endif %}
-              {% endfor %}
-            </div>
 
-            <!-- 대댓글을 생성하는 input 구간 -->
-            <div class="reply-container" style="display: none">
-              <form action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}" method="post" style="display:flex; margin: 10px 0;">
-                {% csrf_token %}
-                <textarea name="content" placeholder="답글 남기기"></textarea>
-              <div>
-                <input type="submit", value="작성" />
-              </div>
-              </form>
             </div>
-          {% endfor %}
-        </div>
-        <hr>
+          </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+
+          <!-- 대댓글을 생성하는 input 구간 -->
+          <div class="reply-container" style="display: none">
+            <form action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}" method="post" style="display:flex; margin: 10px 0;">
+              {% csrf_token %}
+              <textarea name="content" placeholder="답글 남기기"></textarea>
+            <div>
+              <input type="submit", value="작성" />
+            </div>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+      <hr>
 
 
         <div class="control-container">

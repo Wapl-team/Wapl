@@ -63,7 +63,8 @@ body{
     max-height: 300px;
     overflow-y: scroll;
   }
-  .leave-comment input{
+  .leave-comment input,
+  .reply-container input{
     border:none;
     background-color: transparent;
     font-weight: bold;
@@ -98,12 +99,30 @@ body{
     margin-left: 0.3em;
   }
 
-  .delete-comment form input{
+
+  .delete-comment{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .delete-comment form input,
+  .delete-comment input{
     border:none;
     background-color: transparent;
     font-weight: bold;
     padding:0.3em;
+    cursor: pointer;
   }
+  
+  .reply-container textarea{
+    width: 100%;
+    height: 2em;
+    border: none;
+    resize: none;
+    background-color: rgb(253, 239, 214);
+    padding:0.3em;
+  }
+
   /* ================================= */
   
   .control-container{

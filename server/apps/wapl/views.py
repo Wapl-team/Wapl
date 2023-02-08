@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -225,12 +225,56 @@ def detail(request, pk, *args, **kwargs):
             return redirect('wapl:detail', pk) 
     
     comments = PrivateComment.objects.all().filter(plan_post=plan)
+    replys = replyPrivateComment.objects.all()
+
     context = {
         "plan": plan,
         "comments": comments,
+        "replys": replys,
     }
-    
     return render(request, 'plan_priDetail.html', context=context)
+
+#개인 일정 대댓글 생성
+def reply_create(request, pk, ck, *args, **kwargs):
+    comment_post = get_object_or_404(PrivateComment, id=ck)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            replyPrivateComment.objects.create(
+                content=request.POST["content"],
+                user=request.user,
+                comment_post= comment_post,
+            )
+            return redirect('wapl:detail', pk)
+
+
+#모임 일정 대댓글 생성
+def pub_reply_create(request, pk, ck, *args, **kwargs):
+    comment_post = get_object_or_404(PublicComment, id=ck)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            replyPublicComment.objects.create(
+                content=request.POST["content"],
+                user=request.user,
+                comment_post= comment_post,
+            )
+            return redirect('wapl:pubdetail', pk)
+
+#개인 일정 대댓글 삭제
+def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
+    if request.method == "POST":
+        comment = replyPrivateComment.objects.get(id=ck)
+        comment.delete()
+        
+    return redirect('wapl:detail', pk)
+
+#모임 일정 대댓글 삭제
+def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
+    if request.method == "POST":
+        comment = replyPublicComment.objects.get(id=ck)
+        comment.delete()
+        
+    return redirect('wapl:pubdetail', pk)
+        
 
 #모임 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def public_detail(request, pk, *args, **kwargs):
@@ -248,9 +292,12 @@ def public_detail(request, pk, *args, **kwargs):
             return redirect('wapl:pubdetail', pk) 
     
     comments = PublicComment.objects.all().filter(plan_post=plan)
+    replys = replyPublicComment.objects.all()
     context = {
         "plan": plan,
-        "comments" : comments,}
+        "comments" : comments,
+        "replys": replys,
+        }
     return render(request, 'plan_pubDetail.html', context=context)
 
 #개인 댓글 삭제

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}" />  
-    <title>개인 일정 상세 페이지</title>
+    <title>모임 일정 상세 페이지</title>
   </head>
   <body>
     <div class="plan-detail-container">
@@ -33,7 +33,7 @@
         <hr>
         <!-- 여기부터 Comment------------------------------------------------ -->
         <div class="leave-comment">
-          <form action="{% url 'wapl:detail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
+          <form action="{% url 'wapl:pubdetail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
               {% csrf_token %}
               <textarea name="content" placeholder="댓글 남기기"></textarea>
               <div>
@@ -60,7 +60,7 @@
             <div class="delete-comment">
               <form action="{% url 'wapl:comment_delete' plan.pk comment.pk %}" method="post">
                 {% csrf_token %}
-                    <input type="submit" value="삭제" />|
+                    <input type="submit" value="삭제" />
               </form>
               <input type="submit" value="답글" class="reply_button"/>
             </div>
@@ -73,7 +73,7 @@
             <div class="show-comment"> 
               <div class="user-comment">
                 <div class="user-comment-info">
-                  <div class="user-comment-user">↪ {{reply.user}}</div> 
+                  <div class="user-comment-user">->{{reply.user}}</div> 
                   {% if reply.created_string == False %}
                   {% csrf_token %}
                   <span class="user-comment-time">{{ reply.created_at|date:'m월 d일' }}</span>
@@ -81,12 +81,12 @@
                   <span class="user-comment-time">{{ reply.created_string }}</span>
                   {% endif %}
                 </div>
-                <div class="user-comment-content">↪ {{reply.content}}</div>
+                <div class="user-comment-content">->{{reply.content}}</div>
               </div>
             </div>
 
             <div class="delete-comment">
-              <form action="{% url 'wapl:reply_delete' plan.pk reply.pk %}" method="post">
+              <form action="{% url 'wapl:pubreply_delete' plan.pk reply.pk %}" method="post">
                 {% csrf_token %}
                     <input type="submit" value="삭제" />
               </form>
@@ -97,7 +97,7 @@
 
             <!-- 대댓글을 생성하는 input 구간 -->
             <div class="reply-container" style="display: none">
-              <form action="{% url 'wapl:reply_create' plan.pk comment.pk %}" method="post" style="display:flex; margin: 10px 0;">
+              <form action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}" method="post" style="display:flex; margin: 10px 0;">
                 {% csrf_token %}
                 <textarea name="content" placeholder="답글 남기기"></textarea>
               <div>
@@ -115,7 +115,7 @@
             {% csrf_token %}
             <input type="submit" , value="삭제하기" />
          </form>
-         <a href="{% url 'wapl:update' plan.pk %}" class="update-plan">수정하기</a>
+         <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan">수정하기</a>
         </div>
     </div>
     

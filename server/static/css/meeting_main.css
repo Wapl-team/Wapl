@@ -323,10 +323,9 @@ body {
 }
 
 .today {
-  position: relative;
-  color: black;
-  border-radius: 15px;
-  padding: 2px;
+  color: orange;
+  padding-bottom: 2px;
+  font-weight: bold;
 }
 
 /* .today::before {

@@ -342,7 +342,6 @@ def view_plan(request):
 
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
 
-
   private_plans = list(private_plans)
   private_plans_filtered = []
   for i in range(len(private_plans)):
@@ -351,10 +350,10 @@ def view_plan(request):
             private_plans_filtered.append(private_plans[i])
       else:
         private_plans_filtered.append(private_plans[i])
-
-
+        
+      
   print(private_plans_filtered)
-
+    
 
   meetings = login_user.user_meetings.all()
 

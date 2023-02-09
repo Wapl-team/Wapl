@@ -4,17 +4,18 @@ from . import views
 app_name = "wapl"
 
 urlpatterns= [
+    # Review : Restful한 CRUD 패턴을 준수하는 게 좋습니다!
     path("main", views.main, name="main"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),
     path("", views.start, name="start"),
-    path("plan/<int:pk>/update", views.update, name="update"), 
-    path("plan/<int:pk>/delete", views.delete, name="delete"), 
-    path("create-private-plan", views.create_private_plan, name="create_private_plan"), 
-    path("create-public-plan", views.create_public_plan, name="create_public_plan"), 
-    path("update", views.update, name="update"), 
-    path("delete", views.delete, name="delete"), 
+    path("plan/<int:pk>/update", views.update, name="update"),
+    path("plan/<int:pk>/delete", views.delete, name="delete"),
+    path("create-private-plan", views.create_private_plan, name="create_private_plan"),
+    path("create-public-plan", views.create_public_plan, name="create_public_plan"),
+    path("update", views.update, name="update"),
+    path("delete", views.delete, name="delete"),
     path('plan/<int:pk>', views.detail, name='detail'),
     # path("comment/", views.comment, name="comment"),
     path("plan/<int:ak>/<int:pk>/delete", views.comment_delete, name="comment_delete"),
@@ -24,7 +25,7 @@ urlpatterns= [
     path('view_team_explan/', views.view_team_explan, name='view_team_explan'),
     path('select_date_main/', views.select_date_main, name='select_date_main'),
     path('select_date_meeting/', views.select_date_meeting, name='select_date_meeting'),
-    
+
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),
     path("main/meeting/create", views.meeting_create, name="meeting_create"),
@@ -36,4 +37,3 @@ urlpatterns= [
     # url(r'', views.)
 
 ]
-

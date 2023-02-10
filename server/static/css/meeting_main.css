@@ -40,7 +40,7 @@ body {
 }
 
 .meeting-name {
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: orange;
   font-weight: bold;
 }
@@ -85,7 +85,7 @@ body {
   font-size: 21px;
   color: orange;
   margin-top: 2vh;
-  margin-right: 4vw;;
+  margin-right: 4vw;
 }
 /* --------모임 생성/참가 ------- */
 
@@ -146,7 +146,6 @@ body {
   border: 1px solid orange;
   background-color: orange;
 }
-
 
 .privategroup a {
   justify-content: end;
@@ -270,6 +269,7 @@ body {
 }
 
 .days {
+  margin-top: 10px;
   display: flex;
 }
 
@@ -286,7 +286,7 @@ body {
   border-right: 1px solid orange;
   background-color: white;
   border-radius: 5px;
-  margin-top:1em;
+  margin-top: 1em;
 }
 
 .date {
@@ -301,7 +301,7 @@ body {
   width: calc(100% / 7);
   padding: 15px;
   text-align: right;
-  border-bottom:1px solid orange;
+  border-bottom: 1px solid orange;
   border-left: 1px solid orange;
   box-shadow: none;
   background-color: antiquewhite;
@@ -361,7 +361,7 @@ body {
   white-space: nowrap;
 }
 
-.detail-timeline a{
+.detail-timeline a {
   text-decoration: none;
 }
 
@@ -407,4 +407,19 @@ body {
 
 .profileImagePlan {
   border-radius: 10px;
+}
+
+.profileImagePreview {
+  border-radius: 40px;
+}
+
+.goto-home {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.goto-home a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
 }

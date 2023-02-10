@@ -263,6 +263,7 @@ body {
 }
 
 .days {
+  margin-top: 10px;
   display: flex;
 }
 
@@ -411,4 +412,15 @@ body {
 
 .profileImagePreview {
   border-radius: 40px;
+}
+
+.goto-home {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.goto-home a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
 }

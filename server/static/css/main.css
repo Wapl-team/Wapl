@@ -186,7 +186,7 @@ body {
   text-align: center;
   align-items: center;
   background-color: white;
-  padding: 1vh 10vw 3vh 10vw;
+  padding: 1vh 10vw 5vh 10vw;
   border-radius: 7px;
   width: 90vw;
   box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
@@ -226,11 +226,12 @@ body {
 .planRegister-basic input {
   width: 60vw;
   height: 4vh;
-  background-color: wheat;
+  background-color: antiquewhite;
   border: none;
   margin: 1vh -5vw;
   margin-bottom: 2vh;
   text-align: center;
+  border-radius: 10px;
 }
 
 #share {
@@ -248,7 +249,7 @@ body {
 #closeModal {
   background-color: orange;
   color: white;
-  padding: 1vh 5vw;
+  padding: 0.2vh 26vw;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
@@ -316,10 +317,9 @@ body {
 }
 
 .today {
-  position: relative;
-  color: black;
-  border-radius: 15px;
-  padding: 2px;
+  color: orange;
+  font-weight: bold;
+  padding-bottom: 2px;
 }
 
 /* .today::before {

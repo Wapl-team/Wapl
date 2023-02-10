@@ -321,10 +321,12 @@ const plan_create = () => {
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid black";
+                newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "white";
                 newplan.style.color = "black";
                 newplan.style.height = "50px";
+                newplan.style.borderRadius = "20px";
+                newplan.style.padding = "8px";
                 newplan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(newplan);
               }
@@ -353,10 +355,12 @@ const plan_create = () => {
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid black";
+                newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "white";
                 newplan.style.color = "black";
                 newplan.style.height = "50px";
+                newplan.style.borderRadius = "20px";
+                newplan.style.padding = "8px";
                 newplan.innerText = `${plan.title}`;
                 newDiv.appendChild(newplan);
                 timeline.childNodes[0].before(newDiv);
@@ -386,10 +390,12 @@ const plan_create = () => {
               newplan.style.position = "absolute";
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid black";
+              newplan.style.border = "1px solid orange";
               newplan.style.backgroundColor = "white";
               newplan.style.color = "black";
               newplan.style.height = "50px";
+              newplan.style.borderRadius = "20px";
+              newplan.style.padding = "8px";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
               timeline.appendChild(newDiv);
@@ -526,7 +532,6 @@ window.onload = function () {
           // 이미 타임라인에 있는 라인인지 확인
           let already = [];
 
-          console.log(private_plans);
           privatePlansArray.forEach((plan) => {
             if (already.indexOf(`private`) == -1) {
               let newDiv = document.createElement("div");
@@ -555,10 +560,12 @@ window.onload = function () {
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid black";
+            newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "white";
             newplan.style.color = "black";
             newplan.style.height = "50px";
+            newplan.style.borderRadius = "20px";
+            newplan.style.padding = "8px";
             newplan.innerText = `${plan.fields.title}`;
             document.querySelector(".private-timeline").appendChild(newplan);
           });
@@ -593,10 +600,12 @@ window.onload = function () {
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid black";
+            newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "white";
             newplan.style.color = "black";
             newplan.style.height = "50px";
+            newplan.style.borderRadius = "20px";
+            newplan.style.padding = "8px";
             newplan.innerText = `${plan.fields.title}`;
             document
               .querySelector(`.meeting-${plan.fields.meetings}`)

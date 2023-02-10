@@ -170,18 +170,26 @@ def create_private_plan(request, *args, **kwargs):
 def create_public_plan(request, *args, **kwargs):
   if request.method == 'POST':
     req = json.loads(request.body)
-    startTime = req['startTime'].replace('T',' ')+":00"
-    endTime = req['endTime'].replace('T',' ')+":00"
-    meeting = Meeting.objects.get(meeting_name=req['meeting_name'])
+    title = req['title']
+    location = req['location']
+    startTime = req['startTime']
+    endTime = req['endTime']
+    content = req['content']
+    meeting_name = req['meeting_name']
+
+    meeting = Meeting.objects.get(meeting_name=meeting_name)
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    newPlan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = req['location'], title = req['title'], content = req['content'])
+    new_plan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
-
-    if request.user.image == "":
-        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.default_image})
+    if meeting.image == "":
+       meeting_img = meeting.default_image
     else:
-        return JsonResponse({'planName': newPlan.title, 'startTime': newPlan.startTime, 'endTime': newPlan.endTime, 'pk': newPlan.id, 'userimg':request.user.image.url})
+       meeting_img = meeting.image.url
+
+    new_plan=model_to_dict(new_plan)
+
+    return JsonResponse({'plan':new_plan, 'meeting_img':meeting_img})
 
 # 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
@@ -351,9 +359,6 @@ def view_plan(request):
       else:
         private_plans_filtered.append(private_plans[i])
         
-      
-  print(private_plans_filtered)
-    
 
   meetings = login_user.user_meetings.all()
 
@@ -395,26 +400,44 @@ def view_team_plan(request):
   login_user = request.user
   year = login_user.current_date.year
   month = login_user.current_date.month
-  meeting_pk = req['meetingPK'] # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
+  meeting_pk = req['meetingPK'] 
+  # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
 
-  meetingObj = Meeting.objects.all().get(id=meeting_pk)
-  share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
-  share_plans = []
-  for share in share_list:
-    if share.plan.startTime.year <= year and share.plan.endTime.year >= year and share.plan.startTime.month <= month and share.plan.endTime.month >= month:
-        share_plans.append(share.plan)
+  meeting = Meeting.objects.get(id=meeting_pk)
+  share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
 
-  public_plans = list(meetingObj.plans.all())
-  private_plans = share_plans
+  private_plans = []
+  public_plans= []
 
-  # private_plans = serializers.serialize('json', private_plans)
-  public_plans.extend(private_plans)
+  for i in range(len(share_list)):
+     if share_list[i].plan.startTime.year == share_list[i].plan.endTime.year:
+        if share_list[i].plan.startTime.month <= share_list[i].plan.endTime.month:
+           private_plans.append(share_list[i].plan)
+     else:
+        private_plans.append(share_list[i].plan)
+
+  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month))  
+
+  private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
 
-  if request.user.image == "":
-    return JsonResponse({'plans': public_plans, 'userimg':request.user.default_image})
+  users = meeting.users.all()
+  
+  user_img = {}
+  for i in range(len(users)):
+     if users[i].image=="":
+        user_img[users[i].pk] = users[i].default_image
+     else:
+        user_img[users[i].pk] = users[i].image.url
+
+  if meeting.image == "":
+     meeting_img = meeting.default_image
   else:
-    return JsonResponse({'plans': public_plans, 'userimg':request.user.image.url})
+     meeting_img = meeting.image.url
+
+  return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'user_img':user_img,
+                         'meeting_img':meeting_img})
 
 # 날짜 클릭 시 호출 함수
 # 해당 날짜에 해당하는 일정들 정보를 넘겨줌
@@ -480,29 +503,38 @@ def view_team_explan(request):
     month = int(req['month'])
     day = int(req['day'])
     meeting_pk = req['meetingPK']
-    meetingObj = Meeting.objects.all().get(id=meeting_pk)
-    username = request.user.username
+    meeting = Meeting.objects.get(id=meeting_pk)
     today = date(year,month,day)
 
-    share_list = list(Share.objects.filter(meeting=meetingObj, is_share=True))
-    share_plans = [obj.plan for obj in share_list]
+    public_plans= PublicPlan.objects.filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+
+    share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+    share_plans = [share.plan for share in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
 
-    public_plans= list(PublicPlan.objects.filter(meetings = meetingObj, startTime__lte = today + timedelta(days=1), endTime__gte = today))
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
 
-    public_plans.extend(share_plans)
     public_plans = serializers.serialize('json', public_plans)
-    # private_plans = serializers.serialize('json', share_plans)
+    private_plans = serializers.serialize('json', share_plans)
 
-    if request.user.image == "":
-        return JsonResponse({'plans': public_plans,
-                             'today': day,
-                             'userimg':request.user.default_image})
+    users = meeting.users.all()
+  
+    user_img = {}
+
+    for i in range(len(users)):
+      if users[i].image=="":
+        user_img[users[i].pk] = users[i].default_image
+      else:
+        user_img[users[i].pk] = users[i].image.url
+
+    if meeting.image == "":
+      meeting_img = meeting.default_image
     else:
-        return JsonResponse({'plans': public_plans,
-                            'today': day,
-                            'userimg':request.user.image.url})
+      meeting_img = meeting.image.url
+
+    return JsonResponse({'public_plans': public_plans,
+                         'private_plans':private_plans,'user_img':user_img,
+                         'meeting_img':meeting_img})
 
 
 

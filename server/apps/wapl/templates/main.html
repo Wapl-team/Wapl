@@ -16,17 +16,17 @@
         </button>
       </div>
       <div class="year-month">{{view_year}}년{{view_month}}월</div>
-      <form action="/main">
-        <input type="date" name="select-date" />
-        <input type="submit" value="선택하기" />
-      </form>
+
       <div>
         <button class="modalButton">
           <i class="fa-solid fa-plus fa-2x"></i>
         </button>
       </div>
     </nav>
-
+    <form action="/main">
+      <input type="date" name="select-date" />
+      <input type="submit" value="선택하기" />
+    </form>
     <div class="modal hidden">
       <div class="modal__content">
         <button class="closeModal">
@@ -117,6 +117,9 @@
           </a>
         </div>
         {% endfor %}
+      </div>
+      <div class="goto-home">
+        <a href="{% url 'wapl:start' %}">홈으로 가기</a>
       </div>
     </div>
 

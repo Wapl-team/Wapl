@@ -101,5 +101,11 @@ class Comment(models.Model):
 class PrivateComment(Comment):
   plan_post=models.ForeignKey(PrivatePlan, on_delete=models.CASCADE)
   
+class replyPrivateComment(Comment):
+  comment_post=models.ForeignKey(PrivateComment, on_delete=models.CASCADE)
+  
 class PublicComment(Comment):
   plan_post=models.ForeignKey(PublicPlan, on_delete=models.CASCADE)
+  
+class replyPublicComment(Comment):
+  comment_post=models.ForeignKey(PublicComment, on_delete=models.CASCADE)

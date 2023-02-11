@@ -21,12 +21,16 @@ urlpatterns= [
     path("plan/<int:pk>/delete", views.delete, name="delete"), 
     path('plan/<int:pk>', views.detail, name='detail'),
     path("plan/<int:ak>/<int:pk>/delete", views.comment_delete, name="comment_delete"),
+    path("plan/<int:pk>/comment/<int:ck>", views.reply_create, name="reply_create"),
+    path("plan/<int:pk>/comment/<int:ck>/delete", views.reply_delete, name="reply_delete"),
     
 # 모임 일정 관련
     path("pubplan/<int:pk>/update", views.pub_update, name="pubupdate"), 
     path("pubplan/<int:pk>/delete", views.pub_delete, name="pubdelete"), 
     path('pubplan/<int:pk>', views.public_detail, name='pubdetail'),
     path("pubplan/<int:ak>/<int:pk>/delete", views.pub_comment_delete, name="pubcomment_delete"),
+    path("pubplan/<int:pk>/comment/<int:ck>", views.pub_reply_create, name="pubreply_create"),
+    path("pubplan/<int:pk>/comment/<int:ck>/delete", views.pub_reply_delete, name="pubreply_delete"),
 
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),

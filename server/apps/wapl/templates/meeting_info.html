@@ -12,9 +12,9 @@
     <h2>모임 정보</h2>
     <div class="meetingInfo">
       {% if meeting.image %}
-        <img src="{{ meeting.image.url }}" width="100" />
+      <img src="{{ meeting.image.url }}" width="100" />
       {% else %}
-        <img src="{{ meeting.default_image }}" width="100">
+      <img src="{{ meeting.default_image }}" width="100" />
       {% endif %}
       <p>모임 이름</p>
       {{ meeting.meeting_name }}
@@ -25,7 +25,7 @@
       <p>모임 관리자</p>
       {{ meeting.owner }}
       <p>초대 코드</p>
-      {{ meeting.invitation_code }}
+      <p>{{ meeting.invitation_code }}</p>
       <p>멤버</p>
       {% for user in users %} {{ user }}
       <br />

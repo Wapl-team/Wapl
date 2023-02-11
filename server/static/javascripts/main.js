@@ -24,7 +24,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
     endDate.getMonth() == currentDate.getMonth() &&
     endDate.getDate() == currentDate.getDate()
   ) {
-    console.log("here");
     // 앞쪽에서부터 겹치는 경우
 
     if (startDate < currentDate) {
@@ -294,6 +293,7 @@ const plan_create = () => {
               newimg.classList.add("profileImagePlan");
               newimg.src = `${userimg}`;
               newimg.style.width = "15px";
+
               day.after(newimg);
             }
           }

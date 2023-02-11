@@ -297,7 +297,7 @@ const plan_create = (meeting_name) => {
                 );
                 let new_plan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
-                new_plan.href = `plan/${plan.id}`;
+                new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
@@ -331,7 +331,7 @@ const plan_create = (meeting_name) => {
                 new_div.style.height = "50px";
                 let new_plan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
-                new_plan.href = `plan/${plan.id}`;
+                new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
@@ -366,7 +366,7 @@ const plan_create = (meeting_name) => {
               new_div.style.height = "50px";
               let new_plan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
-              new_plan.href = `plan/${plan.id}`;
+              new_plan.href = `/pubplan/${plan.id}`;
               new_plan.style.position = "absolute";
               new_plan.style.width = `${width}px`;
               new_plan.style.left = `${start}px`;
@@ -532,7 +532,7 @@ return: err_msg
 
             let new_plan = document.createElement("a");
             const width = parseInt(hours) * 60 + parseInt(minutes);
-            new_plan.href = `plan/${plan.pk}`;
+            new_plan.href = `/pubplan/${plan.pk}`;
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
@@ -572,7 +572,7 @@ return: err_msg
 
             let new_plan = document.createElement("a");
             const width = parseInt(hours) * 60 + parseInt(minutes);
-            new_plan.href = `plan/${plan.pk}`;
+            new_plan.href = `/plan/${plan.pk}`;
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;

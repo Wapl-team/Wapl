@@ -293,7 +293,7 @@ const plan_create = (meeting_name) => {
                 [start, hours, minutes] = calcTime(
                   start_date,
                   end_date,
-                  currentPreview
+                  current_preview
                 );
                 let new_plan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
@@ -308,7 +308,7 @@ const plan_create = (meeting_name) => {
                 new_plan.style.borderRadius = "20px";
                 new_plan.style.padding = "8px";
                 new_plan.innerText = `${plan.title}`;
-                timeline.childNodes[0].appendChild(newplan);
+                timeline.childNodes[0].appendChild(new_plan);
               }
               // timeline에 팀일정만 있는경우
               else {

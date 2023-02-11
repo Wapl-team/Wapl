@@ -185,6 +185,10 @@ def create_public_plan(request, *args, **kwargs):
     else:
        meeting_img = meeting.image.url
 
+    new_plan=model_to_dict(new_plan)
+
+    return JsonResponse({'plan':new_plan, 'meeting_img':meeting_img})
+
 # 개인 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}

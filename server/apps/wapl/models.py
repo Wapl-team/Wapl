@@ -78,9 +78,8 @@ class Share(models.Model):
 class Comment(models.Model):
     content = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment_user")
-    plan_post=models.ForeignKey(PublicPlan, on_delete=models.CASCADE, related_name="comment_post")
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
     @property
     def created_string(self):
         time = timezone.now() - self.created_at
@@ -96,3 +95,19 @@ class Comment(models.Model):
             return str(time.days) + '일 전'
         else:
             return False
+    
+    class Meta:
+      abstract = True
+
+
+class PrivateComment(Comment):
+  plan_post=models.ForeignKey(PrivatePlan, on_delete=models.CASCADE)
+  
+class replyPrivateComment(Comment):
+  comment_post=models.ForeignKey(PrivateComment, on_delete=models.CASCADE)
+  
+class PublicComment(Comment):
+  plan_post=models.ForeignKey(PublicPlan, on_delete=models.CASCADE)
+  
+class replyPublicComment(Comment):
+  comment_post=models.ForeignKey(PublicComment, on_delete=models.CASCADE)

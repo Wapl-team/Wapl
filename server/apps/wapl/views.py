@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -72,8 +72,6 @@ def meeting_calendar(request, pk, *args, **kwargs):
             'view_month': month,
             }
   return render(request, "meeting_main.html", context=context)
-
-
 
 
 # 미팅 pt 입니다--------------------------------------------------------------
@@ -187,17 +185,13 @@ def create_public_plan(request, *args, **kwargs):
     else:
        meeting_img = meeting.image.url
 
-    new_plan=model_to_dict(new_plan)
-
-    return JsonResponse({'plan':new_plan, 'meeting_img':meeting_img})
-
-# 일정 수정 함수
+# 개인 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 
 def update(request:HttpRequest, pk, *args, **kwargs):
-    plan = Plan.objects.get(id=pk)
+    plan = PrivatePlan.objects.get(id=pk)
     plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -208,12 +202,28 @@ def update(request:HttpRequest, pk, *args, **kwargs):
         plan.title = request.POST["title"]
         plan.content = request.POST["content"]
         plan.save()
+        
+        return redirect('wapl:detail', pk) 
+    return render(request, "plan_priUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
-        return redirect('wapl:detail', pk)
-    return render(request, "plan_update.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
+# 모임 일정 수정 함수
+def pub_update(request:HttpRequest, pk, *args, **kwargs):
+    plan = PublicPlan.objects.get(id=pk)
+    plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
+    plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
+    
+    if request.method == "POST":
+        plan.startTime = request.POST["startTime"]
+        plan.endTime = request.POST["endTime"]
+        plan.location = request.POST["location"]
+        plan.title = request.POST["title"]
+        plan.content = request.POST["content"]
+        plan.save()
+        
+        return redirect('wapl:pubdetail', pk) 
+    return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
-
-#일정 생성 함수
+#일정 생성 함수 => 이건 언제 쓰는 건지? 필요없으면 삭제
 #POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
 #리턴하는 값 X (js에서 작업 필요)
 @csrf_exempt
@@ -222,64 +232,130 @@ def retrieve(request, *args, **kwargs):
   return JsonResponse({'plans': plans})
 
 
-#일정 삭제 함수
+#개인 일정 삭제 함수
 #POST로 넘어온 id값으로 객체 삭제
 @csrf_exempt
-
 def delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
-        plan = Plan.objects.get(id=pk)
+        plan = PrivatePlan.objects.get(id=pk)
         plan.delete()
         return redirect('wapl:main')
 
+#모임 일정 삭제 함수
+@csrf_exempt
+def pub_delete(request:HttpRequest, pk, *args, **kwargs):
+    if request.method == "POST":
+        plan = PublicPlan.objects.get(id=pk)
+        plan.delete()
+        return redirect('wapl:main')
 
-#일정 상세보기 함수 + 댓글 생성/리스트 출력까지
+#개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
     # plan = Plan.objects.all().get(id=pk)
     plan = get_object_or_404(PrivatePlan, pk=pk)
-
-    startTime = str(plan.startTime)
+    
+    # startTime = str(plan.startTime)
     if request.user.is_authenticated:
         if request.method == "POST":
-            Comment.objects.create(
+            PrivateComment.objects.create(
                 content=request.POST["content"],
                 user=request.user,
                 plan_post=plan,
             )
-            return redirect('wapl:detail', pk)
+            return redirect('wapl:detail', pk) 
+    
+    comments = PrivateComment.objects.all().filter(plan_post=plan)
+    replys = replyPrivateComment.objects.all()
 
     context = {
         "plan": plan,
-   }
-    return render(request, 'plan_detail.html', context=context)
+        "comments": comments,
+        "replys": replys,
+    }
+    return render(request, 'plan_priDetail.html', context=context)
 
+#개인 일정 대댓글 생성
+def reply_create(request, pk, ck, *args, **kwargs):
+    comment_post = get_object_or_404(PrivateComment, id=ck)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            replyPrivateComment.objects.create(
+                content=request.POST["content"],
+                user=request.user,
+                comment_post= comment_post,
+            )
+            return redirect('wapl:detail', pk)
+
+
+#모임 일정 대댓글 생성
+def pub_reply_create(request, pk, ck, *args, **kwargs):
+    comment_post = get_object_or_404(PublicComment, id=ck)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            replyPublicComment.objects.create(
+                content=request.POST["content"],
+                user=request.user,
+                comment_post= comment_post,
+            )
+            return redirect('wapl:pubdetail', pk)
+
+#개인 일정 대댓글 삭제
+def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
+    if request.method == "POST":
+        comment = replyPrivateComment.objects.get(id=ck)
+        comment.delete()
+        
+    return redirect('wapl:detail', pk)
+
+#모임 일정 대댓글 삭제
+def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
+    if request.method == "POST":
+        comment = replyPublicComment.objects.get(id=ck)
+        comment.delete()
+        
+    return redirect('wapl:pubdetail', pk)
+        
+
+#모임 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def public_detail(request, pk, *args, **kwargs):
     # plan = Plan.objects.all().get(id=pk)
-    plan = get_object_or_404(PrivatePlan, pk=pk)
-    # Review : CamelCase vs snake_head 변수명 통일 필요
-    startTime = str(plan.startTime)
+    plan = get_object_or_404(PublicPlan, pk=pk)
+    
+    # startTime = str(plan.startTime)
     if request.user.is_authenticated:
         if request.method == "POST":
-            Comment.objects.create(
+            PublicComment.objects.create(
                 content=request.POST["content"],
                 user=request.user,
                 plan_post=plan,
             )
-            return redirect('wapl:detail', pk)
-
-    comments = Comment.objects.all().filter(plan_post=plan)
+            return redirect('wapl:pubdetail', pk) 
+    
+    comments = PublicComment.objects.all().filter(plan_post=plan)
+    replys = replyPublicComment.objects.all()
     context = {
         "plan": plan,
-        "comments" : comments,}
-    return render(request, 'plan_detail.html', context=context)
+        "comments" : comments,
+        "replys": replys,
+        }
+    return render(request, 'plan_pubDetail.html', context=context)
 
+#개인 댓글 삭제
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     # Review : pk만 있으면 누구나 삭제 가능한데, 의도한 바가 맞나요?
     if request.method == "POST":
-        comment = Comment.objects.get(id=pk)
+        comment = PrivateComment.objects.get(id=pk)
         comment.delete()
 
     return redirect('wapl:detail', ak)
+
+#모임 댓글 삭제
+def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
+    if request.method == "POST":
+        comment = PublicComment.objects.get(id=pk)
+        comment.delete()
+        
+    return redirect('wapl:pubdetail', ak)
 
 # -------------------------------------------------------------------------
 def start(request:HttpRequest, *args, **kwargs):

@@ -26,7 +26,7 @@
       </div>
     </nav>
 
-    <form action="/main">
+    <form action="{%url 'wapl:meeting_calendar' cur_meeting.id%}">
       <input type="date" name="select-date" />
       <input type="submit" value="선택하기" />
     </form>
@@ -67,7 +67,8 @@
               id="closeModal"
               class="closeModal2"
               onclick="plan_create(
-                `{{cur_meeting.meeting_name}}`
+                `{{cur_meeting.meeting_name}}`,
+                {{cur_meeting.id}}
               )"
               >추가</a
             >

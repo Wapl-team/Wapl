@@ -1,7 +1,6 @@
 
 
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -90,8 +89,8 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
         default_image = f'/static/default_image/t{default_image_index}.png',
         )
         newMeeting.users.add(request.user)
-
-        return redirect('wapl:main')
+        url = reverse('wapl:meeting_calendar', args=[newMeeting.id])
+        return redirect(url)
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
@@ -122,7 +121,6 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
             return redirect(url)
         except:
             return redirect('wapl:meeting_join')
-
     else:
         return render(request, 'meeting_join.html')
 
@@ -146,23 +144,24 @@ def create_private_plan(request, *args, **kwargs):
     login_user = request.user
     meetings = login_user.user_meetings.all()
 
-    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    # 새로운 plan 모델 생성
-    newPlan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+    result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
+    
+    if result:  # validation 통과한 경우
+      new_plan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+       # 새로운 share 모델 생성
+      for shareMeeting in shareMeetings:
+        Share.objects.create(plan=new_plan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
 
-    # 새로운 share 모델 생성
-    for shareMeeting in shareMeetings:
-      Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
+      if request.user.image == "":
+        userimg = request.user.default_image
+      else:
+        userimg = request.user.image.url
 
-    if request.user.image == "":
-       userimg = request.user.default_image
+      new_plan=model_to_dict(new_plan)
+
+      return JsonResponse({'plan':new_plan, 'userimg':userimg, 'err_msg': err_msg})
     else:
-       userimg = request.user.image.url
-
-    newPlan=model_to_dict(newPlan)
-
-
-    return JsonResponse({'plan':newPlan, 'userimg':userimg})
+      return JsonResponse({'plan': None, 'userimg': None, 'err_msg': err_msg})
 
 @csrf_exempt
 def create_public_plan(request, *args, **kwargs):
@@ -177,17 +176,20 @@ def create_public_plan(request, *args, **kwargs):
 
     meeting = Meeting.objects.get(meeting_name=meeting_name)
 
-    # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
-    new_plan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+    result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
+    if result:
+      new_plan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
-    if meeting.image == "":
-       meeting_img = meeting.default_image
+      if meeting.image == "":
+        meeting_img = meeting.default_image
+      else:
+        meeting_img = meeting.image.url
+
+      new_plan=model_to_dict(new_plan)
+
+      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg})
     else:
-       meeting_img = meeting.image.url
-
-    new_plan=model_to_dict(new_plan)
-
-    return JsonResponse({'plan':new_plan, 'meeting_img':meeting_img})
+      return JsonResponse({'plan': None, 'meeting_img': None, 'err_msg' : err_msg})
 
 # 개인 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
@@ -322,7 +324,6 @@ def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
 
 #모임 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def public_detail(request, pk, *args, **kwargs):
-    # plan = Plan.objects.all().get(id=pk)
     plan = get_object_or_404(PublicPlan, pk=pk)
     
     # startTime = str(plan.startTime)
@@ -341,6 +342,7 @@ def public_detail(request, pk, *args, **kwargs):
         "plan": plan,
         "comments" : comments,
         "replys": replys,
+        'meeting_pk': plan.meetings.id,
         }
     return render(request, 'plan_pubDetail.html', context=context)
 
@@ -516,8 +518,9 @@ def view_team_plan(request):
      meeting_img = meeting.image.url
 
   return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
-                         'meeting_img':meeting_img})
+                        'private_plans':private_plans,
+                        'user_img':user_img,
+                        'meeting_img':meeting_img})
 
 # 날짜 클릭 시 호출 함수
 # 해당 날짜에 해당하는 일정들 정보를 넘겨줌
@@ -615,8 +618,6 @@ def view_team_explan(request):
     return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans,'user_img':user_img,
                          'meeting_img':meeting_img})
-
-
 
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):

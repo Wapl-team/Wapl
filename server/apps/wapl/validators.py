@@ -44,5 +44,10 @@ def validate_plan(**kwargs):
   else:
     return False, return_msg
   
-
+def validate_comment(comments):
+  msg = '댓글을 작성하세요.'
+  if len(comments) == 0:
+    return False, msg
+  else:
+    return True, ""
 

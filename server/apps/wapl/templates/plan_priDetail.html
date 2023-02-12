@@ -148,7 +148,6 @@
       src="https://kit.fontawesome.com/5658349e28.js"
       crossorigin="anonymous"
     ></script>
-    <script src="{% static 'javascripts/main.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const $buttons = document.querySelectorAll(".reply_button");
@@ -162,7 +161,6 @@
           $button.parentElement.parentElement.nextElementSibling
             .nextElementSibling;
         // 답글 버튼 누르면 class reply-container 의 display 속성이 none<=>block 바뀌도록
-        console.log(content);
         if (content.style.display !== "none") {
           content.style.display = "none";
         } else {

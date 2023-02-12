@@ -194,23 +194,40 @@ def create_public_plan(request, *args, **kwargs):
 # 개인 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
-# ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
-
+# ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다.
 def update(request:HttpRequest, pk, *args, **kwargs):
-    plan = PrivatePlan.objects.get(id=pk)
-    plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
-    plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
+  plan = PrivatePlan.objects.get(id=pk)
+  plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
+  plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
 
-    if request.method == "POST":
-        plan.startTime = request.POST["startTime"]
-        plan.endTime = request.POST["endTime"]
-        plan.location = request.POST["location"]
-        plan.title = request.POST["title"]
-        plan.content = request.POST["content"]
-        plan.save()
-        
-        return redirect('wapl:detail', pk) 
-    return render(request, "plan_priUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
+  if request.method == "POST":
+    plan.startTime = request.POST["startTime"]
+    plan.endTime = request.POST["endTime"]
+    plan.location = request.POST["location"]
+    plan.title = request.POST["title"]
+    plan.content = request.POST["content"]
+    new_share_list = request.POST.getlist('share-meeting-list[]')
+    share_list = list(Share.objects.filter(plan = plan))
+    for share in share_list:
+      if share.meeting.meeting_name in new_share_list:
+        share.is_share = True
+        share.save()
+      else:
+        share.is_share = False
+        share.save()     
+                    
+    plan.save()
+    
+    return redirect('wapl:detail', pk) 
+  
+  share_list = list(Share.objects.filter(plan = plan))
+  context = {
+    'plan': plan,
+    'plan_sT': plan_sT,
+    'plan_eT': plan_eT,
+    'share_list': share_list,
+  }
+  return render(request, "plan_priUpdate.html", context = context)
 
 # 모임 일정 수정 함수
 def pub_update(request:HttpRequest, pk, *args, **kwargs):

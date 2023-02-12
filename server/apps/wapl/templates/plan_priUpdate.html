@@ -1,32 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/plan_update.css' %}">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/plan_update.css' %}" />
     <title>Update</title>
-</head>
-<body>
+  </head>
+  <body>
     <h2>일정 수정</h2>
-    <form action="{% url 'wapl:update' plan.pk %}" method="post" enctype="multipart/form-data" class="planUpdate">
-        {% csrf_token %}
-        <div>제목</div>
-        <input type="text" name="title" value="{{plan.title}}" /> 
-        <div><i class="fa-solid fa-location-dot"></i>장소</div>
-        <input type="text" name="location" value="{{plan.location}}" /> 
-        <div>시작 시간</div>
-        <input type="datetime-local" name="startTime" value="{{plan_sT}}"/> 
-        <div>종료 시간</div>
-        <input type="datetime-local" name="endTime" value="{{plan_eT}}" /> 
-        <div>내용</div>
-        <input type="textarea" name="content" value="{{plan.content}}" /> <br>
-        <div>
-            <input type="submit" , value="저장하기" />
-        </div>
+    <form
+      action="{% url 'wapl:update' plan.pk %}"
+      method="post"
+      enctype="multipart/form-data"
+      class="planUpdate"
+    >
+      {% csrf_token %}
+      <div>제목</div>
+      <input type="text" name="title" value="{{plan.title}}" />
+      <div><i class="fa-solid fa-location-dot"></i>장소</div>
+      <input type="text" name="location" value="{{plan.location}}" />
+      <div>시작 시간</div>
+      <input type="datetime-local" name="startTime" value="{{plan_sT}}" />
+      <div>종료 시간</div>
+      <input type="datetime-local" name="endTime" value="{{plan_eT}}" />
+      <div>내용</div>
+      <input type="textarea" name="content" value="{{plan.content}}" /> <br />
+      <div>공개 범위</div>
+      <select name="share-meeting-list[]" id="share" multiple>
+        {% for share in share_list %} {% if share.is_share %}
+        <option value="{{share.meeting}}" selected>{{share.meeting}}</option>
+        {% else %}
+        <option value="{{share.meeting}}">{{share.meeting}}</option>
+        {% endif %} {% endfor %}
+      </select>
+      <div>
+        <input type="submit" , value="저장하기" />
+      </div>
     </form>
 
-    <script src="https://kit.fontawesome.com/5658349e28.js" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

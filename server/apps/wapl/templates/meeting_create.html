@@ -15,8 +15,14 @@
       action="{% url 'wapl:meeting_create' %}"
       method="post"
       class="meetingCreate"
+      enctype="multipart/form-data"
     >
       {% csrf_token %}
+      <p>
+        <span>모임 프로필 이미지</span>
+        <input type="file" name="image" accept="image/*" class="profileImage" />
+      </p>
+      <br />
       <input name="meeting_name" placeholder="모임 이름" />
       <br />
       <select name="category" class="categorySelect">

@@ -2,43 +2,104 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'S-CoreDream-3Light';
+}
+
+@font-face {
+font-family: 'S-CoreDream-3Light';
+src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+font-weight: normal;
+font-style: normal;
 }
 
 body{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100vw;
+height: 80vh;
+}
+
+.header i{
+    color: #FFD83D;
+    position: relative;
+    left: -32vw;
+}
+
+.plan_update_container{
+border:1px solid black;
+border-radius: 20px;
+padding:1em;
+width: 80vw;
+height: auto;
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+}
+
+.title {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1vh;
+}
+
+.plan_update_title{
+font-size: 1rem;
+font-weight: bold;
+margin:0.3em 0;
+text-align: center;
+color: #1A2634;
+margin-left: 4.2vw;
+border: none;
+}
+
+.plan_update_place{
+font-size:1rem;
+border: none;
+}
+
+.orange{
+color: #FFD83D;
+}
+
+.plan_update_time{
+font-weight: bold;
+text-align: center;
+border: none;
+}
+
+.plan_update_content{
+font-size: 1em;
+padding:10px;
+text-align: center;
+border: none;
+}
+
+.control-container{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 80vh;
+    justify-content: end;
 }
 
-h2{
-    color:orange;
-    margin:3em;
+.control-container input{
+font-size: 16px;
+border:none;
+border-radius:15px;
+background-color: #FFD83D;
+color:white;
+padding:0.5em;
+margin:0.2em;
 }
 
-.planUpdate{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.planUpdate i{
-    margin: 0 0.3em;
-}
-
-.planUpdate input{
-    width:15em;
-    height: 2em;
-    background-color: wheat;
-    border:none;
-    padding:0.3em;
-    margin-bottom: 0.3em;
-}
-
-.planUpdate div input{
-    background-color: orange;
-    color:white;
-    margin:1em;
+.control-container a{
+font-size: 16px;
+text-decoration:none;
+border:none;
+border-radius:15px;
+background-color: #FFD83D;
+color:white;
+padding:0.5em;
+margin:0.2em;
 }

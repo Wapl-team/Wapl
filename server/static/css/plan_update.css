@@ -6,19 +6,19 @@
 }
 
 @font-face {
-font-family: 'S-CoreDream-3Light';
-src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-font-weight: normal;
-font-style: normal;
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body{
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-width: 100vw;
-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
 }
 
 .header i{
@@ -28,15 +28,15 @@ height: 80vh;
 }
 
 .plan_update_container{
-border:1px solid black;
-border-radius: 20px;
-padding:1em;
-width: 80vw;
-height: auto;
-display: flex;
-flex-direction: column;
-align-items: center;
-text-align: center;
+    border:1px solid black;
+    border-radius: 20px;
+    padding:1em;
+    width: 80vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .title {
@@ -47,35 +47,39 @@ text-align: center;
 }
 
 .plan_update_title{
-font-size: 1rem;
-font-weight: bold;
-margin:0.3em 0;
-text-align: center;
-color: #1A2634;
-margin-left: 4.2vw;
-border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    margin:0.3em 0;
+    text-align: center;
+    color: #1A2634;
+    border: none;
+    width: 18rem;
 }
 
 .plan_update_place{
-font-size:1rem;
-border: none;
+    font-size: 1.3rem;
+    border: none;
+    text-align: center;
 }
 
 .orange{
-color: #FFD83D;
+    color: #FFD83D;
+    font-size: 1.3rem;
 }
 
 .plan_update_time{
-font-weight: bold;
-text-align: center;
-border: none;
+    margin-top: 1em;
+    font-weight: bold;
+    text-align: center;
+    border: none;
 }
 
 .plan_update_content{
-font-size: 1em;
-padding:10px;
-text-align: center;
-border: none;
+    font-size: 1.3em;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    margin: 1em;
 }
 
 .control-container{
@@ -84,22 +88,22 @@ border: none;
 }
 
 .control-container input{
-font-size: 16px;
-border:none;
-border-radius:15px;
-background-color: #FFD83D;
-color:white;
-padding:0.5em;
-margin:0.2em;
+    font-size: 16px;
+    border:none;
+    border-radius:15px;
+    background-color: #FFD83D;
+    color:white;
+    padding:0.5em;
+    margin:0.2em;
 }
 
 .control-container a{
-font-size: 16px;
-text-decoration:none;
-border:none;
-border-radius:15px;
-background-color: #FFD83D;
-color:white;
-padding:0.5em;
-margin:0.2em;
+    font-size: 16px;
+    text-decoration:none;
+    border:none;
+    border-radius:15px;
+    background-color: #FFD83D;
+    color:white;
+    padding:0.5em;
+    margin:0.2em;
 }

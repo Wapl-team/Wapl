@@ -12,7 +12,6 @@
         <div class="plan_update_container">
             <div class="header">
                 <a href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
-                <div class="title">일정 수정</div>
             </div>
             <div class="main">
                 <form
@@ -23,7 +22,6 @@
                 {% csrf_token %}
                 <input type="text" name="title" value="{{plan.title}}" class="plan_update_title"/>
                 <div class="center">
-                    <i class="fa-solid fa-location-dot orange"></i>
                     <input type="text" name="location" value="{{plan.location}}" class="plan_update_place"/>
                 </div>
                     <input type="datetime-local" name="startTime" value="{{plan_sT}}" class="plan_update_time" />

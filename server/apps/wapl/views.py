@@ -431,14 +431,6 @@ def view_plan(request):
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
 
   private_plans = list(private_plans)
-  private_plans_filtered = []
-  for i in range(len(private_plans)):
-      if private_plans[i].startTime.year == private_plans[i].endTime.year:
-        if private_plans[i].startTime.month <= private_plans[i].endTime.month:
-            private_plans_filtered.append(private_plans[i])
-      else:
-        private_plans_filtered.append(private_plans[i])
-        
 
   meetings = login_user.user_meetings.all()
 
@@ -459,7 +451,7 @@ def view_plan(request):
        userimg = request.user.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
       public_plans += list(public_plan)
 
   private_plans = serializers.serialize('json', private_plans)
@@ -496,7 +488,7 @@ def view_team_plan(request):
      else:
         private_plans.append(share_list[i].plan)
 
-  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month))  
+  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)

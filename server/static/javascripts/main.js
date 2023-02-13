@@ -292,7 +292,9 @@ const plan_create = () => {
               newimg.classList.add("private");
               newimg.classList.add("profileImagePlan");
               newimg.src = `${userimg}`;
-              newimg.style.width = "15px";
+              newimg.style.width = "12px";
+              newimg.style.height = "12px";
+              newImg.style.margin = "0px 1px";
 
               day.after(newimg);
             }
@@ -321,12 +323,14 @@ const plan_create = () => {
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
+                // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
+                newplan.style.color = "#1A2634";
+                newplan.style.height = "40px";
+                newplan.style.borderRadius = "10px";
+                newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                newplan.style.padding = "11px";
+                newplan.style.fontSize = "17px";
                 newplan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(newplan);
               }
@@ -334,7 +338,8 @@ const plan_create = () => {
               else {
                 // 개인 일정 라인추가
                 const newmember = document.createElement("div");
-                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32
+                px"/>`;
                 newmember.style.height = "50px";
                 newmember.style.width = "50px";
                 memberlist.firstChild.before(newmember);
@@ -355,12 +360,14 @@ const plan_create = () => {
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
+                // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
+                newplan.style.color = "#1A2634";
+                newplan.style.height = "40px";
+                newplan.style.borderRadius = "10px";
+                newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                newplan.style.padding = "11px";
+                newplan.style.fontSize = "17px";
                 newplan.innerText = `${plan.title}`;
                 newDiv.appendChild(newplan);
                 timeline.childNodes[0].before(newDiv);
@@ -370,7 +377,7 @@ const plan_create = () => {
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
               memberlist.appendChild(newmember);
@@ -390,12 +397,14 @@ const plan_create = () => {
               newplan.style.position = "absolute";
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid orange";
+              // newplan.style.border = "1px solid orange";
               newplan.style.backgroundColor = "white";
-              newplan.style.color = "black";
-              newplan.style.height = "50px";
-              newplan.style.borderRadius = "20px";
-              newplan.style.padding = "8px";
+              newplan.style.color = "#1A2634";
+              newplan.style.height = "40px";
+              newplan.style.borderRadius = "10px";
+              newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+              newplan.style.padding = "11px";
+              newplan.style.fontSize = "17px";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
               timeline.appendChild(newDiv);
@@ -462,7 +471,9 @@ window.onload = function () {
                 newImg.classList.add(`private`);
                 newImg.classList.add(`profileImagePlan`);
                 newImg.src = `${userimg}`;
-                newImg.style.width = "15px";
+                newImg.style.width = "12px";
+                newImg.style.height = "12px";
+                newImg.style.margin = "0px 1px";
                 day.parentElement.appendChild(newImg);
               }
             }
@@ -486,7 +497,9 @@ window.onload = function () {
                 meetingimg[plan.fields.meetings];
                 newImg.src = `${meetingimg[plan.fields.meetings]}`;
                 newImg.classList.add("profileImagePlan");
-                newImg.style.width = "15px";
+                newImg.style.width = "12px";
+                newImg.style.height = "12px";
+                newImg.style.margin = "0px 1px";
                 day.parentElement.appendChild(newImg);
                 already.push(`${plan.fields.meetings}`);
               }
@@ -539,7 +552,7 @@ window.onload = function () {
               newDiv.style.height = "50px";
               timeline.appendChild(newDiv);
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview"src="${userimg}" width="40" />`;
+              newmember.innerHTML = `<img class="profileImagePreview"src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
               memberlist.appendChild(newmember);
@@ -560,12 +573,14 @@ window.onload = function () {
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid orange";
+            // newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "white";
-            newplan.style.color = "black";
-            newplan.style.height = "50px";
-            newplan.style.borderRadius = "20px";
-            newplan.style.padding = "8px";
+            newplan.style.color = "#1A2634";
+            newplan.style.height = "40px";
+            newplan.style.borderRadius = "10px";
+            newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            newplan.style.padding = "11px";
+            newplan.style.fontSize = "17px";
             newplan.innerText = `${plan.fields.title}`;
             document.querySelector(".private-timeline").appendChild(newplan);
           });
@@ -575,7 +590,7 @@ window.onload = function () {
               const newmember = document.createElement("div");
               newmember.innerHTML = `<img class="profileImagePreview"src="${
                 meetingimg[plan.fields.meetings]
-              }" width="40" />`;
+              }" width="32px" height="32px" border-radius="25px" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
               memberlist.appendChild(newmember);
@@ -600,12 +615,14 @@ window.onload = function () {
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid orange";
+            // newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "white";
-            newplan.style.color = "black";
-            newplan.style.height = "50px";
-            newplan.style.borderRadius = "20px";
-            newplan.style.padding = "8px";
+            newplan.style.color = "#1A2634";
+            newplan.style.height = "40px";
+            newplan.style.borderRadius = "10px";
+            newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            newplan.style.padding = "11px";
+            newplan.style.fontSize = "17px";
             newplan.innerText = `${plan.fields.title}`;
             document
               .querySelector(`.meeting-${plan.fields.meetings}`)

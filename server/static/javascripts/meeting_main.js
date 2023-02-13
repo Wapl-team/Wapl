@@ -273,7 +273,9 @@ const plan_create = (meeting_name) => {
               new_img.classList.add("public");
               new_img.classList.add("profileImagePlan");
               new_img.src = `${meeting_img}`;
-              new_img.style.width = "15px";
+              newimg.style.width = "12px";
+              newimg.style.height = "12px";
+              newImg.style.margin = "0px 1px";
               day.after(new_img);
             }
           }
@@ -301,12 +303,18 @@ const plan_create = (meeting_name) => {
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
-                new_plan.style.border = "1px solid orange";
+                // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "white";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
                 new_plan.style.padding = "8px";
+                new_plan.style.color = "#1A2634";
+                new_plan.style.height = "40px";
+                new_plan.style.borderRadius = "10px";
+                new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                new_plan.style.padding = "11px";
+                new_plan.style.fontSize = "17px";
                 new_plan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(new_plan);
               }
@@ -314,7 +322,7 @@ const plan_create = (meeting_name) => {
               else {
                 // 개인 일정 라인추가
                 const new_member = document.createElement("div");
-                new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" width="40" />`;
+                new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
                 new_member.style.height = "50px";
                 new_member.style.width = "50px";
                 memberlist.firstChild.before(new_member);
@@ -335,12 +343,18 @@ const plan_create = (meeting_name) => {
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
-                new_plan.style.border = "1px solid orange";
+                // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "white";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
                 new_plan.style.padding = "8px";
+                new_plan.style.color = "#1A2634";
+                new_plan.style.height = "40px";
+                new_plan.style.borderRadius = "10px";
+                new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                new_plan.style.padding = "11px";
+                new_plan.style.fontSize = "17px";
                 new_plan.innerText = `${plan.title}`;
                 new_div.appendChild(new_plan);
                 timeline.childNodes[0].before(new_div);
@@ -350,7 +364,7 @@ const plan_create = (meeting_name) => {
             else {
               // 개인 일정 라인추가
               const new_member = document.createElement("div");
-              new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" width="40" />`;
+              new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
               new_member.style.width = "50px";
               memberlist.appendChild(new_member);
@@ -370,12 +384,18 @@ const plan_create = (meeting_name) => {
               new_plan.style.position = "absolute";
               new_plan.style.width = `${width}px`;
               new_plan.style.left = `${start}px`;
-              new_plan.style.border = "1px solid orange";
+              // new_plan.style.border = "1px solid orange";
               new_plan.style.backgroundColor = "white";
               new_plan.style.color = "black";
               new_plan.style.height = "50px";
               new_plan.style.borderRadius = "20px";
               new_plan.style.padding = "8px";
+              new_plan.style.color = "#1A2634";
+              new_plan.style.height = "40px";
+              new_plan.style.borderRadius = "10px";
+              new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+              new_plan.style.padding = "11px";
+              new_plan.style.fontSize = "17px";
               new_plan.innerText = `${plan.title}`;
               new_div.appendChild(new_plan);
               timeline.appendChild(new_div);
@@ -432,7 +452,9 @@ window.onload = function () {
                 new_img.classList.add("public");
                 new_img.classList.add("profileImagePlan");
                 new_img.src = `${meeting_img}`;
-                new_img.style.width = "15px";
+                new_img.style.width = "12px";
+                new_img.style.height = "12px";
+                new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
               }
             }
@@ -454,7 +476,9 @@ window.onload = function () {
                 const new_img = document.createElement("img");
                 new_img.src = `${user_img[plan.fields.owner]}`;
                 new_img.classList.add("profileImagePlan");
-                new_img.style.width = "15px";
+                new_img.style.width = "12px";
+                new_img.style.height = "12px";
+                new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
                 already.push(`${plan.fields.owner}`);
               }
@@ -515,7 +539,7 @@ return: err_msg
               new_div.style.height = "50px";
               timeline.appendChild(new_div);
               const new_member = document.createElement("div");
-              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" width="40" />`;
+              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
               new_member.style.width = "50px";
               memberlist.appendChild(new_member);
@@ -536,12 +560,18 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
+            // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "white";
             new_plan.style.color = "black";
             new_plan.style.height = "50px";
             new_plan.style.borderRadius = "20px";
             new_plan.style.padding = "8px";
+            new_plan.style.color = "#1A2634";
+            new_plan.style.height = "40px";
+            new_plan.style.borderRadius = "10px";
+            new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            new_plan.style.padding = "11px";
+            new_plan.style.fontSize = "17px";
             new_plan.innerText = `${plan.fields.title}`;
             document.querySelector(".public-timeline").appendChild(new_plan);
           });
@@ -551,7 +581,7 @@ return: err_msg
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${
                 user_img[plan.fields.owner]
-              }" width="40" />`;
+              }" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
               new_member.style.width = "50px";
               memberlist.appendChild(new_member);
@@ -576,12 +606,18 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
+            // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "white";
             new_plan.style.color = "black";
             new_plan.style.borderRadius = "20px";
             new_plan.style.padding = "8px";
             new_plan.style.height = "50px";
+            new_plan.style.color = "#1A2634";
+            new_plan.style.height = "40px";
+            new_plan.style.borderRadius = "10px";
+            new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            new_plan.style.padding = "11px";
+            new_plan.style.fontSize = "17px";
             new_plan.innerText = `${plan.fields.title}`;
             document
               .querySelector(`.user-${plan.fields.owner}`)

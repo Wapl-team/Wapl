@@ -304,7 +304,7 @@ const plan_create = (meeting_name) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "white";
+                new_plan.style.backgroundColor = "#fffdf5";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
@@ -324,7 +324,7 @@ const plan_create = (meeting_name) => {
                 const new_member = document.createElement("div");
                 new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
                 new_member.style.height = "50px";
-                new_member.style.width = "50px";
+                new_member.style.width = "43px";
                 memberlist.firstChild.before(new_member);
 
                 [start, hours, minutes] = calcTime(
@@ -344,7 +344,7 @@ const plan_create = (meeting_name) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "white";
+                new_plan.style.backgroundColor = "#fffdf5";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
@@ -366,7 +366,7 @@ const plan_create = (meeting_name) => {
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
-              new_member.style.width = "50px";
+              new_member.style.width = "43px";
               memberlist.appendChild(new_member);
 
               [start, hours, minutes] = calcTime(
@@ -385,7 +385,7 @@ const plan_create = (meeting_name) => {
               new_plan.style.width = `${width}px`;
               new_plan.style.left = `${start}px`;
               // new_plan.style.border = "1px solid orange";
-              new_plan.style.backgroundColor = "white";
+              new_plan.style.backgroundColor = "#fffdf5";
               new_plan.style.color = "black";
               new_plan.style.height = "50px";
               new_plan.style.borderRadius = "20px";
@@ -541,7 +541,7 @@ return: err_msg
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
-              new_member.style.width = "50px";
+              new_member.style.width = "43px";
               memberlist.appendChild(new_member);
               already.push("public");
             }
@@ -561,7 +561,7 @@ return: err_msg
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "white";
+            new_plan.style.backgroundColor = "#fffdf5";
             new_plan.style.color = "black";
             new_plan.style.height = "50px";
             new_plan.style.borderRadius = "20px";
@@ -583,7 +583,7 @@ return: err_msg
                 user_img[plan.fields.owner]
               }" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
-              new_member.style.width = "50px";
+              new_member.style.width = "43px";
               memberlist.appendChild(new_member);
               let new_div = document.createElement("div");
               new_div.style.height = "50px";
@@ -607,7 +607,7 @@ return: err_msg
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "white";
+            new_plan.style.backgroundColor = "#fffdf5";
             new_plan.style.color = "black";
             new_plan.style.borderRadius = "20px";
             new_plan.style.padding = "8px";

@@ -653,6 +653,32 @@ def meeting_info(request, pk, *args, **kwargs):
     }
     return render(request, 'meeting_info.html', context=context)
 
+def meeting_info_edit(request, pk, *args, **kwargs):
+    # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
+    meeting = Meeting.objects.get(id=pk)
+
+    if request.method == "POST":
+        meeting.meeting_name = request.POST["meeting_name"]
+        meeting.category = request.POST["category"]
+        meeting.content = request.POST["content"]
+        default_check = request.POST.getlist("image-clear")
+        if len(default_check) == 0:
+            meeting.image = request.FILES.get("image")
+        else:
+            meeting.image.delete()
+        meeting.save()
+
+        return redirect('wapl:meeting_info', pk)
+
+    users = meeting.users.all()
+    category_list = Meeting.MEETING_CHOICE
+    context = {
+        'meeting': meeting,
+        'users': users,
+        'category_list': category_list,
+    }
+    return render(request, 'meeting_info_edit.html', context=context)
+
 def generate_invitation_code(length=10):
     return base64.urlsafe_b64encode(
         codecs.encode(uuid.uuid4().bytes, "base64").rstrip()

@@ -20,8 +20,8 @@
           class="profile-form"
           enctype="multipart/form-data"
         >
-          {% csrf_token %} {% if user.image %}
-          <img src="{{ user.image.url }}" width="100" />
+          {% csrf_token %} {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" width="100" />
           <div id="profileCheckbox">
             <input type="checkbox" name="image-clear" id="image-clear_id" />
             <label for="image-clear_id" class="clear">취소</label>

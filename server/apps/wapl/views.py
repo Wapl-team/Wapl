@@ -111,16 +111,16 @@ def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
 
 def meeting_join(request:HttpRequest, *args, **kwargs):
     if request.method == "POST":
-        code = request.POST["code"]
-        try:
-            meeting = Meeting.objects.get(invitation_code=code)
-            meeting.users.add(request.user)
-            url = reverse('wapl:meeting_calendar', args=[meeting.id])
-            return redirect(url)
-        except:
-            return redirect('wapl:meeting_join')
-    else:
-        return render(request, 'meeting_join.html')
+      code = request.POST["code"]
+      try:
+          meeting = Meeting.objects.get(invitation_code=code)
+          meeting.users.add(request.user)
+          url = reverse('wapl:meeting_calendar', args=[meeting.id])
+          return redirect(url)
+      except:
+          return redirect('wapl:meeting_join')
+    else:      
+      return render(request, 'meeting_join.html')
 
 # 일정+Comment pt 입니다-----------------------------------------------------------------
 

@@ -35,8 +35,9 @@
         <option value="{{share.meeting}}">{{share.meeting}}</option>
         {% endif %} {% endfor %}
       </select>
-      <div>
+      <div class="">
         <input type="submit" , value="저장하기" />
+        <a href={% url 'wapl:detail' plan.pk %}>돌아가기</a>
       </div>
     </form>
 

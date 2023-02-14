@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -51,7 +51,8 @@ def meeting_calendar(request, pk, *args, **kwargs):
   login_user = request.user
   # Review : login_user가 없으면 에러 발생. 핸들링 필요
   # Review : 혹은 @login_required 데코레이터 필요
-  cur_meeting = Meeting.objects.all().get(id=pk)
+  cur_meeting = get_object_or_404(Meeting, id=pk)
+#   cur_meeting = Meeting.objects.all().get(id=pk)
 
   meetings = login_user.user_meetings.all()
   try:
@@ -97,7 +98,8 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
     return render(request, "meeting_create.html", context=context)
 
 def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
-    meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
+    # meeting = Meeting.objects.get(id=pk)
     context = {
         "meeting" : meeting
     }
@@ -105,7 +107,8 @@ def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
 
 def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
-        meeting = Meeting.objects.get(id=pk)
+        meeting = get_object_or_404(Meeting, id=pk)
+        # meeting = Meeting.objects.get(id=pk)
         meeting.delete()
         return redirect('wapl:main')
 
@@ -150,7 +153,7 @@ def create_private_plan(request, *args, **kwargs):
       new_plan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
        # 새로운 share 모델 생성
       for shareMeeting in shareMeetings:
-        Share.objects.create(plan=new_plan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
+        Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
 
       if request.user.image == "":
         userimg = request.user.default_image
@@ -163,6 +166,7 @@ def create_private_plan(request, *args, **kwargs):
     else:
       return JsonResponse({'plan': None, 'userimg': None, 'err_msg': err_msg})
 
+
 @csrf_exempt
 def create_public_plan(request, *args, **kwargs):
   if request.method == 'POST':
@@ -172,9 +176,10 @@ def create_public_plan(request, *args, **kwargs):
     startTime = req['startTime']
     endTime = req['endTime']
     content = req['content']
-    meeting_pk = req['meeting_pk']
-    owner = request.user
-    meeting = Meeting.objects.get(id=meeting_pk)
+    meeting_name = req['meeting_name']
+
+    # meeting = Meeting.objects.get(meeting_name=meeting_name)
+    meeting = get_object_or_404(Meeting, meeting_name=meeting_name)
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
@@ -196,7 +201,7 @@ def create_public_plan(request, *args, **kwargs):
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다.
 def update(request:HttpRequest, pk, *args, **kwargs):
-  plan = PrivatePlan.objects.get(id=pk)
+  plan = get_object_or_404(PrivatePlan, id=pk)
   plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
   plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -231,7 +236,8 @@ def update(request:HttpRequest, pk, *args, **kwargs):
 
 # 모임 일정 수정 함수
 def pub_update(request:HttpRequest, pk, *args, **kwargs):
-    plan = PublicPlan.objects.get(id=pk)
+    # plan = PublicPlan.objects.get(id=pk)
+    plan = get_object_or_404(PublicPlan, id=pk)
     plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
     
@@ -251,7 +257,7 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
 @csrf_exempt
 def delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
-        plan = PrivatePlan.objects.get(id=pk)
+        plan = get_object_or_404(PrivatePlan, id=pk)
         if plan.owner == request.user:
           plan.delete()
         else:
@@ -263,7 +269,7 @@ def delete(request:HttpRequest, pk, *args, **kwargs):
 @csrf_exempt
 def pub_delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST": 
-        plan = PublicPlan.objects.get(id=pk)
+        plan = get_object_or_404(PublicPlan, id=pk)
         if plan.owner == request.user or plan.meetings.owner == request.user:
           plan.delete()
         else:
@@ -391,7 +397,7 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
 # 댓글 작성자 혹은 해당 일정 작성자는 댓글 삭제 가능
 def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
     if request.method == "POST": 
-      comment = replyPrivateComment.objects.get(id=ck)
+      comment = get_object_or_404(replyPrivateComment, id=ck)
       if comment.user == request.user or comment.comment_post.plan_post.owner == request.user:
         comment.delete()
       else:
@@ -404,7 +410,7 @@ def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
 # 댓글 작성자 혹은 해당 모임 소유자는 댓글 삭제 가능
 def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
     if request.method == "POST":
-        comment = replyPublicComment.objects.get(id=ck)
+        comment = get_object_or_404(replyPublicComment, id=ck)
         meeting_owner = comment.comment_post.plan_post.meetings.owner
         if comment.user == request.user or meeting_owner == request.user:
           comment.delete()
@@ -420,7 +426,7 @@ def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     # Review : pk만 있으면 누구나 삭제 가능한데, 의도한 바가 맞나요?
     if request.method == "POST":
-      comment = PrivateComment.objects.get(id=pk)
+      comment = get_object_or_404(PrivateComment, id=pk)
       if comment.user == request.user or comment.plan_post.owner == request.user: 
         comment.delete()
       else:
@@ -434,7 +440,7 @@ def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
 # 댓글 작성자 혹은 해당 모임 소유자는 댓글 삭제 가능
 def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     if request.method == "POST":
-      comment = PublicComment.objects.get(id=pk)      
+     comment = get_object_or_404(PublicComment, id=pk)      
       meeting_owner = comment.plan_post.meetings.owner
       if comment.user == request.user or meeting_owner == request.user:
         comment.delete()
@@ -455,6 +461,9 @@ def signup(request:HttpRequest, *args, **kwargs):
         form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=user, image=image)
+            profile.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
@@ -465,6 +474,25 @@ def signup(request:HttpRequest, *args, **kwargs):
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
         return render(request, template_name='signup.html', context=context)
+
+@csrf_exempt
+def extra_signup(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
+        if form.is_valid():
+            form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=request.user, image=image)
+            profile.save()
+            return redirect('wapl:main')
+        else:
+            return redirect('wapl:extra_signup')
+    else:
+        default_image_index = random.randint(1, 4)
+        context = {
+            'default_src': f'/static/default_image/{default_image_index}.png'
+        }
+    return render(request, 'extra_signup.html', context=context)
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
@@ -515,14 +543,6 @@ def view_plan(request):
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
 
   private_plans = list(private_plans)
-  private_plans_filtered = []
-  for i in range(len(private_plans)):
-      if private_plans[i].startTime.year == private_plans[i].endTime.year:
-        if private_plans[i].startTime.month <= private_plans[i].endTime.month:
-            private_plans_filtered.append(private_plans[i])
-      else:
-        private_plans_filtered.append(private_plans[i])
-        
 
   meetings = login_user.user_meetings.all()
 
@@ -537,13 +557,13 @@ def view_plan(request):
      else:
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
       public_plans += list(public_plan)
 
   private_plans = serializers.serialize('json', private_plans)
@@ -568,7 +588,9 @@ def view_team_plan(request):
   # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
 
   meeting = Meeting.objects.get(id=meeting_pk)
-  share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+  share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+  share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
 
   private_plans = []
   public_plans= []
@@ -580,7 +602,8 @@ def view_team_plan(request):
      else:
         private_plans.append(share_list[i].plan)
 
-  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month))  
+
+  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -620,10 +643,10 @@ def view_explan(request):
 
   public_plans = []
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   meeting_img = {}
 
@@ -668,22 +691,32 @@ def view_team_explan(request):
     month = int(req['month'])
     day = int(req['day'])
     meeting_pk = req['meetingPK']
-    meeting = Meeting.objects.get(id=meeting_pk)
+    # meeting = Meeting.objects.get(id=meeting_pk)
+    meeting = get_object_or_404(Meeting, id=meeting_pk)
     today = date(year,month,day)
 
     public_plans= PublicPlan.objects.filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
-    share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+    share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+    share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
+
     share_plans = [share.plan for share in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
 
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
 
+    users = meeting.users.all()
+    
     public_plans = serializers.serialize('json', public_plans)
     private_plans = serializers.serialize('json', share_plans)
+    share_list = serializers.serialize('json', share_list)
 
-    users = meeting.users.all()
-  
+    user_name = {}
+
+    for i in range(len(users)):
+        user_name[users[i].pk] = users[i].username
+
     user_img = {}
 
     for i in range(len(users)):
@@ -698,7 +731,10 @@ def view_team_explan(request):
       meeting_img = meeting.image.url
 
     return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
+                         'private_plans':private_plans,
+                         'share_list' : share_list,
+                         'user_name' : user_name,
+                         'user_img':user_img,
                          'meeting_img':meeting_img})
 
 # 프로필 업데이트 함수
@@ -710,6 +746,12 @@ def profile(request:HttpRequest, *args, **kwargs):
         form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
             form.save()
+            profile = request.user.profile
+            image = request.FILES.get('image')
+            check = request.POST.getlist('image-clear')
+            if image or len(check) > 0:
+                profile.image = image
+                profile.save()
             return render(request, 'profile.html')
         else:
             return redirect('wapl:profile')
@@ -736,13 +778,41 @@ def update_password(request, *args, **kwargs):
 
 def meeting_info(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 볼 수 있는데, 의도한 바가 맞나요?
-    meeting = Meeting.objects.get(id=pk)
+    # meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
     users = meeting.users.all()
     context = {
         'meeting': meeting,
         'users': users,
     }
     return render(request, 'meeting_info.html', context=context)
+
+def meeting_info_edit(request, pk, *args, **kwargs):
+    # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
+    # meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
+
+    if request.method == "POST":
+        meeting.meeting_name = request.POST["meeting_name"]
+        meeting.category = request.POST["category"]
+        meeting.content = request.POST["content"]
+        default_check = request.POST.getlist("image-clear")
+        if len(default_check) == 0:
+            meeting.image = request.FILES.get("image")
+        else:
+            meeting.image.delete()
+        meeting.save()
+
+        return redirect('wapl:meeting_info', pk)
+
+    users = meeting.users.all()
+    category_list = Meeting.MEETING_CHOICE
+    context = {
+        'meeting': meeting,
+        'users': users,
+        'category_list': category_list,
+    }
+    return render(request, 'meeting_info_edit.html', context=context)
 
 def generate_invitation_code(length=10):
     return base64.urlsafe_b64encode(
@@ -770,3 +840,21 @@ def select_date_meeting(request, *args, **kwargs):
 
     url = reverse('wapl:meeting_calendar', args=[meeting_id])
     return redirect(url)
+
+
+# -----------------에러 페이지 설정---------------------
+# handler400 = 'wapl.views.bad_request_page'
+def bad_request_page(request, exception):
+    return render(request, 'error_page/error_400.html')
+
+# handler403 = 'wapl.views.permission_denied_page'
+def permission_denied_page(request, exception):
+    return render(request, 'error_page/error_403.html')
+
+# handler404 = 'wapl.views.page_not_found_page'
+def page_not_found_page(request, exception):
+    return render(request, 'error_page/error_404.html')
+
+# handler500 = 'wapl.views.server_error_page'
+def server_error_page(request):
+    return render(request, 'error_page/error_500.html')

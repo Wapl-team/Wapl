@@ -19,7 +19,7 @@
       <p>모임 이름</p>
       {{ meeting.meeting_name }}
       <p>카테고리</p>
-      {{ meeting.category }}
+      {{ meeting.get_category_display }}
       <p>모임 소개</p>
       {{ meeting.content }}
       <p>모임 관리자</p>
@@ -31,6 +31,10 @@
       <br />
       {% endfor %}
       <br />
+      <!-- 임시로 해둠 시작 -->
+      <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"><p>수정하기</p></a>
+      <br />
+      <!-- 임시로 해둠 끝 -->
       <div>
         <a href={% url 'wapl:meeting_calendar' meeting.id %}>돌아가기</a>
       </div>

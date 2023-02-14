@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/meeting_info.css' %}" />
+    <title>와플</title>
+  </head>
+  <body>
+    <h2>모임 정보 수정</h2>
+    <div class="meetingCreate">
+      <form
+          action="{% url 'wapl:meeting_info_edit' meeting.id %}"
+          method="post"
+          class="profile-form"
+          enctype="multipart/form-data"
+        >
+        {% csrf_token %}
+        {% if meeting.image %}
+        <img src="{{ meeting.image.url }}" width="100" />
+        {% else %}
+        <img src="{{ meeting.default_image }}" width="100" />
+        {% endif %}
+        <p>
+          새 프로필 이미지
+          <input
+          type="file"
+          name="image"
+          accept="image/*"
+          id="profileImage"
+          />
+        </p>
+        <div id="profileCheckbox">
+          <input type="checkbox" name="image-clear" id="image-clear_id" value="1" />
+          <label for="image-clear_id" class="clear">기본 프로필로 변경</label>
+        </div>
+        <p>모임 이름</p>
+        <input name="meeting_name" placeholder="모임 이름" value="{{ meeting.meeting_name }}" />
+        <p>카테고리</p>
+        <select name="category" class="categorySelect">
+          <option>==카테고리 선택==</option>
+          {% for t1,t2 in category_list %}
+          {% if t1 == meeting.category %}
+          <option value="{{ t1 }}" selected>{{ t2 }}</option>
+          {% else %}
+          <option value="{{ t1 }}">{{ t2 }}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+        <p>모임 소개</p>
+        <textarea name="content" placeholder="모임 소개">{{ meeting.content }}</textarea>
+        <p>모임 관리자</p>
+        {{ meeting.owner }}
+        <p>초대 코드</p>
+        <p>{{ meeting.invitation_code }}</p>
+        <p>멤버</p>
+        {% for user in users %} {{ user }}
+        <br />
+        {% endfor %}
+        <br />
+        <div>
+          <input type="submit" value="저장" class="profile-btn" />
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

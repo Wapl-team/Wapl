@@ -99,13 +99,13 @@ class Comment(models.Model):
 
 
 class PrivateComment(Comment):
-  plan_post=models.ForeignKey(PrivatePlan, on_delete=models.CASCADE)
+  plan_post=models.ForeignKey(PrivatePlan, on_delete=models.CASCADE, related_name='private_plan')
   
 class replyPrivateComment(Comment):
-  comment_post=models.ForeignKey(PrivateComment, on_delete=models.CASCADE)
+  comment_post=models.ForeignKey(PrivateComment, on_delete=models.CASCADE, related_name='private_comment')
   
 class PublicComment(Comment):
-  plan_post=models.ForeignKey(PublicPlan, on_delete=models.CASCADE)
+  plan_post=models.ForeignKey(PublicPlan, on_delete=models.CASCADE, related_name='public_plan')
   
 class replyPublicComment(Comment):
-  comment_post=models.ForeignKey(PublicComment, on_delete=models.CASCADE)
+  comment_post=models.ForeignKey(PublicComment, on_delete=models.CASCADE, related_name='public_comment')

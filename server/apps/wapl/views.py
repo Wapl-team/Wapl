@@ -246,15 +246,6 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
         return redirect('wapl:pubdetail', pk) 
     return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
-#일정 생성 함수 => 이건 언제 쓰는 건지? 필요없으면 삭제
-#POST로 넘어온 데이터로 newPlan 모델 객체 생성 및 저장
-#리턴하는 값 X (js에서 작업 필요)
-@csrf_exempt
-def retrieve(request, *args, **kwargs):
-  plans = serializers.serialize('json', PrivatePlan.objects.all())
-  return JsonResponse({'plans': plans})
-
-
 #개인 일정 삭제 함수
 #POST로 넘어온 id값으로 객체 삭제
 @csrf_exempt
@@ -362,34 +353,44 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
       return redirect('wapl:pubdetail', pk)
 
 #개인 일정 대댓글 삭제
+# 댓글 작성자 혹은 해당 일정 작성자는 댓글 삭제 가능
 def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
-    if request.method == "POST":
+    if request.method == "POST": 
       comment = replyPrivateComment.objects.get(id=ck)
-      comment.delete()
+      if comment.user == request.user or comment.comment_post.plan_post.owner == request.user:
+        comment.delete()
         
     return redirect('wapl:detail', pk)
 
-#모임 일정 대댓글 삭제
+# 모임 일정 대댓글 삭제
+# 댓글 작성자 혹은 해당 모임 소유자는 댓글 삭제 가능
 def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
     if request.method == "POST":
         comment = replyPublicComment.objects.get(id=ck)
-        comment.delete()
+        meeting_owner = comment.comment_post.plan_post.meetings.owner
+        if comment.user == request.user or meeting_owner == request.user:
+          comment.delete()
         
     return redirect('wapl:pubdetail', pk)
 
-#개인 댓글 삭제
+# 개인 댓글 삭제
+# 댓글 작성자 혹은 해당 개인 일정 작성자는 댓글 삭제 가능
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     # Review : pk만 있으면 누구나 삭제 가능한데, 의도한 바가 맞나요?
     if request.method == "POST":
-        comment = PrivateComment.objects.get(id=pk)
+      comment = PrivateComment.objects.get(id=pk)
+      if comment.user == request.user or comment.plan_post.owner == request.user: 
         comment.delete()
-
+        
     return redirect('wapl:detail', ak)
 
-#모임 댓글 삭제
+# 모임 댓글 삭제
+# 댓글 작성자 혹은 해당 모임 소유자는 댓글 삭제 가능
 def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     if request.method == "POST":
-        comment = PublicComment.objects.get(id=pk)
+      comment = PublicComment.objects.get(id=pk)      
+      meeting_owner = comment.plan_post.meetings.owner
+      if comment.user == request.user or meeting_owner == request.user:
         comment.delete()
         
     return redirect('wapl:pubdetail', ak)

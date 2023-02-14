@@ -492,7 +492,7 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
-    return render(request, 'extra_signup.html', context=context)
+    return render(request, 'social_add.html', context=context)
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):

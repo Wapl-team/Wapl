@@ -10,6 +10,9 @@
   </head>
   <body>
     <h2>모임 참가</h2>
+    <div class = 'err-text-container'>
+      <p class = "err-msg">{{err_msg}}</p>
+    </div>
     <form
       action="{% url 'wapl:meeting_join' %}"
       method="post"
@@ -22,7 +25,7 @@
         <input type="submit" value="모임 참가" />
       </div>
       <div>
-        <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
+        <a href={% url 'wapl:main' %}>돌아가기</a>
       </div>
     </form>
   </body>

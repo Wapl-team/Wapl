@@ -272,7 +272,6 @@ const plan_create = () => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-
   // 공개하기로 설정한 모임목록 받아오기
   // data = selectObj.item(0).options;
   // shareMeetingList = [];
@@ -296,12 +295,14 @@ const plan_create = () => {
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, userimg } = JSON.parse(requestNewPlan.response);
+        const { plan, userimg, err_msg } = JSON.parse(requestNewPlan.response);
 
-        const startDate = new Date(startTime);
-        const endDate = new Date(endTime);
-
-        const current_preview = new Date(
+        //validation 통과하여 일정 등록이 가능한 경우
+        if (plan != null && userimg != null) {
+          const startDate = new Date(startTime);
+          const endDate = new Date(endTime);
+          
+          const current_preview = new Date(
           currentYear,
           currentMonth - 1,
           document.querySelector(".date-onclick").childNodes[0].innerText
@@ -443,10 +444,17 @@ const plan_create = () => {
             newplan.innerText = `${plan.title}`;
             newDiv.appendChild(newplan);
             timeline.appendChild(newDiv);
+        
+
+           }
+            }
           }
+        } else {
+          //view에서 validation 통과 못하면 이쪽으로 옴
+          alert(err_msg);
         }
-        clearPlanForm();
       }
+      clearPlanForm();
     }
   };
 };

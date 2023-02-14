@@ -5,152 +5,171 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}" />  
+    <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}" />
     <title>모임 일정 상세 페이지</title>
   </head>
   <body>
     <div class="plan-detail-container">
-        <div class="header">
-            <a href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a> <br>
+      <div class="header">
+        <a href="{% url 'wapl:meeting_calendar' meeting_pk %}"
+          ><i class="fa-solid fa-house"></i
+        ></a>
+        <br />
+      </div>
+
+      <div class="main">
+        <div class="plan-detail-title">{{plan.title}}</div>
+        <div class="plan-detail-place">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>{{plan.location}}</span>
         </div>
-        
-        <div class="main">
-            <div class="plan-detail-title">
-                {{plan.title}}
-            </div>
-            <div class="plan-detail-place">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>{{plan.location}}</span>
-            </div>
-            <div class="plan-detail-time">
-                {{plan.startTime}}~<br />
-                {{plan.endTime}}
-            </div>
-            <div class="plan-detail-content">
-                {{plan.content}}
-            </div>
+        <div class="plan-detail-time">
+          {{plan.startTime}}~<br />
+          {{plan.endTime}}
         </div>
-        <hr>
-        <!-- 여기부터 Comment------------------------------------------------ -->
-        <div class="leave-comment">
-          <form action="{% url 'wapl:pubdetail' plan.pk %}" method="post" style="display:flex; margin: 10px 0;">
+        <div class="plan-detail-content">{{plan.content}}</div>
+      </div>
+      <hr />
+      <!-- 여기부터 Comment------------------------------------------------ -->
+      <div class="leave-comment">
+        <form
+          action="{% url 'wapl:pubdetail' plan.pk %}"
+          method="post"
+          style="display: flex; margin: 10px 0"
+        >
+          {% csrf_token %}
+          <textarea name="content" placeholder="댓글 남기기"></textarea>
+          <div>
+            <input type="submit" , value="작성" />
+          </div>
+        </form>
+      </div>
+      <div class="comment-container">
+        {% for comment in comments %}
+        <div class="show-comment">
+          <div class="user-comment">
+            <div class="user-comment-info">
+              <div class="user-comment-user">{{comment.user}}</div>
+              {% if comment.created_string == False %} {% csrf_token %}
+              <span class="user-comment-time"
+                >{{ comment.created_at|date:'m월 d일' }}</span
+              >
+              {% else %}
+              <span class="user-comment-time"
+                >{{ comment.created_string }}</span
+              >
+              {% endif %}
+            </div>
+            <div class="user-comment-content">{{comment.content}}</div>
+          </div>
+
+          <div class="delete-comment">
+            <form
+              action="{% url 'wapl:pubcomment_delete' plan.pk comment.pk %}"
+              method="post"
+            >
               {% csrf_token %}
-              <textarea name="content" placeholder="댓글 남기기"></textarea>
-              <div>
-                  <input type="submit" , value="작성" />
-              </div>
-          </form>
+              <input type="submit" value="삭제" />
+            </form>
+            <input
+              type="submit"
+              value="답글"
+              class="reply_button"
+              style="color: darkgray"
+            />
+          </div>
         </div>
-        <div class="comment-container">
-          {% for comment in comments %}
+
+        <!-- 대댓글 보여주는 구간 -->
+        <div>
+          {% for reply in replys %} {% if reply.comment_post.id == comment.id %}
           <div class="show-comment">
             <div class="user-comment">
               <div class="user-comment-info">
-                <div class="user-comment-user">{{comment.user}}</div>
-                {% if comment.created_string == False %}
-                {% csrf_token %}
-                <span class="user-comment-time">{{ comment.created_at|date:'m월 d일' }}</span>
+                <div class="user-comment-user">↪ {{reply.user}}</div>
+                {% if reply.created_string == False %} {% csrf_token %}
+                <span class="user-comment-time"
+                  >{{ reply.created_at|date:'m월 d일' }}</span
+                >
                 {% else %}
-                <span class="user-comment-time">{{ comment.created_string }}</span>
-                {% endif %}
-              </div>
-              <div class="user-comment-content">{{comment.content}}</div>
-            </div>
-
-            <div class="delete-comment">
-              <form action="{% url 'wapl:pubcomment_delete' plan.pk comment.pk %}" method="post">
-                {% csrf_token %}
-                    <input type="submit" value="삭제" />
-              </form>   
-              <input type="submit" value="답글" class="reply_button"  style="color:darkgray"/>
-            </div>
-          </div>
-          
-
-          <!-- 대댓글 보여주는 구간 -->
-          <div>
-          {% for reply in replys %}
-          {% if reply.comment_post.id == comment.id %}
-          <div class="show-comment"> 
-            <div class="user-comment">
-              <div class="user-comment-info">
-                <div class="user-comment-user">↪ {{reply.user}}</div> 
-                {% if reply.created_string == False %}
-                {% csrf_token %}
-                <span class="user-comment-time">{{ reply.created_at|date:'m월 d일' }}</span>
-                {% else %}
-                <span class="user-comment-time">{{ reply.created_string }}</span>
+                <span class="user-comment-time"
+                  >{{ reply.created_string }}</span
+                >
                 {% endif %}
               </div>
               <div class="user-comment-content">&emsp;{{reply.content}}</div>
             </div>
 
             <div class="delete-comment">
-              <form action="{% url 'wapl:pubreply_delete' plan.pk reply.pk %}" method="post">
+              <form
+                action="{% url 'wapl:pubreply_delete' plan.pk reply.pk %}"
+                method="post"
+              >
                 {% csrf_token %}
-                    <input type="submit" value="삭제" />
+                <input type="submit" value="삭제" />
               </form>
-
             </div>
           </div>
-            {% endif %}
-            {% endfor %}
-          </div>
+          {% endif %} {% endfor %}
+        </div>
 
-          <!-- 대댓글을 생성하는 input 구간 -->
-          <div class="reply-container" style="display: none">
-            <form action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}" method="post" style="display:flex; margin: 10px 0;">
-              {% csrf_token %}
-              <textarea name="content" placeholder="답글 남기기"></textarea>
+        <!-- 대댓글을 생성하는 input 구간 -->
+        <div class="reply-container" style="display: none">
+          <form
+            action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}"
+            method="post"
+            style="display: flex; margin: 10px 0"
+          >
+            {% csrf_token %}
+            <textarea name="content" placeholder="답글 남기기"></textarea>
             <div>
-              <input type="submit", value="작성" />
+              <input type="submit" , value="작성" />
             </div>
-            </form>
-          </div>
+          </form>
+        </div>
         {% endfor %}
       </div>
-      <hr>
+      <hr />
 
-
-        <div class="control-container">
-          <form action="{% url 'wapl:delete' plan.pk %}" method="post" class="delete-plan">
-            {% csrf_token %}
-            <input type="submit" , value="삭제하기" />
-         </form>
-         <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan">수정하기</a>
-        </div>
+      <div class="control-container">
+        <form
+          action="{% url 'wapl:pubdelete' plan.pk %}"
+          method="post"
+          class="delete-plan"
+        >
+          {% csrf_token %}
+          <input type="submit" , value="삭제하기" />
+        </form>
+        <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan"
+          >수정하기</a
+        >
+      </div>
     </div>
-    
 
-
-
-    
-
-    <script src="https://kit.fontawesome.com/5658349e28.js" crossorigin="anonymous"></script>
-    <script src="{% static 'javascripts/main.js' %}"></script>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-
-      const $buttons = document.querySelectorAll('.reply_button')
-			$buttons.forEach(($button) => {
-				$button.addEventListener('click', (e) =>
-					replyToggle(e, $button)
-				)
-			})
+      const $buttons = document.querySelectorAll(".reply_button");
+      $buttons.forEach(($button) => {
+        $button.addEventListener("click", (e) => replyToggle(e, $button));
+      });
 
       function replyToggle(e, $button) {
         // 눌러진 답글 버튼에서 가장 가까운 class reply-container 고른 것
-        let content = $button.parentElement.parentElement.nextElementSibling.nextElementSibling;
+        let content =
+          $button.parentElement.parentElement.nextElementSibling
+            .nextElementSibling;
         // 답글 버튼 누르면 class reply-container 의 display 속성이 none<=>block 바뀌도록
         console.log(content);
-        if(content.style.display !== 'none') {
-          content.style.display = 'none';
-        }
-        else {
-          content.style.display = 'block';
+        if (content.style.display !== "none") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
         }
       }
-
     </script>
   </body>
 </html>

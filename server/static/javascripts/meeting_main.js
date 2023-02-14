@@ -225,7 +225,7 @@ closeModal2.addEventListener("click", () => {
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
-const plan_create = (meeting_name) => {
+const plan_create = (meeting_name, meeting_pk) => {
   const requestNewPlan = new XMLHttpRequest();
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
@@ -242,7 +242,7 @@ const plan_create = (meeting_name) => {
 
   requestNewPlan.send(
     JSON.stringify({
-      meeting_name: meeting_name,
+      meeting_pk: meeting_pk,
       title: title,
       location: location,
       startTime: startTime,
@@ -253,12 +253,15 @@ const plan_create = (meeting_name) => {
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, meeting_img } = JSON.parse(requestNewPlan.response);
-
-        const start_date = new Date(startTime);
-        const end_date = new Date(endTime);
-
-        const current_preview = new Date(
+        const { plan, meeting_img, err_msg } = JSON.parse(
+          requestNewPlan.response
+        );
+        //validation 통과한 경우
+        if (plan != null && meeting_img != null) {
+          const start_date = new Date(startTime);
+          const end_date = new Date(endTime);
+          
+          const current_preview = new Date(
           currentYear,
           currentMonth - 1,
           document.querySelector(".date-onclick").childNodes[0].innerText
@@ -404,7 +407,14 @@ const plan_create = (meeting_name) => {
             newplan.innerText = `${plan.title}`;
             newDiv.appendChild(newplan);
             timeline.appendChild(newDiv);
+          
+
+              }
+            }
           }
+        } else {
+          // validation 통과 못할 시 이쪽으로 옴
+          alert(err_msg);
         }
 
         clearPlanForm();

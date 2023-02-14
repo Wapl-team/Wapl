@@ -165,6 +165,9 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 LOGIN_REDIRECT_URL = '/social/signup' # 소셜 로그인 시 redirect 할 url
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=False #이미 인증된 사용자가 인증시도시
 
@@ -178,3 +181,4 @@ NO_AUTH_URLS = (
     r'/accounts(.*)$',
     r'',
 )
+

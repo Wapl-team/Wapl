@@ -22,7 +22,7 @@ import uuid
 import base64
 import codecs
 from datetime import datetime
-
+from django.contrib import messages
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
 # 모임 생성 유저는 자동으로 users에 들어감
@@ -173,12 +173,12 @@ def create_public_plan(request, *args, **kwargs):
     endTime = req['endTime']
     content = req['content']
     meeting_name = req['meeting_name']
-
+    owner = request.user
     meeting = Meeting.objects.get(meeting_name=meeting_name)
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
-      new_plan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+      new_plan = PublicPlan.objects.create(meetings = meeting, owner = owner, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -252,16 +252,25 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
 def delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
         plan = PrivatePlan.objects.get(id=pk)
-        plan.delete()
-        return redirect('wapl:main')
+        if plan.owner == request.user:
+          plan.delete()
+        else:
+          err_msg = '본인의 일정만 삭제할 수 있습니다.'
+          messages.warning(request, err_msg)
+    return redirect('wapl:main')
 
 #모임 일정 삭제 함수
 @csrf_exempt
 def pub_delete(request:HttpRequest, pk, *args, **kwargs):
-    if request.method == "POST":
+    if request.method == "POST": 
         plan = PublicPlan.objects.get(id=pk)
-        plan.delete()
-        return redirect('wapl:main')
+        if plan.owner == request.user or plan.meetings.owner == request.user:
+          plan.delete()
+        else:
+          err_msg = '본인의 일정만 삭제할 수 있습니다.'
+          messages.warning(request, err_msg)
+          
+    return redirect('wapl:main')
 
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
@@ -276,8 +285,10 @@ def detail(request, pk, *args, **kwargs):
             content=comments,
             user=request.user,
             plan_post=plan,
-          )
-          
+          )         
+          return redirect('wapl:detail', pk) 
+        else:
+          messages.warning(request, err_msg)
           return redirect('wapl:detail', pk) 
     
     comments = PrivateComment.objects.all().filter(plan_post=plan)
@@ -305,6 +316,9 @@ def public_detail(request, pk, *args, **kwargs):
             plan_post=plan,
           )
           return redirect('wapl:pubdetail', pk)
+        else:
+          messages.warning(request, err_msg)
+          return redirect('wapl:pubdetail', pk)
     
     comments = PublicComment.objects.all().filter(plan_post=plan)
     replys = replyPublicComment.objects.all()
@@ -316,23 +330,6 @@ def public_detail(request, pk, *args, **kwargs):
         "err_msg": err_msg,
         }
     return render(request, 'plan_pubDetail.html', context=context)
-
-#개인 일정 대댓글 생성
-def reply_create(request, pk, ck, *args, **kwargs):
-    comment_post = get_object_or_404(PrivateComment, id=ck)
-    if request.user.is_authenticated:
-      if request.method == "POST":
-        comments = request.POST["content"]
-        result, err_msg = validate_comment(comments)
-        if result:
-          replyPrivateComment.objects.create(
-            content=request.POST["content"],
-            user=request.user,
-            comment_post= comment_post,
-          )
-          return redirect('wapl:detail', pk)
-          
-      return redirect('wapl:detail', pk)
 
 # 개인 댓글 수정
 def comment_update(request, *args, **kwargs):
@@ -350,6 +347,26 @@ def reply_update(request, *args, **kwargs):
 def pub_reply_update(request, *args, **kwargs):
   pass
 
+#개인 일정 대댓글 생성
+def reply_create(request, pk, ck, *args, **kwargs):
+  comment_post = get_object_or_404(PrivateComment, id=ck)
+  if request.user.is_authenticated:
+    if request.method == "POST":
+      comments = request.POST["content"]
+      result, err_msg = validate_comment(comments)
+      if result:
+        replyPrivateComment.objects.create(
+          content=request.POST["content"],
+          user=request.user,
+          comment_post= comment_post,
+        )
+        return redirect('wapl:detail', pk)
+      else:
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk)
+      
+  return redirect('wapl:detail', pk)
+
 #모임 일정 대댓글 생성
 def pub_reply_create(request, pk, ck, *args, **kwargs):
     comment_post = get_object_or_404(PublicComment, id=ck)
@@ -363,9 +380,11 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
               user=request.user,
               comment_post= comment_post,
           )
-          return redirect('wapl:pubdetail', pk)
+        else:
+          messages.warning(request, err_msg)
+          return redirect('wapl:detail', pk)
         
-      return redirect('wapl:pubdetail', pk)
+    return redirect('wapl:pubdetail', pk)
 
 #개인 일정 대댓글 삭제
 # 댓글 작성자 혹은 해당 일정 작성자는 댓글 삭제 가능
@@ -374,7 +393,10 @@ def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
       comment = replyPrivateComment.objects.get(id=ck)
       if comment.user == request.user or comment.comment_post.plan_post.owner == request.user:
         comment.delete()
-        
+      else:
+        err_msg = '댓글을 삭제할 수 없습니다.'
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk)
     return redirect('wapl:detail', pk)
 
 # 모임 일정 대댓글 삭제
@@ -385,6 +407,10 @@ def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
         meeting_owner = comment.comment_post.plan_post.meetings.owner
         if comment.user == request.user or meeting_owner == request.user:
           comment.delete()
+        else:
+          err_msg = '댓글을 삭제할 수 없습니다.'
+          messages.warning(request, err_msg)
+          return redirect('wapl:detail', pk)
         
     return redirect('wapl:pubdetail', pk)
 
@@ -396,7 +422,11 @@ def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
       comment = PrivateComment.objects.get(id=pk)
       if comment.user == request.user or comment.plan_post.owner == request.user: 
         comment.delete()
-        
+      else:
+        err_msg = '댓글을 삭제할 수 없습니다.'
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk)
+      
     return redirect('wapl:detail', ak)
 
 # 모임 댓글 삭제
@@ -407,7 +437,11 @@ def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
       meeting_owner = comment.plan_post.meetings.owner
       if comment.user == request.user or meeting_owner == request.user:
         comment.delete()
-        
+      else:
+        err_msg = '댓글을 삭제할 수 없습니다.'
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk)
+      
     return redirect('wapl:pubdetail', ak)
 
 # -------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 
 from django.http.request import HttpRequest
 from django.http import JsonResponse
@@ -54,7 +54,8 @@ def meeting_calendar(request, pk, *args, **kwargs):
   login_user = request.user
   # Review : login_user가 없으면 에러 발생. 핸들링 필요
   # Review : 혹은 @login_required 데코레이터 필요
-  cur_meeting = Meeting.objects.all().get(id=pk)
+  cur_meeting = get_object_or_404(Meeting, id=pk)
+#   cur_meeting = Meeting.objects.all().get(id=pk)
 
   meetings = login_user.user_meetings.all()
   try:
@@ -100,7 +101,8 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
     return render(request, "meeting_create.html", context=context)
 
 def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
-    meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
+    # meeting = Meeting.objects.get(id=pk)
     context = {
         "meeting" : meeting
     }
@@ -108,7 +110,8 @@ def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
 
 def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
-        meeting = Meeting.objects.get(id=pk)
+        meeting = get_object_or_404(Meeting, id=pk)
+        # meeting = Meeting.objects.get(id=pk)
         meeting.delete()
         return redirect('wapl:main')
 
@@ -116,11 +119,14 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
     if request.method == "POST":
         code = request.POST["code"]
         try:
+            # meeting = get_object_or_404(Meeting, invitation_code=code)
+            # 여기서는 try-except로 예외처리 해줘서 404 안 써도 됨.
             meeting = Meeting.objects.get(invitation_code=code)
             meeting.users.add(request.user)
             url = reverse('wapl:meeting_calendar', args=[meeting.id])
             return redirect(url)
         except:
+            # 참가 코드가 틀렸다는 오류메세지 출력해야 함
             return redirect('wapl:meeting_join')
 
     else:
@@ -175,7 +181,8 @@ def create_public_plan(request, *args, **kwargs):
     content = req['content']
     meeting_name = req['meeting_name']
 
-    meeting = Meeting.objects.get(meeting_name=meeting_name)
+    # meeting = Meeting.objects.get(meeting_name=meeting_name)
+    meeting = get_object_or_404(Meeting, meeting_name=meeting_name)
 
     # result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     new_plan = PublicPlan.objects.create(meetings = meeting, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
@@ -195,7 +202,8 @@ def create_public_plan(request, *args, **kwargs):
 # ex) 날짜 에러인 경우 -> err_msg['time_err'] == "종료 시간이 시작 시간보다 이전일 수 없습니다."
 
 def update(request:HttpRequest, pk, *args, **kwargs):
-    plan = PrivatePlan.objects.get(id=pk)
+    # plan = PrivatePlan.objects.get(id=pk)
+    plan = get_object_or_404(PrivatePlan, id=pk)
     plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -212,7 +220,8 @@ def update(request:HttpRequest, pk, *args, **kwargs):
 
 # 모임 일정 수정 함수
 def pub_update(request:HttpRequest, pk, *args, **kwargs):
-    plan = PublicPlan.objects.get(id=pk)
+    # plan = PublicPlan.objects.get(id=pk)
+    plan = get_object_or_404(PublicPlan, id=pk)
     plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
     
@@ -241,7 +250,8 @@ def retrieve(request, *args, **kwargs):
 @csrf_exempt
 def delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
-        plan = PrivatePlan.objects.get(id=pk)
+        # plan = PrivatePlan.objects.get(id=pk)
+        plan = get_object_or_404(PrivatePlan, id=pk)
         plan.delete()
         return redirect('wapl:main')
 
@@ -250,6 +260,7 @@ def delete(request:HttpRequest, pk, *args, **kwargs):
 def pub_delete(request:HttpRequest, pk, *args, **kwargs):
     if request.method == "POST":
         plan = PublicPlan.objects.get(id=pk)
+        plan = get_object_or_404(PublicPlan, id=pk)
         plan.delete()
         return redirect('wapl:main')
 
@@ -306,7 +317,8 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
 #개인 일정 대댓글 삭제
 def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
     if request.method == "POST":
-        comment = replyPrivateComment.objects.get(id=ck)
+        # comment = replyPrivateComment.objects.get(id=ck)
+        comment = get_object_or_404(replyPrivateComment, id=ck)
         comment.delete()
         
     return redirect('wapl:detail', pk)
@@ -314,7 +326,8 @@ def reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
 #모임 일정 대댓글 삭제
 def pub_reply_delete(request:HttpRequest, pk, ck, *args, **kwargs):
     if request.method == "POST":
-        comment = replyPublicComment.objects.get(id=ck)
+        # comment = replyPublicComment.objects.get(id=ck)
+        comment = get_object_or_404(replyPublicComment, id=ck)
         comment.delete()
         
     return redirect('wapl:pubdetail', pk)
@@ -348,7 +361,8 @@ def public_detail(request, pk, *args, **kwargs):
 def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     # Review : pk만 있으면 누구나 삭제 가능한데, 의도한 바가 맞나요?
     if request.method == "POST":
-        comment = PrivateComment.objects.get(id=pk)
+        # comment = PrivateComment.objects.get(id=pk)
+        comment = get_object_or_404(PrivateComment, id=pk)
         comment.delete()
 
     return redirect('wapl:detail', ak)
@@ -356,7 +370,8 @@ def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
 #모임 댓글 삭제
 def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     if request.method == "POST":
-        comment = PublicComment.objects.get(id=pk)
+        # comment = PublicComment.objects.get(id=pk)
+        comment = get_object_or_404(PublicComment, id=pk)
         comment.delete()
         
     return redirect('wapl:pubdetail', ak)
@@ -502,7 +517,6 @@ def view_team_plan(request):
 
   share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
 
-
   private_plans = []
   public_plans= []
 
@@ -602,7 +616,8 @@ def view_team_explan(request):
     month = int(req['month'])
     day = int(req['day'])
     meeting_pk = req['meetingPK']
-    meeting = Meeting.objects.get(id=meeting_pk)
+    # meeting = Meeting.objects.get(id=meeting_pk)
+    meeting = get_object_or_404(Meeting, id=meeting_pk)
     today = date(year,month,day)
 
     public_plans= PublicPlan.objects.filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
@@ -690,7 +705,8 @@ def update_password(request, *args, **kwargs):
 
 def meeting_info(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 볼 수 있는데, 의도한 바가 맞나요?
-    meeting = Meeting.objects.get(id=pk)
+    # meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
     users = meeting.users.all()
     context = {
         'meeting': meeting,
@@ -700,7 +716,8 @@ def meeting_info(request, pk, *args, **kwargs):
 
 def meeting_info_edit(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
-    meeting = Meeting.objects.get(id=pk)
+    # meeting = Meeting.objects.get(id=pk)
+    meeting = get_object_or_404(Meeting, id=pk)
 
     if request.method == "POST":
         meeting.meeting_name = request.POST["meeting_name"]
@@ -750,3 +767,21 @@ def select_date_meeting(request, *args, **kwargs):
 
     url = reverse('wapl:meeting_calendar', args=[meeting_id])
     return redirect(url)
+
+
+# -----------------에러 페이지 설정---------------------
+# handler400 = 'wapl.views.bad_request_page'
+def bad_request_page(request, exception):
+    return render(request, 'error_page/error_400.html')
+
+# handler403 = 'wapl.views.permission_denied_page'
+def permission_denied_page(request, exception):
+    return render(request, 'error_page/error_403.html')
+
+# handler404 = 'wapl.views.page_not_found_page'
+def page_not_found_page(request, exception):
+    return render(request, 'error_page/error_404.html')
+
+# handler500 = 'wapl.views.server_error_page'
+def server_error_page(request):
+    return render(request, 'error_page/error_500.html')

@@ -24,8 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^ix7m#u1-i!0%*h7$xjmk8=+p3wre^69k1@^a+v@5rppylvgkn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
+# 배포할 때
+# DEBUG = False
+# ALLOWED_HOSTS = ['*']
+
+# 개발할 때
+DEBUG = True
 ALLOWED_HOSTS = []
 
 
@@ -131,9 +136,12 @@ USE_TZ = False
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = 'media/'
 
@@ -156,6 +164,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
+
 LOGIN_REDIRECT_URL = '/social/signup' # 소셜 로그인 시 redirect 할 url
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=False #이미 인증된 사용자가 인증시도시
 

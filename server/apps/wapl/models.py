@@ -21,20 +21,6 @@ class User(AbstractUser):
   default_image = models.CharField(null=True, max_length=200)
   current_date = models.DateField(auto_now_add=True, null=True)
 
-# 일정
-# 필드: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(owner)
-class Plan(models.Model):
-  startTime = models.DateTimeField()
-  endTime = models.DateTimeField()
-  location = models.CharField(max_length=20, blank=True)
-  title = models.CharField(max_length=20)
-  content = models.TextField(blank=True)
-
-  class Meta:
-    abstract = True
-  def __str__(self):
-    return self.title
-
 # 모임
 # 필드: 카테고리, 모임 이름, 내용, 모임 소융 유저
 class Meeting(models.Model):
@@ -59,12 +45,26 @@ class Meeting(models.Model):
 
     def __str__(self):
         return self.meeting_name
+      
+# 일정
+# 필드: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(owner)
+class Plan(models.Model):
+  startTime = models.DateTimeField()
+  endTime = models.DateTimeField()
+  location = models.CharField(max_length=20, blank=True)
+  title = models.CharField(max_length=20)
+  content = models.TextField(blank=True)  
+  class Meta:
+    abstract = True
+  def __str__(self):
+    return self.title
 
 class PrivatePlan(Plan):
-  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='plans', default=1)
+  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='private_plan', default=1)
 
 class PublicPlan(Plan):
   meetings = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='plans', default=1)
+  owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='public_plan', default=1)
 
 class Share(models.Model):
   plan = models.ForeignKey(PrivatePlan, on_delete=models.CASCADE, related_name='plan_shares', default=1)
@@ -80,19 +80,19 @@ class Comment(models.Model):
     
     @property
     def created_string(self):
-        time = timezone.now() - self.created_at
+      time = timezone.now() - self.created_at
 
-        if time < timedelta(minutes=1):
-            return '방금 전'
-        elif time < timedelta(hours=1):
-            return str(int(time.seconds / 60)) + '분 전'
-        elif time < timedelta(days=1):
-            return str(int(time.seconds / 3600)) + '시간 전'
-        elif time < timedelta(days=7):
-            time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
-            return str(time.days) + '일 전'
-        else:
-            return False
+      if time < timedelta(minutes=1):
+          return '방금 전'
+      elif time < timedelta(hours=1):
+          return str(int(time.seconds / 60)) + '분 전'
+      elif time < timedelta(days=1):
+          return str(int(time.seconds / 3600)) + '시간 전'
+      elif time < timedelta(days=7):
+          time = datetime.now(tz=timezone.utc).date() - self.created_at.date()
+          return str(time.days) + '일 전'
+      else:
+          return False
     
     class Meta:
       abstract = True

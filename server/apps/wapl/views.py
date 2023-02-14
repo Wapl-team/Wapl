@@ -334,6 +334,21 @@ def reply_create(request, pk, ck, *args, **kwargs):
           
       return redirect('wapl:detail', pk)
 
+# 개인 댓글 수정
+def comment_update(request, *args, **kwargs):
+  pass
+
+# 모임 댓글 수정
+def pub_comment_update(request, *args, **kwargs):
+  pass
+
+# 개인 대댓글 수정
+def reply_update(request, *args, **kwargs):
+  pass
+
+# 모임 대댓글 수정
+def pub_reply_update(request, *args, **kwargs):
+  pass
 
 #모임 일정 대댓글 생성
 def pub_reply_create(request, pk, ck, *args, **kwargs):

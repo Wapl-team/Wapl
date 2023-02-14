@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'server.apps.wapl.lockdown.RequireLoginMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -143,6 +144,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# @login_required 기본 url
+SECRET_KEY = '1234567890'
+LOGIN_URL = '/login'
+
 # 소셜 로그인 관련
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -151,5 +156,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/' # 소셜 로그인 시 redirect 할 url
-SOCIALACCOUNT_AUTO_SIGNUP = False
+LOGIN_REDIRECT_URL = '/social/signup' # 소셜 로그인 시 redirect 할 url
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=False #이미 인증된 사용자가 인증시도시
+
+AUTH_URLS = (
+    r'/(.*)$',
+)
+NO_AUTH_URLS = (
+    r'/admin(.*)$',
+    r'/login(.*)$',
+    r'/logout(.*)$',
+    r'/accounts(.*)$',
+    r'',
+)

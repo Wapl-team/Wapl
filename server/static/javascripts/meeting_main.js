@@ -201,8 +201,15 @@ makeCalendar(viewYear, viewMonth);
 
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
+const modal_content = document.querySelector(".modal__content");
 const closeModal = document.querySelector(".closeModal");
 const closeModal2 = document.querySelector(".closeModal2");
+
+modal.addEventListener("click", (e) => {
+  if (e.target == modal) {
+    modal.classList.add("hidden");
+  }
+});
 
 modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
@@ -211,10 +218,10 @@ modalButton.addEventListener("click", () => {
 closeModal.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
+
 closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
-
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
@@ -516,11 +523,18 @@ return: err_msg
     requestExplan.onreadystatechange = () => {
       if (requestExplan.readyState === XMLHttpRequest.DONE) {
         if (requestExplan.status < 400) {
-          const { public_plans, private_plans, user_img, meeting_img } =
-            JSON.parse(requestExplan.response);
+          const {
+            public_plans,
+            private_plans,
+            share_list,
+            user_name,
+            user_img,
+            meeting_img,
+          } = JSON.parse(requestExplan.response);
 
           const public_plans_array = JSON.parse(public_plans);
           const prviate_plans_array = JSON.parse(private_plans);
+          const share_list_array = JSON.parse(share_list);
           memberlist.innerHTML = "";
           timeline.innerHTML = ``;
 
@@ -560,11 +574,13 @@ return: err_msg
             new_plan.style.height = "50px";
             new_plan.style.borderRadius = "20px";
             new_plan.style.padding = "8px";
+            new_plan.style.overflow = "hidden";
+            new_plan.style.whiteSpace = "normal";
             new_plan.innerText = `${plan.fields.title}`;
             document.querySelector(".public-timeline").appendChild(new_plan);
           });
 
-          prviate_plans_array.forEach((plan) => {
+          prviate_plans_array.forEach((plan, i) => {
             if (already.indexOf(`${plan.fields.owner}`) == -1) {
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${
@@ -600,7 +616,16 @@ return: err_msg
             new_plan.style.borderRadius = "20px";
             new_plan.style.padding = "8px";
             new_plan.style.height = "50px";
-            new_plan.innerText = `${plan.fields.title}`;
+            new_plan.style.overflow = "hidden";
+            new_plan.style.whiteSpace = "normal";
+            if (share_list_array[i].fields.is_share == "open") {
+              new_plan.innerText = `${plan.fields.title}`;
+            } else {
+              new_plan.innerText = `${
+                user_name[plan.fields.owner]
+              }의 비밀 일정`;
+            }
+
             document
               .querySelector(`.user-${plan.fields.owner}`)
               .appendChild(new_plan);

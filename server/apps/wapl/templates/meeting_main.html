@@ -30,49 +30,51 @@
       <input type="date" name="select-date" />
       <input type="submit" value="선택하기" />
     </form>
+
     <div class="modal hidden">
       <div class="modal__content">
+        <form id="create" name="create" method="post" class="planRegister">
+          <input
+            type="text"
+            name="title"
+            placeholder="새로운 일정"
+            id="plan_title"
+          />
+          <input
+            type="text"
+            name="location"
+            placeholder="장소"
+            id="plan_location"
+          />
+          <div>
+            <span class="time-span">시작</span>
+            <input type="datetime-local" name="date" id="plan_startTime" />
+          </div>
+
+          <div>
+            <span class="time-span">종료</span>
+            <input type="datetime-local" name="date" id="plan_endTime" />
+          </div>
+          <input
+            type="text"
+            name="content"
+            placeholder="내용"
+            id="plan_content"
+          />
+
+          <a
+            href="#"
+            id="closeModal"
+            class="closeModal2"
+            onclick="plan_create(
+                `{{cur_meeting.meeting_name}}`
+              )"
+            >추가</a
+          >
+        </form>
         <button class="closeModal">
           <i class="fa-solid fa-x"></i>
         </button>
-        <div class="modal__title">일정 등록</div>
-        <form id="create" name="create" method="post" class="planRegister">
-          <div class="planRegister-basic">
-            <input
-              type="text"
-              name="title"
-              placeholder="새로운 일정"
-              id="plan_title"
-            />
-            <input
-              type="text"
-              name="location"
-              placeholder="장소"
-              id="plan_location"
-            />
-            <div>시작 시간</div>
-            <input type="datetime-local" name="date" id="plan_startTime" />
-            <div>끝 시간</div>
-            <input type="datetime-local" name="date" id="plan_endTime" />
-            <input
-              type="text"
-              name="content"
-              placeholder="내용"
-              id="plan_content"
-            />
-          </div>
-          <div class="planRegister-submit">
-            <a
-              href="#"
-              id="closeModal"
-              class="closeModal2"
-              onclick="plan_create(
-                `{{cur_meeting.meeting_name}}`
-              )"
-              >추가</a
-            >
-          </div>
-        </form>
       </div>
     </div>
 
@@ -81,8 +83,8 @@
     <div id="sidebar" class="sidebar-menu">
       <div class="profile">
         <a href="{% url 'wapl:profile' %}">
-          {% if user.image %}
-          <img src="{{ user.image.url }}" width="65" class="profileImage" />
+          {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" width="65" class="profileImage" />
           {% else %}
           <img src="{{ user.default_image }}" width="65" class="profileImage" />
           {% endif %}

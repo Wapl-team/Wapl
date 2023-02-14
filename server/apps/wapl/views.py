@@ -153,12 +153,12 @@ def create_private_plan(request, *args, **kwargs):
       new_plan = PrivatePlan.objects.create(owner = request.user, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
        # 새로운 share 모델 생성
       for shareMeeting in shareMeetings:
-        Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
+        Share.objects.create(plan=new_plan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
 
-      if request.user.image == "":
+      if request.user.profile.image == "":
         userimg = request.user.default_image
       else:
-        userimg = request.user.image.url
+        userimg = request.user.profile.image.url
 
       new_plan=model_to_dict(new_plan)
 
@@ -183,7 +183,7 @@ def create_public_plan(request, *args, **kwargs):
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
-      new_plan = PublicPlan.objects.create(meetings = meeting, owner = owner, startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+      new_plan = PublicPlan.objects.create(meetings = meeting,  startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -440,7 +440,7 @@ def comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
 # 댓글 작성자 혹은 해당 모임 소유자는 댓글 삭제 가능
 def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
     if request.method == "POST":
-     comment = get_object_or_404(PublicComment, id=pk)      
+      comment = get_object_or_404(PublicComment, id=pk)      
       meeting_owner = comment.plan_post.meetings.owner
       if comment.user == request.user or meeting_owner == request.user:
         comment.delete()
@@ -612,10 +612,10 @@ def view_team_plan(request):
   
   user_img = {}
   for i in range(len(users)):
-     if users[i].image=="":
+     if users[i].profile.image=="":
         user_img[users[i].pk] = users[i].default_image
      else:
-        user_img[users[i].pk] = users[i].image.url
+        user_img[users[i].pk] = users[i].profile.image.url
 
   if meeting.image == "":
      meeting_img = meeting.default_image
@@ -720,10 +720,10 @@ def view_team_explan(request):
     user_img = {}
 
     for i in range(len(users)):
-      if users[i].image=="":
+      if users[i].profile.image=="":
         user_img[users[i].pk] = users[i].default_image
       else:
-        user_img[users[i].pk] = users[i].image.url
+        user_img[users[i].pk] = users[i].profile.image.url
 
     if meeting.image == "":
       meeting_img = meeting.default_image

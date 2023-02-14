@@ -5,65 +5,69 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/meeting_info.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/meeting_info_edit.css' %}" />
     <title>와플</title>
   </head>
   <body>
-    <h2>모임 정보 수정</h2>
-    <div class="meetingCreate">
-      <form
-          action="{% url 'wapl:meeting_info_edit' meeting.id %}"
-          method="post"
-          class="profile-form"
-          enctype="multipart/form-data"
-        >
-        {% csrf_token %}
-        {% if meeting.image %}
-        <img src="{{ meeting.image.url }}" width="100" />
-        {% else %}
-        <img src="{{ meeting.default_image }}" width="100" />
-        {% endif %}
-        <p>
-          새 프로필 이미지
-          <input
-          type="file"
-          name="image"
-          accept="image/*"
-          id="profileImage"
-          />
-        </p>
-        <div id="profileCheckbox">
-          <input type="checkbox" name="image-clear" id="image-clear_id" value="1" />
-          <label for="image-clear_id" class="clear">기본 프로필로 변경</label>
+    <div class="meeting__info">
+      <div class="meeting__detail">모임 정보 </div>
+      <div class="meeting__body">
+        <form action="{% url 'wapl:meeting_info_edit' meeting.id %}" method="post" class="profile__form" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="profile__container">
+            <div class="meetingedit__profile">
+              {% if meeting.image %}
+              <img src="{{ meeting.image.url }}" />
+              {% else %}
+              <img src="{{ meeting.default_image }}" />
+              {% endif %}
+            </div>
+            <div class="meetingedit__headinfo">
+              <p class="new__profileImg">새 프로필 사진</p>
+              <div class="profile__images">
+                <div class="add__newImg">
+                  <input type="file" name="image" accept="image/" id="profileImage" />
+                </div>
+                <div class="set__basicImg">
+                  <input type="checkbox" name="image-clear" id="image-clear_id" value="1" />
+                  <label for="image-clear_id" class="clear">기본 프로필로 변경</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="meeting__submenu__all">
+          <div class="meeting__submenu">
+            <span>모임명</span>
+            <input name="meeting_name" placeholder="모임명" value="{{ meeting.meeting_name }}" />
+          </div>
+          <div class="meeting__submenu">
+            <span>모임 소개</span>
+            <textarea name="content" placeholder="모임 소개">{{ meeting.content }}</textarea>
+          </div>
+          <div class="meeting__submenu">
+            <span>카테고리</span>
+            <select name="category" class="categorySelect">
+              <option>==카테고리 선택==</option>
+              {% for t1,t2 in category_list %}
+              {% if t1 == meeting.category %}
+              <option value="{{ t1 }}" selected>{{ t2 }}</option>
+              {% else %}
+              <option value="{{ t1 }}">{{ t2 }}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </div>
         </div>
-        <p>모임 이름</p>
-        <input name="meeting_name" placeholder="모임 이름" value="{{ meeting.meeting_name }}" />
-        <p>카테고리</p>
-        <select name="category" class="categorySelect">
-          <option>==카테고리 선택==</option>
-          {% for t1,t2 in category_list %}
-          {% if t1 == meeting.category %}
-          <option value="{{ t1 }}" selected>{{ t2 }}</option>
-          {% else %}
-          <option value="{{ t1 }}">{{ t2 }}</option>
-          {% endif %}
-          {% endfor %}
-        </select>
-        <p>모임 소개</p>
-        <textarea name="content" placeholder="모임 소개">{{ meeting.content }}</textarea>
-        <p>모임 관리자</p>
-        {{ meeting.owner }}
-        <p>초대 코드</p>
-        <p>{{ meeting.invitation_code }}</p>
-        <p>멤버</p>
-        {% for user in users %} {{ user }}
-        <br />
-        {% endfor %}
-        <br />
-        <div>
-          <input type="submit" value="저장" class="profile-btn" />
-        </div>
-      </form>
+    </div>   
+  </div>
+  <div class="meetingedit__footer">
+    <div class="meetingedit__back">
+      <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
     </div>
+    <div class="meetingedit__save">
+      <input type="submit" value="저장하기" class="profile-btn" />
+    </div>
+  </div>
+</form>
   </body>
 </html>

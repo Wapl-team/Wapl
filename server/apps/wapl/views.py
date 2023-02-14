@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -371,6 +371,9 @@ def signup(request:HttpRequest, *args, **kwargs):
         form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=user, image=image)
+            profile.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
@@ -381,6 +384,25 @@ def signup(request:HttpRequest, *args, **kwargs):
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
         return render(request, template_name='signup.html', context=context)
+
+@csrf_exempt
+def extra_signup(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
+        if form.is_valid():
+            form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=request.user, image=image)
+            profile.save()
+            return redirect('wapl:main')
+        else:
+            return redirect('wapl:extra_signup')
+    else:
+        default_image_index = random.randint(1, 4)
+        context = {
+            'default_src': f'/static/default_image/{default_image_index}.png'
+        }
+    return render(request, 'extra_signup.html', context=context)
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
@@ -636,6 +658,12 @@ def profile(request:HttpRequest, *args, **kwargs):
         form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
             form.save()
+            profile = request.user.profile
+            image = request.FILES.get('image')
+            check = request.POST.getlist('image-clear')
+            if image or len(check) > 0:
+                profile.image = image
+                profile.save()
             return render(request, 'profile.html')
         else:
             return redirect('wapl:profile')

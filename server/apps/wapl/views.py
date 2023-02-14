@@ -154,10 +154,10 @@ def create_private_plan(request, *args, **kwargs):
     for shareMeeting in shareMeetings:
         Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
 
-    if request.user.image == "":
+    if request.user.profile.image == "":
        userimg = request.user.default_image
     else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
     newPlan=model_to_dict(newPlan)
 
@@ -467,10 +467,10 @@ def view_plan(request):
      else:
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
@@ -554,10 +554,10 @@ def view_explan(request):
 
   public_plans = []
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   meeting_img = {}
 

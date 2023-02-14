@@ -166,5 +166,6 @@ NO_AUTH_URLS = (
     r'/admin(.*)$',
     r'/login(.*)$',
     r'/logout(.*)$',
-    r'/accounts(.*)$'
+    r'/accounts(.*)$',
+    r'',
 )

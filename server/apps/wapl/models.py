@@ -69,9 +69,16 @@ class PublicPlan(Plan):
 
 
 class Share(models.Model):
+
+  SHARE_CHOICE = [
+        ('open', '공개'),
+        ('close', '비공개'),
+        ('untitled', '비밀일정'),
+  ]
+   
   plan = models.ForeignKey(PrivatePlan, on_delete=models.CASCADE, related_name='plan_shares', default=1)
   meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='meeting_shares', default=1)
-  is_share = models.BooleanField()
+  is_share = models.CharField(choices=SHARE_CHOICE, max_length=20)
 
 # 댓글
 # 필드: 내용, 생성시간, 작성 유저, 일정

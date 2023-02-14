@@ -152,7 +152,7 @@ def create_private_plan(request, *args, **kwargs):
 
     # 새로운 share 모델 생성
     for shareMeeting in shareMeetings:
-      Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
+        Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
 
     if request.user.image == "":
        userimg = request.user.default_image
@@ -476,7 +476,10 @@ def view_team_plan(request):
   # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
 
   meeting = Meeting.objects.get(id=meeting_pk)
-  share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+  share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+  share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
+
 
   private_plans = []
   public_plans= []
@@ -487,6 +490,7 @@ def view_team_plan(request):
            private_plans.append(share_list[i].plan)
      else:
         private_plans.append(share_list[i].plan)
+
 
   public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
@@ -508,7 +512,8 @@ def view_team_plan(request):
      meeting_img = meeting.image.url
 
   return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
+                         'private_plans':private_plans,
+                         'user_img':user_img,
                          'meeting_img':meeting_img})
 
 # 날짜 클릭 시 호출 함수
@@ -580,17 +585,26 @@ def view_team_explan(request):
 
     public_plans= PublicPlan.objects.filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
-    share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+    share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+    share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
+
     share_plans = [share.plan for share in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
 
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
 
+    users = meeting.users.all()
+    
     public_plans = serializers.serialize('json', public_plans)
     private_plans = serializers.serialize('json', share_plans)
+    share_list = serializers.serialize('json', share_list)
 
-    users = meeting.users.all()
-  
+    user_name = {}
+
+    for i in range(len(users)):
+        user_name[users[i].pk] = users[i].username
+
     user_img = {}
 
     for i in range(len(users)):
@@ -605,7 +619,10 @@ def view_team_explan(request):
       meeting_img = meeting.image.url
 
     return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
+                         'private_plans':private_plans,
+                         'share_list' : share_list,
+                         'user_name' : user_name,
+                         'user_img':user_img,
                          'meeting_img':meeting_img})
 
 

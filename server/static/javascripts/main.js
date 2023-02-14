@@ -301,90 +301,132 @@ const plan_create = () => {
         if (plan != null && userimg != null) {
           const startDate = new Date(startTime);
           const endDate = new Date(endTime);
-          
+
           const current_preview = new Date(
-          currentYear,
-          currentMonth - 1,
-          document.querySelector(".date-onclick").childNodes[0].innerText
-        );
+            currentYear,
+            currentMonth - 1,
+            document.querySelector(".date-onclick").childNodes[0].innerText
+          );
 
-        let this_date = new Date(
-          startDate.getFullYear(),
-          startDate.getMonth(),
-          startDate.getDate()
-        );
+          let this_date = new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            startDate.getDate()
+          );
 
-        while (true) {
-          if (
-            this_date.getFullYear() == viewYear &&
-            this_date.getMonth() + 1 == viewMonth
-          ) {
-            const day = document.querySelector(`.day-${this_date.getDate()}`);
+          while (true) {
             if (
-              !day.nextSibling ||
-              !day.nextSibling.classList.contains("private")
+              this_date.getFullYear() == viewYear &&
+              this_date.getMonth() + 1 == viewMonth
             ) {
-              const newimg = document.createElement("img");
-              newimg.classList.add("private");
-              newimg.classList.add("profileImagePlan");
-              newimg.src = `${userimg}`;
-              newimg.style.width = "15px";
-              day.after(newimg);
+              const day = document.querySelector(`.day-${this_date.getDate()}`);
+              if (
+                !day.nextSibling ||
+                !day.nextSibling.classList.contains("private")
+              ) {
+                const newimg = document.createElement("img");
+                newimg.classList.add("private");
+                newimg.classList.add("profileImagePlan");
+                newimg.src = `${userimg}`;
+                newimg.style.width = "15px";
+                day.after(newimg);
+              }
+            }
+            if (
+              this_date.getFullYear() == endDate.getFullYear() &&
+              this_date.getMonth() == endDate.getMonth() &&
+              this_date.getDate() == endDate.getDate()
+            ) {
+              break;
+            } else {
+              this_date.setDate(this_date.getDate() + 1);
             }
           }
+
+          const current_dateonly = new Date(current_preview).setHours(
+            0,
+            0,
+            0,
+            0
+          );
+          const start_dateonly = new Date(startDate).setHours(0, 0, 0, 0);
+          const end_dateonly = new Date(endDate).setHours(0, 0, 0, 0);
+
+          // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
           if (
-            this_date.getFullYear() == endDate.getFullYear() &&
-            this_date.getMonth() == endDate.getMonth() &&
-            this_date.getDate() == endDate.getDate()
+            current_dateonly >= start_dateonly &&
+            current_dateonly <= end_dateonly
           ) {
-            break;
-          } else {
-            this_date.setDate(this_date.getDate() + 1);
-          }
-        }
+            let start = "";
+            let hours = "";
+            let minutes = "";
+            if (timeline.childNodes[0]) {
+              // 이미 timeline에 개인일정이 있는 경우
+              if (
+                timeline.childNodes[0].classList.contains("private-timeline")
+              ) {
+                [start, hours, minutes] = calcTime(
+                  startDate,
+                  endDate,
+                  current_preview.getDate()
+                );
+                let newplan = document.createElement("a");
+                const width = parseInt(hours) * 60 + parseInt(minutes);
+                newplan.href = `plan/${plan.id}`;
+                newplan.style.position = "absolute";
+                newplan.style.width = `${width}px`;
+                newplan.style.left = `${start}px`;
+                newplan.style.border = "1px solid orange";
+                newplan.style.color = "black";
+                newplan.style.height = "50px";
+                newplan.style.borderRadius = "20px";
+                newplan.style.padding = "8px";
+                newplan.innerText = `${plan.title}`;
+                timeline.childNodes[0].appendChild(newplan);
+              }
+              // timeline에 팀일정만 있는경우
+              else {
+                // 개인 일정 라인추가
+                const newmember = document.createElement("div");
+                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+                newmember.style.height = "50px";
+                newmember.style.width = "50px";
+                memberlist.firstChild.before(newmember);
 
-        const current_dateonly = new Date(current_preview).setHours(0, 0, 0, 0);
-        const start_dateonly = new Date(startDate).setHours(0, 0, 0, 0);
-        const end_dateonly = new Date(endDate).setHours(0, 0, 0, 0);
+                [start, hours, minutes] = calcTime(
+                  startDate,
+                  endDate,
+                  current_preview.getDate()
+                );
 
-        // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
-        if (
-          current_dateonly >= start_dateonly &&
-          current_dateonly <= end_dateonly
-        ) {
-          let start = "";
-          let hours = "";
-          let minutes = "";
-          if (timeline.childNodes[0]) {
-            // 이미 timeline에 개인일정이 있는 경우
-            if (timeline.childNodes[0].classList.contains("private-timeline")) {
-              [start, hours, minutes] = calcTime(
-                startDate,
-                endDate,
-                current_preview.getDate()
-              );
-              let newplan = document.createElement("a");
-              const width = parseInt(hours) * 60 + parseInt(minutes);
-              newplan.href = `plan/${plan.id}`;
-              newplan.style.position = "absolute";
-              newplan.style.width = `${width}px`;
-              newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid orange";
-              newplan.style.color = "black";
-              newplan.style.height = "50px";
-              newplan.style.borderRadius = "20px";
-              newplan.style.padding = "8px";
-              newplan.innerText = `${plan.title}`;
-              timeline.childNodes[0].appendChild(newplan);
+                // 추가한 일정 타임라인 추가
+                let newDiv = document.createElement("div");
+                newDiv.classList.add("private");
+                newDiv.style.height = "50px";
+                let newplan = document.createElement("a");
+                const width = parseInt(hours) * 60 + parseInt(minutes);
+                newplan.href = `plan/${plan.id}`;
+                newplan.style.position = "absolute";
+                newplan.style.width = `${width}px`;
+                newplan.style.left = `${start}px`;
+                newplan.style.border = "1px solid orange";
+                newplan.style.color = "black";
+                newplan.style.height = "50px";
+                newplan.style.borderRadius = "20px";
+                newplan.style.padding = "8px";
+                newplan.innerText = `${plan.title}`;
+                newDiv.appendChild(newplan);
+                timeline.childNodes[0].before(newDiv);
+              }
             }
-            // timeline에 팀일정만 있는경우
+            // timeline에 아무일정도 없는 경우
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
               newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
-              memberlist.firstChild.before(newmember);
+              memberlist.appendChild(newmember);
 
               [start, hours, minutes] = calcTime(
                 startDate,
@@ -392,9 +434,8 @@ const plan_create = () => {
                 current_preview.getDate()
               );
 
-              // 추가한 일정 타임라인 추가
               let newDiv = document.createElement("div");
-              newDiv.classList.add("private");
+              newDiv.classList.add("private-timeline");
               newDiv.style.height = "50px";
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
@@ -409,44 +450,7 @@ const plan_create = () => {
               newplan.style.padding = "8px";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
-              timeline.childNodes[0].before(newDiv);
-            }
-          }
-          // timeline에 아무일정도 없는 경우
-          else {
-            // 개인 일정 라인추가
-            const newmember = document.createElement("div");
-            newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
-            newmember.style.height = "50px";
-            newmember.style.width = "50px";
-            memberlist.appendChild(newmember);
-
-            [start, hours, minutes] = calcTime(
-              startDate,
-              endDate,
-              current_preview.getDate()
-            );
-
-            let newDiv = document.createElement("div");
-            newDiv.classList.add("private-timeline");
-            newDiv.style.height = "50px";
-            let newplan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
-            newplan.href = `plan/${plan.id}`;
-            newplan.style.position = "absolute";
-            newplan.style.width = `${width}px`;
-            newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid orange";
-            newplan.style.color = "black";
-            newplan.style.height = "50px";
-            newplan.style.borderRadius = "20px";
-            newplan.style.padding = "8px";
-            newplan.innerText = `${plan.title}`;
-            newDiv.appendChild(newplan);
-            timeline.appendChild(newDiv);
-        
-
-           }
+              timeline.appendChild(newDiv);
             }
           }
         } else {

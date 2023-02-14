@@ -96,15 +96,15 @@ function closeToggle() {
   document.getElementById("sidebar").style.borderBottom = "none";
 }
 
-const makeMeetingList = (meetingList) => {
-  const menu = document.querySelector("#share");
+// const makeMeetingList = (meetingList) => {
+//   const menu = document.querySelector("#share");
 
-  let contentString = "";
-  meetingList.forEach((meeting) => {
-    contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
-  });
-  menu.innerHTML = contentString;
-};
+//   let contentString = "";
+//   meetingList.forEach((meeting) => {
+//     contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
+//   });
+//   menu.innerHTML = contentString;
+// };
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해
 // const viewYear = date.getFullYear();
@@ -209,8 +209,28 @@ makeCalendar(viewYear, viewMonth);
 // 일정 생성 모달 관련
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
+const modal_content = document.querySelector(".modal__content");
 const closeModal = document.querySelector(".closeModal");
 const closeModal2 = document.querySelector(".closeModal2");
+const share = document.querySelector(".share");
+const modal_share = document.querySelector(".modal-share");
+const share_box = document.querySelector(".share-box");
+
+share.addEventListener("click", () => {
+  modal_share.classList.remove("hidden");
+});
+
+modal.addEventListener("click", (e) => {
+  if (e.target == modal) {
+    modal.classList.add("hidden");
+  }
+});
+
+modal_share.addEventListener("click", (e) => {
+  if (e.target == modal_share) {
+    modal_share.classList.add("hidden");
+  }
+});
 
 modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
@@ -222,6 +242,18 @@ closeModal.addEventListener("click", () => {
 closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
+
+let shareOBJ = {};
+
+const share_save = () => {
+  const share_select = document.querySelectorAll(".share-select input");
+  share_select.forEach((share) => {
+    if (share.checked == true) {
+      shareOBJ[share.id.split("-")[0]] = share.id.split("-")[1];
+    }
+  });
+  modal_share.classList.add("hidden");
+};
 
 // 새로운 일정 추가하는 함수:
 // ajax사용해서 thumbnail 띄우고
@@ -240,16 +272,15 @@ const plan_create = () => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-  const selectObj = document.querySelectorAll("#share");
 
   // 공개하기로 설정한 모임목록 받아오기
-  data = selectObj.item(0).options;
-  shareMeetingList = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].selected == true) {
-      shareMeetingList.push(data[i].value);
-    }
-  }
+  // data = selectObj.item(0).options;
+  // shareMeetingList = [];
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i].selected == true) {
+  //     shareMeetingList.push(data[i].value);
+  //   }
+  // }
 
   requestNewPlan.send(
     JSON.stringify({
@@ -258,7 +289,7 @@ const plan_create = () => {
       startTime: startTime,
       endTime: endTime,
       content: content,
-      shareMeetings: shareMeetingList,
+      shareMeetings: shareOBJ,
     })
   );
 
@@ -338,7 +369,6 @@ const plan_create = () => {
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
               newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "white";
               newplan.style.color = "black";
               newplan.style.height = "50px";
               newplan.style.borderRadius = "20px";
@@ -372,7 +402,6 @@ const plan_create = () => {
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
               newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "white";
               newplan.style.color = "black";
               newplan.style.height = "50px";
               newplan.style.borderRadius = "20px";
@@ -407,7 +436,6 @@ const plan_create = () => {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
             newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "white";
             newplan.style.color = "black";
             newplan.style.height = "50px";
             newplan.style.borderRadius = "20px";
@@ -449,7 +477,7 @@ window.onload = function () {
           meetingimg,
           meetingList,
         } = JSON.parse(requestPlan.response);
-        makeMeetingList(JSON.parse(meetingList));
+        // makeMeetingList(JSON.parse(meetingList));
 
         const publicPlansArray = JSON.parse(public_plans);
         const privatePlansArray = JSON.parse(private_plans);
@@ -577,7 +605,6 @@ window.onload = function () {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
             newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "white";
             newplan.style.color = "black";
             newplan.style.height = "50px";
             newplan.style.borderRadius = "20px";
@@ -617,7 +644,6 @@ window.onload = function () {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
             newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "white";
             newplan.style.color = "black";
             newplan.style.height = "50px";
             newplan.style.borderRadius = "20px";

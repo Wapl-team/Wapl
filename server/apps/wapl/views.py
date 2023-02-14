@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment
+from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -158,16 +158,12 @@ def create_private_plan(request, *args, **kwargs):
 
     # 새로운 share 모델 생성
     for shareMeeting in shareMeetings:
-    
-    #   Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=True)
-    #   meeting = meetings.get(meeting_name=shareMeeting)
-      meeting = get_object_or_404(meetings, meeting_name=shareMeeting)
-      Share.objects.create(plan=newPlan, meeting=meeting, is_share=True)
+        Share.objects.create(plan=newPlan, meeting=meetings.get(meeting_name=shareMeeting), is_share=shareMeetings[shareMeeting])
 
-    if request.user.image == "":
+    if request.user.profile.image == "":
        userimg = request.user.default_image
     else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
     newPlan=model_to_dict(newPlan)
 
@@ -390,6 +386,9 @@ def signup(request:HttpRequest, *args, **kwargs):
         form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=user, image=image)
+            profile.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
@@ -400,6 +399,25 @@ def signup(request:HttpRequest, *args, **kwargs):
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
         return render(request, template_name='signup.html', context=context)
+
+@csrf_exempt
+def extra_signup(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
+        if form.is_valid():
+            form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=request.user, image=image)
+            profile.save()
+            return redirect('wapl:main')
+        else:
+            return redirect('wapl:extra_signup')
+    else:
+        default_image_index = random.randint(1, 4)
+        context = {
+            'default_src': f'/static/default_image/{default_image_index}.png'
+        }
+    return render(request, 'extra_signup.html', context=context)
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
@@ -464,10 +482,10 @@ def view_plan(request):
      else:
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   for meeting in meetings :
       public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
@@ -494,9 +512,10 @@ def view_team_plan(request):
   meeting_pk = req['meetingPK'] 
   # 화면에서 유저가 선택한 모임 pk를 넘겨야 함
 
-#   meeting = Meeting.objects.get(id=meeting_pk)
-  meeting = get_object_or_404(Meeting, id=meeting_pk)
-  share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+  meeting = Meeting.objects.get(id=meeting_pk)
+  share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+  share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
 
   private_plans = []
   public_plans= []
@@ -507,6 +526,7 @@ def view_team_plan(request):
            private_plans.append(share_list[i].plan)
      else:
         private_plans.append(share_list[i].plan)
+
 
   public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
@@ -528,7 +548,8 @@ def view_team_plan(request):
      meeting_img = meeting.image.url
 
   return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
+                         'private_plans':private_plans,
+                         'user_img':user_img,
                          'meeting_img':meeting_img})
 
 # 날짜 클릭 시 호출 함수
@@ -547,10 +568,10 @@ def view_explan(request):
 
   public_plans = []
 
-  if request.user.image == "":
+  if request.user.profile.image == "":
        userimg = request.user.default_image
   else:
-       userimg = request.user.image.url
+       userimg = request.user.profile.image.url
 
   meeting_img = {}
 
@@ -601,17 +622,26 @@ def view_team_explan(request):
 
     public_plans= PublicPlan.objects.filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
-    share_list = list(Share.objects.filter(meeting=meeting, is_share=True))
+    share_list = list(Share.objects.filter(meeting=meeting, is_share="open"))
+
+    share_list += list(Share.objects.filter(meeting=meeting, is_share="untitled"))
+
     share_plans = [share.plan for share in share_list]
     share_plans = list_to_queryset(PrivatePlan, share_plans)
 
     share_plans = list(share_plans.filter(startTime__lte = today + timedelta(days=1), endTime__gte = today))
 
+    users = meeting.users.all()
+    
     public_plans = serializers.serialize('json', public_plans)
     private_plans = serializers.serialize('json', share_plans)
+    share_list = serializers.serialize('json', share_list)
 
-    users = meeting.users.all()
-  
+    user_name = {}
+
+    for i in range(len(users)):
+        user_name[users[i].pk] = users[i].username
+
     user_img = {}
 
     for i in range(len(users)):
@@ -626,7 +656,10 @@ def view_team_explan(request):
       meeting_img = meeting.image.url
 
     return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'user_img':user_img,
+                         'private_plans':private_plans,
+                         'share_list' : share_list,
+                         'user_name' : user_name,
+                         'user_img':user_img,
                          'meeting_img':meeting_img})
 
 
@@ -640,6 +673,12 @@ def profile(request:HttpRequest, *args, **kwargs):
         form = forms.EditProfileForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
             form.save()
+            profile = request.user.profile
+            image = request.FILES.get('image')
+            check = request.POST.getlist('image-clear')
+            if image or len(check) > 0:
+                profile.image = image
+                profile.save()
             return render(request, 'profile.html')
         else:
             return redirect('wapl:profile')

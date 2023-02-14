@@ -44,7 +44,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
       minutes = endDatetime.getMinutes() - startDatetime.getMinutes();
     }
   } else if (endDate > currentDate) {
-    console.log("here");
     // 뒤로 겹치는 경우
 
     if (
@@ -52,7 +51,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
       startDate.getMonth() == currentDate.getMonth() &&
       startDate.getDate() == currentDate.getDate()
     ) {
-      console.log("here");
       start =
         parseInt(startDatetime.getHours() * 60) +
         parseInt(startDatetime.getMinutes());
@@ -66,7 +64,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
     }
     // 통으로 겹치는 경우
     else if (startDate < currentDate) {
-      console.log("here2");
       start = 0;
       hours = "24";
       minutes = "00";
@@ -158,12 +155,14 @@ const makeCalendar = (viewYear, viewMonth) => {
     // 삼한연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
     const condition =
       i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
+    const date_condition =
+      i >= firstDateIndex && i < lastDateIndex + 1 ? `day-${date}` : "";
     //this
     //other
 
     dates[
       i
-    ] = `<div class="date"><p class="${condition} day-${date}">${date}</p></div>`;
+    ] = `<div class="date"><p class="${condition} ${date_condition}">${date}</p></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");
@@ -271,19 +270,24 @@ const plan_create = () => {
         const startDate = new Date(startTime);
         const endDate = new Date(endTime);
 
-        const currentPreview =
-          document.querySelector(".date-onclick").childNodes[0].innerText;
+        const current_preview = new Date(
+          currentYear,
+          currentMonth - 1,
+          document.querySelector(".date-onclick").childNodes[0].innerText
+        );
 
-        // 새로운 일정이 내가 현재 보고있는 달력의 일정이라면 thumbnail 추가
-        if (
-          // 월초월 년초월 ajax 해결 요망
-          startDate.getFullYear() <= viewYear &&
-          viewYear <= endDate.getFullYear() &&
-          startDate.getMonth() + 1 <= viewMonth &&
-          viewMonth <= endDate.getMonth() + 1
-        ) {
-          for (let i = startDate.getDate(); i <= endDate.getDate(); i++) {
-            const day = document.querySelector(`.day-${i}`);
+        let this_date = new Date(
+          startDate.getFullYear(),
+          startDate.getMonth(),
+          startDate.getDate()
+        );
+
+        while (true) {
+          if (
+            this_date.getFullYear() == viewYear &&
+            this_date.getMonth() + 1 == viewMonth
+          ) {
+            const day = document.querySelector(`.day-${this_date.getDate()}`);
             if (
               !day.nextSibling ||
               !day.nextSibling.classList.contains("private")
@@ -293,96 +297,73 @@ const plan_create = () => {
               newimg.classList.add("profileImagePlan");
               newimg.src = `${userimg}`;
               newimg.style.width = "15px";
-
               day.after(newimg);
             }
           }
-          // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
           if (
-            currentPreview >= startDate.getDate() &&
-            currentPreview <= endDate.getDate()
+            this_date.getFullYear() == endDate.getFullYear() &&
+            this_date.getMonth() == endDate.getMonth() &&
+            this_date.getDate() == endDate.getDate()
           ) {
-            let start = "";
-            let hours = "";
-            let minutes = "";
-            if (timeline.childNodes[0]) {
-              // 이미 timeline에 개인일정이 있는 경우
-              if (
-                timeline.childNodes[0].classList.contains("private-timeline")
-              ) {
-                [start, hours, minutes] = calcTime(
-                  startDate,
-                  endDate,
-                  currentPreview
-                );
-                let newplan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
-                newplan.href = `plan/${plan.id}`;
-                newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
-                newplan.innerText = `${plan.title}`;
-                timeline.childNodes[0].appendChild(newplan);
-              }
-              // timeline에 팀일정만 있는경우
-              else {
-                // 개인 일정 라인추가
-                const newmember = document.createElement("div");
-                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
-                newmember.style.height = "50px";
-                newmember.style.width = "50px";
-                memberlist.firstChild.before(newmember);
+            break;
+          } else {
+            this_date.setDate(this_date.getDate() + 1);
+          }
+        }
 
-                [start, hours, minutes] = calcTime(
-                  startDate,
-                  endDate,
-                  currentPreview
-                );
+        const current_dateonly = new Date(current_preview).setHours(0, 0, 0, 0);
+        const start_dateonly = new Date(startDate).setHours(0, 0, 0, 0);
+        const end_dateonly = new Date(endDate).setHours(0, 0, 0, 0);
 
-                // 추가한 일정 타임라인 추가
-                let newDiv = document.createElement("div");
-                newDiv.classList.add("private");
-                newDiv.style.height = "50px";
-                let newplan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
-                newplan.href = `plan/${plan.id}`;
-                newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
-                newplan.innerText = `${plan.title}`;
-                newDiv.appendChild(newplan);
-                timeline.childNodes[0].before(newDiv);
-              }
+        // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
+        if (
+          current_dateonly >= start_dateonly &&
+          current_dateonly <= end_dateonly
+        ) {
+          let start = "";
+          let hours = "";
+          let minutes = "";
+          if (timeline.childNodes[0]) {
+            // 이미 timeline에 개인일정이 있는 경우
+            if (timeline.childNodes[0].classList.contains("private-timeline")) {
+              [start, hours, minutes] = calcTime(
+                startDate,
+                endDate,
+                current_preview.getDate()
+              );
+              let newplan = document.createElement("a");
+              const width = parseInt(hours) * 60 + parseInt(minutes);
+              newplan.href = `plan/${plan.id}`;
+              newplan.style.position = "absolute";
+              newplan.style.width = `${width}px`;
+              newplan.style.left = `${start}px`;
+              newplan.style.border = "1px solid orange";
+              newplan.style.backgroundColor = "white";
+              newplan.style.color = "black";
+              newplan.style.height = "50px";
+              newplan.style.borderRadius = "20px";
+              newplan.style.padding = "8px";
+              newplan.innerText = `${plan.title}`;
+              timeline.childNodes[0].appendChild(newplan);
             }
-            // timeline에 아무일정도 없는 경우
+            // timeline에 팀일정만 있는경우
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
               newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
               newmember.style.height = "50px";
               newmember.style.width = "50px";
-              memberlist.appendChild(newmember);
+              memberlist.firstChild.before(newmember);
 
               [start, hours, minutes] = calcTime(
                 startDate,
                 endDate,
-                currentPreview
+                current_preview.getDate()
               );
 
+              // 추가한 일정 타임라인 추가
               let newDiv = document.createElement("div");
-              newDiv.classList.add("private-timeline");
+              newDiv.classList.add("private");
               newDiv.style.height = "50px";
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
@@ -398,8 +379,42 @@ const plan_create = () => {
               newplan.style.padding = "8px";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
-              timeline.appendChild(newDiv);
+              timeline.childNodes[0].before(newDiv);
             }
+          }
+          // timeline에 아무일정도 없는 경우
+          else {
+            // 개인 일정 라인추가
+            const newmember = document.createElement("div");
+            newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" width="40" />`;
+            newmember.style.height = "50px";
+            newmember.style.width = "50px";
+            memberlist.appendChild(newmember);
+
+            [start, hours, minutes] = calcTime(
+              startDate,
+              endDate,
+              current_preview.getDate()
+            );
+
+            let newDiv = document.createElement("div");
+            newDiv.classList.add("private-timeline");
+            newDiv.style.height = "50px";
+            let newplan = document.createElement("a");
+            const width = parseInt(hours) * 60 + parseInt(minutes);
+            newplan.href = `plan/${plan.id}`;
+            newplan.style.position = "absolute";
+            newplan.style.width = `${width}px`;
+            newplan.style.left = `${start}px`;
+            newplan.style.border = "1px solid orange";
+            newplan.style.backgroundColor = "white";
+            newplan.style.color = "black";
+            newplan.style.height = "50px";
+            newplan.style.borderRadius = "20px";
+            newplan.style.padding = "8px";
+            newplan.innerText = `${plan.title}`;
+            newDiv.appendChild(newplan);
+            timeline.appendChild(newDiv);
           }
         }
         clearPlanForm();
@@ -477,6 +492,7 @@ window.onload = function () {
               currentMonth - 1,
               day.innerText
             );
+
             if (
               startTime.setHours(0, 0, 0, 0) <= today &&
               today <= endTime.setHours(0, 0, 0, 0)

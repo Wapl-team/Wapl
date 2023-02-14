@@ -431,14 +431,6 @@ def view_plan(request):
   private_plans = PrivatePlan.objects.filter(owner=login_user, startTime__year__lte=year, endTime__year__gte=year)
 
   private_plans = list(private_plans)
-  private_plans_filtered = []
-  for i in range(len(private_plans)):
-      if private_plans[i].startTime.year == private_plans[i].endTime.year:
-        if private_plans[i].startTime.month <= private_plans[i].endTime.month:
-            private_plans_filtered.append(private_plans[i])
-      else:
-        private_plans_filtered.append(private_plans[i])
-        
 
   meetings = login_user.user_meetings.all()
 
@@ -459,7 +451,7 @@ def view_plan(request):
        userimg = request.user.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
       public_plans += list(public_plan)
 
   private_plans = serializers.serialize('json', private_plans)
@@ -496,7 +488,7 @@ def view_team_plan(request):
      else:
         private_plans.append(share_list[i].plan)
 
-  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year,  startTime__month__lte = month , endTime__month__gte = month))  
+  public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -660,6 +652,32 @@ def meeting_info(request, pk, *args, **kwargs):
         'users': users,
     }
     return render(request, 'meeting_info.html', context=context)
+
+def meeting_info_edit(request, pk, *args, **kwargs):
+    # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
+    meeting = Meeting.objects.get(id=pk)
+
+    if request.method == "POST":
+        meeting.meeting_name = request.POST["meeting_name"]
+        meeting.category = request.POST["category"]
+        meeting.content = request.POST["content"]
+        default_check = request.POST.getlist("image-clear")
+        if len(default_check) == 0:
+            meeting.image = request.FILES.get("image")
+        else:
+            meeting.image.delete()
+        meeting.save()
+
+        return redirect('wapl:meeting_info', pk)
+
+    users = meeting.users.all()
+    category_list = Meeting.MEETING_CHOICE
+    context = {
+        'meeting': meeting,
+        'users': users,
+        'category_list': category_list,
+    }
+    return render(request, 'meeting_info_edit.html', context=context)
 
 def generate_invitation_code(length=10):
     return base64.urlsafe_b64encode(

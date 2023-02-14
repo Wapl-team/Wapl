@@ -42,6 +42,7 @@ urlpatterns= [
     path("meeting/info/edit/<int:pk>", views.meeting_info_edit, name="meeting_info_edit"),
     path("meeting/join", views.meeting_join, name="meeting_join"),
 
+
     # url(r'', views.)
 
 ]

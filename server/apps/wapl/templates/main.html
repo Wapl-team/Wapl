@@ -79,19 +79,22 @@
 
     <div id="sidebar" class="sidebar-menu">
       <div class="profile">
-        <a href="{% url 'wapl:profile' %}">
-          {% if user.image %}
-          <img src="{{ user.image.url }}" width="65" class="profileImage" />
-          {% else %}
-          <img src="{{ user.default_image }}" width="65" class="profileImage" />
-          {% endif %}
-        </a>
-        <a href="{% url 'wapl:profile' %}">{{user.username}}</a>
-        <div class="nim">님</div>
+        <div class="closeSidebar">
+          <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
+        </div>
+        <div class="profileSidebar">
+          <a href="{% url 'wapl:profile' %}">
+            {% if user.image %}
+            <img src="{{ user.image.url }}" width="65" class="profileImage" />
+            {% else %}
+            <img src="{{ user.default_image }}" width="65" class="profileImage" />
+            {% endif %}
+          </a>
+          <a href="{% url 'wapl:profile' %}" class="profile__username">{{user.username}}</a>
+          <div class="nim">님</div>
+        </div>
       </div>
-      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
-        ><i class="fa-solid fa-x"></i
-      ></a>
+      <hr>
 
       <div class="groupBtn">
         <button class="createGroup">
@@ -109,11 +112,12 @@
         </div>
         {% for meeting in meetings %}
         <div class="groupName">
-          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}"
-            >{{meeting.meeting_name}}</a
-          >
           <a href="{% url 'wapl:meeting_info' meeting.pk %}">
-            <i class="fa-solid fa-angle-right orange"></i>
+            <i class="fa-solid fa-circle-info white" style="color: #1a2634; font-size: smaller; margin-left: 5px;"></i>
+          </a>
+          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+            {{meeting.meeting_name}}
+            <i class="fa-solid fa-angles-right"></i>
           </a>
         </div>
         {% endfor %}

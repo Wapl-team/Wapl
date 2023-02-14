@@ -118,7 +118,9 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
           url = reverse('wapl:meeting_calendar', args=[meeting.id])
           return redirect(url)
       except:
-          return redirect('wapl:meeting_join')
+        err_msg = '초대 코드가 다릅니다.'
+        context = {'err_msg': err_msg}
+        return render(request, 'meeting_join.html', context=context)
     else:      
       return render(request, 'meeting_join.html')
 
@@ -170,9 +172,9 @@ def create_public_plan(request, *args, **kwargs):
     startTime = req['startTime']
     endTime = req['endTime']
     content = req['content']
-    meeting_name = req['meeting_name']
+    meeting_pk = req['meeting_pk']
     owner = request.user
-    meeting = Meeting.objects.get(meeting_name=meeting_name)
+    meeting = Meeting.objects.get(id=meeting_pk)
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
@@ -273,6 +275,7 @@ def pub_delete(request:HttpRequest, pk, *args, **kwargs):
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
     plan = get_object_or_404(PrivatePlan, pk=pk)
+    
     err_msg = ''
     if request.user.is_authenticated:
       if request.method == "POST":

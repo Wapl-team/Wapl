@@ -234,7 +234,7 @@ const plan_create = (meeting_name, meeting_pk) => {
 
   requestNewPlan.send(
     JSON.stringify({
-      meeting_name: meeting_name,
+      meeting_pk: meeting_pk,
       title: title,
       location: location,
       startTime: startTime,

@@ -469,6 +469,7 @@ def start(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def signup(request:HttpRequest, *args, **kwargs):
+    default_image_index = random.randint(1, 4)
     if request.method == 'POST':
         form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
@@ -479,9 +480,14 @@ def signup(request:HttpRequest, *args, **kwargs):
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
-            return redirect('wapl:signup')
+            # 오류 메세지 띄워야 함
+            # messages.info(request, 'invalid registration details')
+            context = {
+                'default_src': f'/static/default_image/{default_image_index}.png',
+                "form": form,
+            }
+            return render(request, "signup.html", context=context)
     else:
-        default_image_index = random.randint(1, 10)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -489,6 +495,7 @@ def signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def extra_signup(request:HttpRequest, *args, **kwargs):
+    default_image_index = random.randint(1, 4)
     if request.method == 'POST':
         form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
@@ -498,10 +505,13 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
             profile.save()
             return redirect('wapl:main')
         else:
-          # 이름과 닉네임 필수 입력 에러메세지
-            return render('wapl:extra_signup')
+            # 정보 틀렸다는 에러 메세지 띄워야 함.
+            context = {
+                'default_src': f'/static/default_image/{default_image_index}.png',
+                "form": form,
+            }
+            return render(request, "extra_signup.html", context=context)
     else:
-        default_image_index = random.randint(1, 10)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -516,9 +526,10 @@ def login(request:HttpRequest, *args, **kwargs):
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
-            return render(request, template_name='login.html')
+            # 로그인 정보 틀렸다는 에러 메세지 띄워야 함.
+            return render(request, "login.html", {"form": form})
     else:
-        return render(request, template_name='login.html')
+        return render(request, 'login.html')
 
 def logout(request:HttpRequest, *args, **kwargs):
     login_user = request.user

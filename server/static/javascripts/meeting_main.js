@@ -280,7 +280,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 newimg.classList.add("public");
                 newimg.classList.add("profileImagePlan");
                 newimg.src = `${meeting_img}`;
-                newimg.style.width = "15px";
+                newimg.style.width = "12px";
+                newimg.style.height = "12px";
+                newimg.style.margin = "0px 1px";
                 day.after(newimg);
               }
             }
@@ -289,14 +291,6 @@ const plan_create = (meeting_name, meeting_pk) => {
               this_date.getMonth() == end_date.getMonth() &&
               this_date.getDate() == end_date.getDate()
             ) {
-              const new_img = document.createElement("img");
-              new_img.classList.add("public");
-              new_img.classList.add("profileImagePlan");
-              new_img.src = `${meeting_img}`;
-              newimg.style.width = "12px";
-              newimg.style.height = "12px";
-              newImg.style.margin = "0px 1px";
-              day.after(new_img);
               break;
             } else {
               this_date.setDate(this_date.getDate() + 1);
@@ -330,7 +324,7 @@ const plan_create = (meeting_name, meeting_pk) => {
                   end_date,
                   current_preview.getDate()
                 );
-                let newplan = document.createElement("a");
+                let new_plan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
@@ -367,10 +361,10 @@ const plan_create = (meeting_name, meeting_pk) => {
                 );
 
                 // 추가한 일정 타임라인 추가
-                let newDiv = document.createElement("div");
-                newDiv.classList.add("private");
-                newDiv.style.height = "50px";
-                let newplan = document.createElement("a");
+                let new_div = document.createElement("div");
+                new_div.classList.add("private");
+                new_div.style.height = "50px";
+                let new_plan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
@@ -408,10 +402,10 @@ const plan_create = (meeting_name, meeting_pk) => {
                 current_preview.getDate()
               );
 
-              let newDiv = document.createElement("div");
-              newDiv.classList.add("public-timeline");
-              newDiv.style.height = "50px";
-              let newplan = document.createElement("a");
+              let new_div = document.createElement("div");
+              new_div.classList.add("public-timeline");
+              new_div.style.height = "50px";
+              let new_plan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
               new_plan.href = `/pubplan/${plan.id}`;
               new_plan.style.position = "absolute";
@@ -463,8 +457,7 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, 
-        _plans, user_img, meeting_img } =
+        const { public_plans, private_plans, user_img, meeting_img } =
           JSON.parse(requestPlan.response);
 
         const public_plans_array = JSON.parse(public_plans);
@@ -663,9 +656,7 @@ return: err_msg
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
             } else {
-              new_plan.innerText = `${
-                user_name[plan.fields.owner]
-              }의 일정`;
+              new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
             }
 
             document

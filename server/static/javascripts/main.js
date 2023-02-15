@@ -322,7 +322,7 @@ const plan_create = () => {
                 newimg.src = `${userimg}`;
                 newimg.style.width = "12px";
                 newimg.style.height = "12px";
-                newImg.style.margin = "0px 1px";                
+                newimg.style.margin = "0px 1px";
                 day.after(newimg);
               }
             }

@@ -18,10 +18,8 @@
       enctype="multipart/form-data"
     >
       {% csrf_token %}
-      <p>
-        <span>모임 프로필 이미지</span>
-        <input type="file" name="image" accept="image/*" class="profileImage" />
-      </p>
+      <span>모임 프로필 이미지</span>
+      <input type="file" name="image" accept="image/*" class="profileImage" />
       <br />
       <input name="meeting_name" placeholder="모임 이름" />
       <br />
@@ -34,17 +32,12 @@
       <br />
       <textarea name="content" placeholder="모임 소개"></textarea>
       <br />
-      <input name="user" placeholder="멤버" />
-      <br />
-      <input name="plan" placeholder="일정" />
-      <br />
       <div>
         <input type="submit" value="모임 생성" />
       </div>
       <div>
         <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
       </div>
-
     </form>
   </body>
 </html>

@@ -276,7 +276,7 @@ def pub_delete(request:HttpRequest, pk, *args, **kwargs):
           err_msg = '본인의 일정만 삭제할 수 있습니다.'
           messages.warning(request, err_msg)
           
-    return redirect('wapl:main')
+    return redirect( 'wapl:meeting_calendar',plan.meetings.pk)
 
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):

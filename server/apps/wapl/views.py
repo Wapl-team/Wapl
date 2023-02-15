@@ -480,8 +480,7 @@ def signup(request:HttpRequest, *args, **kwargs):
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
         else:
-            # 오류 메세지 띄워야 함
-            # messages.info(request, 'invalid registration details')
+            # 오류 메세지 띄워야 함 (이름, 닉네임, 아이디, 비밀번호를 정확히 입력해주세요 같은 내용)
             context = {
                 'default_src': f'/static/default_image/{default_image_index}.png',
                 "form": form,

@@ -1,4 +1,10 @@
 @import url(./reset.css);
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   /* display: flex;
@@ -6,6 +12,8 @@ body {
   align-items: center; */
   min-height: 100vh;
   flex-direction: column;
+  font-family: 'S-CoreDream-3Light';
+  background-color: #fffbeb;
 }
 
 .nav {
@@ -13,11 +21,18 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 8vh;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+
 }
 
 .nav-side {
   display: flex;
   align-items: center;
+}
+
+.nav_bar_button{
+  color: #1A2634;
 }
 
 .nav-side button {
@@ -35,8 +50,9 @@ body {
 
 .year-month {
   font-size: 1.5rem;
-  color: black;
+  color: #1A2634;
   font-weight: 700;
+  font-size: 25px;
 }
 
 .nav-btn {
@@ -161,10 +177,10 @@ body {
 }
 
 .modalButton {
-  background-color: white;
+  background-color: #fbfbfb;
   border: 0;
   margin: 0.5rem;
-  color: orange;
+  color: #1A2634;;
 }
 
 .modal {
@@ -351,10 +367,21 @@ body {
   border-right: 1px solid orange;
 }
 
+
 .days {
   margin-top: 10px;
   display: flex;
-}
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey; */
+  font-weight: bold;
+  background-color: #ffeda2;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+} 
 
 .day {
   width: calc(100% / 7);
@@ -365,41 +392,52 @@ body {
   display: flex;
   flex-flow: row wrap;
   height: 55vh;
-  border-top: 1px solid orange;
-  border-right: 1px solid orange;
   background-color: white;
   border-radius: 5px;
-  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding: 0.5em 0.5em;
+  margin-bottom: 1.5em;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .date {
   width: calc(100% / 7);
   height: calc(100% / 5);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
 }
 
-.date-onclick {
+.date-onclick{
   width: calc(100% / 7);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
   box-shadow: none;
-  background-color: antiquewhite;
+  background-color: #fffbeb;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.14);
 }
+
+/* .date-onclick .this{
+  margin: auto;
+  background:#FFF1BA;
+  width: 38px;
+  height: 38px;
+  border-radius: 25px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+} */
+
 
 /* 일요일은 빨간색, 토요일은 파란색으로 */
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
-  color: #ff3838;
+  color: #ea7e7e;
 }
 
 .day:nth-child(7n),
 .date:nth-child(7n) {
-  color: #3374ff;
+  color: #4A7EA9;
 }
 
 .other {
@@ -407,9 +445,9 @@ body {
 }
 
 .today {
-  color: orange;
-  font-weight: bold;
+  color: #ffc01f;
   padding-bottom: 2px;
+  font-weight: bold;
 }
 
 /* .today::before {
@@ -427,22 +465,26 @@ body {
 } */
 
 .detail {
-  background-color: white;
-  height: 37vh;
+  background-color: #ffeda2;
+  padding-bottom: 0.1em;
   display: flex;
+  border-radius: 15px;
+  margin: 1em 1em;
 }
 
 .detail-member {
-  padding-top: 35px;
+  margin-left: 0.7em;
+  padding-top: 3.35em;
 }
 
 .detail-timeline {
   display: flex;
   flex-direction: column;
   padding-top: 10px;
-  background-color: white;
   overflow-x: auto;
   white-space: nowrap;
+  margin-right: 0.7em;
+  margin-top: 0.5rem;
 }
 
 .detail-timeline a {
@@ -457,6 +499,8 @@ body {
 .detail-time {
   display: flex;
   width: 1300px;
+  padding-bottom: 1em;
+  padding-left: 0.5em;
 }
 
 .detail-time div {
@@ -497,11 +541,11 @@ body {
 }
 
 .profileImagePlan {
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 .profileImagePreview {
-  border-radius: 40px;
+  border-radius: 25px;
 }
 
 .goto-home {
@@ -513,4 +557,8 @@ body {
   text-decoration: none;
   color: inherit;
   width: 100%;
+}
+
+.meeting-name{
+  font-size: 18px;
 }

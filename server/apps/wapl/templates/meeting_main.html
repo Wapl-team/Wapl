@@ -5,19 +5,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=0, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/meeting_main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <title>와플</title>
   </head>
   <body>
     <nav class="nav">
       <div class="nav-side">
-        <button onclick="openToggle()">
+        <button onclick="openToggle()" class="nav_bar_button">
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
       </div>
-      <div class="meeting-name">{{cur_meeting.meeting_name}}</div>
+      <div class="meeting-name">{{cur_meeting.meeting_name}}'s</div>
       <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
-      <div class="year-month">{{view_year}}년{{view_month}}월</div>
+      <div class="year-month">{{view_year}}년 {{view_month}}월</div>
 
       <div>
         <button class="modalButton">
@@ -25,7 +25,6 @@
         </button>
       </div>
     </nav>
-
     <form action="{% url 'wapl:meeting_calendar' cur_meeting.id %}">
       <input type="date" name="select-date" />
       <input type="submit" value="선택하기" />
@@ -141,6 +140,9 @@
       <div class="dates">
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
+
+      <p style="text-align: center;">Timeline</p>
+
       <div class="detail">
         <div class="detail-member"></div>
         <div class="detail-timeline">

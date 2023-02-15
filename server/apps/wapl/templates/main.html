@@ -11,11 +11,11 @@
   <body>
     <nav class="nav">
       <div class="nav-side">
-        <button onclick="openToggle()">
-          <i class="fa-solid fa-bars fa-2x"></i>
+        <button onclick="openToggle()" class="nav_bar_button">
+          <i class="fa-solid fa-bars fa-2x" ></i>
         </button>
       </div>
-      <div class="year-month">{{view_year}}년{{view_month}}월</div>
+      <div class="year-month">{{view_year}}년 {{view_month}}월</div>
 
       <div>
         <button class="modalButton">
@@ -23,10 +23,10 @@
         </button>
       </div>
     </nav>
-    <form action="/main">
+    <!-- <form action="/main">
       <input type="date" name="select-date" />
       <input type="submit" value="선택하기" />
-    </form>
+    </form> -->
     <div class="modal hidden">
       <div class="modal__content">
         <form id="create" name="create" method="post" class="planRegister">
@@ -172,6 +172,9 @@
       <div class="dates">
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
+
+      <p style="text-align: center;">Timeline</p>
+
       <div class="detail">
         <div class="detail-member"></div>
         <div class="detail-timeline">

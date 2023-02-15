@@ -44,7 +44,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
       minutes = endDatetime.getMinutes() - startDatetime.getMinutes();
     }
   } else if (endDate > currentDate) {
-    console.log("here");
     // 뒤로 겹치는 경우
 
     if (
@@ -52,7 +51,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
       startDate.getMonth() == currentDate.getMonth() &&
       startDate.getDate() == currentDate.getDate()
     ) {
-      console.log("here");
       start =
         parseInt(startDatetime.getHours() * 60) +
         parseInt(startDatetime.getMinutes());
@@ -66,7 +64,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
     }
     // 통으로 겹치는 경우
     else if (startDate < currentDate) {
-      console.log("here2");
       start = 0;
       hours = "24";
       minutes = "00";
@@ -99,15 +96,15 @@ function closeToggle() {
   document.getElementById("sidebar").style.borderBottom = "none";
 }
 
-const makeMeetingList = (meetingList) => {
-  const menu = document.querySelector("#share");
+// const makeMeetingList = (meetingList) => {
+//   const menu = document.querySelector("#share");
 
-  let contentString = "";
-  meetingList.forEach((meeting) => {
-    contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
-  });
-  menu.innerHTML = contentString;
-};
+//   let contentString = "";
+//   meetingList.forEach((meeting) => {
+//     contentString += `<option value="${meeting.fields.meeting_name}">${meeting.fields.meeting_name}</option>`;
+//   });
+//   menu.innerHTML = contentString;
+// };
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해
 // const viewYear = date.getFullYear();
@@ -158,12 +155,14 @@ const makeCalendar = (viewYear, viewMonth) => {
     // 삼한연산자 [조건문] ? [참일 때 실행] : [거짓일 때 실행]
     const condition =
       i >= firstDateIndex && i < lastDateIndex + 1 ? "this" : "other";
+    const date_condition =
+      i >= firstDateIndex && i < lastDateIndex + 1 ? `day-${date}` : "";
     //this
     //other
 
     dates[
       i
-    ] = `<div class="date"><p class="${condition} day-${date}">${date}</p></div>`;
+    ] = `<div class="date"><p class="${condition} ${date_condition}">${date}</p></div>`;
   });
 
   document.querySelector(".dates").innerHTML = dates.join("");
@@ -210,8 +209,28 @@ makeCalendar(viewYear, viewMonth);
 // 일정 생성 모달 관련
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
+const modal_content = document.querySelector(".modal__content");
 const closeModal = document.querySelector(".closeModal");
 const closeModal2 = document.querySelector(".closeModal2");
+const share = document.querySelector(".share");
+const modal_share = document.querySelector(".modal-share");
+const share_box = document.querySelector(".share-box");
+
+share.addEventListener("click", () => {
+  modal_share.classList.remove("hidden");
+});
+
+modal.addEventListener("click", (e) => {
+  if (e.target == modal) {
+    modal.classList.add("hidden");
+  }
+});
+
+modal_share.addEventListener("click", (e) => {
+  if (e.target == modal_share) {
+    modal_share.classList.add("hidden");
+  }
+});
 
 modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
@@ -223,6 +242,18 @@ closeModal.addEventListener("click", () => {
 closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
+
+let shareOBJ = {};
+
+const share_save = () => {
+  const share_select = document.querySelectorAll(".share-select input");
+  share_select.forEach((share) => {
+    if (share.checked == true) {
+      shareOBJ[share.id.split("-")[0]] = share.id.split("-")[1];
+    }
+  });
+  modal_share.classList.add("hidden");
+};
 
 // 새로운 일정 추가하는 함수:
 // ajax사용해서 thumbnail 띄우고
@@ -241,16 +272,14 @@ const plan_create = () => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-  const selectObj = document.querySelectorAll("#share");
-
   // 공개하기로 설정한 모임목록 받아오기
-  data = selectObj.item(0).options;
-  shareMeetingList = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].selected == true) {
-      shareMeetingList.push(data[i].value);
-    }
-  }
+  // data = selectObj.item(0).options;
+  // shareMeetingList = [];
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i].selected == true) {
+  //     shareMeetingList.push(data[i].value);
+  //   }
+  // }
 
   requestNewPlan.send(
     JSON.stringify({
@@ -259,48 +288,74 @@ const plan_create = () => {
       startTime: startTime,
       endTime: endTime,
       content: content,
-      shareMeetings: shareMeetingList,
+      shareMeetings: shareOBJ,
     })
   );
 
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, userimg } = JSON.parse(requestNewPlan.response);
+        const { plan, userimg, err_msg } = JSON.parse(requestNewPlan.response);
 
-        const startDate = new Date(startTime);
-        const endDate = new Date(endTime);
+        //validation 통과하여 일정 등록이 가능한 경우
+        if (plan != null && userimg != null) {
+          const startDate = new Date(startTime);
+          const endDate = new Date(endTime);
 
-        const currentPreview =
-          document.querySelector(".date-onclick").childNodes[0].innerText;
+          const current_preview = new Date(
+            currentYear,
+            currentMonth - 1,
+            document.querySelector(".date-onclick").childNodes[0].innerText
+          );
 
-        // 새로운 일정이 내가 현재 보고있는 달력의 일정이라면 thumbnail 추가
-        if (
-          // 월초월 년초월 ajax 해결 요망
-          startDate.getFullYear() <= viewYear &&
-          viewYear <= endDate.getFullYear() &&
-          startDate.getMonth() + 1 <= viewMonth &&
-          viewMonth <= endDate.getMonth() + 1
-        ) {
-          for (let i = startDate.getDate(); i <= endDate.getDate(); i++) {
-            const day = document.querySelector(`.day-${i}`);
+          let this_date = new Date(
+            startDate.getFullYear(),
+            startDate.getMonth(),
+            startDate.getDate()
+          );
+
+          while (true) {
             if (
-              !day.nextSibling ||
-              !day.nextSibling.classList.contains("private")
+              this_date.getFullYear() == viewYear &&
+              this_date.getMonth() + 1 == viewMonth
             ) {
-              const newimg = document.createElement("img");
-              newimg.classList.add("private");
-              newimg.classList.add("profileImagePlan");
-              newimg.src = `${userimg}`;
-              newimg.style.width = "15px";
-
-              day.after(newimg);
+              const day = document.querySelector(`.day-${this_date.getDate()}`);
+              if (
+                !day.nextSibling ||
+                !day.nextSibling.classList.contains("private")
+              ) {
+                const newimg = document.createElement("img");
+                newimg.classList.add("private");
+                newimg.classList.add("profileImagePlan");
+                newimg.src = `${userimg}`;
+                newimg.style.width = "15px";
+                day.after(newimg);
+              }
+            }
+            if (
+              this_date.getFullYear() == endDate.getFullYear() &&
+              this_date.getMonth() == endDate.getMonth() &&
+              this_date.getDate() == endDate.getDate()
+            ) {
+              break;
+            } else {
+              this_date.setDate(this_date.getDate() + 1);
             }
           }
+
+          const current_dateonly = new Date(current_preview).setHours(
+            0,
+            0,
+            0,
+            0
+          );
+          const start_dateonly = new Date(startDate).setHours(0, 0, 0, 0);
+          const end_dateonly = new Date(endDate).setHours(0, 0, 0, 0);
+
           // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
           if (
-            currentPreview >= startDate.getDate() &&
-            currentPreview <= endDate.getDate()
+            current_dateonly >= start_dateonly &&
+            current_dateonly <= end_dateonly
           ) {
             let start = "";
             let hours = "";
@@ -313,7 +368,7 @@ const plan_create = () => {
                 [start, hours, minutes] = calcTime(
                   startDate,
                   endDate,
-                  currentPreview
+                  current_preview.getDate()
                 );
                 let newplan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
@@ -342,7 +397,7 @@ const plan_create = () => {
                 [start, hours, minutes] = calcTime(
                   startDate,
                   endDate,
-                  currentPreview
+                  current_preview.getDate()
                 );
 
                 // 추가한 일정 타임라인 추가
@@ -378,7 +433,7 @@ const plan_create = () => {
               [start, hours, minutes] = calcTime(
                 startDate,
                 endDate,
-                currentPreview
+                current_preview.getDate()
               );
 
               let newDiv = document.createElement("div");
@@ -401,9 +456,12 @@ const plan_create = () => {
               timeline.appendChild(newDiv);
             }
           }
+        } else {
+          //view에서 validation 통과 못하면 이쪽으로 옴
+          alert(err_msg);
         }
-        clearPlanForm();
       }
+      clearPlanForm();
     }
   };
 };
@@ -434,7 +492,7 @@ window.onload = function () {
           meetingimg,
           meetingList,
         } = JSON.parse(requestPlan.response);
-        makeMeetingList(JSON.parse(meetingList));
+        // makeMeetingList(JSON.parse(meetingList));
 
         const publicPlansArray = JSON.parse(public_plans);
         const privatePlansArray = JSON.parse(private_plans);
@@ -477,6 +535,7 @@ window.onload = function () {
               currentMonth - 1,
               day.innerText
             );
+
             if (
               startTime.setHours(0, 0, 0, 0) <= today &&
               today <= endTime.setHours(0, 0, 0, 0)

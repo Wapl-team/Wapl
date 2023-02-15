@@ -217,7 +217,7 @@ closeModal2.addEventListener("click", () => {
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
-const plan_create = (meeting_name, meeting_pk) => {
+const plan_create = (meeting_pk) => {
   const requestNewPlan = new XMLHttpRequest();
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
@@ -231,21 +231,20 @@ const plan_create = (meeting_name, meeting_pk) => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-
   requestNewPlan.send(
     JSON.stringify({
-      meeting_name: meeting_name,
       title: title,
       location: location,
       startTime: startTime,
       endTime: endTime,
       content: content,
+      meeting_pk: meeting_pk,
     })
   );
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, meeting_img, err_msg } = JSON.parse(
+        const { plan, meeting_img, err_msg, user_name } = JSON.parse(
           requestNewPlan.response
         );
         //validation 통과한 경우
@@ -374,6 +373,12 @@ const plan_create = (meeting_name, meeting_pk) => {
                 // 개인 일정 라인추가
                 const new_member = document.createElement("div");
                 new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+                const new_user_name = document.createElement("p");
+                new_user_name.classList.add("profile-user-name");
+                new_user_name.textContent = `${user_name}`;
+                new_member.appendChild(new_user_name);
+
                 new_member.style.height = "50px";
                 new_member.style.width = "43px";
                 memberlist.firstChild.before(new_member);
@@ -419,6 +424,12 @@ const plan_create = (meeting_name, meeting_pk) => {
               // 개인 일정 라인추가
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${user_name}`;
+              new_member.appendChild(new_user_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);
@@ -489,10 +500,8 @@ window.onload = function () {
       if (requestPlan.status < 400) {
         const { public_plans, private_plans, user_img, meeting_img } =
           JSON.parse(requestPlan.response);
-
         const public_plans_array = JSON.parse(public_plans);
         const private_plans_array = JSON.parse(private_plans);
-
         const month_dates = document.querySelectorAll(".this");
 
         month_dates.forEach((day) => {
@@ -634,6 +643,12 @@ return: err_msg
               timeline.appendChild(new_div);
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${user_name[plan.fields.owner]}`;
+              new_member.appendChild(new_user_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);
@@ -672,9 +687,13 @@ return: err_msg
           prviate_plans_array.forEach((plan, i) => {
             if (already.indexOf(`${plan.fields.owner}`) == -1) {
               const new_member = document.createElement("div");
-              new_member.innerHTML = `<img class="profileImagePreview"src="${
-                user_img[plan.fields.owner]
-              }" border-radius="25px" width="32px" height="32px" />`;
+              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${user_name[plan.fields.owner]}`;
+              new_member.appendChild(new_user_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);

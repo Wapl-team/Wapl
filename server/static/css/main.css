@@ -624,3 +624,9 @@ hr {
 .background {
   background-color: white;
 }
+
+.profile-user-name {
+  font-size: 2px;
+  padding-top: 2.5px;
+}
+

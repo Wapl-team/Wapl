@@ -107,11 +107,14 @@ def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
     return render(request, "test_meeting_detail.html", context=context)
 
 def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
-    if request.method == "POST":
-        meeting = get_object_or_404(Meeting, id=pk)
-        # meeting = Meeting.objects.get(id=pk)
-        meeting.delete()
-        return redirect('wapl:main')
+  meeting = get_object_or_404(Meeting, id=pk)  
+  if meeting.owner == request.user:    
+    meeting.delete()
+    return redirect('wapl:main')
+  else:
+    err_msg = '모임 삭제 권한이 없습니다.'
+    messages.warning(request, err_msg)
+    return redirect('wapl:meeting_info', meeting.id)
 
 def meeting_join(request:HttpRequest, *args, **kwargs):
     if request.method == "POST":
@@ -177,14 +180,13 @@ def create_public_plan(request, *args, **kwargs):
     startTime = req['startTime']
     endTime = req['endTime']
     content = req['content']
-    meeting_name = req['meeting_name']
+    meeting_pk = req['meeting_pk']
 
-    # meeting = Meeting.objects.get(meeting_name=meeting_name)
-    meeting = get_object_or_404(Meeting, meeting_name=meeting_name)
+    meeting = get_object_or_404(Meeting, id=meeting_pk)
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
-      new_plan = PublicPlan.objects.create(meetings = meeting,  startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+      new_plan = PublicPlan.objects.create(meetings = meeting, owner = request.user , startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -192,8 +194,7 @@ def create_public_plan(request, *args, **kwargs):
         meeting_img = meeting.image.url
 
       new_plan=model_to_dict(new_plan)
-
-      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg})
+      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg, 'user_name': request.user.name})
     else:
       return JsonResponse({'plan': None, 'meeting_img': None, 'err_msg' : err_msg})
 
@@ -205,28 +206,27 @@ def update(request:HttpRequest, pk, *args, **kwargs):
   plan = get_object_or_404(PrivatePlan, id=pk)
   plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
   plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
-
-  if request.method == "POST":
-    plan.startTime = request.POST["startTime"]
-    plan.endTime = request.POST["endTime"]
-    plan.location = request.POST["location"]
-    plan.title = request.POST["title"]
-    plan.content = request.POST["content"]
-    new_share_list = request.POST.getlist('share-meeting-list[]')
-    share_list = list(Share.objects.filter(plan = plan))
-    for share in share_list:
-      if share.meeting.meeting_name in new_share_list:
-        share.is_share = True
-        share.save()
-      else:
-        share.is_share = False
-        share.save()     
-                    
-    plan.save()
-    
-    return redirect('wapl:detail', pk) 
-  
   share_list = list(Share.objects.filter(plan = plan))
+  
+  if request.method == "POST":
+    if plan.owner == request.user:
+      plan.startTime = request.POST["startTime"]
+      plan.endTime = request.POST["endTime"]
+      plan.location = request.POST["location"]
+      plan.title = request.POST["title"]
+      plan.content = request.POST["content"]
+
+      for cur_share in share_list:        
+        cur_share.is_share = request.POST[f"{cur_share.meeting.id}"]
+        cur_share.save()
+                               
+      plan.save()
+      return redirect('wapl:detail', pk) 
+    else:
+      err_msg = "수정 권한이 없습니다."
+      messages.warning(request, err_msg)
+      return redirect('wapl:detail', pk) 
+  
   context = {
     'plan': plan,
     'plan_sT': plan_sT,
@@ -243,14 +243,18 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
     
     if request.method == "POST":
+      if plan.owner == request.user or plan.meetings.owner == request.user:
         plan.startTime = request.POST["startTime"]
         plan.endTime = request.POST["endTime"]
         plan.location = request.POST["location"]
         plan.title = request.POST["title"]
         plan.content = request.POST["content"]
         plan.save()
+      else:
+        err_msg = "수정 권한이 없습니다."
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk) 
         
-        return redirect('wapl:pubdetail', pk) 
     return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 #개인 일정 삭제 함수
@@ -334,26 +338,10 @@ def public_detail(request, pk, *args, **kwargs):
         "plan": plan,
         "comments" : comments,
         "replys": replys,
-        'meeting_pk': plan.meetings.id,
+        'meeting': plan.meetings,
         "err_msg": err_msg,
         }
     return render(request, 'plan_pubDetail.html', context=context)
-
-# 개인 댓글 수정
-def comment_update(request, *args, **kwargs):
-  pass
-
-# 모임 댓글 수정
-def pub_comment_update(request, *args, **kwargs):
-  pass
-
-# 개인 대댓글 수정
-def reply_update(request, *args, **kwargs):
-  pass
-
-# 모임 대댓글 수정
-def pub_reply_update(request, *args, **kwargs):
-  pass
 
 #개인 일정 대댓글 생성
 def reply_create(request, pk, ck, *args, **kwargs):
@@ -603,7 +591,6 @@ def view_team_plan(request):
      else:
         private_plans.append(share_list[i].plan)
 
-
   public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 
   private_plans = serializers.serialize('json', private_plans)
@@ -642,6 +629,10 @@ def view_explan(request):
 
   private_plans = PrivatePlan.objects.filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
+  private_user_names = {}
+  for i in range(len(private_plans)):
+    private_user_names[private_plans[i].owner.pk] = private_plans[i].owner.name  
+    
   public_plans = []
 
   if request.user.profile.image == "":
@@ -661,14 +652,19 @@ def view_explan(request):
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
 
-
+  public_user_names = {}
+  for i in range(len(public_plans)):
+    public_user_names[public_plans[i].owner.pk] = public_plans[i].owner.name  
+    
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
-
-
+  
   return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'today': day,'userimg':userimg,
-                         'meetingimg':meeting_img})
+                        'private_plans':private_plans,'today': day,'userimg':userimg,
+                        'meetingimg':meeting_img,
+                        'private_user_names': private_user_names,
+                        'public_user_names': public_user_names,
+                        })
 
 def list_to_queryset(model, data):
     from django.db.models.base import ModelBase
@@ -716,7 +712,7 @@ def view_team_explan(request):
     user_name = {}
 
     for i in range(len(users)):
-        user_name[users[i].pk] = users[i].username
+        user_name[users[i].pk] = users[i].name
 
     user_img = {}
 
@@ -790,21 +786,24 @@ def meeting_info(request, pk, *args, **kwargs):
 
 def meeting_info_edit(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
-    # meeting = Meeting.objects.get(id=pk)
+    
     meeting = get_object_or_404(Meeting, id=pk)
-
-    if request.method == "POST":
-        meeting.meeting_name = request.POST["meeting_name"]
-        meeting.category = request.POST["category"]
-        meeting.content = request.POST["content"]
-        default_check = request.POST.getlist("image-clear")
-        if len(default_check) == 0:
-            meeting.image = request.FILES.get("image")
-        else:
-            meeting.image.delete()
-        meeting.save()
-
-        return redirect('wapl:meeting_info', pk)
+    if meeting.owner == request.user:
+      if request.method == "POST":
+          meeting.meeting_name = request.POST["meeting_name"]
+          meeting.category = request.POST["category"]
+          meeting.content = request.POST["content"]
+          default_check = request.POST.getlist("image-clear")
+          if len(default_check) == 0:
+              meeting.image = request.FILES.get("image")
+          else:
+              meeting.image.delete()
+          meeting.save()        
+          return redirect('wapl:meeting_info', pk)
+    else:
+      err_msg = '수정 권한이 없습니다.'
+      messages.warning(request, err_msg)
+      return redirect('wapl:meeting_info', pk)
 
     users = meeting.users.all()
     category_list = Meeting.MEETING_CHOICE

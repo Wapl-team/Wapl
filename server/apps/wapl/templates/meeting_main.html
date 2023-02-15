@@ -65,9 +65,7 @@
             href="#"
             id="closeModal"
             class="closeModal2"
-            onclick="plan_create(
-                `{{cur_meeting.meeting_name}}`
-              )"
+            onclick="plan_create({{cur_meeting.id}})"
             >추가</a
           >
         </form>
@@ -88,7 +86,7 @@
         </div>
         <div class="profileSidebar">
           <a href="{% url 'wapl:profile' %}">
-            {% if user.image %}
+            {% if user.profile.image %}
             <img
               src="{{ user.profile.image.url }}"
               width="65"

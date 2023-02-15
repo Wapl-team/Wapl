@@ -340,7 +340,7 @@ def public_detail(request, pk, *args, **kwargs):
         "plan": plan,
         "comments" : comments,
         "replys": replys,
-        'meeting_pk': plan.meetings.id,
+        'meeting': plan.meetings,
         "err_msg": err_msg,
         }
     return render(request, 'plan_pubDetail.html', context=context)

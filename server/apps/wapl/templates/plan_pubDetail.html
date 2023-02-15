@@ -11,9 +11,10 @@
   <body>
     <div class="plan-detail-container">
       <div class="header">
-        <a href="{% url 'wapl:meeting_calendar' meeting_pk %}"
+        <a href="{% url 'wapl:meeting_calendar' meeting.id %}"
           ><i class="fa-solid fa-house"></i
-        ></a>        <br />
+        ></a>
+        <br />
       </div>
 
       <div class="main">
@@ -130,6 +131,7 @@
       </div>
       <hr />
 
+      {% if request.user == plan.user or request.user == meeting.owner%}
       <div class="control-container">
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"
@@ -143,6 +145,7 @@
           >수정하기</a
         >
       </div>
+      {% endif %}
     </div>
 
     <script

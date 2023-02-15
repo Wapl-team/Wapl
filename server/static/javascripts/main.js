@@ -173,9 +173,12 @@ const makeCalendar = (viewYear, viewMonth) => {
   }
 };
 
+
 const viewDate = document.querySelector(".year-month").innerHTML.split("년");
 const viewYear = parseInt(viewDate[0]);
 const viewMonth = parseInt(viewDate[1].substring(0, 2));
+
+console.log(viewMonth, viewYear)
 makeCalendar(viewYear, viewMonth);
 
 // // 이전 달 그리는 함수

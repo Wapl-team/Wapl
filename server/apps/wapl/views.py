@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import PrivatePlan ,PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -21,6 +21,12 @@ import base64
 import codecs
 from datetime import datetime
 from django.contrib import messages
+
+#진짜 시간 전역 변수
+
+# real_month = user.current_date.month
+# real_year = login_user.current_date.year
+
 # main 페이지 접속 시 실행 함수
 # 디폴트 달력은 개인 달력
 # 모임 생성 유저는 자동으로 users에 들어감
@@ -28,20 +34,29 @@ from django.contrib import messages
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  try:
-    viewDate = request.GET['select-date'].split('-')
-    year = viewDate[0]
-    month = viewDate[1]
-    login_user.current_date = f"{year}-{month}-01"
-    login_user.save()
-  except:
-    year = login_user.current_date.year
-    month = login_user.current_date.month
+  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  year_num = ['2021', '2022', '2023', '2024', '2025']
+  
+  
+  if request.method == 'POST':
+      inputTime.objects.create(
+        input_year = request.POST["year_category"],
+        input_month = request.POST["month_category"],
+        )
+      return redirect('wapl:main')
+  
+  year = inputTime.objects.last().input_year
+  month = inputTime.objects.last().input_month
+  year_num.remove(year)
+  month_num.remove(month)
+
   context = {
             'meetings' : meetings,
             'meeting_name': '',
             'view_year': year,
             'view_month': month,
+            'month_num': month_num,
+            'year_num' : year_num,
             }
 
   return render(request, "main.html", context=context)
@@ -53,21 +68,28 @@ def meeting_calendar(request, pk, *args, **kwargs):
   # Review : 혹은 @login_required 데코레이터 필요
   cur_meeting = get_object_or_404(Meeting, id=pk)
 #   cur_meeting = Meeting.objects.all().get(id=pk)
-
   meetings = login_user.user_meetings.all()
-  try:
-    viewDate = request.GET['select-date'].split('-')
-    year = viewDate[0]
-    month = viewDate[1]
-    login_user.current_date = f"{year}-{month}-01"
-    login_user.save()
-  except:
-        year = login_user.current_date.year
-        month = login_user.current_date.month
+  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  year_num = ['2021', '2022', '2023', '2024', '2025']
+  
+  if request.method == 'POST':
+      inputTime.objects.create(
+        input_year = request.POST["year_category"],
+        input_month = request.POST["month_category"],
+        )
+      return redirect('wapl:meeting_calendar', pk)
+  
+  year = inputTime.objects.last().input_year
+  month = inputTime.objects.last().input_month
+  year_num.remove(year)
+  month_num.remove(month)
+        
   context = {'cur_meeting': cur_meeting,
-             'meetings': meetings,
-             'view_year': year,
+            'meetings': meetings,
+            'view_year': year,
             'view_month': month,
+            'month_num': month_num,
+            'year_num' : year_num,
             }
   return render(request, "meeting_main.html", context=context)
 
@@ -496,6 +518,8 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
+    inputTime.objects.create()
+
     if request.method == 'POST':
         form = forms.LoginForm(data=request.POST)
         if form.is_valid():

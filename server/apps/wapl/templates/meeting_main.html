@@ -26,14 +26,27 @@
 
     <hr>
 
-    <form action="{% url 'wapl:meeting_calendar' cur_meeting.id %}">
-      <input type="date" name="select-date" />
-      <input type="submit" value="선택하기" />
-    </form>
-
-    <div class="meeting-name">{{cur_meeting.meeting_name}}'s</div>
+    <div class="meeting-name">{{cur_meeting.meeting_name}} 달력</div>
     <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
     <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+
+    <form action="{% url 'wapl:meeting_calendar' cur_meeting.pk %}" class="year_month_display" method="post">
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
+      <input type="submit" value="선택하기" />
+    </form>
 
     <div class="modal hidden">
       <div class="modal__content">

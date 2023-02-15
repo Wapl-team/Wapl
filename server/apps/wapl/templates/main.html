@@ -25,9 +25,25 @@
 
     <hr>
 
-      <div class="year-month">{{view_year}}년 {{view_month}}월</div>
-    <form action="/main">
-      <input type="date" name="select-date" />
+    <div class="meeting-name">개인 달력</div>
+    <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+    
+
+    <form action="/main" class="year_month_display" method="post">
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
       <input type="submit" value="선택하기" />
     </form>
 

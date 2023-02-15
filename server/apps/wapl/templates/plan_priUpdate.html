@@ -23,7 +23,6 @@
                 <input type="text" name="title" value="{{plan.title}}" class="plan_update_title"/>
                 <div class="center">
                     <input type="text" name="location" value="{{plan.location}}" class="plan_update_place"/>
-                </div>
                     <input type="datetime-local" name="startTime" value="{{plan_sT}}" class="plan_update_time" />
                     ~
                     <input type="datetime-local" name="endTime" value="{{plan_eT}}" class="plan_update_time"/>
@@ -32,18 +31,73 @@
                     name="content"
                     value="{{plan.content}}"
                     class="plan_update_content"
-                    />                      
+                    />      
+                </div>
+                  <div class="bottom">
+                    <div class="modal-share hidden">
+                      <div class="share-box">
+                        {% for share in share_list %}
+                        <div >
+                          <span>{{share.meeting.meeting_name}}</span>
+                          
+                          <div class="share-select">
+                            <input
+                              type="radio"
+                              name="{{share.meeting.id}}"
+                              id="{{share.meeting.id}}-open"
+                              {% if share.is_share == 'open' %}
+                              checked = 'checked'
+                              {% endif %}    
+                              value='open'
+                            />
+                            <label for="{{share.meeting.id}}-open">공개</label>
+              
+                            <input
+                              type="radio"
+                              name="{{share.meeting.id}}"
+                              id="{{share.meeting.id}}-close"
+                              {% if share.is_share == 'close' %}
+                              checked = 'checked'
+                              {% endif %} 
+                              value='close'   
+                            />
+                            <label for="{{share.meeting.id}}-close">비공개</label>
+              
+                            <input
+                              type="radio"
+                              name="{{share.meeting.id}}"
+                              id="{{share.meeting.id}}-untitled"
+                              {% if share.is_share == 'untitled' %}
+                              checked = 'checked'
+                              {% endif %} 
+                              value='untitled'   
+                            />
+                            <label for="{{share.meeting.id}}-untitled">익명</label>
+                          </div>
+                        </div>
+                        {% endfor %}
+                        {% comment %} <button class="share-select-save" onclick="share_save()">저장</button> {% endcomment %}
+                      </div>
+                    </div>
                   <div>
                     <br />
+                    <div class="share">
+                      <span>공개범위 <i class="fa-solid fa-chevron-right"></i></span>
+                    </div>
+                    
                 <div class="control-container">
                     <input type="submit" , value="저장하기" />
                     <a href="{% url 'wapl:detail' plan.pk %}">돌아가기</a>
                 </div>
                 </form>
+                {% comment %} <button class="closeModal">
+                  <i class="fa-solid fa-x"></i>
+                </button> {% endcomment %}
             </div>
         <script
         src="https://kit.fontawesome.com/5658349e28.js"
         crossorigin="anonymous"
         ></script>
+        <script src={% static 'javascripts/detail.js' %}></script>
     </body>
 </html>

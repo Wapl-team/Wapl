@@ -205,7 +205,8 @@ def update(request:HttpRequest, pk, *args, **kwargs):
   plan = get_object_or_404(PrivatePlan, id=pk)
   plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
   plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
-
+  share_list = list(Share.objects.filter(plan = plan))
+  
   if request.method == "POST":
     if plan.owner == request.user:
       plan.startTime = request.POST["startTime"]
@@ -213,24 +214,18 @@ def update(request:HttpRequest, pk, *args, **kwargs):
       plan.location = request.POST["location"]
       plan.title = request.POST["title"]
       plan.content = request.POST["content"]
-      new_share_list = request.POST.getlist('share-meeting-list[]')
-      share_list = list(Share.objects.filter(plan = plan))
-      for share in share_list:
-        if share.meeting.meeting_name in new_share_list:
-          share.is_share = True
-          share.save()
-        else:
-          share.is_share = False
-          share.save()     
-                      
+
+      for cur_share in share_list:        
+        cur_share.is_share = request.POST[f"{cur_share.meeting.id}"]
+        cur_share.save()
+                               
       plan.save()
       return redirect('wapl:detail', pk) 
     else:
       err_msg = "수정 권한이 없습니다."
       messages.warning(request, err_msg)
       return redirect('wapl:detail', pk) 
-      
-  share_list = list(Share.objects.filter(plan = plan))
+  
   context = {
     'plan': plan,
     'plan_sT': plan_sT,

@@ -496,16 +496,22 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
-    if request.method == 'POST':
-        form = forms.LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:main')
-        else:
-            return render(request, template_name='login.html')
+  if request.method == 'POST':
+
+    form = forms.LoginForm(data=request.POST)
+    if form.is_valid():
+        user = form.get_user()
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('wapl:main')
     else:
+      err_msg="잘못된 ID 또는 패스워드입니다"
+      context={
+        'err_msg':err_msg
+      }
+      return render(request, template_name='login.html',context=context)
+  else:
         return render(request, template_name='login.html')
+
 
 def logout(request:HttpRequest, *args, **kwargs):
     login_user = request.user

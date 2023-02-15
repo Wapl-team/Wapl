@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/plan_update.css' %}">
-    <title>Update</title>
-</head>
-<body>
-    <h2>일정 수정</h2>
-    <form action="{% url 'wapl:pubupdate' plan.pk %}" method="post" enctype="multipart/form-data" class="planUpdate">
-        {% csrf_token %}
-        <div>제목</div>
-        <input type="text" name="title" value="{{plan.title}}" /> 
-        <div><i class="fa-solid fa-location-dot"></i>장소</div>
-        <input type="text" name="location" value="{{plan.location}}" /> 
-        <div>시작 시간</div>
-        <input type="datetime-local" name="startTime" value="{{plan_sT}}"/> 
-        <div>종료 시간</div>
-        <input type="datetime-local" name="endTime" value="{{plan_eT}}" /> 
-        <div>내용</div>
-        <input type="textarea" name="content" value="{{plan.content}}" /> <br>
-        <div>
-            <input type="submit" , value="저장하기" />
-        </div>
-    </form>
-
-    <script src="https://kit.fontawesome.com/5658349e28.js" crossorigin="anonymous"></script>
-</body>
+    {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/plan_update.css' %}" />
+        <title>Update</title>
+    </head>
+    <body>
+        <div class="plan_update_container">
+            <div class="header">
+                <a href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
+            </div>
+            <div class="main">
+                <form
+                action="{% url 'wapl:pubupdate' plan.pk %}"
+                method="post"
+                enctype="multipart/form-data"
+                >
+                {% csrf_token %}
+                <input type="text" name="title" value="{{plan.title}}" class="plan_update_title"/>
+                <div class="center">
+                    <input type="text" name="location" value="{{plan.location}}" class="plan_update_place"/>
+                </div>
+                    <input type="datetime-local" name="startTime" value="{{plan_sT}}" class="plan_update_time" />
+                    ~
+                    <input type="datetime-local" name="endTime" value="{{plan_eT}}" class="plan_update_time"/>
+                    <input
+                    type="textarea"
+                    name="content"
+                    value="{{plan.content}}"
+                    class="plan_update_content"
+                    /><br />
+                <div class="control-container">
+                    <input type="submit" , value="저장하기" />
+                    <a href="{% url 'wapl:pubdetail' plan.pk %}">돌아가기</a>
+                </div>
+                </form>
+            </div>
+        <script
+        src="https://kit.fontawesome.com/5658349e28.js"
+        crossorigin="anonymous"
+        ></script>
+    </body>
 </html>

@@ -9,6 +9,7 @@ urlpatterns= [
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),
+    path("social/signup", views.extra_signup, name="extra_signup"),
     path("", views.start, name="start"),
     path("create-private-plan", views.create_private_plan, name="create_private_plan"), 
     path("create-public-plan", views.create_public_plan, name="create_public_plan"), 
@@ -41,6 +42,7 @@ urlpatterns= [
     path("meeting/info/<int:pk>", views.meeting_info, name="meeting_info"),
     path("meeting/info/edit/<int:pk>", views.meeting_info_edit, name="meeting_info_edit"),
     path("meeting/join", views.meeting_join, name="meeting_join"),
+
 
     # url(r'', views.)
 

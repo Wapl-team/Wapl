@@ -59,7 +59,7 @@ body {
 }
 
 .meeting-name {
-  font-size: 1rem;
+  font-size: 2rem;
   color: orange;
   font-weight: bold;
 }
@@ -298,17 +298,60 @@ hr{
 }
 
 .modal__content {
+  border: 2px solid orange;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 100vh;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+.planRegister {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  padding: 1rem;
+}
+
+.planRegister > div {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: white;
-  padding: 1vh 10vw 5vh 10vw;
-  border-radius: 7px;
-  width: 90vw;
-  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
-  margin-top: 2vh;
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.time-span {
+  font-size: 0.8rem;
+  padding-right: 1rem;
+  border-right: 1px solid orange;
+}
+
+.planRegister > div input {
+  border: 1px solid orange;
+  border-radius: 5px;
+  padding: 0.2rem;
+}
+.planRegister > input {
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.planRegister a {
+  padding: 0;
+  border: none;
+  height: 7%;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.planRegister input:focus {
+  outline: none;
+  border-bottom: 1px solid orange;
 }
 
 .closeModal {
@@ -326,52 +369,17 @@ hr{
   color: orange;
 }
 
-.modal__title {
-  color: orange;
-  font-weight: bold;
-  font-size: 1.7em;
-  margin-bottom: 3vh;
-}
-
-.planRegister {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70vw;
-  overflow-y: auto;
-}
-
-.planRegister-basic input {
-  width: 60vw;
-  height: 4vh;
-  background-color: antiquewhite;
-  border: none;
-  margin: 1vh -5vw;
-  margin-bottom: 2vh;
-  text-align: center;
-  border-radius: 10px;
-}
-
-#share {
-  width: 60vw;
-  height: 4vh;
-  background-color: wheat;
-  border: none;
-  margin: 1vh -5vw;
-}
-
 .hidden {
   display: none;
 }
 
 #closeModal {
+  margin-top: 0.5rem;
   background-color: orange;
   color: white;
-  padding: 1vh 26vw;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin-top: 15px;
 }
 
 .go-today {
@@ -475,6 +483,7 @@ hr{
 
 .detail-timeline a {
   text-decoration: none;
+  margin-top: 1vh;
 }
 
 .detail-timeline div {

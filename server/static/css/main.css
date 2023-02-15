@@ -1,4 +1,10 @@
 @import url(./reset.css);
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 @font-face {
@@ -25,6 +31,8 @@ body {
   font-family: 'S-CoreDream-3Light';
   min-height: 100vh;
   flex-direction: column;
+  font-family: 'S-CoreDream-3Light';
+  background-color: #fffbeb;
 }
 
 .nav {
@@ -32,11 +40,18 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 8vh;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+
 }
 
 .nav-side {
   display: flex;
   align-items: center;
+}
+
+.nav_bar_button{
+  color: #1A2634;
 }
 
 .nav-side button {
@@ -55,8 +70,9 @@ body {
 
 .year-month {
   font-size: 1.5rem;
-  color: black;
+  color: #1A2634;
   font-weight: 700;
+  font-size: 25px;
 }
 
 .nav-btn {
@@ -273,10 +289,10 @@ hr{
 }
 
 .modalButton {
-  background-color: white;
+  background-color: #fbfbfb;
   border: 0;
   margin: 0.5rem;
-  color: orange;
+  color: #1A2634;;
 }
 
 .modal {
@@ -291,18 +307,143 @@ hr{
   z-index: 1;
 }
 
+.modal-share {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 .modal__content {
+  border: 2px solid orange;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 100vh;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.planRegister {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  padding: 1rem;
+}
+
+.planRegister > div {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.time-span {
+  font-size: 0.8rem;
+  padding-right: 1rem;
+  border-right: 1px solid orange;
+}
+
+.share span {
+  font-size: 0.8rem;
+}
+.share i {
+  color: orange;
+  margin-left: 0.5rem;
+}
+
+.share-box {
+  padding: 1rem 1rem;
+  position: absolute;
+  bottom: 60px;
+  left: 90px;
+  width: 70vw;
+  z-index: 2;
   background-color: white;
-  padding: 1vh 10vw 5vh 10vw;
-  border-radius: 7px;
-  width: 90vw;
-  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
-  margin-top: 2vh;
+  border: 1px solid orange;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.share-box input {
+  margin: 0 0.2rem 0 0;
+}
+
+.share-box button {
+  cursor: pointer;
+  color: white;
+  border: 1px solid orange;
+  border-radius: 5px;
+  background-color: orange;
+}
+
+.share-box > div {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-select {
+  width: 70%;
+}
+.share-box span {
+  padding-right: 0.5rem;
+}
+
+.share-select input[type="radio"] {
+  display: none;
+}
+
+.share-select input[type="radio"] + label {
+  display: inline-block;
+  cursor: pointer;
+  height: 24px;
+  width: 30%;
+  border: 1px solid orange;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  background-color: #fff;
+  color: #333;
+}
+
+.share-select input[type="radio"]:checked + label {
+  background-color: orange;
+  color: #fff;
+}
+.planRegister > div input {
+  border: 1px solid orange;
+  border-radius: 5px;
+  padding: 0.2rem;
+}
+.planRegister > input {
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.planRegister a {
+  padding: 0;
+  border: none;
+  height: 7%;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.planRegister input:focus {
+  outline: none;
+  border-bottom: 1px solid orange;
 }
 
 .closeModal {
@@ -320,40 +461,6 @@ hr{
   color: orange;
 }
 
-.modal__title {
-  color: orange;
-  font-weight: bold;
-  font-size: 1.7em;
-  margin-bottom: 3vh;
-}
-
-.planRegister {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70vw;
-  overflow-y: auto;
-}
-
-.planRegister-basic input {
-  width: 60vw;
-  height: 4vh;
-  background-color: antiquewhite;
-  border: none;
-  margin: 1vh -5vw;
-  margin-bottom: 2vh;
-  text-align: center;
-  border-radius: 10px;
-}
-
-#share {
-  width: 60vw;
-  height: 4vh;
-  background-color: wheat;
-  border: none;
-  margin: 1vh -5vw;
-}
-
 .hidden {
   display: none;
 }
@@ -361,11 +468,9 @@ hr{
 #closeModal {
   background-color: orange;
   color: white;
-  padding: 0.2vh 26vw;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin-top: 15px;
 }
 
 .go-today {
@@ -374,10 +479,21 @@ hr{
   border-right: 1px solid orange;
 }
 
+
 .days {
   margin-top: 10px;
   display: flex;
-}
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey; */
+  font-weight: bold;
+  background-color: #ffeda2;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+} 
 
 .day {
   width: calc(100% / 7);
@@ -388,41 +504,52 @@ hr{
   display: flex;
   flex-flow: row wrap;
   height: 55vh;
-  border-top: 1px solid orange;
-  border-right: 1px solid orange;
   background-color: white;
   border-radius: 5px;
-  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding: 0.5em 0.5em;
+  margin-bottom: 1.5em;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .date {
   width: calc(100% / 7);
   height: calc(100% / 5);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
 }
 
-.date-onclick {
+.date-onclick{
   width: calc(100% / 7);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
   box-shadow: none;
-  background-color: antiquewhite;
+  background-color: #fffbeb;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.14);
 }
+
+/* .date-onclick .this{
+  margin: auto;
+  background:#FFF1BA;
+  width: 38px;
+  height: 38px;
+  border-radius: 25px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+} */
+
 
 /* 일요일은 빨간색, 토요일은 파란색으로 */
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
-  color: #ff3838;
+  color: #ea7e7e;
 }
 
 .day:nth-child(7n),
 .date:nth-child(7n) {
-  color: #3374ff;
+  color: #4A7EA9;
 }
 
 .other {
@@ -430,9 +557,9 @@ hr{
 }
 
 .today {
-  color: orange;
-  font-weight: bold;
+  color: #ffc01f;
   padding-bottom: 2px;
+  font-weight: bold;
 }
 
 /* .today::before {
@@ -450,26 +577,31 @@ hr{
 } */
 
 .detail {
-  background-color: white;
-  height: 37vh;
+  background-color: #ffeda2;
+  padding-bottom: 0.1em;
   display: flex;
+  border-radius: 15px;
+  margin: 1em 1em;
 }
 
 .detail-member {
-  padding-top: 35px;
+  margin-left: 0.7em;
+  padding-top: 3.35em;
 }
 
 .detail-timeline {
   display: flex;
   flex-direction: column;
   padding-top: 10px;
-  background-color: white;
   overflow-x: auto;
   white-space: nowrap;
+  margin-right: 0.7em;
+  margin-top: 0.5rem;
 }
 
 .detail-timeline a {
   text-decoration: none;
+  margin-top: 1vh;
 }
 
 .detail-timeline div {
@@ -479,6 +611,8 @@ hr{
 .detail-time {
   display: flex;
   width: 1300px;
+  padding-bottom: 1em;
+  padding-left: 0.5em;
 }
 
 .detail-time div {
@@ -492,3 +626,4 @@ hr{
 .background {
   background-color: white;
 }
+

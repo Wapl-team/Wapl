@@ -356,7 +356,6 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.backgroundColor = "#fffdf5";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
-                new_plan.style.borderRadius = "20px";
                 new_plan.style.padding = "8px";
                 new_plan.style.color = "#1A2634";
                 new_plan.style.height = "40px";
@@ -364,6 +363,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
                 new_plan.style.fontSize = "17px";
+                new_plan.style.overflow = "hidden";
+                new_plan.style.whiteSpace = "nowrap";
+                new_plan.style.textOverflow = "ellipsis";
                 new_plan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(new_plan);
               }
@@ -404,6 +406,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
                 new_plan.style.fontSize = "17px";
+                new_plan.style.overflow = "hidden";
+                new_plan.style.whiteSpace = "nowrap";
+                new_plan.style.textOverflow = "ellipsis";
                 new_plan.innerText = `${plan.title}`;
                 new_div.appendChild(new_plan);
                 timeline.childNodes[0].before(new_div);
@@ -445,6 +450,9 @@ const plan_create = (meeting_name, meeting_pk) => {
               new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               new_plan.style.padding = "11px";
               new_plan.style.fontSize = "17px";
+              new_plan.style.overflow = "hidden";
+              new_plan.style.whiteSpace = "nowrap";
+              new_plan.style.textOverflow = "ellipsis";
               new_plan.innerText = `${plan.title}`;
               new_div.appendChild(new_plan);
               timeline.appendChild(new_div);
@@ -655,7 +663,8 @@ return: err_msg
             new_plan.style.padding = "11px";
             new_plan.style.fontSize = "17px";
             new_plan.style.overflow = "hidden";
-            new_plan.style.whiteSpace = "normal";
+            new_plan.style.whiteSpace = "nowrap";
+            new_plan.style.textOverflow = "ellipsis";
             new_plan.innerText = `${plan.fields.title}`;
             document.querySelector(".public-timeline").appendChild(new_plan);
           });
@@ -700,7 +709,8 @@ return: err_msg
             new_plan.style.fontSize = "17px";
             new_plan.innerText = `${plan.fields.title}`;
             new_plan.style.overflow = "hidden";
-            new_plan.style.whiteSpace = "normal";
+            new_plan.style.whiteSpace = "nowrap";
+            new_plan.style.textOverflow = "ellipsis";
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
             } else {

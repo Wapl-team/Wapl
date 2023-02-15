@@ -84,18 +84,10 @@ function clearPlanForm() {
 
 function openToggle() {
   document.getElementById("sidebar").style.width = "250px";
-  document.getElementById("sidebar").style.border = "2px solid orange";
-  document.getElementById("sidebar").style.borderLeft = "none";
-  document.getElementById("sidebar").style.borderTop = "none";
-  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
-  document.getElementById("sidebar").style.border = "none";
-  document.getElementById("sidebar").style.borderLeft = "none";
-  document.getElementById("sidebar").style.borderTop = "none";
-  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해

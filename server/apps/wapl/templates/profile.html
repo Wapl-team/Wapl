@@ -20,11 +20,11 @@
           class="profile-form"
           enctype="multipart/form-data"
         >
-          {% csrf_token %} {% if user.image %}
-          <img src="{{ user.image.url }}" width="100" />
+          {% csrf_token %} {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" width="100" />
           <div id="profileCheckbox">
             <input type="checkbox" name="image-clear" id="image-clear_id" />
-            <label for="image-clear_id" class="clear">취소</label>
+            <label for="image-clear_id" class="clear">기본 프로필로 변경</label>
           </div>
 
           <br />
@@ -64,8 +64,8 @@
             >
           </div>
           <div>
-            <input type="submit" value="수정" class="profile-btn" />
-            <a href="{% url 'wapl:main' %}" class="return">취소</a>
+            <input type="submit" value="저장" class="profile-btn" />
+            <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
           </div>
         </form>
       </div>

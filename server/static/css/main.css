@@ -195,18 +195,143 @@ body {
   z-index: 1;
 }
 
+.modal-share {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 .modal__content {
+  border: 2px solid orange;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 100vh;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.planRegister {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  padding: 1rem;
+}
+
+.planRegister > div {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.time-span {
+  font-size: 0.8rem;
+  padding-right: 1rem;
+  border-right: 1px solid orange;
+}
+
+.share span {
+  font-size: 0.8rem;
+}
+.share i {
+  color: orange;
+  margin-left: 0.5rem;
+}
+
+.share-box {
+  padding: 1rem 1rem;
+  position: absolute;
+  bottom: 60px;
+  left: 90px;
+  width: 70vw;
+  z-index: 2;
   background-color: white;
-  padding: 1vh 10vw 5vh 10vw;
-  border-radius: 7px;
-  width: 90vw;
-  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
-  margin-top: 2vh;
+  border: 1px solid orange;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.share-box input {
+  margin: 0 0.2rem 0 0;
+}
+
+.share-box button {
+  cursor: pointer;
+  color: white;
+  border: 1px solid orange;
+  border-radius: 5px;
+  background-color: orange;
+}
+
+.share-box > div {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-select {
+  width: 70%;
+}
+.share-box span {
+  padding-right: 0.5rem;
+}
+
+.share-select input[type="radio"] {
+  display: none;
+}
+
+.share-select input[type="radio"] + label {
+  display: inline-block;
+  cursor: pointer;
+  height: 24px;
+  width: 30%;
+  border: 1px solid orange;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  background-color: #fff;
+  color: #333;
+}
+
+.share-select input[type="radio"]:checked + label {
+  background-color: orange;
+  color: #fff;
+}
+.planRegister > div input {
+  border: 1px solid orange;
+  border-radius: 5px;
+  padding: 0.2rem;
+}
+.planRegister > input {
+  padding: 0;
+  border: none;
+  height: 7%;
+}
+
+.planRegister a {
+  padding: 0;
+  border: none;
+  height: 7%;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.planRegister input:focus {
+  outline: none;
+  border-bottom: 1px solid orange;
 }
 
 .closeModal {
@@ -224,40 +349,6 @@ body {
   color: orange;
 }
 
-.modal__title {
-  color: orange;
-  font-weight: bold;
-  font-size: 1.7em;
-  margin-bottom: 3vh;
-}
-
-.planRegister {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70vw;
-  overflow-y: auto;
-}
-
-.planRegister-basic input {
-  width: 60vw;
-  height: 4vh;
-  background-color: antiquewhite;
-  border: none;
-  margin: 1vh -5vw;
-  margin-bottom: 2vh;
-  text-align: center;
-  border-radius: 10px;
-}
-
-#share {
-  width: 60vw;
-  height: 4vh;
-  background-color: wheat;
-  border: none;
-  margin: 1vh -5vw;
-}
-
 .hidden {
   display: none;
 }
@@ -265,11 +356,9 @@ body {
 #closeModal {
   background-color: orange;
   color: white;
-  padding: 0.2vh 26vw;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  margin-top: 15px;
 }
 
 .go-today {
@@ -400,6 +489,7 @@ body {
 
 .detail-timeline a {
   text-decoration: none;
+  margin-top: 1vh;
 }
 
 .detail-timeline div {

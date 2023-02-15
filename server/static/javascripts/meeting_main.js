@@ -457,12 +457,9 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, private_plans, user_img, meeting_img } =
-          JSON.parse(requestPlan.response);
-
+        const { public_plans, private_plans, user_img, meeting_img } = JSON.parse(requestPlan.response);
         const public_plans_array = JSON.parse(public_plans);
         const private_plans_array = JSON.parse(private_plans);
-
         const month_dates = document.querySelectorAll(".this");
 
         month_dates.forEach((day) => {

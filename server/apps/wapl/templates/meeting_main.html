@@ -86,7 +86,7 @@
     </div>
     <div class="profileSidebar">
       <a href="{% url 'wapl:profile' %}">
-        {% if user.image %}
+        {% if user.profile.image %}
         <img src="{{ user.profile.image.url }}" width="65" class="profileImage" />
         {% else %}
         <img src="{{ user.default_image }}" width="65" class="profileImage" />

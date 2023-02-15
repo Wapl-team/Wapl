@@ -128,7 +128,8 @@
         {% endfor %}
       </div>
       <hr />
-
+      
+      {% if request.user == plan.owner %}
       <div class="control-container">
         <form
           action="{% url 'wapl:delete' plan.pk %}"
@@ -142,6 +143,7 @@
           >수정하기</a
         >
       </div>
+      {% endif %}
     </div>
 
     <script

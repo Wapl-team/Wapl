@@ -183,7 +183,7 @@ def create_public_plan(request, *args, **kwargs):
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
-      new_plan = PublicPlan.objects.create(meetings = meeting,  startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+      new_plan = PublicPlan.objects.create(meetings = meeting, owner = request.user , startTime = startTime, endTime = endTime, location = location, title = title, content = content)
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -206,25 +206,29 @@ def update(request:HttpRequest, pk, *args, **kwargs):
   plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
 
   if request.method == "POST":
-    plan.startTime = request.POST["startTime"]
-    plan.endTime = request.POST["endTime"]
-    plan.location = request.POST["location"]
-    plan.title = request.POST["title"]
-    plan.content = request.POST["content"]
-    new_share_list = request.POST.getlist('share-meeting-list[]')
-    share_list = list(Share.objects.filter(plan = plan))
-    for share in share_list:
-      if share.meeting.meeting_name in new_share_list:
-        share.is_share = True
-        share.save()
-      else:
-        share.is_share = False
-        share.save()     
-                    
-    plan.save()
-    
-    return redirect('wapl:detail', pk) 
-  
+    if plan.owner == request.user:
+      plan.startTime = request.POST["startTime"]
+      plan.endTime = request.POST["endTime"]
+      plan.location = request.POST["location"]
+      plan.title = request.POST["title"]
+      plan.content = request.POST["content"]
+      new_share_list = request.POST.getlist('share-meeting-list[]')
+      share_list = list(Share.objects.filter(plan = plan))
+      for share in share_list:
+        if share.meeting.meeting_name in new_share_list:
+          share.is_share = True
+          share.save()
+        else:
+          share.is_share = False
+          share.save()     
+                      
+      plan.save()
+      return redirect('wapl:detail', pk) 
+    else:
+      err_msg = "수정 권한이 없습니다."
+      messages.warning(request, err_msg)
+      return redirect('wapl:detail', pk) 
+      
   share_list = list(Share.objects.filter(plan = plan))
   context = {
     'plan': plan,
@@ -242,14 +246,18 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
     plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
     
     if request.method == "POST":
+      if plan.owner == request.user or plan.meetings.owner == request.user:
         plan.startTime = request.POST["startTime"]
         plan.endTime = request.POST["endTime"]
         plan.location = request.POST["location"]
         plan.title = request.POST["title"]
         plan.content = request.POST["content"]
         plan.save()
+      else:
+        err_msg = "수정 권한이 없습니다."
+        messages.warning(request, err_msg)
+        return redirect('wapl:detail', pk) 
         
-        return redirect('wapl:pubdetail', pk) 
     return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
 #개인 일정 삭제 함수
@@ -337,22 +345,6 @@ def public_detail(request, pk, *args, **kwargs):
         "err_msg": err_msg,
         }
     return render(request, 'plan_pubDetail.html', context=context)
-
-# 개인 댓글 수정
-def comment_update(request, *args, **kwargs):
-  pass
-
-# 모임 댓글 수정
-def pub_comment_update(request, *args, **kwargs):
-  pass
-
-# 개인 대댓글 수정
-def reply_update(request, *args, **kwargs):
-  pass
-
-# 모임 대댓글 수정
-def pub_reply_update(request, *args, **kwargs):
-  pass
 
 #개인 일정 대댓글 생성
 def reply_create(request, pk, ck, *args, **kwargs):
@@ -601,7 +593,6 @@ def view_team_plan(request):
            private_plans.append(share_list[i].plan)
      else:
         private_plans.append(share_list[i].plan)
-
 
   public_plans = list(PublicPlan.objects.all().filter(meetings=meeting, startTime__year__lte=year, endTime__year__gte=year))  
 

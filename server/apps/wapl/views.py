@@ -78,18 +78,31 @@ def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
         default_image_index = random.randint(1, 10)
         # Review : 변수명 CamelCase vs snake_head 통일 필요
-        newMeeting = Meeting.objects.create(
-        meeting_name = request.POST["meeting_name"],
-        content = request.POST["content"],
-        owner = request.user,
-        category = request.POST["category"],
-        invitation_code = generate_invitation_code(),
-        image = request.FILES.get("image"),
-        default_image = f'/static/default_image/t{default_image_index}.png',
-        )
-        newMeeting.users.add(request.user)
-        url = reverse('wapl:meeting_calendar', args=[newMeeting.id])
-        return redirect(url)
+        meeting_name = request.POST.get("meeting_name", '')
+        content = request.POST.get("content")
+        category = request.POST.get("category")
+        if meeting_name == '' or category == '==카테고리 선택==':
+          err_msg="모임 이름과 카테고리를 입력하세요"
+          context = {
+            "meeting_name": meeting_name,
+            "content": content,
+            "category": category,
+            "category_list": Meeting.MEETING_CHOICE,
+            'err_msg':err_msg,
+          }
+          return render(request, "meeting_create.html", context=context)
+        else:
+          newMeeting = Meeting.objects.create(
+          meeting_name = meeting_name,
+          content = content,
+          owner = request.user,
+          category = category,
+          invitation_code = generate_invitation_code(),
+          image = request.FILES.get("image"),
+          default_image = f'/static/default_image/t{default_image_index}.png',
+          )
+          newMeeting.users.add(request.user)
+          return redirect('wapl:meeting_calendar', newMeeting.id)
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
@@ -118,8 +131,7 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
       try:
           meeting = Meeting.objects.get(invitation_code=code)
           meeting.users.add(request.user)
-          url = reverse('wapl:meeting_calendar', args=[meeting.id])
-          return redirect(url)
+          return redirect('wapl:meeting_calendar', meeting.id)
       except:
         err_msg = '초대 코드가 다릅니다.'
         context = {'err_msg': err_msg}
@@ -486,7 +498,8 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
             profile.save()
             return redirect('wapl:main')
         else:
-            return redirect('wapl:extra_signup')
+          # 이름과 닉네임 필수 입력 에러메세지
+            return render('wapl:extra_signup')
     else:
         default_image_index = random.randint(1, 10)
         context = {
@@ -838,8 +851,7 @@ def select_date_meeting(request, *args, **kwargs):
     login_user.current_date = f"{year}-{month}-01"
     login_user.save()
 
-    url = reverse('wapl:meeting_calendar', args=[meeting_id])
-    return redirect(url)
+    return redirect('wapl:meeting_calendar', meeting_id)
 
 
 # -----------------에러 페이지 설정---------------------

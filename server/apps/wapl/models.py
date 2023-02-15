@@ -52,6 +52,7 @@ class Meeting(models.Model):
         ('friend', '친구'),
         ('school', '학교'),
         ('company', '회사'),
+        ('etc', '기타'),
     ]
 
     meeting_name = models.CharField(max_length=20)

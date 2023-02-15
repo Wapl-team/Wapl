@@ -217,7 +217,7 @@ closeModal2.addEventListener("click", () => {
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
-const plan_create = (meeting_name, meeting_pk) => {
+const plan_create = (meeting_pk) => {
   const requestNewPlan = new XMLHttpRequest();
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
@@ -231,15 +231,14 @@ const plan_create = (meeting_name, meeting_pk) => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-
   requestNewPlan.send(
     JSON.stringify({
-      meeting_name: meeting_name,
       title: title,
       location: location,
       startTime: startTime,
       endTime: endTime,
       content: content,
+      meeting_pk: meeting_pk,
     })
   );
   requestNewPlan.onreadystatechange = () => {
@@ -457,7 +456,8 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, private_plans, user_img, meeting_img } = JSON.parse(requestPlan.response);
+        const { public_plans, private_plans, user_img, meeting_img } =
+          JSON.parse(requestPlan.response);
         const public_plans_array = JSON.parse(public_plans);
         const private_plans_array = JSON.parse(private_plans);
         const month_dates = document.querySelectorAll(".this");

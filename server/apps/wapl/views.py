@@ -176,10 +176,9 @@ def create_public_plan(request, *args, **kwargs):
     startTime = req['startTime']
     endTime = req['endTime']
     content = req['content']
-    meeting_name = req['meeting_name']
+    meeting_pk = req['meeting_pk']
 
-    # meeting = Meeting.objects.get(meeting_name=meeting_name)
-    meeting = get_object_or_404(Meeting, meeting_name=meeting_name)
+    meeting = get_object_or_404(Meeting, id=meeting_pk)
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:

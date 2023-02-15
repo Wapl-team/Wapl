@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   {% load static %}
   <head>
     <meta charset="UTF-8" />
@@ -38,27 +38,28 @@
           <div class="meeting__submenu">
             <span>멤버</span>
             <div class="meeting__members">
-              {% for user in users %} 
-                <div class="meeting__member">{{ user.nickname }}</div>
+              {% for user in users %}
+              <div class="meeting__member">{{ user.nickname }}</div>
               {% endfor %}
             </div>
           </div>
         </div>
-
-    </div>   
-  </div>
-  <div class="meeting__footer">
-    <div class="meeting_back">
-      <a href="{% url 'wapl:main' %}">돌아가기</a>
+      </div>
     </div>
-    <div class="meeting_edit">
-      <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"><p>수정하기</p></a>
+    <div class="meeting__footer">
+      <div class="meeting_back">
+        <a href="{% url 'wapl:main' %}">돌아가기</a>
+      </div>
+      <div class="meeting_edit">
+        <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"
+          ><p>수정하기</p></a
+        >
+      </div>
     </div>
-  </div>
 
-  <script
-  src="https://kit.fontawesome.com/6fbcf91afd.js"
-  crossorigin="anonymous"
-></script>
+    <script
+      src="https://kit.fontawesome.com/6fbcf91afd.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

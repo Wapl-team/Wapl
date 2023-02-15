@@ -190,8 +190,7 @@ def create_public_plan(request, *args, **kwargs):
         meeting_img = meeting.image.url
 
       new_plan=model_to_dict(new_plan)
-
-      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg})
+      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg, 'user_name': request.user.name})
     else:
       return JsonResponse({'plan': None, 'meeting_img': None, 'err_msg' : err_msg})
 
@@ -631,6 +630,10 @@ def view_explan(request):
 
   private_plans = PrivatePlan.objects.filter(owner = login_user, startTime__lte = today + timedelta(days=1), endTime__gte = today)
 
+  private_user_names = {}
+  for i in range(len(private_plans)):
+    private_user_names[private_plans[i].owner.pk] = private_plans[i].owner.name  
+    
   public_plans = []
 
   if request.user.profile.image == "":
@@ -650,14 +653,22 @@ def view_explan(request):
       public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
       public_plans += list(public_plan)
 
-
+  public_user_names = {}
+  for i in range(len(public_plans)):
+    public_user_names[public_plans[i].owner.pk] = public_plans[i].owner.name  
+    
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
-
-
+  
+  print(private_user_names)
+  print(public_user_names)
+  
   return JsonResponse({'public_plans': public_plans,
-                         'private_plans':private_plans,'today': day,'userimg':userimg,
-                         'meetingimg':meeting_img})
+                        'private_plans':private_plans,'today': day,'userimg':userimg,
+                        'meetingimg':meeting_img,
+                        'private_user_names': private_user_names,
+                        'public_user_names': public_user_names,
+                        })
 
 def list_to_queryset(model, data):
     from django.db.models.base import ModelBase
@@ -705,7 +716,7 @@ def view_team_explan(request):
     user_name = {}
 
     for i in range(len(users)):
-        user_name[users[i].pk] = users[i].username
+        user_name[users[i].pk] = users[i].name
 
     user_img = {}
 

@@ -1,9 +1,9 @@
 @import url(./reset.css);
 
-
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -14,15 +14,17 @@
   box-sizing: border-box;
 }
 
-* a,input,option{
-  font-family: 'S-CoreDream-3Light';
+* a,
+input,
+option {
+  font-family: "S-CoreDream-3Light";
 }
 
 body {
   /* display: flex;
   justify-content: center;
   align-items: center; */
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   min-height: 100vh;
   flex-direction: column;
 }
@@ -83,7 +85,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color:#fbfbfb;
+  background-color: #fbfbfb;
   overflow-x: hidden;
   transition: 0.3s;
   border: none;
@@ -96,45 +98,45 @@ body {
   background-color: #fbfbfb;
 }
 
-.closeSidebar{
+.closeSidebar {
   display: flex;
   justify-content: end;
 }
 
 .closeSidebar .closeBtn {
   font-size: 21px;
-  color:#1a2634;
-  padding-top:20px;
+  color: #1a2634;
+  padding-top: 20px;
   padding-right: 20px;
 }
 
-.closeSidebar .closeBtn:hover{
-  color:#f58b30;
+.closeSidebar .closeBtn:hover {
+  color: #f58b30;
 }
 
-.profileSidebar{
+.profileSidebar {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top:50px;
+  margin-top: 50px;
   margin-bottom: 70px;
 }
 
-.profile__username{
+.profile__username {
   transition: 0.2s;
 }
 
-.profile__username:hover{
-  color:#f58b30;
+.profile__username:hover {
+  color: #f58b30;
 }
 
-.profileSidebar a>img{
-  border:2px solid lightgray;
+.profileSidebar a > img {
+  border: 2px solid lightgray;
 }
 
-.profile a{
+.profile a {
   text-decoration: none;
-  color:#1a2634;
+  color: #1a2634;
   font-size: 22px;
   font-weight: bold;
   margin-right: 3px;
@@ -142,7 +144,7 @@ body {
 
 .nim {
   text-decoration: none;
-  color:black;
+  color: black;
   font-size: 22px;
 }
 
@@ -178,12 +180,11 @@ body {
   transition: 0.3s;
 }
 
-
 /* sidebar End */
 
-hr{
-  width:100%;
-  border:1px solid rgba(173,168,168,0.5);
+hr {
+  width: 100%;
+  border: 1px solid rgba(173, 168, 168, 0.5);
 }
 
 /* --------모임 생성/참가 ------- */
@@ -212,8 +213,8 @@ hr{
   transition: 0.2s;
 }
 
-.groupBtn a:hover{
-  color:#f58b30;
+.groupBtn a:hover {
+  color: #f58b30;
 }
 
 .groups {
@@ -224,7 +225,7 @@ hr{
 
 .groupName {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   margin-top: 10px;
   width: 210px;
   padding: 10px;
@@ -234,8 +235,8 @@ hr{
   transition: 0.3s;
 }
 
-.groupName:hover{
-  transform: scale(.95);
+.groupName:hover {
+  transform: scale(0.95);
 }
 
 .groupName a {
@@ -251,20 +252,20 @@ hr{
   margin-top: 10px;
   width: 210px;
   padding: 10px;
-  background-color:#f58b30;
+  background-color: #f58b30;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
   transition: 0.3s;
 }
 
-.privategroup:hover{
-  transform: scale(.95);
+.privategroup:hover {
+  transform: scale(0.95);
 }
 
 .privategroup a {
   justify-content: center;
   text-decoration: none;
-  color:black;
+  color: black;
   font-size: 20px;
 }
 
@@ -498,4 +499,9 @@ hr{
 
 .detail-time div {
   width: 60px;
+}
+
+.profile-user-name {
+  font-size: 2px;
+  padding-top: 2.5px;
 }

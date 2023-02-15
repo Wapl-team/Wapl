@@ -385,8 +385,7 @@ const plan_create = () => {
               else {
                 // 개인 일정 라인추가
                 const newmember = document.createElement("div");
-                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32
-                px"/>`;
+                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/><p>${plan.owner}</p>`;
                 newmember.style.height = "50px";
                 newmember.style.width = "43px";
                 memberlist.firstChild.before(newmember);
@@ -424,7 +423,8 @@ const plan_create = () => {
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/> <p>123${plan.owner}123</p>`;
+              console.log("gdgd");
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);
@@ -587,15 +587,21 @@ window.onload = function () {
     requestExplan.onreadystatechange = () => {
       if (requestExplan.readyState === XMLHttpRequest.DONE) {
         if (requestExplan.status < 400) {
-          const { public_plans, private_plans, today, userimg, meetingimg } =
-            JSON.parse(requestExplan.response);
+          const {
+            public_plans,
+            private_plans,
+            today,
+            userimg,
+            meetingimg,
+            private_user_names,
+            public_user_names,
+          } = JSON.parse(requestExplan.response);
           const publicPlansArray = JSON.parse(public_plans);
           const privatePlansArray = JSON.parse(private_plans);
           memberlist.innerHTML = "";
           timeline.innerHTML = ``;
           // 이미 타임라인에 있는 라인인지 확인
           let already = [];
-
           privatePlansArray.forEach((plan) => {
             if (already.indexOf(`private`) == -1) {
               let newDiv = document.createElement("div");
@@ -603,7 +609,15 @@ window.onload = function () {
               newDiv.style.height = "50px";
               timeline.appendChild(newDiv);
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview"src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+              newmember.innerHTML = `<img class="profileImagePreview "src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${
+                private_user_names[plan.fields.owner]
+              }`;
+              newmember.appendChild(new_user_name);
+
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);
@@ -642,6 +656,14 @@ window.onload = function () {
               newmember.innerHTML = `<img class="profileImagePreview"src="${
                 meetingimg[plan.fields.meetings]
               }" width="32px" height="32px" border-radius="25px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${
+                public_user_names[plan.fields.owner]
+              }`;
+              newmember.appendChild(new_user_name);
+
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);

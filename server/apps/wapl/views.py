@@ -106,11 +106,14 @@ def meeting_detail(request:HttpRequest, pk, *args, **kwargs):
     return render(request, "test_meeting_detail.html", context=context)
 
 def meeting_delete(request:HttpRequest, pk, *args, **kwargs):
-    if request.method == "POST":
-        meeting = get_object_or_404(Meeting, id=pk)
-        # meeting = Meeting.objects.get(id=pk)
-        meeting.delete()
-        return redirect('wapl:main')
+  meeting = get_object_or_404(Meeting, id=pk)  
+  if meeting.owner == request.user:    
+    meeting.delete()
+    return redirect('wapl:main')
+  else:
+    err_msg = '모임 삭제 권한이 없습니다.'
+    messages.warning(request, err_msg)
+    return redirect('wapl:meeting_info', meeting.id)
 
 def meeting_join(request:HttpRequest, *args, **kwargs):
     if request.method == "POST":
@@ -790,21 +793,24 @@ def meeting_info(request, pk, *args, **kwargs):
 
 def meeting_info_edit(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 수정할 수 있는데, 의도한 바가 맞나요?
-    # meeting = Meeting.objects.get(id=pk)
+    
     meeting = get_object_or_404(Meeting, id=pk)
-
-    if request.method == "POST":
-        meeting.meeting_name = request.POST["meeting_name"]
-        meeting.category = request.POST["category"]
-        meeting.content = request.POST["content"]
-        default_check = request.POST.getlist("image-clear")
-        if len(default_check) == 0:
-            meeting.image = request.FILES.get("image")
-        else:
-            meeting.image.delete()
-        meeting.save()
-
-        return redirect('wapl:meeting_info', pk)
+    if meeting.owner == request.user:
+      if request.method == "POST":
+          meeting.meeting_name = request.POST["meeting_name"]
+          meeting.category = request.POST["category"]
+          meeting.content = request.POST["content"]
+          default_check = request.POST.getlist("image-clear")
+          if len(default_check) == 0:
+              meeting.image = request.FILES.get("image")
+          else:
+              meeting.image.delete()
+          meeting.save()        
+          return redirect('wapl:meeting_info', pk)
+    else:
+      err_msg = '수정 권한이 없습니다.'
+      messages.warning(request, err_msg)
+      return redirect('wapl:meeting_info', pk)
 
     users = meeting.users.all()
     category_list = Meeting.MEETING_CHOICE

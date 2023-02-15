@@ -50,11 +50,16 @@
       <div class="meeting_back">
         <a href="{% url 'wapl:main' %}">돌아가기</a>
       </div>
+      {% if meeting.owner == request.user %}
       <div class="meeting_edit">
         <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"
           ><p>수정하기</p></a
         >
       </div>
+      <div class="meeting_edit">
+        <a href="{% url 'wapl:meeting_delete' meeting.id %}"><p>삭제하기</p></a>
+      </div>
+      {% endif %}
     </div>
 
     <script

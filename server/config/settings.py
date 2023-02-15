@@ -71,7 +71,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -165,7 +165,6 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 LOGIN_REDIRECT_URL = '/social/signup' # 소셜 로그인 시 redirect 할 url
@@ -181,4 +180,3 @@ NO_AUTH_URLS = (
     r'/accounts(.*)$',
     r'',
 )
-

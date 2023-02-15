@@ -332,18 +332,18 @@ const plan_create = (meeting_name, meeting_pk) => {
                 );
                 let newplan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
-                newplan.href = `pubplan/${plan.id}`;
-                newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
-                newplan.innerText = `${plan.title}`;
-                timeline.childNodes[0].appendChild(newplan);
+                new_plan.href = `/pubplan/${plan.id}`;
+                new_plan.style.position = "absolute";
+                new_plan.style.width = `${width}px`;
+                new_plan.style.left = `${start}px`;
+                new_plan.style.border = "1px solid #1A2634";
+                new_plan.style.backgroundColor = "white";
+                new_plan.style.color = "black";
+                new_plan.style.height = "50px";
+                new_plan.style.borderRadius = "20px";
+                new_plan.style.padding = "8px";
+                new_plan.innerText = `${plan.title}`;
+                timeline.childNodes[0].appendChild(new_plan);
               }
               // timeline에 팀일정만 있는경우
               else {
@@ -366,19 +366,19 @@ const plan_create = (meeting_name, meeting_pk) => {
                 newDiv.style.height = "50px";
                 let newplan = document.createElement("a");
                 const width = parseInt(hours) * 60 + parseInt(minutes);
-                newplan.href = `pubplan/${plan.id}`;
-                newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
-                newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "white";
-                newplan.style.color = "black";
-                newplan.style.height = "50px";
-                newplan.style.borderRadius = "20px";
-                newplan.style.padding = "8px";
-                newplan.innerText = `${plan.title}`;
-                newDiv.appendChild(newplan);
-                timeline.childNodes[0].before(newDiv);
+                new_plan.href = `/pubplan/${plan.id}`;
+                new_plan.style.position = "absolute";
+                new_plan.style.width = `${width}px`;
+                new_plan.style.left = `${start}px`;
+                new_plan.style.border = "1px solid #1A2634";
+                new_plan.style.backgroundColor = "white";
+                new_plan.style.color = "black";
+                new_plan.style.height = "50px";
+                new_plan.style.borderRadius = "20px";
+                new_plan.style.padding = "8px";
+                new_plan.innerText = `${plan.title}`;
+                new_div.appendChild(new_plan);
+                timeline.childNodes[0].before(new_div);
               }
             }
             // timeline에 아무일정도 없는 경우
@@ -401,19 +401,19 @@ const plan_create = (meeting_name, meeting_pk) => {
               newDiv.style.height = "50px";
               let newplan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
-              newplan.href = `pubplan/${plan.id}`;
-              newplan.style.position = "absolute";
-              newplan.style.width = `${width}px`;
-              newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "white";
-              newplan.style.color = "black";
-              newplan.style.height = "50px";
-              newplan.style.borderRadius = "20px";
-              newplan.style.padding = "8px";
-              newplan.innerText = `${plan.title}`;
-              newDiv.appendChild(newplan);
-              timeline.appendChild(newDiv);
+              new_plan.href = `/pubplan/${plan.id}`;
+              new_plan.style.position = "absolute";
+              new_plan.style.width = `${width}px`;
+              new_plan.style.left = `${start}px`;
+              new_plan.style.border = "1px solid #1A2634";
+              new_plan.style.backgroundColor = "white";
+              new_plan.style.color = "black";
+              new_plan.style.height = "50px";
+              new_plan.style.borderRadius = "20px";
+              new_plan.style.padding = "8px";
+              new_plan.innerText = `${plan.title}`;
+              new_div.appendChild(new_plan);
+              timeline.appendChild(new_div);
             }
           }
         } else {
@@ -445,7 +445,8 @@ window.onload = function () {
   requestPlan.onreadystatechange = () => {
     if (requestPlan.readyState === XMLHttpRequest.DONE) {
       if (requestPlan.status < 400) {
-        const { public_plans, private_plans, user_img, meeting_img } =
+        const { public_plans, 
+        _plans, user_img, meeting_img } =
           JSON.parse(requestPlan.response);
 
         const public_plans_array = JSON.parse(public_plans);
@@ -582,7 +583,7 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
+            new_plan.style.border = "1px solid #1A2634";
             new_plan.style.backgroundColor = "white";
             new_plan.style.color = "black";
             new_plan.style.height = "50px";
@@ -624,7 +625,7 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
+            new_plan.style.border = "1px solid #1A2634";
             new_plan.style.backgroundColor = "white";
             new_plan.style.color = "black";
             new_plan.style.borderRadius = "20px";
@@ -637,7 +638,7 @@ return: err_msg
             } else {
               new_plan.innerText = `${
                 user_name[plan.fields.owner]
-              }의 비밀 일정`;
+              }의 일정`;
             }
 
             document

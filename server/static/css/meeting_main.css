@@ -371,6 +371,7 @@ body {
 
 .detail-timeline a {
   text-decoration: none;
+  margin-top: 1vh;
 }
 
 .detail-timeline div {

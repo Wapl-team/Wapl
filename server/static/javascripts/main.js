@@ -379,6 +379,9 @@ const plan_create = () => {
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
                 newplan.style.fontSize = "17px";
+                newplan.style.overflow = "hidden";
+                newplan.style.whiteSpace = "nowrap";
+                newplan.style.textOverflow = "ellipsis";
                 newplan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(newplan);
               }
@@ -416,6 +419,9 @@ const plan_create = () => {
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
                 newplan.style.fontSize = "17px";
+                newplan.style.overflow = "hidden";
+                newplan.style.whiteSpace = "nowrap";
+                newplan.style.textOverflow = "ellipsis";
                 newplan.innerText = `${plan.title}`;
                 newDiv.appendChild(newplan);
                 timeline.childNodes[0].before(newDiv);
@@ -453,6 +459,9 @@ const plan_create = () => {
               newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               newplan.style.padding = "11px";
               newplan.style.fontSize = "17px";
+              newplan.style.overflow = "hidden";
+              newplan.style.whiteSpace = "nowrap";
+              newplan.style.textOverflow = "ellipsis";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
               timeline.appendChild(newDiv);
@@ -633,6 +642,9 @@ window.onload = function () {
             newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             newplan.style.padding = "11px";
             newplan.style.fontSize = "17px";
+            newplan.style.overflow = "hidden";
+            newplan.style.whiteSpace = "nowrap";
+            newplan.style.textOverflow = "ellipsis";
             newplan.innerText = `${plan.fields.title}`;
             document.querySelector(".private-timeline").appendChild(newplan);
           });
@@ -675,6 +687,9 @@ window.onload = function () {
             newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             newplan.style.padding = "11px";
             newplan.style.fontSize = "17px";
+            newplan.style.overflow = "hidden";
+            newplan.style.whiteSpace = "nowrap";
+            newplan.style.textOverflow = "ellipsis";
             newplan.innerText = `${plan.fields.title}`;
             document
               .querySelector(`.meeting-${plan.fields.meetings}`)

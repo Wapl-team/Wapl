@@ -1,11 +1,38 @@
 @import url(./reset.css);
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* a,input,option{
+  font-family: 'S-CoreDream-3Light';
+}
 
 body {
   /* display: flex;
   justify-content: center;
   align-items: center; */
+  font-family: 'S-CoreDream-3Light';
   min-height: 100vh;
   flex-direction: column;
+  font-family: 'S-CoreDream-3Light';
+  background-color: #fffbeb;
 }
 
 .nav {
@@ -13,6 +40,9 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 8vh;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+
 }
 
 .nav-side {
@@ -20,8 +50,13 @@ body {
   align-items: center;
 }
 
+.nav_bar_button{
+  color: #1A2634;
+}
+
 .nav-side button {
   background-color: white;
+  color:#1a2634;
   border: 0;
   margin: 0.7rem;
 }
@@ -35,8 +70,9 @@ body {
 
 .year-month {
   font-size: 1.5rem;
-  color: black;
+  color: #1A2634;
   font-weight: 700;
+  font-size: 25px;
 }
 
 .nav-btn {
@@ -49,6 +85,8 @@ body {
   cursor: pointer;
 }
 
+/* sidebar */
+
 .sidebar-menu {
   height: 100%;
   width: 0;
@@ -56,12 +94,91 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: white;
+  background-color:#fbfbfb;
   overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 60px;
+  transition: 0.3s;
   border: none;
   border-left: none;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  /* background-color: #1a2634; */
+  background-color: #fbfbfb;
+}
+
+.closeSidebar{
+  display: flex;
+  justify-content: end;
+}
+
+.closeSidebar .closeBtn {
+  font-size: 21px;
+  color:#1a2634;
+  padding-top:20px;
+  padding-right: 20px;
+}
+
+.closeSidebar .closeBtn:hover{
+  color:#f58b30;
+}
+
+.profileSidebar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:50px;
+  margin-bottom: 70px;
+}
+
+.profile__username{
+  transition: 0.2s;
+}
+
+.profile__username:hover{
+  color:#f58b30;
+}
+
+.profileSidebar a>img{
+  border:2px solid lightgray;
+}
+
+.profile a{
+  text-decoration: none;
+  color:#1a2634;
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 3px;
+}
+
+.nim {
+  text-decoration: none;
+  color:black;
+  font-size: 22px;
+}
+
+.profileImage {
+  margin-right: 10px;
+  border-radius: 70%;
+}
+
+.profileImagePlan {
+  border-radius: 10px;
+}
+
+.profileImagePreview {
+  border-radius: 40px;
+}
+
+.goto-home {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.goto-home a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
 }
 
 .sidebar-menu p {
@@ -72,22 +189,21 @@ body {
   transition: 0.3s;
 }
 
-.sidebar-menu .closeBtn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 21px;
-  color: orange;
-  margin-top: 2vh;
-  margin-right: 4vw;
+
+/* sidebar End */
+
+hr{
+  width:100%;
+  border:1px solid rgba(173,168,168,0.5);
 }
+
 /* --------모임 생성/참가 ------- */
 
 .groupBtn {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 10px 0;
+  margin: 30px 0;
 }
 
 .groupBtn button {
@@ -96,7 +212,7 @@ body {
   margin: 3px;
   border: none;
   border-radius: 10px;
-  background-color: white;
+  background-color: transparent;
 }
 
 .groupBtn a {
@@ -104,6 +220,11 @@ body {
   color: black;
   font-size: 17px;
   font-weight: 600;
+  transition: 0.2s;
+}
+
+.groupBtn a:hover{
+  color:#f58b30;
 }
 
 .groups {
@@ -114,42 +235,49 @@ body {
 
 .groupName {
   display: flex;
-  justify-content: end;
+  justify-content:space-between;
   margin-top: 10px;
-  border-radius: 10px;
-  width: 80%;
+  width: 210px;
   padding: 10px;
-  border: 1px solid orange;
+  background-color: #ffdab8;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.groupName:hover{
+  transform: scale(.95);
 }
 
 .groupName a {
-  justify-content: end;
   text-decoration: none;
-  color: black;
+  color: #1a2634;
   font-size: 20px;
-  margin-right: 1vw;
+  margin-right: 3px;
 }
 
 .privategroup {
   display: flex;
-  justify-content: end;
+  justify-content: center;
   margin-top: 10px;
-  border-radius: 10px;
-  width: 80%;
+  width: 210px;
   padding: 10px;
-  border: 1px solid orange;
-  background-color: orange;
+  background-color:#f58b30;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.privategroup:hover{
+  transform: scale(.95);
 }
 
 .privategroup a {
-  justify-content: end;
+  justify-content: center;
   text-decoration: none;
-  color: white;
+  color:black;
   font-size: 20px;
-  margin-right: 1vw;
-  background-color: orange;
 }
-
 .orange {
   color: orange;
 }
@@ -161,10 +289,10 @@ body {
 }
 
 .modalButton {
-  background-color: white;
+  background-color: #fbfbfb;
   border: 0;
   margin: 0.5rem;
-  color: orange;
+  color: #1A2634;;
 }
 
 .modal {
@@ -351,10 +479,21 @@ body {
   border-right: 1px solid orange;
 }
 
+
 .days {
   margin-top: 10px;
   display: flex;
-}
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey; */
+  font-weight: bold;
+  background-color: #ffeda2;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+} 
 
 .day {
   width: calc(100% / 7);
@@ -365,41 +504,52 @@ body {
   display: flex;
   flex-flow: row wrap;
   height: 55vh;
-  border-top: 1px solid orange;
-  border-right: 1px solid orange;
   background-color: white;
   border-radius: 5px;
-  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding: 0.5em 0.5em;
+  margin-bottom: 1.5em;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .date {
   width: calc(100% / 7);
   height: calc(100% / 5);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
 }
 
-.date-onclick {
+.date-onclick{
   width: calc(100% / 7);
   padding: 8px;
-  text-align: right;
-  border-bottom: 1px solid orange;
-  border-left: 1px solid orange;
+  text-align: center;
   box-shadow: none;
-  background-color: antiquewhite;
+  background-color: #fffbeb;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.14);
 }
+
+/* .date-onclick .this{
+  margin: auto;
+  background:#FFF1BA;
+  width: 38px;
+  height: 38px;
+  border-radius: 25px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+} */
+
 
 /* 일요일은 빨간색, 토요일은 파란색으로 */
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
-  color: #ff3838;
+  color: #ea7e7e;
 }
 
 .day:nth-child(7n),
 .date:nth-child(7n) {
-  color: #3374ff;
+  color: #4A7EA9;
 }
 
 .other {
@@ -407,9 +557,9 @@ body {
 }
 
 .today {
-  color: orange;
-  font-weight: bold;
+  color: #ffc01f;
   padding-bottom: 2px;
+  font-weight: bold;
 }
 
 /* .today::before {
@@ -427,26 +577,31 @@ body {
 } */
 
 .detail {
-  background-color: white;
-  height: 37vh;
+  background-color: #ffeda2;
+  padding-bottom: 0.1em;
   display: flex;
+  border-radius: 15px;
+  margin: 1em 1em;
 }
 
 .detail-member {
-  padding-top: 35px;
+  margin-left: 0.7em;
+  padding-top: 3.35em;
 }
 
 .detail-timeline {
   display: flex;
   flex-direction: column;
   padding-top: 10px;
-  background-color: white;
   overflow-x: auto;
   white-space: nowrap;
+  margin-right: 0.7em;
+  margin-top: 0.5rem;
 }
 
 .detail-timeline a {
   text-decoration: none;
+  margin-top: 1vh;
 }
 
 .detail-timeline div {
@@ -456,6 +611,8 @@ body {
 .detail-time {
   display: flex;
   width: 1300px;
+  padding-bottom: 1em;
+  padding-left: 0.5em;
 }
 
 .detail-time div {
@@ -470,46 +627,3 @@ body {
   background-color: white;
 }
 
-.profile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.profile a {
-  text-decoration: none;
-  color: orange;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.nim {
-  text-decoration: none;
-  color: black;
-  font-size: 22px;
-}
-
-.profileImage {
-  margin-right: 3vw;
-  margin-bottom: 2vh;
-  border-radius: 70%;
-}
-
-.profileImagePlan {
-  border-radius: 10px;
-}
-
-.profileImagePreview {
-  border-radius: 40px;
-}
-
-.goto-home {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.goto-home a {
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-}

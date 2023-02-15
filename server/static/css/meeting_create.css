@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -5,10 +12,11 @@ body{
     align-items: center;
     width: 100vw;
     height: 80vh;
+    font-family: 'S-CoreDream-3Light';
 }
 
 h2{
-    color:orange;
+    color:#395165;
     margin:3em;
     margin-bottom: 2em;
 }
@@ -22,29 +30,31 @@ h2{
 .meetingCreate input,textarea,select{
     width: 19em;
     height: 3em;
-    background-color: antiquewhite;
     border: none;
     text-align: center;
     border-radius: 10px;
     color: #757575;
+    background-color: #fdfaf5;
 }
 
 .meetingCreate div input{
-    background-color: orange;
+    background-color: #FFD83D;
     color:white;
     font-weight: bold;
+    font-size: 17px;
+    width: 15em;
+    height: 2em;
 }
 
 .meetingCreate div a{
-    background-color: wheat;
-    color:white;
+    color:#FFD83D;
     width: 253px;
     height: 33px;
     text-align: center;
     text-decoration: none;
     border-radius: 10px;
     margin-top: 2vh;
-    font-size: 14px;
+    font-size: 17px;
     display: flex;
     align-items: center;
     justify-content: center;

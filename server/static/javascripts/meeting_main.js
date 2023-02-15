@@ -84,18 +84,10 @@ function clearPlanForm() {
 
 function openToggle() {
   document.getElementById("sidebar").style.width = "250px";
-  document.getElementById("sidebar").style.border = "2px solid orange";
-  document.getElementById("sidebar").style.borderLeft = "none";
-  document.getElementById("sidebar").style.borderTop = "none";
-  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
-  document.getElementById("sidebar").style.border = "none";
-  document.getElementById("sidebar").style.borderLeft = "none";
-  document.getElementById("sidebar").style.borderTop = "none";
-  document.getElementById("sidebar").style.borderBottom = "none";
 }
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해
@@ -225,7 +217,7 @@ closeModal2.addEventListener("click", () => {
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
-const plan_create = (meeting_name) => {
+const plan_create = (meeting_name, meeting_pk) => {
   const requestNewPlan = new XMLHttpRequest();
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
@@ -253,96 +245,156 @@ const plan_create = (meeting_name) => {
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, meeting_img } = JSON.parse(requestNewPlan.response);
-
-        const start_date = new Date(startTime);
-        const end_date = new Date(endTime);
-
-        const current_preview = new Date(
-          currentYear,
-          currentMonth - 1,
-          document.querySelector(".date-onclick").childNodes[0].innerText
+        const { plan, meeting_img, err_msg } = JSON.parse(
+          requestNewPlan.response
         );
+        //validation 통과한 경우
+        if (plan != null && meeting_img != null) {
+          const start_date = new Date(startTime);
+          const end_date = new Date(endTime);
 
-        let this_date = new Date(
-          start_date.getFullYear(),
-          start_date.getMonth(),
-          start_date.getDate()
-        );
+          const current_preview = new Date(
+            currentYear,
+            currentMonth - 1,
+            document.querySelector(".date-onclick").childNodes[0].innerText
+          );
 
-        //새로운 일정이 내가 현재보고있는 달력의 일정이라면 썸네일 추가
-        while (true) {
-          if (
-            this_date.getFullYear() == viewYear &&
-            this_date.getMonth() + 1 == viewMonth
-          ) {
-            const day = document.querySelector(`.day-${this_date.getDate()}`);
+          let this_date = new Date(
+            start_date.getFullYear(),
+            start_date.getMonth(),
+            start_date.getDate()
+          );
+
+          //새로운 일정이 내가 현재보고있는 달력의 일정이라면 썸네일 추가
+          while (true) {
             if (
-              !day.nextSibling ||
-              !day.nextSibling.classList.contains("public")
+              this_date.getFullYear() == viewYear &&
+              this_date.getMonth() + 1 == viewMonth
             ) {
-              const newimg = document.createElement("img");
-              newimg.classList.add("public");
-              newimg.classList.add("profileImagePlan");
-              newimg.src = `${meeting_img}`;
-              newimg.style.width = "15px";
-              day.after(newimg);
+              const day = document.querySelector(`.day-${this_date.getDate()}`);
+              if (
+                !day.nextSibling ||
+                !day.nextSibling.classList.contains("public")
+              ) {
+                const newimg = document.createElement("img");
+                newimg.classList.add("public");
+                newimg.classList.add("profileImagePlan");
+                newimg.src = `${meeting_img}`;
+                newimg.style.width = "12px";
+                newimg.style.height = "12px";
+                newimg.style.margin = "0px 1px";
+                day.after(newimg);
+              }
+            }
+            if (
+              this_date.getFullYear() == end_date.getFullYear() &&
+              this_date.getMonth() == end_date.getMonth() &&
+              this_date.getDate() == end_date.getDate()
+            ) {
+              break;
+            } else {
+              this_date.setDate(this_date.getDate() + 1);
             }
           }
-          if (
-            this_date.getFullYear() == end_date.getFullYear() &&
-            this_date.getMonth() == end_date.getMonth() &&
-            this_date.getDate() == end_date.getDate()
-          ) {
-            break;
-          } else {
-            this_date.setDate(this_date.getDate() + 1);
-          }
-        }
-        // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
-        const current_dateonly = new Date(current_preview).setHours(0, 0, 0, 0);
-        const start_dateonly = new Date(start_date).setHours(0, 0, 0, 0);
-        const end_dateonly = new Date(end_date).setHours(0, 0, 0, 0);
+          // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
+          const current_dateonly = new Date(current_preview).setHours(
+            0,
+            0,
+            0,
+            0
+          );
+          const start_dateonly = new Date(start_date).setHours(0, 0, 0, 0);
+          const end_dateonly = new Date(end_date).setHours(0, 0, 0, 0);
 
-        // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
-        if (
-          current_dateonly >= start_dateonly &&
-          current_dateonly <= end_dateonly
-        ) {
-          let start = "";
-          let hours = "";
-          let minutes = "";
-          if (timeline.childNodes[0]) {
-            // 이미 timeline에 개인일정이 있는 경우
-            if (timeline.childNodes[0].classList.contains("public-timeline")) {
-              [start, hours, minutes] = calcTime(
-                start_date,
-                end_date,
-                current_preview.getDate()
-              );
-              let newplan = document.createElement("a");
-              const width = parseInt(hours) * 60 + parseInt(minutes);
-              newplan.href = `pubplan/${plan.id}`;
-              newplan.style.position = "absolute";
-              newplan.style.width = `${width}px`;
-              newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "white";
-              newplan.style.color = "black";
-              newplan.style.height = "50px";
-              newplan.style.borderRadius = "20px";
-              newplan.style.padding = "8px";
-              newplan.innerText = `${plan.title}`;
-              timeline.childNodes[0].appendChild(newplan);
+          // 새로운 일정이 내가 현재 보고 있는 날짜에 포함된다면 preview 추가
+          if (
+            current_dateonly >= start_dateonly &&
+            current_dateonly <= end_dateonly
+          ) {
+            let start = "";
+            let hours = "";
+            let minutes = "";
+            if (timeline.childNodes[0]) {
+              // 이미 timeline에 개인일정이 있는 경우
+              if (
+                timeline.childNodes[0].classList.contains("public-timeline")
+              ) {
+                [start, hours, minutes] = calcTime(
+                  start_date,
+                  end_date,
+                  current_preview.getDate()
+                );
+                let new_plan = document.createElement("a");
+                const width = parseInt(hours) * 60 + parseInt(minutes);
+                new_plan.href = `/pubplan/${plan.id}`;
+                new_plan.style.position = "absolute";
+                new_plan.style.width = `${width}px`;
+                new_plan.style.left = `${start}px`;
+                // new_plan.style.border = "1px solid orange";
+                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.color = "black";
+                new_plan.style.height = "50px";
+                new_plan.style.borderRadius = "20px";
+                new_plan.style.padding = "8px";
+                new_plan.style.color = "#1A2634";
+                new_plan.style.height = "40px";
+                new_plan.style.borderRadius = "10px";
+                new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                new_plan.style.padding = "11px";
+                new_plan.style.fontSize = "17px";
+                new_plan.innerText = `${plan.title}`;
+                timeline.childNodes[0].appendChild(new_plan);
+              }
+              // timeline에 팀일정만 있는경우
+              else {
+                // 개인 일정 라인추가
+                const new_member = document.createElement("div");
+                new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+                new_member.style.height = "50px";
+                new_member.style.width = "43px";
+                memberlist.firstChild.before(new_member);
+
+                [start, hours, minutes] = calcTime(
+                  start_date,
+                  end_date,
+                  current_preview.getDate()
+                );
+
+                // 추가한 일정 타임라인 추가
+                let new_div = document.createElement("div");
+                new_div.classList.add("private");
+                new_div.style.height = "50px";
+                let new_plan = document.createElement("a");
+                const width = parseInt(hours) * 60 + parseInt(minutes);
+                new_plan.href = `/pubplan/${plan.id}`;
+                new_plan.style.position = "absolute";
+                new_plan.style.width = `${width}px`;
+                new_plan.style.left = `${start}px`;
+                // new_plan.style.border = "1px solid orange";
+                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.color = "black";
+                new_plan.style.height = "50px";
+                new_plan.style.borderRadius = "20px";
+                new_plan.style.padding = "8px";
+                new_plan.style.color = "#1A2634";
+                new_plan.style.height = "40px";
+                new_plan.style.borderRadius = "10px";
+                new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+                new_plan.style.padding = "11px";
+                new_plan.style.fontSize = "17px";
+                new_plan.innerText = `${plan.title}`;
+                new_div.appendChild(new_plan);
+                timeline.childNodes[0].before(new_div);
+              }
             }
-            // timeline에 팀일정만 있는경우
+            // timeline에 아무일정도 없는 경우
             else {
               // 개인 일정 라인추가
-              const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" width="40" />`;
-              newmember.style.height = "50px";
-              newmember.style.width = "50px";
-              memberlist.firstChild.before(newmember);
+              const new_member = document.createElement("div");
+              new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+              new_member.style.height = "50px";
+              new_member.style.width = "43px";
+              memberlist.appendChild(new_member);
 
               [start, hours, minutes] = calcTime(
                 start_date,
@@ -350,61 +402,35 @@ const plan_create = (meeting_name) => {
                 current_preview.getDate()
               );
 
-              // 추가한 일정 타임라인 추가
-              let newDiv = document.createElement("div");
-              newDiv.classList.add("private");
-              newDiv.style.height = "50px";
-              let newplan = document.createElement("a");
+              let new_div = document.createElement("div");
+              new_div.classList.add("public-timeline");
+              new_div.style.height = "50px";
+              let new_plan = document.createElement("a");
               const width = parseInt(hours) * 60 + parseInt(minutes);
-              newplan.href = `pubplan/${plan.id}`;
-              newplan.style.position = "absolute";
-              newplan.style.width = `${width}px`;
-              newplan.style.left = `${start}px`;
-              newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "white";
-              newplan.style.color = "black";
-              newplan.style.height = "50px";
-              newplan.style.borderRadius = "20px";
-              newplan.style.padding = "8px";
-              newplan.innerText = `${plan.title}`;
-              newDiv.appendChild(newplan);
-              timeline.childNodes[0].before(newDiv);
+              new_plan.href = `/pubplan/${plan.id}`;
+              new_plan.style.position = "absolute";
+              new_plan.style.width = `${width}px`;
+              new_plan.style.left = `${start}px`;
+              // new_plan.style.border = "1px solid orange";
+              new_plan.style.backgroundColor = "#fffdf5";
+              new_plan.style.color = "black";
+              new_plan.style.height = "50px";
+              new_plan.style.borderRadius = "20px";
+              new_plan.style.padding = "8px";
+              new_plan.style.color = "#1A2634";
+              new_plan.style.height = "40px";
+              new_plan.style.borderRadius = "10px";
+              new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+              new_plan.style.padding = "11px";
+              new_plan.style.fontSize = "17px";
+              new_plan.innerText = `${plan.title}`;
+              new_div.appendChild(new_plan);
+              timeline.appendChild(new_div);
             }
           }
-          // timeline에 아무일정도 없는 경우
-          else {
-            // 개인 일정 라인추가
-            const newmember = document.createElement("div");
-            newmember.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" width="40" />`;
-            newmember.style.height = "50px";
-            newmember.style.width = "50px";
-            memberlist.appendChild(newmember);
-
-            [start, hours, minutes] = calcTime(
-              start_date,
-              end_date,
-              current_preview.getDate()
-            );
-
-            let newDiv = document.createElement("div");
-            newDiv.classList.add("public-timeline");
-            newDiv.style.height = "50px";
-            let newplan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
-            newplan.href = `pubplan/${plan.id}`;
-            newplan.style.position = "absolute";
-            newplan.style.width = `${width}px`;
-            newplan.style.left = `${start}px`;
-            newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "white";
-            newplan.style.color = "black";
-            newplan.style.height = "50px";
-            newplan.style.borderRadius = "20px";
-            newplan.style.padding = "8px";
-            newplan.innerText = `${plan.title}`;
-            newDiv.appendChild(newplan);
-            timeline.appendChild(newDiv);
-          }
+        } else {
+          // validation 통과 못할 시 이쪽으로 옴
+          alert(err_msg);
         }
 
         clearPlanForm();
@@ -457,7 +483,9 @@ window.onload = function () {
                 new_img.classList.add("public");
                 new_img.classList.add("profileImagePlan");
                 new_img.src = `${meeting_img}`;
-                new_img.style.width = "15px";
+                new_img.style.width = "12px";
+                new_img.style.height = "12px";
+                new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
               }
             }
@@ -479,7 +507,9 @@ window.onload = function () {
                 const new_img = document.createElement("img");
                 new_img.src = `${user_img[plan.fields.owner]}`;
                 new_img.classList.add("profileImagePlan");
-                new_img.style.width = "15px";
+                new_img.style.width = "12px";
+                new_img.style.height = "12px";
+                new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
                 already.push(`${plan.fields.owner}`);
               }
@@ -547,9 +577,9 @@ return: err_msg
               new_div.style.height = "50px";
               timeline.appendChild(new_div);
               const new_member = document.createElement("div");
-              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" width="40" />`;
+              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
-              new_member.style.width = "50px";
+              new_member.style.width = "43px";
               memberlist.appendChild(new_member);
               already.push("public");
             }
@@ -568,12 +598,14 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "white";
-            new_plan.style.color = "black";
-            new_plan.style.height = "50px";
-            new_plan.style.borderRadius = "20px";
-            new_plan.style.padding = "8px";
+            // new_plan.style.border = "1px solid orange";
+            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.color = "#1A2634";
+            new_plan.style.height = "40px";
+            new_plan.style.borderRadius = "10px";
+            new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            new_plan.style.padding = "11px";
+            new_plan.style.fontSize = "17px";
             new_plan.style.overflow = "hidden";
             new_plan.style.whiteSpace = "normal";
             new_plan.innerText = `${plan.fields.title}`;
@@ -585,9 +617,9 @@ return: err_msg
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${
                 user_img[plan.fields.owner]
-              }" width="40" />`;
+              }" border-radius="25px" width="32px" height="32px" />`;
               new_member.style.height = "50px";
-              new_member.style.width = "50px";
+              new_member.style.width = "43px";
               memberlist.appendChild(new_member);
               let new_div = document.createElement("div");
               new_div.style.height = "50px";
@@ -610,20 +642,21 @@ return: err_msg
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
-            new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "white";
-            new_plan.style.color = "black";
-            new_plan.style.borderRadius = "20px";
-            new_plan.style.padding = "8px";
-            new_plan.style.height = "50px";
+            // new_plan.style.border = "1px solid orange";
+            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.color = "#1A2634";
+            new_plan.style.height = "40px";
+            new_plan.style.borderRadius = "10px";
+            new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            new_plan.style.padding = "11px";
+            new_plan.style.fontSize = "17px";
+            new_plan.innerText = `${plan.fields.title}`;
             new_plan.style.overflow = "hidden";
             new_plan.style.whiteSpace = "normal";
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
             } else {
-              new_plan.innerText = `${
-                user_name[plan.fields.owner]
-              }의 비밀 일정`;
+              new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
             }
 
             document

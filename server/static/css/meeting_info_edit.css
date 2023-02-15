@@ -14,6 +14,10 @@
   box-sizing: border-box;
 }
 
+* input,textarea,select{
+    font-family: 'S-CoreDream-3Light';
+}
+
 .meeting__detail{
     font-size: 30px;
     margin-bottom: 30px;
@@ -35,6 +39,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .meeting__body{
@@ -45,32 +50,65 @@ body{
     background-color: white;
     box-shadow: 0px 3px 9px rgba(173,168,168, 0.3);
     border-radius: 20px;
-    padding: 40px 20px;
+    padding: 20px 20px;
 }
 
-.meeting__profile {
+.profile__container{
+    background-color: rgba(173,168,168,0.1);
+    border-radius: 20px;
+    padding: 30px 0;
+    margin-bottom: 5px;
+}
+
+.meetingedit__profile {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.meeting__profile img{
+.meetingedit__profile img{
     border-radius: 50%;
     border:2px solid lightgray;
     width:90px;
     height: 90px;
     object-fit:cover;
 }
-
-.meeting__headinfo{
+.meetingedit__headinfo{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
 }
 
-.meeting__headinfo p{
-    margin:5px 0;
+.meetingedit__headinfo p{
+    font-weight: 900;
+    margin-bottom: 10px;
 }
+
+.profile__images{
+    margin-top:10px;
+    width:180px;
+    justify-content: start;
+    align-items: center;
+}
+.add__newImg input{
+    width:180px;
+    margin-bottom: 5px;
+}
+
+.set__basicImg{
+    display: flex;
+    align-items: center;
+}
+
+.set__basicImg input{
+    margin-right: 3px;
+}
+.set__basicImg label{
+    font-size: smaller;
+}
+
 .meeting__name{
     font-weight: 900;
     font-size:28px;
@@ -82,41 +120,16 @@ body{
 
 .meeting__intro{
     display: flex;
-    height: 50px;
     justify-content: center;
-    align-items: center;
-    background-color: #eee;
-    padding: 10px;
-    margin: 20px 0;
+    margin:30px 0;
     font-size: 18px;
-    position: relative;
-    border-radius: 0.4em;
-}
-    
-.meeting__intro:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 0;
-    height: 0;
-    border: 29px solid transparent;
-    border-right-color: #eee;
-    border-left: 0;
-    border-top: 0;
-    margin-top: -14.5px;
-    margin-left: -15px;
-}
-
-
-span{
-    margin-right: 50px;
-    width: 67px;
-    font-weight: 900;
 }
 
 .meeting__submenu__all{
-    padding:0 15px;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .meeting__submenu{
@@ -126,36 +139,40 @@ span{
     margin-top:15px;
 }
 
-.meeting__members{
-    width:120px;
-    max-height: 60px;
-    overflow-y: auto;
+.meeting__submenu input,textarea, select{
+    width: 150px;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid rgba(173,168,168,0.5);
+    border-radius: 5px;
 }
 
-.meeting__member{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-
-
-.meeting__footer{
+.meetingedit__footer{
     display: flex;
     width:310px;
+    height: 18px;
     justify-content: space-around;
     align-items: center;
     margin:20px 0;
 }
 
-.meeting__footer a{
+.meetingedit__back a{
     text-decoration: none;
     color:#1a2634;
     font-size:18px;
     font-weight: 700;
     transition: 0.1s;
 }
+.meetingedit__save input{
+    background-color: transparent;
+    border:none;
+    color:#1a2634;
+    font-size:18px;
+    font-weight: 700;
+    transition: 0.1s;
+}
 
-.meeting__footer a:hover{
-    color:#F58B30;
+span{
+    width:85px;
+    font-weight: 900;
 }

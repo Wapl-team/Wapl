@@ -9,35 +9,56 @@
     <title>와플</title>
   </head>
   <body>
-    <h2>모임 정보</h2>
-    <div class="meetingInfo">
-      {% if meeting.image %}
-      <img src="{{ meeting.image.url }}" width="100" />
-      {% else %}
-      <img src="{{ meeting.default_image }}" width="100" />
-      {% endif %}
-      <p>모임 이름</p>
-      {{ meeting.meeting_name }}
-      <p>카테고리</p>
-      {{ meeting.get_category_display }}
-      <p>모임 소개</p>
-      {{ meeting.content }}
-      <p>모임 관리자</p>
-      {{ meeting.owner }}
-      <p>초대 코드</p>
-      <p>{{ meeting.invitation_code }}</p>
-      <p>멤버</p>
-      {% for user in users %} {{ user }}
-      <br />
-      {% endfor %}
-      <br />
-      <!-- 임시로 해둠 시작 -->
-      <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"><p>수정하기</p></a>
-      <br />
-      <!-- 임시로 해둠 끝 -->
-      <div>
-        <a href={% url 'wapl:meeting_calendar' meeting.id %}>돌아가기</a>
-      </div>
+    <div class="meeting__info">
+      <div class="meeting__detail">모임 정보</div>
+      <div class="meeting__body">
+        <div class="meeting__profile">
+          {% if meeting.image %}
+          <img src="{{ meeting.image.url }}" />
+          {% else %}
+          <img src="{{ meeting.default_image }}" />
+          {% endif %}
+          <div class="meeting__headinfo">
+            <p class="meeting__name">{{ meeting.meeting_name }}</p>
+            <p class="meeting__owner">by {{ meeting.owner }}</p>
+          </div>
+        </div>
+        <div class="meeting__intro">
+          <p>{{ meeting.content }}</p>
+        </div>
+        <div class="meeting__submenu__all">
+          <div class="meeting__submenu">
+            <span>카테고리</span>
+            <p>{{ meeting.get_category_display }}</p>
+          </div>
+          <div class="meeting__submenu">
+            <span>초대 코드</span>
+            <p>{{ meeting.invitation_code }}</p>
+          </div>
+          <div class="meeting__submenu">
+            <span>멤버</span>
+            <div class="meeting__members">
+              {% for user in users %} 
+                <div class="meeting__member">{{ user.nickname }}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+    </div>   
+  </div>
+  <div class="meeting__footer">
+    <div class="meeting_back">
+      <a href="{% url 'wapl:main' %}">돌아가기</a>
     </div>
+    <div class="meeting_edit">
+      <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"><p>수정하기</p></a>
+    </div>
+  </div>
+
+  <script
+  src="https://kit.fontawesome.com/6fbcf91afd.js"
+  crossorigin="anonymous"
+></script>
   </body>
 </html>

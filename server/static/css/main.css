@@ -503,7 +503,6 @@ hr {
 .dates {
   display: flex;
   flex-flow: row wrap;
-  height: 55vh;
   background-color: white;
   border-radius: 5px;
   margin-left: 1em;
@@ -516,7 +515,7 @@ hr {
 
 .date {
   width: calc(100% / 7);
-  height: calc(100% / 5);
+  height: 80px;
   padding: 8px;
   text-align: center;
 }
@@ -630,3 +629,4 @@ hr {
   font-size: 2px;
   padding-top: 2.5px;
 }
+

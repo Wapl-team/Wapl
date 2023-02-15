@@ -33,7 +33,7 @@
           </div>
           <div class="meeting__submenu">
             <span>초대 코드</span>
-            <p>{{ meeting.invitation_code }}</p>
+            <p class="drag__code" draggable="true">{{ meeting.invitation_code }}</p>
           </div>
           <div class="meeting__submenu">
             <span>멤버</span>
@@ -56,9 +56,40 @@
     </div>
   </div>
 
-  <script
+  <script>
   src="https://kit.fontawesome.com/6fbcf91afd.js"
   crossorigin="anonymous"
-></script>
+
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; 
+    elmnt.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault(); 
+      pos3 = e.clientX;
+      pos4 = e.clientY; 
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY; 
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+  dragElement(document.getElementById("mydiv"));
+</script>
   </body>
 </html>

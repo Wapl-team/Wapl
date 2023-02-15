@@ -76,7 +76,7 @@ def meeting_calendar(request, pk, *args, **kwargs):
 @csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
-        default_image_index = random.randint(1, 4)
+        default_image_index = random.randint(1, 10)
         # Review : 변수명 CamelCase vs snake_head 통일 필요
         newMeeting = Meeting.objects.create(
         meeting_name = request.POST["meeting_name"],
@@ -469,7 +469,7 @@ def signup(request:HttpRequest, *args, **kwargs):
         else:
             return redirect('wapl:signup')
     else:
-        default_image_index = random.randint(1, 4)
+        default_image_index = random.randint(1, 10)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -488,7 +488,7 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
         else:
             return redirect('wapl:extra_signup')
     else:
-        default_image_index = random.randint(1, 4)
+        default_image_index = random.randint(1, 10)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -715,7 +715,7 @@ def view_team_explan(request):
     user_name = {}
 
     for i in range(len(users)):
-        user_name[users[i].pk] = users[i].username
+        user_name[users[i].pk] = users[i].nickname
 
     user_img = {}
 

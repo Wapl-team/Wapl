@@ -288,7 +288,7 @@ def pub_delete(request:HttpRequest, pk, *args, **kwargs):
           err_msg = '본인의 일정만 삭제할 수 있습니다.'
           messages.warning(request, err_msg)
           
-    return redirect('wapl:main')
+    return redirect( 'wapl:meeting_calendar',plan.meetings.pk)
 
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
@@ -519,17 +519,24 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
-    if request.method == 'POST':
-        form = forms.LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:main')
-        else:
-            # 로그인 정보 틀렸다는 에러 메세지 띄워야 함.
-            return render(request, "login.html", {"form": form})
+
+  if request.method == 'POST':
+
+    form = forms.LoginForm(data=request.POST)
+    if form.is_valid():
+        user = form.get_user()
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('wapl:main')
     else:
-        return render(request, 'login.html')
+      err_msg="잘못된 ID 또는 패스워드입니다"
+      context={
+        'err_msg':err_msg
+      }
+      return render(request, template_name='login.html',context=context)
+  else:
+        return render(request, template_name='login.html')
+
+
 
 def logout(request:HttpRequest, *args, **kwargs):
     login_user = request.user

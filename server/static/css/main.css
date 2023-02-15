@@ -589,6 +589,12 @@ hr{
   padding-top: 3.35em;
 }
 
+.detail-member div{
+  display: flex;
+  align-items: start;
+  margin-left: 5px;
+}
+
 .detail-timeline {
   display: flex;
   flex-direction: column;
@@ -601,7 +607,6 @@ hr{
 
 .detail-timeline a {
   text-decoration: none;
-  margin-top: 1vh;
 }
 
 .detail-timeline div {

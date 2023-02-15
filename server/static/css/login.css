@@ -37,7 +37,7 @@ body {
   align-items: center;
   background-color: white;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   border-radius: 5px;
   flex-direction: column;
 }
@@ -47,6 +47,11 @@ body {
   color: #395165;
   font-weight: bold;
   margin:1em;
+}
+
+.error__msg{
+  color:red;
+  font-weight: 600;
 }
 
 .login-form {

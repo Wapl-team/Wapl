@@ -284,6 +284,28 @@ const plan_create = (meeting_name, meeting_pk) => {
                 newimg.style.height = "12px";
                 newimg.style.margin = "0px 1px";
                 day.after(newimg);
+                if (day.parentNode.childNodes.length == 6) {
+                  day.parentNode.childNodes[5].remove();
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                } else if (day.parentNode.childNodes.length > 6) {
+                  day.parentNode.childNodes[5].remove();
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${day.parentNode.childNodes.length - 4}`;
+                }
               }
             }
             if (
@@ -466,6 +488,7 @@ window.onload = function () {
         const month_dates = document.querySelectorAll(".this");
 
         month_dates.forEach((day) => {
+          let count = 0;
           public_plans_array.forEach((plan) => {
             const start_time = new Date(plan.fields.startTime);
             const end_time = new Date(plan.fields.endTime);
@@ -487,6 +510,7 @@ window.onload = function () {
                 new_img.style.height = "12px";
                 new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
+                count += 1;
               }
             }
           });
@@ -504,14 +528,38 @@ window.onload = function () {
               today <= end_time.setHours(0, 0, 0, 0)
             ) {
               if (already.indexOf(`${plan.fields.owner}`) == -1) {
-                const new_img = document.createElement("img");
-                new_img.src = `${user_img[plan.fields.owner]}`;
-                new_img.classList.add("profileImagePlan");
-                new_img.style.width = "12px";
-                new_img.style.height = "12px";
-                new_img.style.margin = "0px 1px";
-                day.parentElement.appendChild(new_img);
-                already.push(`${plan.fields.owner}`);
+                if (count <= 3) {
+                  const new_img = document.createElement("img");
+                  new_img.src = `${user_img[plan.fields.owner]}`;
+                  new_img.classList.add("profileImagePlan");
+                  new_img.style.width = "12px";
+                  new_img.style.height = "12px";
+                  new_img.style.margin = "0px 1px";
+                  day.parentElement.appendChild(new_img);
+                  already.push(`${plan.fields.owner}`);
+                  count += 1;
+                } else if (count == 4) {
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                  count += 1;
+                } else {
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${count - 3}`;
+                  count += 1;
+                }
               }
             }
           });

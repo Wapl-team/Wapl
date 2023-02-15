@@ -658,9 +658,6 @@ def view_explan(request):
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
   
-  print(private_user_names)
-  print(public_user_names)
-  
   return JsonResponse({'public_plans': public_plans,
                         'private_plans':private_plans,'today': day,'userimg':userimg,
                         'meetingimg':meeting_img,

@@ -1,7 +1,15 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'S-CoreDream-3Light';
+}
+
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body{
@@ -13,135 +21,143 @@ body{
   height: 80vh;
 }
 
-  .header i{
-    color:orange;
-  }
+.header i{
+  color: #FFD83D;
+}
 
-  .plan-detail-container{
-    border:1px solid black;
-    border-radius: 20px;
-    padding:1em;
-    width: 80vw;
-    height: auto;
-  }
+.plan-detail-container{
+  border:1px solid black;
+  border-radius: 20px;
+  padding:1em;
+  width: 80vw;
+  height: auto;
+}
 
-  .plan-detail-title{
-    font-size: 2rem;
-    font-weight: bold;
-    margin:0.3em 0;
-  }
+.plan-detail-title{
+  font-size: 2rem;
+  font-weight: bold;
+  margin:0.3em 0;
+  text-align: center;
+  color: #1A2634;
+}
 
-  .plan-detail-place > span{
-    font-size:1.3rem;
-  }
+.plan-detail-place{
+  font-size:1.3rem;
+  text-align: center;
+}
 
-  .plan-detail-time{
-    margin:1em 0;
-    font-weight: bold;
-  }
+.orange{
+  color: #FFD83D;
+}
 
-  .plan-detail-content{
-    font-size: 1.3em;
-    padding:10px;
-  }
+.plan-detail-time{
+  margin:1em 0;
+  font-weight: bold;
+  text-align: center;
+}
 
-  hr{
-    border:1px solid black;
-    margin:1em 0;
-  }
+.plan-detail-content{
+  font-size: 1.3em;
+  padding:10px;
+  text-align: center;
+}
 
-  .leave-comment form textarea{
-    width: 100%;
-    height: 2em;
-    border: none;
-    resize: none;
-    background-color: wheat;
-    padding:0.3em;
-  }
+hr{
+  border:1px solid black;
+  margin:1em 0;
+}
 
-  .comment-container{
-    max-height: 150px;
-    overflow-y: scroll;
-  }
-  .leave-comment input,
-  .reply-container input{
-    border:none;
-    background-color: transparent;
-    font-weight: bold;
-    color:orange;
-    padding:0.3em;
-  }
+.leave-comment form textarea{
+  width: 100%;
+  height: 2em;
+  resize: none;
+  padding:0.3em;
+  border-radius: 10px;
+}
 
-  /* show-comment 파트 */
-  .show-comment{
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
+.comment-container{
+  max-height: 150px;
+  overflow-y: scroll;
+}
+.leave-comment input,
+.reply-container input{
+  border:none;
+  background-color: transparent;
+  font-weight: bold;
+  padding:0.3em;
+}
 
-  .user-comment{
-    display: flex;
-    flex-direction: column;
-  }
+/* show-comment 파트 */
+.show-comment{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
-  .user-comment-info{
-    display: flex;
-    align-items: center;
-  }
+.user-comment{
+  display: flex;
+  flex-direction: column;
+}
 
-  .user-comment-user{
-    font-weight:bold;
-  }
+.user-comment-info{
+  display: flex;
+  align-items: center;
+}
 
-  .user-comment-time{
-    font-size:0.7em;
-    color:darkgray;
-    margin-left: 0.3em;
-  }
+.user-comment-user{
+  font-weight:bold;
+}
 
-  
-  .delete-comment form input,
-  .delete-comment input{
-    border:none;
-    background-color: transparent;
-    font-weight: bold;
-    padding:0.3em;
-    cursor: pointer;
-  }
-  
-  .reply-container textarea{
-    width: 100%;
-    height: 2em;
-    border: none;
-    resize: none;
-    background-color: rgb(253, 239, 214);
-    padding:0.3em;
-  }
+.user-comment-time{
+  font-size:0.7em;
+  color:darkgray;
+  margin-left: 0.3em;
+}
 
-  /* ================================= */
-  
-  .control-container{
-    display: flex;
-    justify-content: end;
-  }
 
-  .control-container input{
-    font-size: 16px;
-    border:none;
-    border-radius:15px;
-    background-color: orange;
-    color:white;
-    padding:0.5em;
-    margin:0.2em;
-  }
+.delete-comment form input,
+.delete-comment input{
+  border:none;
+  background-color: transparent;
+  font-weight: bold;
+  padding:0.3em;
+  cursor: pointer;
+}
 
-  .control-container a{
-    font-size: 16px;
-    text-decoration:none;
-    border:none;
-    border-radius:15px;
-    background-color: orange;
-    color:white;
-    padding:0.5em;
-    margin:0.2em;
-  }
+.reply-container textarea{
+  width: 100%;
+  height: 2em;
+  border: none;
+  resize: none;
+  border-radius: 10px;
+  background-color: #FFF1BA;
+  padding:0.3em;
+}
+
+/* ================================= */
+
+.control-container{
+  display: flex;
+  justify-content: end;
+}
+
+.control-container input{
+  font-size: 16px;
+  border:none;
+  border-radius:15px;
+  background-color: #FFD83D;
+  color:white;
+  padding:0.5em;
+  margin:0.2em;
+}
+
+.control-container a{
+  font-size: 16px;
+  text-decoration:none;
+  border:none;
+  border-radius:15px;
+  background-color: #FFD83D;
+  color:white;
+  padding:0.5em;
+  margin:0.2em;
+}

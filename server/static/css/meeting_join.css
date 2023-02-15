@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body{
     display: flex;
     flex-direction: column;
@@ -5,10 +12,11 @@ body{
     align-items: center;
     width: 100vw;
     height: 80vh;
+    font-family: 'S-CoreDream-3Light';
 }
 
 h2{
-    color:orange;
+    color:#395165;
     font-size: 25px;
 }
 
@@ -24,26 +32,23 @@ h2{
 .meetingJoin input{
     width:240px;
     height: 30px;
-    background-color: antiquewhite;
     text-align: center;
     border-radius: 10px;
 }
 
 .meetingJoin div input{
-    background-color: orange;
+    background-color: #FFD83D;
     color:white;
     width:240px;
-    height: 30px;
+    height: 36px;
     text-align: center;
     border-radius: 10px;
-    font-weight: bold; 
     border: none;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .meetingJoin div a{
-    background-color: wheat;
-    color:white;
+    color:#FFD83D;
     width:240px;
     height: 30px;
     text-align: center;

@@ -3,10 +3,16 @@
 @import url("./reset.css");
 */
 
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 * {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'S-CoreDream-3Light';
   box-sizing: border-box;
 }
 
@@ -38,7 +44,7 @@ body {
 
 .login {
   font-size: 2rem;
-  color: orange;
+  color: #395165;
   font-weight: bold;
   margin:1em;
 }
@@ -53,21 +59,24 @@ body {
 
 .login-form input{
   width:240px;
-  height: 3em;
-  background-color: antiquewhite;
+  height: 4em;
   border:none;
   padding:0.3em;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #1A2634;
 }
 
 .login-btn {
-  background-color: orange;
+  background-color: #FFD83D;
   border:none;
   border-radius: 5px;
   color: white;
   padding: 1vh 5vw;
   font-size: 1.3rem;
-  margin-bottom: 1em;
+  margin-bottom: 1vh;
   width:240px;
+  margin-top: 1vh;
 }
 
 .main div {
@@ -81,11 +90,10 @@ body {
   text-decoration: none;
   text-align: center;
   font-size: 1.2em;
-  color: white;
-  background-color: orange;
+  color: #395165;
   border-radius: 5px;
   padding:3px;
   width:240px;
   height: 2em;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.6em;
 }

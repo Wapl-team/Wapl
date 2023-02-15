@@ -291,6 +291,7 @@ const plan_create = () => {
 
         //validation 통과하여 일정 등록이 가능한 경우
         if (plan != null && userimg != null) {
+          shareOBJ = {};
           const startDate = new Date(startTime);
           const endDate = new Date(endTime);
 

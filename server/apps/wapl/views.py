@@ -31,12 +31,13 @@ def main(request:HttpRequest,*args, **kwargs):
   try:
     viewDate = request.GET['select-date'].split('-')
     year = viewDate[0]
-    month = viewDate[1]
+    month = int(viewDate[1])
     login_user.current_date = f"{year}-{month}-01"
     login_user.save()
   except:
     year = login_user.current_date.year
     month = login_user.current_date.month
+
   context = {
             'meetings' : meetings,
             'meeting_name': '',
@@ -58,7 +59,7 @@ def meeting_calendar(request, pk, *args, **kwargs):
   try:
     viewDate = request.GET['select-date'].split('-')
     year = viewDate[0]
-    month = viewDate[1]
+    month = int(viewDate[1])
     login_user.current_date = f"{year}-{month}-01"
     login_user.save()
   except:

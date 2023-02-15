@@ -27,12 +27,11 @@ SECRET_KEY = 'django-insecure-^ix7m#u1-i!0%*h7$xjmk8=+p3wre^69k1@^a+v@5rppylvgkn
 
 # 배포할 때
 # DEBUG = False
-DEBUG=True
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 # 개발할 때
-# DEBUG = True
-# ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
 
 
 # Application definition

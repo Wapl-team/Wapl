@@ -135,7 +135,7 @@
             {% endif %}
           </a>
           <a href="{% url 'wapl:profile' %}" class="profile__username"
-            >{{user.username}}</a
+            >{{user.nickname}}</a
           >
           <div class="nim">님</div>
         </div>
@@ -154,7 +154,7 @@
 
       <div class="groups">
         <div class="privategroup">
-          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+          <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
         </div>
         {% for meeting in meetings %}
         <div class="groupName">

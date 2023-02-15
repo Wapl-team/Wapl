@@ -159,3 +159,7 @@ span{
 .meeting__footer a:hover{
     color:#F58B30;
 }
+
+.drag__code{
+    cursor: move;
+}

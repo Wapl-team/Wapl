@@ -18,7 +18,7 @@
         {% block content %}
         <form method="POST" action="" class="login-form">
           {% csrf_token %}
-          <input type="text" name="username" placeholder="아이디"/>
+          <input type="text" name="username" placeholder="아이디" value="{{ form.username.value|default_if_none:'' }}"/>
           <br />
           <input type="password" name="password" placeholder="비밀번호" />
           <br />

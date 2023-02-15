@@ -63,3 +63,8 @@ h2{
 .meetingCreate div{
     display: flex;
 }
+
+.error__msg{
+    color:red;
+    font-weight: 600;
+}

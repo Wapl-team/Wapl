@@ -10,7 +10,7 @@
   </head>
   <body>
     <h2>모임 생성</h2>
-
+    <div class="error__msg">{{err_msg}}</div>
     <form
       action="{% url 'wapl:meeting_create' %}"
       method="post"
@@ -21,16 +21,20 @@
       <span>모임 프로필 이미지</span>
       <input type="file" name="image" accept="image/*" class="profileImage" />
       <br />
-      <input name="meeting_name" placeholder="모임 이름" />
+      <input name="meeting_name" placeholder="모임 이름" value="{{ meeting_name }}" />
       <br />
       <select name="category" class="categorySelect">
         <option>==카테고리 선택==</option>
         {% for t1,t2 in category_list %}
-        <option value="{{ t1 }}">{{ t2 }}</option>
+        {% if t1 == category %}
+          <option value="{{ t1 }}" selected>{{ t2 }}</option>
+        {% else %}
+          <option value="{{ t1 }}">{{ t2 }}</option>
+        {% endif %}
         {% endfor %}
       </select>
       <br />
-      <textarea name="content" placeholder="모임 소개"></textarea>
+      <textarea name="content" placeholder="모임 소개">{{ content }}</textarea>
       <br />
       <div>
         <input type="submit" value="모임 생성" />

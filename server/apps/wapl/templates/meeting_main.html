@@ -50,7 +50,7 @@
 
     <div class="modal hidden">
       <div class="modal__content">
-        <form id="create" name="create" method="post" class="planRegister">
+        <form id="create" name="create" method="post" class="planRegister__meeting">
           <input
             type="text"
             name="title"
@@ -81,7 +81,7 @@
 
           <a
             href="#"
-            id="closeModal"
+            id="closeModal__meeting"
             class="closeModal2"
             onclick="plan_create({{cur_meeting.id}})"
             >추가</a
@@ -135,7 +135,6 @@
           <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
         </button>
       </div>
-
       <div class="groups">
         <div class="privategroup">
           <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>

@@ -78,14 +78,17 @@
           />
 
           <div class="share">
-            <span>공개범위 <i class="fa-solid fa-chevron-right"></i></span>
+            <span>공개범위 
+              <!-- <i class="fa-solid fa-chevron-right"></i> -->
+              <i class="fa-regular fa-hand-pointer"></i>
+            </span>
           </div>
           <a
             href="#"
             id="closeModal"
             class="closeModal2"
             onclick="plan_create()"
-            >추가</a
+            >일정 추가하기 </a
           >
         </form>
         <button class="closeModal">
@@ -154,7 +157,7 @@
             {% endif %}
           </a>
           <a href="{% url 'wapl:profile' %}" class="profile__username"
-            >{{user.username}}</a
+            >{{user.nickname}}</a
           >
           <div class="nim">님</div>
         </div>
@@ -173,7 +176,7 @@
 
       <div class="groups">
         <div class="privategroup">
-          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+          <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
         </div>
         {% for meeting in meetings %}
         <div class="groupName">

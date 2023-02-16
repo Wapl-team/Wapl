@@ -14,15 +14,17 @@
       <!-- 로그인 영역 -->
       <div class="login-container">
         <p class="login">로그인</p>
+        <div class="error__msg">{{err_msg}}</div>
         {% block content %}
         <form method="POST" action="" class="login-form">
           {% csrf_token %}
-          <input type="text" name="username" placeholder="아이디"/>
+          <input type="text" name="username" placeholder="아이디" value="{{ form.username.value|default_if_none:'' }}"/>
           <br />
           <input type="password" name="password" placeholder="비밀번호" />
           <br />
           <button class="login-btn">Login</button>
         </form>
+
         {% endblock content %}
           <a href="{% url 'wapl:signup' %}">회원가입</a>
           <a href="{% provider_login_url 'google' %}">구글 로그인</a>

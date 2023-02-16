@@ -1,5 +1,29 @@
-<h1>ERROR : 403</h1>
-<br />
-접근 권한이 없는 페이지입니다.
-<br />
-<a href="{% url 'wapl:main' %}">메인으로 돌아가기</a>
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/errorpage.css' %}">
+    <title>ERROR</title>
+</head>
+<body>
+    <div class="error__container">
+        <div class="error__header">
+            <i class="fa-regular fa-face-frown-open"></i>
+        </div>
+        <div class="error__body">
+            <div class="error__msg">403</div>
+            <p>접근 권한이 없는 페이지입니다</p>
+        </div>
+    </div>
+    <div class="error__footer">
+        <a href="{% url 'wapl:start' %}">홈으로 돌아가기</a>
+    </div>
+    <script
+    src="https://kit.fontawesome.com/6fbcf91afd.js"
+    crossorigin="anonymous"
+    ></script>
+</body>
+</html>

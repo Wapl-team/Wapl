@@ -98,20 +98,33 @@ def meeting_calendar(request, pk, *args, **kwargs):
 @csrf_exempt
 def meeting_create(request:HttpRequest, *args, **kwargs):
     if request.method == 'POST':
-        default_image_index = random.randint(1, 4)
+        default_image_index = random.randint(1, 10)
         # Review : 변수명 CamelCase vs snake_head 통일 필요
-        newMeeting = Meeting.objects.create(
-        meeting_name = request.POST["meeting_name"],
-        content = request.POST["content"],
-        owner = request.user,
-        category = request.POST["category"],
-        invitation_code = generate_invitation_code(),
-        image = request.FILES.get("image"),
-        default_image = f'/static/default_image/t{default_image_index}.png',
-        )
-        newMeeting.users.add(request.user)
-        url = reverse('wapl:meeting_calendar', args=[newMeeting.id])
-        return redirect(url)
+        meeting_name = request.POST.get("meeting_name", '')
+        content = request.POST.get("content")
+        category = request.POST.get("category")
+        if meeting_name == '' or category == '==카테고리 선택==':
+          err_msg="모임 이름과 카테고리를 입력하세요"
+          context = {
+            "meeting_name": meeting_name,
+            "content": content,
+            "category": category,
+            "category_list": Meeting.MEETING_CHOICE,
+            'err_msg':err_msg,
+          }
+          return render(request, "meeting_create.html", context=context)
+        else:
+          newMeeting = Meeting.objects.create(
+          meeting_name = meeting_name,
+          content = content,
+          owner = request.user,
+          category = category,
+          invitation_code = generate_invitation_code(),
+          image = request.FILES.get("image"),
+          default_image = f'/static/default_image/t{default_image_index}.png',
+          )
+          newMeeting.users.add(request.user)
+          return redirect('wapl:meeting_calendar', newMeeting.id)
     category_list = Meeting.MEETING_CHOICE
     context = {
         "category_list":category_list
@@ -143,8 +156,7 @@ def meeting_join(request:HttpRequest, *args, **kwargs):
       try:
           meeting = Meeting.objects.get(invitation_code=code)
           meeting.users.add(request.user)
-          url = reverse('wapl:meeting_calendar', args=[meeting.id])
-          return redirect(url)
+          return redirect('wapl:meeting_calendar', meeting.id)
       except:
         err_msg = '초대 코드가 다릅니다.'
         context = {'err_msg': err_msg}
@@ -303,7 +315,7 @@ def pub_delete(request:HttpRequest, pk, *args, **kwargs):
           err_msg = '본인의 일정만 삭제할 수 있습니다.'
           messages.warning(request, err_msg)
           
-    return redirect('wapl:main')
+    return redirect( 'wapl:meeting_calendar',plan.meetings.pk)
 
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
@@ -468,19 +480,27 @@ def start(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def signup(request:HttpRequest, *args, **kwargs):
+    default_image_index = random.randint(1, 4)
     if request.method == 'POST':
-        form = forms.SignupForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            image = request.FILES.get("image")
-            profile = Profile(user=user, image=image)
-            profile.save()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('wapl:main')
-        else:
-            return redirect('wapl:signup')
+      form = forms.SignupForm(request.POST, request.FILES)
+
+      if form.is_valid():
+          user = form.save()
+          image = request.FILES.get("image")
+          profile = Profile(user=user, image=image)
+          profile.save()
+          auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+          return redirect('wapl:main')
+      else:
+          # 오류 메세지 띄워야 함 (이름, 닉네임, 아이디, 비밀번호를 정확히 입력해주세요 같은 내용)
+          err_msg="모든 항목을 정확하게 입력해 주세요"
+          context = {
+              'default_src': f'/static/default_image/{default_image_index}.png',
+              "form": form,
+              "err_msg":err_msg
+          }
+      return render(request, "signup.html", context=context)
     else:
-        default_image_index = random.randint(1, 4)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -488,6 +508,7 @@ def signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def extra_signup(request:HttpRequest, *args, **kwargs):
+    default_image_index = random.randint(1, 4)
     if request.method == 'POST':
         form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
@@ -497,9 +518,15 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
             profile.save()
             return redirect('wapl:main')
         else:
-            return redirect('wapl:extra_signup')
+            # 정보 틀렸다는 에러 메세지 띄워야 함.
+            err_msg="잘못된 정보입니다. 다시 입력하세요"
+            context = {
+                'default_src': f'/static/default_image/{default_image_index}.png',
+                "form": form,
+                "err_msg":err_msg
+            }
+            return render(request, "extra_signup.html", context=context)
     else:
-        default_image_index = random.randint(1, 4)
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
@@ -507,6 +534,7 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
+
     inputTime.objects.create()
 
     if request.method == 'POST':
@@ -515,10 +543,16 @@ def login(request:HttpRequest, *args, **kwargs):
             user = form.get_user()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
-        else:
-            return render(request, template_name='login.html')
-    else:
-        return render(request, template_name='login.html')
+         else:
+            err_msg="잘못된 ID 또는 패스워드입니다"
+            context={
+            'err_msg':err_msg
+            }
+            return render(request, template_name='login.html',context=context)
+     else:
+         return render(request, template_name='login.html')
+
+
 
 def logout(request:HttpRequest, *args, **kwargs):
     login_user = request.user
@@ -863,8 +897,7 @@ def select_date_meeting(request, *args, **kwargs):
     login_user.current_date = f"{year}-{month}-01"
     login_user.save()
 
-    url = reverse('wapl:meeting_calendar', args=[meeting_id])
-    return redirect(url)
+    return redirect('wapl:meeting_calendar', meeting_id)
 
 
 # -----------------에러 페이지 설정---------------------

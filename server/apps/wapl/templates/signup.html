@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
     <title>와플</title>
   </head>
@@ -14,37 +14,35 @@
       <!-- 회원가입 영역 -->
       <div class="signup-container">
         <p class="signup">회원가입</p>
+        
         {% block content %}
         <form method="POST" action="" class="signup-form" enctype="multipart/form-data">
           {% csrf_token %}
-          <br />
-          <p>
-            <span>프로필 이미지</span>
-            <input type="file" name="image" accept="image/*" class="profileImage" />
-            <input type="hidden" name="default_image" value="{{ default_src }}" />
-          </p>
-          <br />
-          <input type="text" name="name" placeholder="이름" class="signup-input" />
-          <br />
-          <input type="text" name="nickname" placeholder="닉네임" class="signup-input" /></p>
-          <br />
-          <span>아이디</span>
-          <div class="signup-notice"><p>• 150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</p></div>
-          <input type="text" name="username" placeholder="사용할 아이디" class="signup-input" /></p>
-          <br />
-          <span>비밀번호</span>
-          <div class="signup-notice">
-            <p>• 다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</p>
-            <p>• 비밀번호는 최소 8자 이상이어야 합니다.</p>
-            <p>• 통상적으로 자주 사용되는 비밀번호는 사용할 수 없습니다.</p>
-            <p>• 숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</p>
-          </div>
-          <input type="password" name="password1" placeholder="사용할 비밀번호" class="signup-input"/></p>
-          <br />
-          <div class="signup-notice"><p>• 확인을 위해 이전과 동일한 비밀번호를 입력하세요.</p></div>
-          <input type="password" name="password2" placeholder="비밀번호 확인" class="signup-input" /></p>
-          <br />
-          <input type="submit" value="SignUp" class="signup-btn" />
+          <div class="signup-form-content">
+            <div class="signup__profile">
+              <span>프로필 이미지</span>
+              <input type="file" name="image" accept="image/*" class="profileImage" />
+              <input type="hidden" name="default_image" value="{{ default_src }}" />
+            </div>
+            <div class="error__msg">{{err_msg}}</div>
+            <div class="signup__body">
+              <input type="text" name="name" placeholder="이름" class="signup-input" value="{{ form.name.value|default_if_none:'' }}" />
+              <input type="text" name="nickname" placeholder="닉네임" class="signup-input" value="{{ form.nickname.value|default_if_none:'' }}" /></p>
+              <div class="signup-notice">
+                <p>• 150자 이하 문자, 숫자 그리고 @/./+/-/_만 가능합니다.</p>
+              </div>
+              <input type="text" name="username" placeholder="사용할 아이디" class="signup-input" value="{{ form.username.value|default_if_none:'' }}" /></p>
+              <div class="signup-notice">
+                <p>• 8자 이상의 숫자와 문자가 혼합된 비밀번호를 설정하세요</p>
+              </div>
+              <input type="password" name="password1" placeholder="사용할 비밀번호" class="signup-input" value="{{ form.password1.value|default_if_none:'' }}" /></p>
+              <div class="signup-notice">
+                <p>• 확인을 위해 이전과 동일한 비밀번호를 입력하세요</p>
+              </div>
+              <input type="password" name="password2" placeholder="비밀번호 확인" class="signup-input" value="{{ form.password2.value|default_if_none:'' }}" /></p>
+            </div>
+            </div>
+            <input type="submit" value="SignUp" class="signup-btn" />
         </form>
         {% endblock content %}
       </div>

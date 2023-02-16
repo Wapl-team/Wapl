@@ -14,19 +14,20 @@
       <!-- 회원가입 영역 -->
       <div class="signup-container">
         <p class="signup">추가 정보 입력</p>
+        <div class="error__msg">{{err_msg}}</div>
         {% block content %}
         <form method="POST" action="" class="signup-form" enctype="multipart/form-data">
           {% csrf_token %}
           <br />
           <p>
             <span>프로필 이미지</span>
-            <input type="file" name="image" accept="image/*" class="profileImage" />
+            <input type="file" name="image" accept="image/*" class="profileImage" value="{{ form.image.value|default_if_none:'' }}" />
             <input type="hidden" name="default_image" value="{{ default_src }}" />
           </p>
           <br />
-          <input type="text" name="name" placeholder="이름" class="signup-input" />
+          <input type="text" name="name" placeholder="이름" class="signup-input" value="{{ form.name.value|default_if_none:'' }}" />
           <br />
-          <input type="text" name="nickname" placeholder="닉네임" class="signup-input" /></p>
+          <input type="text" name="nickname" placeholder="닉네임" class="signup-input" value="{{ form.nickname.value|default_if_none:'' }}" /></p>
           <br />
           <input type="submit" value="SignUp" class="signup-btn" />
         </form>

@@ -64,7 +64,12 @@ select {
   align-items: center;
   justify-content: center;
 }
-
-.meetingCreate div {
-  display: flex;
+.meetingCreate div{
+    display: flex;
 }
+
+.error__msg{
+    color:red;
+    font-weight: 600;
+}
+

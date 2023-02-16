@@ -343,9 +343,20 @@ hr {
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  margin-top: 0.7rem;
+  width: 90vw;
 }
 
-.planRegister > div {
+.planRegister__meeting{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-top: 1.8rem;
+  width: 90vw;
+}
+
+.planRegister > div, .planRegister__meeting > div {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -364,12 +375,13 @@ hr {
   font-size: 0.8rem;
 }
 .share i {
+  font-size: 1.2rem;
   color: var(--main-bg-color);
   margin-left: 0.5rem;
 }
 
 .share-box {
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem;
   position: absolute;
   bottom: 60px;
   left: 90px;
@@ -391,7 +403,7 @@ hr {
   border: 1px solid var(--main-bg-color);
   border-radius: 5px;
   background-color: var(--main-bg-color);
-}
+  }
 
 .share-box > div {
   margin-bottom: 0.5rem;
@@ -421,8 +433,7 @@ hr {
   text-align: center;
   font-weight: bold;
   font-size: 13px;
-  background-color: #fff;
-  color: #333;
+  border-radius: 50px;
 }
 
 .share-select input[type="radio"]:checked + label {
@@ -434,13 +445,23 @@ hr {
   border-radius: 5px;
   padding: 0.2rem;
 }
-.planRegister > input {
-  padding: 0;
-  border: none;
-  height: 7%;
+
+.planRegister span, .planRegister__meeting span{
+  font-size:1rem;
 }
 
-.planRegister a {
+.planRegister > div input , .planRegister__meeting > div input{
+  border: 2px solid #ffeda2;
+  border-radius: 50px;
+  padding: 0.3rem 1rem;
+}
+.planRegister > input , .planRegister__meeting > input {
+  font-size: 1rem;
+  border: none;
+  height: 6%;
+}
+
+.planRegister a ,.planRegister__meeting a {
   padding: 0;
   border: none;
   height: 7%;
@@ -449,10 +470,10 @@ hr {
   padding: 1rem 0;
 }
 
-.planRegister input:focus {
+.planRegister input:focus ,.planRegister__meeting input:focus{
   outline: none;
   border-bottom: 1px solid var(--main-bg-color);
-}
+  }
 
 .closeModal {
   position: relative;
@@ -460,7 +481,6 @@ hr {
   display: flex;
   width: 100%;
   justify-content: end;
-  margin-top: 15px;
   background-color: transparent;
   border: none;
 }
@@ -477,9 +497,25 @@ hr {
   background-color: var(--main-bg-color);
   color: white;
   border-radius: 10px;
+  margin-top:10px;
   cursor: pointer;
   text-decoration: none;
+  font-size: 1.2em;
 }
+
+#closeModal__meeting{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffeda2;
+  color: black;
+  border-radius: 10px;
+  margin-top:30px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
 
 .go-today {
   width: 75px;
@@ -604,6 +640,12 @@ hr {
   padding-top: 3.35em;
 }
 
+.detail-member div{
+  display: flex;
+  align-items: start;
+  margin-left: 5px;
+}
+
 .detail-timeline {
   display: flex;
   flex-direction: column;
@@ -616,7 +658,6 @@ hr {
 
 .detail-timeline a {
   text-decoration: none;
-  margin-top: 1vh;
 }
 
 .detail-timeline div {

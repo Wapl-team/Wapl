@@ -1,109 +1,230 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'S-CoreDream-3Light';
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "S-CoreDream-3Light";
 }
 
 @font-face {
-    font-family: 'S-CoreDream-3Light';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 80vh;
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
 }
 
-.header i{
-    color: #FFD83D;
-    position: relative;
-    left: -32vw;
+.header i {
+  color: #ffd83d;
+  position: relative;
+  left: -32vw;
 }
 
-.plan_update_container{
-    border:1px solid black;
-    border-radius: 20px;
-    padding:1em;
-    width: 80vw;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+.plan_update_container {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 1em;
+
+  width: 80vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .title {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 1vh;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 1vh;
 }
 
-.plan_update_title{
-    font-size: 2rem;
-    font-weight: bold;
-    margin:0.3em 0;
-    text-align: center;
-    color: #1A2634;
-    border: none;
-    width: 18rem;
+.plan_update_title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0.3em 0;
+  text-align: center;
+  color: #1a2634;
+  border: none;
+  width: 18rem;
 }
 
-.plan_update_place{
-    font-size: 1.3rem;
-    border: none;
-    text-align: center;
+.plan_update_place {
+  font-size: 1.3rem;
+  border: none;
+  text-align: center;
 }
 
-.orange{
-    color: #FFD83D;
-    font-size: 1.3rem;
+.orange {
+  color: #ffd83d;
+  font-size: 1.3rem;
 }
 
-.plan_update_time{
-    margin-top: 1em;
-    font-weight: bold;
-    text-align: center;
-    border: none;
+.plan_update_time {
+  margin-top: 1em;
+  font-weight: bold;
+  text-align: center;
+  border: none;
 }
 
-.plan_update_content{
-    font-size: 1.3em;
-    padding: 10px;
-    text-align: center;
-    border: none;
-    margin: 1em;
+.plan_update_content {
+  font-size: 1.3em;
+  padding: 10px;
+  text-align: center;
+  border: none;
+  margin: 1em;
+  margin-bottom: 0.5em;
 }
 
-.control-container{
-    display: flex;
-    justify-content: end;
+.control-container {
+  display: flex;
+  justify-content: end;
 }
 
-.control-container input{
-    font-size: 16px;
-    border:none;
-    border-radius:15px;
-    background-color: #FFD83D;
-    color:white;
-    padding:0.5em;
-    margin:0.2em;
+.control-container input {
+  font-size: 16px;
+  border: none;
+  border-radius: 15px;
+  background-color: #ffd83d;
+  color: white;
+  padding: 0.5em;
+  margin: 0.2em;
 }
 
-.control-container a{
-    font-size: 16px;
-    text-decoration:none;
-    border:none;
-    border-radius:15px;
-    background-color: #FFD83D;
-    color:white;
-    padding:0.5em;
-    margin:0.2em;
+.control-container a {
+  font-size: 16px;
+  text-decoration: none;
+  border: none;
+  border-radius: 15px;
+  background-color: #ffd83d;
+  color: white;
+  padding: 0.5em;
+  margin: 0.2em;
+}
+
+.share {
+  /* text-align: left; */
+  margin-bottom: 10px;
+  padding-bottom: 15px;
+}
+.share span {
+  font-size: 0.8rem;
+}
+.share i {
+  color: orange;
+  margin-left: 0.5rem;
+}
+
+.share-box {
+  padding: 1rem 1rem;
+  position: absolute;
+  bottom: 46%;
+  left: 15%;
+  width: 70vw;
+  z-index: 2;
+  background-color: white;
+  border: 1px solid orange;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.share-box input {
+  margin: 0 0.2rem 0 0;
+}
+
+.share-box button {
+  cursor: pointer;
+  color: white;
+  border: 1px solid orange;
+  border-radius: 5px;
+  background-color: orange;
+}
+
+.share-box > div {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-select {
+  width: 70%;
+}
+.share-box span {
+  padding-right: 0.5rem;
+}
+
+.share-select input[type="radio"] {
+  display: none;
+}
+
+.share-select input[type="radio"] + label {
+  display: inline-block;
+  cursor: pointer;
+  height: 24px;
+  width: 30%;
+  border: 1px solid orange;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  background-color: #fff;
+  color: #333;
+}
+
+.share-select input[type="radio"]:checked + label {
+  background-color: orange;
+  color: #fff;
+}
+
+.closeModal {
+  position: relative;
+  right: -1em;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  margin-top: 15px;
+  background-color: transparent;
+  border: none;
+}
+
+.modal-share {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.closeModal i {
+  font-size: 21px;
+  color: orange;
+}
+
+.hidden {
+  display: none;
+}
+
+#closeModal {
+  background-color: orange;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.bottom {
+  position: relative;
 }

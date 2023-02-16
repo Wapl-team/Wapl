@@ -294,6 +294,7 @@ const plan_create = () => {
 
         //validation 통과하여 일정 등록이 가능한 경우
         if (plan != null && userimg != null) {
+          shareOBJ = {};
           const startDate = new Date(startTime);
           const endDate = new Date(endTime);
 
@@ -327,6 +328,28 @@ const plan_create = () => {
                 newimg.style.height = "12px";
                 newimg.style.margin = "0px 1px";
                 day.after(newimg);
+                if (day.parentNode.childNodes.length == 6) {
+                  day.parentNode.childNodes[5].remove();
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                } else if (day.parentNode.childNodes.length > 6) {
+                  day.parentNode.childNodes[5].remove();
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${day.parentNode.childNodes.length - 4}`;
+                }
               }
             }
             if (
@@ -381,6 +404,9 @@ const plan_create = () => {
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
                 newplan.style.fontSize = "17px";
+                newplan.style.overflow = "hidden";
+                newplan.style.whiteSpace = "nowrap";
+                newplan.style.textOverflow = "ellipsis";
                 newplan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(newplan);
               }
@@ -388,8 +414,7 @@ const plan_create = () => {
               else {
                 // 개인 일정 라인추가
                 const newmember = document.createElement("div");
-                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32
-                px"/>`;
+                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/><p>${plan.owner}</p>`;
                 newmember.style.height = "50px";
                 newmember.style.width = "43px";
                 memberlist.firstChild.before(newmember);
@@ -418,6 +443,9 @@ const plan_create = () => {
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
                 newplan.style.fontSize = "17px";
+                newplan.style.overflow = "hidden";
+                newplan.style.whiteSpace = "nowrap";
+                newplan.style.textOverflow = "ellipsis";
                 newplan.innerText = `${plan.title}`;
                 newDiv.appendChild(newplan);
                 timeline.childNodes[0].before(newDiv);
@@ -427,7 +455,8 @@ const plan_create = () => {
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/> <p>123${plan.owner}123</p>`;
+              console.log("gdgd");
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);
@@ -455,6 +484,9 @@ const plan_create = () => {
               newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               newplan.style.padding = "11px";
               newplan.style.fontSize = "17px";
+              newplan.style.overflow = "hidden";
+              newplan.style.whiteSpace = "nowrap";
+              newplan.style.textOverflow = "ellipsis";
               newplan.innerText = `${plan.title}`;
               newDiv.appendChild(newplan);
               timeline.appendChild(newDiv);
@@ -507,6 +539,7 @@ window.onload = function () {
         // 확인된 날짜에서 thumbnail 추가
         // 개인일정이 위쪽에 와야하므로 먼저 추가
         thismonthDates.forEach((day) => {
+          let count = 0;
           privatePlansArray.forEach((plan) => {
             const startTime = new Date(plan.fields.startTime);
             const endTime = new Date(plan.fields.endTime);
@@ -528,6 +561,7 @@ window.onload = function () {
                 newImg.style.height = "12px";
                 newImg.style.margin = "0px 1px";
                 day.parentElement.appendChild(newImg);
+                count += 1;
               }
             }
           });
@@ -547,15 +581,39 @@ window.onload = function () {
               today <= endTime.setHours(0, 0, 0, 0)
             ) {
               if (already.indexOf(`${plan.fields.meetings}`) == -1) {
-                const newImg = document.createElement("img");
-                meetingimg[plan.fields.meetings];
-                newImg.src = `${meetingimg[plan.fields.meetings]}`;
-                newImg.classList.add("profileImagePlan");
-                newImg.style.width = "12px";
-                newImg.style.height = "12px";
-                newImg.style.margin = "0px 1px";
-                day.parentElement.appendChild(newImg);
-                already.push(`${plan.fields.meetings}`);
+                if (count <= 3) {
+                  const newImg = document.createElement("img");
+                  meetingimg[plan.fields.meetings];
+                  newImg.src = `${meetingimg[plan.fields.meetings]}`;
+                  newImg.classList.add("profileImagePlan");
+                  newImg.style.width = "12px";
+                  newImg.style.height = "12px";
+                  newImg.style.margin = "0px 1px";
+                  day.parentElement.appendChild(newImg);
+                  already.push(`${plan.fields.meetings}`);
+                  count += 1;
+                } else if (count == 4) {
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                  count += 1;
+                } else {
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${count - 3}`;
+                  count += 1;
+                }
               }
             }
           });
@@ -590,15 +648,21 @@ window.onload = function () {
     requestExplan.onreadystatechange = () => {
       if (requestExplan.readyState === XMLHttpRequest.DONE) {
         if (requestExplan.status < 400) {
-          const { public_plans, private_plans, today, userimg, meetingimg } =
-            JSON.parse(requestExplan.response);
+          const {
+            public_plans,
+            private_plans,
+            today,
+            userimg,
+            meetingimg,
+            private_user_names,
+            public_user_names,
+          } = JSON.parse(requestExplan.response);
           const publicPlansArray = JSON.parse(public_plans);
           const privatePlansArray = JSON.parse(private_plans);
           memberlist.innerHTML = "";
           timeline.innerHTML = ``;
           // 이미 타임라인에 있는 라인인지 확인
           let already = [];
-
           privatePlansArray.forEach((plan) => {
             if (already.indexOf(`private`) == -1) {
               let newDiv = document.createElement("div");
@@ -606,7 +670,15 @@ window.onload = function () {
               newDiv.style.height = "50px";
               timeline.appendChild(newDiv);
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview"src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+              newmember.innerHTML = `<img class="profileImagePreview "src="${userimg}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${
+                private_user_names[plan.fields.owner]
+              }`;
+              newmember.appendChild(new_user_name);
+
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);
@@ -632,9 +704,12 @@ window.onload = function () {
             newplan.style.color = "#1A2634";
             newplan.style.height = "40px";
             newplan.style.borderRadius = "10px";
-            newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
+            newplan.style.boxShadow = "1px 1px 2px rgb(0 f0 0 / 14%)";
             newplan.style.padding = "11px";
             newplan.style.fontSize = "17px";
+            newplan.style.overflow = "hidden";
+            newplan.style.whiteSpace = "nowrap";
+            newplan.style.textOverflow = "ellipsis";
             newplan.innerText = `${plan.fields.title}`;
             document.querySelector(".private-timeline").appendChild(newplan);
           });
@@ -645,6 +720,14 @@ window.onload = function () {
               newmember.innerHTML = `<img class="profileImagePreview"src="${
                 meetingimg[plan.fields.meetings]
               }" width="32px" height="32px" border-radius="25px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${
+                public_user_names[plan.fields.owner]
+              }`;
+              newmember.appendChild(new_user_name);
+
               newmember.style.height = "50px";
               newmember.style.width = "43px";
               memberlist.appendChild(newmember);
@@ -677,6 +760,9 @@ window.onload = function () {
             newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             newplan.style.padding = "11px";
             newplan.style.fontSize = "17px";
+            newplan.style.overflow = "hidden";
+            newplan.style.whiteSpace = "nowrap";
+            newplan.style.textOverflow = "ellipsis";
             newplan.innerText = `${plan.fields.title}`;
             document
               .querySelector(`.meeting-${plan.fields.meetings}`)

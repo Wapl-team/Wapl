@@ -98,7 +98,7 @@ body {
 /* sidebar */
 
 .sidebar-menu {
-  height: 100%;
+  height: 100vh;
   width: 0;
   position: fixed;
   z-index: 1;
@@ -109,12 +109,18 @@ body {
   transition: 0.3s;
   border: none;
   border-left: none;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .profile {
   display: flex;
   flex-direction: column;
   /* background-color: #1a2634; */
   background-color: #fbfbfb;
+  padding:10px;
 }
 
 .closeSidebar {
@@ -125,8 +131,7 @@ body {
 .closeSidebar .closeBtn {
   font-size: 21px;
   color: #1a2634;
-  padding-top: 20px;
-  padding-right: 20px;
+  padding-top: 10px;
 }
 
 .closeSidebar .closeBtn:hover {
@@ -137,7 +142,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 10px;
 }
 
 .profile__username {
@@ -145,10 +150,13 @@ body {
 }
 
 .profile__username:hover {
-  color: #f58b30;
+  color: var(--main-bg-color);
 }
 
 .profileSidebar a > img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
   border: 2px solid lightgray;
 }
 
@@ -184,10 +192,9 @@ body {
   text-align: center;
 }
 
-.goto-home a {
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
+.goto-home i{
+  font-size: 2rem;
+  color:var(--main-bg-color);
 }
 
 .sidebar-menu p {
@@ -232,7 +239,7 @@ hr {
 }
 
 .groupBtn a:hover {
-  color: #f58b30;
+  color: var(--main-bg-color);
 }
 
 .groups {
@@ -286,6 +293,26 @@ hr {
   color: black;
   font-size: 20px;
 }
+
+.sidebar__footer{
+  width:250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding:30px;
+}
+
+.logout{
+  padding:7px 15px;
+  border-radius: 50px;
+  background-color: var(--main-bg-color);
+}
+
+.logout a{
+  text-decoration: none;
+  color: #1a2634;
+}
+
 .orange {
   color: var(--main-bg-color);
 }

@@ -32,7 +32,7 @@
 
     <div class="modal hidden">
       <div class="modal__content">
-        <form id="create" name="create" method="post" class="planRegister">
+        <form id="create" name="create" method="post" class="planRegister__meeting">
           <input
             type="text"
             name="title"
@@ -63,12 +63,12 @@
 
           <a
             href="#"
-            id="closeModal"
+            id="closeModal__meeting"
             class="closeModal2"
             onclick="plan_create(
                 `{{cur_meeting.meeting_name}}`
               )"
-            >추가</a
+            >일정 추가하기</a
           >
         </form>
         <button class="closeModal">

@@ -20,7 +20,7 @@
   box-sizing: border-box;
 }
 
-* a,input,option{
+* a,input,option,button{
   font-family: 'S-CoreDream-3Light';
 }
 
@@ -320,7 +320,11 @@ hr{
 }
 
 .modal__content {
-  border: 2px solid orange;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-top: 2px solid rgba(173,168,168,0.5);
   background-color: white;
   position: absolute;
   top: 50%;
@@ -335,9 +339,20 @@ hr{
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  margin-top: 0.7rem;
+  width: 90vw;
 }
 
-.planRegister > div {
+.planRegister__meeting{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-top: 1.8rem;
+  width: 90vw;
+}
+
+.planRegister > div, .planRegister__meeting > div {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -349,26 +364,26 @@ hr{
 .time-span {
   font-size: 0.8rem;
   padding-right: 1rem;
-  border-right: 1px solid orange;
 }
 
 .share span {
   font-size: 0.8rem;
 }
 .share i {
-  color: orange;
+  font-size: 1.2rem;
+  color: #fbe17a;
   margin-left: 0.5rem;
 }
 
 .share-box {
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem;
   position: absolute;
   bottom: 60px;
   left: 90px;
   width: 70vw;
   z-index: 2;
   background-color: white;
-  border: 1px solid orange;
+  border: 1px solid #ffeda2;
   border-radius: 20px;
   font-size: 0.9rem;
 }
@@ -379,10 +394,13 @@ hr{
 
 .share-box button {
   cursor: pointer;
-  color: white;
-  border: 1px solid orange;
+  color: black;
+  border: none;
   border-radius: 5px;
-  background-color: orange;
+  background-color: #ffeda2;
+  padding: 3px 6px;
+  margin-top:10px;
+  width: 60vw;
 }
 
 .share-box > div {
@@ -408,31 +426,42 @@ hr{
   cursor: pointer;
   height: 24px;
   width: 30%;
-  border: 1px solid orange;
   line-height: 24px;
   text-align: center;
   font-weight: bold;
   font-size: 13px;
-  background-color: #fff;
-  color: #333;
+  border-radius: 50px;
 }
 
 .share-select input[type="radio"]:checked + label {
-  background-color: orange;
-  color: #fff;
-}
-.planRegister > div input {
-  border: 1px solid orange;
-  border-radius: 5px;
-  padding: 0.2rem;
-}
-.planRegister > input {
-  padding: 0;
-  border: none;
-  height: 7%;
+  background-color: #ffeda2;
+  color: #000;
 }
 
-.planRegister a {
+.planRegister div, .planRegister__meeting div{
+  color:gray;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.planRegister span, .planRegister__meeting span{
+  font-size:1rem;
+}
+
+.planRegister > div input , .planRegister__meeting > div input{
+  border: 2px solid #ffeda2;
+  border-radius: 50px;
+  padding: 0.3rem 1rem;
+}
+.planRegister > input , .planRegister__meeting > input {
+  font-size: 1rem;
+  border: none;
+  height: 6%;
+}
+
+.planRegister a ,.planRegister__meeting a {
   padding: 0;
   border: none;
   height: 7%;
@@ -441,9 +470,9 @@ hr{
   padding: 1rem 0;
 }
 
-.planRegister input:focus {
+.planRegister input:focus ,.planRegister__meeting input:focus{
   outline: none;
-  border-bottom: 1px solid orange;
+  border-bottom: 1px solid hsl(48, 100%, 77%);
 }
 
 .closeModal {
@@ -452,7 +481,6 @@ hr{
   display: flex;
   width: 100%;
   justify-content: end;
-  margin-top: 15px;
   background-color: transparent;
   border: none;
 }
@@ -466,12 +494,31 @@ hr{
 }
 
 #closeModal {
-  background-color: orange;
-  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffeda2;
+  color: black;
   border-radius: 10px;
+  margin-top:10px;
   cursor: pointer;
   text-decoration: none;
+  font-size: 1.2em;
 }
+
+#closeModal__meeting{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffeda2;
+  color: black;
+  border-radius: 10px;
+  margin-top:30px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
 
 .go-today {
   width: 75px;

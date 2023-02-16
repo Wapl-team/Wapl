@@ -34,7 +34,7 @@ body {
   font-family: "S-CoreDream-3Light";
   min-height: 100vh;
   flex-direction: column;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   background-color: white;
 }
 
@@ -50,7 +50,7 @@ body {
   align-items: center;
 }
 
-.nav_bar_button{
+.nav_bar_button {
   color: black;
 }
 
@@ -73,7 +73,7 @@ body {
   font-size: 0em;
 }
 
-.year_month_display{
+.year_month_display {
   color: black;
 
   font-weight: 700;
@@ -130,15 +130,14 @@ body {
 }
 
 .closeSidebar .closeBtn:hover {
-  color: #f58b30;
+  color: var(--main-bg-color);
 }
 
 .profileSidebar {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
-  margin-bottom: 70px;
+  margin-bottom: 20px;
 }
 
 .profile__username {
@@ -248,7 +247,7 @@ hr {
   margin-top: 10px;
   width: 210px;
   padding: 10px;
-  background-color: #ffdab8;
+  background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
   transition: 0.3s;
@@ -271,7 +270,7 @@ hr {
   margin-top: 10px;
   width: 210px;
   padding: 10px;
-  background-color: #f58b30;
+  background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
   transition: 0.3s;
@@ -288,7 +287,7 @@ hr {
   font-size: 20px;
 }
 .orange {
-  color: orange;
+  color: var(--main-bg-color);
 }
 
 /* ----------------------------- */
@@ -329,7 +328,7 @@ hr {
 }
 
 .modal__content {
-  border: 2px solid orange;
+  border: 2px solid var(--main-bg-color);
   background-color: white;
   position: absolute;
   top: 50%;
@@ -358,14 +357,14 @@ hr {
 .time-span {
   font-size: 0.8rem;
   padding-right: 1rem;
-  border-right: 1px solid orange;
+  border-right: 1px solid var(--main-bg-color);
 }
 
 .share span {
   font-size: 0.8rem;
 }
 .share i {
-  color: orange;
+  color: var(--main-bg-color);
   margin-left: 0.5rem;
 }
 
@@ -377,7 +376,7 @@ hr {
   width: 70vw;
   z-index: 2;
   background-color: white;
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   border-radius: 20px;
   font-size: 0.9rem;
 }
@@ -389,9 +388,9 @@ hr {
 .share-box button {
   cursor: pointer;
   color: white;
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   border-radius: 5px;
-  background-color: orange;
+  background-color: var(--main-bg-color);
 }
 
 .share-box > div {
@@ -417,7 +416,7 @@ hr {
   cursor: pointer;
   height: 24px;
   width: 30%;
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   line-height: 24px;
   text-align: center;
   font-weight: bold;
@@ -427,11 +426,11 @@ hr {
 }
 
 .share-select input[type="radio"]:checked + label {
-  background-color: orange;
+  background-color: var(--main-bg-color);
   color: #fff;
 }
 .planRegister > div input {
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   border-radius: 5px;
   padding: 0.2rem;
 }
@@ -452,7 +451,7 @@ hr {
 
 .planRegister input:focus {
   outline: none;
-  border-bottom: 1px solid orange;
+  border-bottom: 1px solid var(--main-bg-color);
 }
 
 .closeModal {
@@ -467,7 +466,7 @@ hr {
 }
 .closeModal i {
   font-size: 21px;
-  color: orange;
+  color: var(--main-bg-color);
 }
 
 .hidden {
@@ -475,7 +474,7 @@ hr {
 }
 
 #closeModal {
-  background-color: orange;
+  background-color: var(--main-bg-color);
   color: white;
   border-radius: 10px;
   cursor: pointer;
@@ -484,8 +483,8 @@ hr {
 
 .go-today {
   width: 75px;
-  border-left: 1px solid orange;
-  border-right: 1px solid orange;
+  border-left: 1px solid var(--main-bg-color);
+  border-right: 1px solid var(--main-bg-color);
 }
 
 .days {
@@ -498,11 +497,11 @@ hr {
   /* border-bottom: 1px solid lightgrey;
   border-top: 1px solid lightgrey; */
   font-weight: bold;
-  background-color: #cacaca;
+  background-color: var(--main-bg-color);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
-} 
+}
 
 .day {
   width: calc(100% / 7);
@@ -512,7 +511,6 @@ hr {
 .dates {
   display: flex;
   flex-flow: row wrap;
-  height: 55vh;
   background-color: #fbfbfb;
   margin-left: 1.5em;
   margin-right: 1.5em;
@@ -530,21 +528,21 @@ hr {
   text-align: center;
 }
 
-.date p{
+.date p {
   margin-bottom: 2px;
 }
 
-.date-onclick{
+.date-onclick {
   width: calc(100% / 7);
   padding: 8px;
   text-align: center;
   box-shadow: none;
-  background-color: #cacaca;
+  background-color: var(--main-bg-color);
   border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.14);
 }
 
-.date-onclick p{
+.date-onclick p {
   margin-bottom: 2px;
 }
 
@@ -573,7 +571,7 @@ hr {
 }
 
 .today {
-  color: #F58B30;
+  color: #f58b30;
   font-weight: bold;
 }
 
@@ -592,7 +590,7 @@ hr {
 } */
 
 .detail {
-  background-color: #FFDAB8;
+  background-color: var(--main-bg-color);
   padding-bottom: 0.1em;
   display: flex;
   border-bottom-left-radius: 5px;
@@ -644,11 +642,11 @@ hr {
   background-color: white;
 }
 
-.timeline_name{
+.timeline_name {
   text-align: center;
   padding: 0.6em 1em;
   margin: 0em 1.35em;
-  background: #F58B30;
+  background: var(--main-bg-color);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 18px;
@@ -656,33 +654,33 @@ hr {
   font-weight: 700;
 }
 
-.month_category{
+.month_category {
   margin: 0;
   background-color: #fff;
   border: none;
   color: black;
   font-weight: 700;
   font-size: 25px;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   width: 54px;
 }
 
-.year_category{
+.year_category {
   margin: 0;
   background-color: #fff;
   border: none;
   color: black;
   font-weight: 700;
   font-size: 25px;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   width: 85px;
 }
 
-.year_month_display p{
+.year_month_display p {
   margin-right: 10px;
 }
 
-.meeting-name{
+.meeting-name {
   margin-left: 1.9em;
   margin-top: 1em;
   font-size: 20px;
@@ -693,4 +691,3 @@ hr {
   font-size: 2px;
   padding-top: 2.5px;
 }
-

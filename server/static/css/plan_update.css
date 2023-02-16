@@ -1,3 +1,5 @@
+@import url("./reset.css");
+
 * {
   margin: 0;
   padding: 0;
@@ -94,7 +96,7 @@ body {
   font-size: 16px;
   border: none;
   border-radius: 15px;
-  background-color: #ffd83d;
+  background-color: var(--main-bg-color);
   color: white;
   padding: 0.5em;
   margin: 0.2em;
@@ -105,7 +107,7 @@ body {
   text-decoration: none;
   border: none;
   border-radius: 15px;
-  background-color: #ffd83d;
+  background-color: var(--main-bg-color);
   color: white;
   padding: 0.5em;
   margin: 0.2em;
@@ -132,7 +134,7 @@ body {
   width: 70vw;
   z-index: 2;
   background-color: white;
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   border-radius: 20px;
   font-size: 0.9rem;
 }
@@ -144,9 +146,9 @@ body {
 .share-box button {
   cursor: pointer;
   color: white;
-  border: 1px solid orange;
+  border: 1px solid var(--main-bg-color);
   border-radius: 5px;
-  background-color: orange;
+  background-color: var(--main-bg-color);
 }
 
 .share-box > div {
@@ -182,7 +184,7 @@ body {
 }
 
 .share-select input[type="radio"]:checked + label {
-  background-color: orange;
+  background-color: var(--main-bg-color);
   color: #fff;
 }
 
@@ -218,7 +220,7 @@ body {
 }
 
 #closeModal {
-  background-color: orange;
+  background-color: var(--main-bg-color);
   color: white;
   border-radius: 10px;
   cursor: pointer;

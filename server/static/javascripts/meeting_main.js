@@ -244,7 +244,7 @@ const plan_create = (meeting_pk) => {
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, meeting_img, err_msg, user_name } = JSON.parse(
+        const { plan, meeting_img, err_msg, meeting_name } = JSON.parse(
           requestNewPlan.response
         );
         //validation 통과한 경우
@@ -376,7 +376,7 @@ const plan_create = (meeting_pk) => {
 
                 const new_user_name = document.createElement("p");
                 new_user_name.classList.add("profile-user-name");
-                new_user_name.textContent = `${user_name}`;
+                new_user_name.textContent = `${meeting_name}`;
                 new_member.appendChild(new_user_name);
 
                 new_member.style.height = "50px";
@@ -427,7 +427,7 @@ const plan_create = (meeting_pk) => {
 
               const new_user_name = document.createElement("p");
               new_user_name.classList.add("profile-user-name");
-              new_user_name.textContent = `${user_name}`;
+              new_user_name.textContent = `${meeting_name}`;
               new_member.appendChild(new_user_name);
 
               new_member.style.height = "50px";
@@ -622,6 +622,7 @@ return: err_msg
             public_plans,
             private_plans,
             share_list,
+            meeting_name,
             user_name,
             user_img,
             meeting_img,
@@ -644,10 +645,10 @@ return: err_msg
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
 
-              const new_user_name = document.createElement("p");
-              new_user_name.classList.add("profile-user-name");
-              new_user_name.textContent = `${user_name[plan.fields.owner]}`;
-              new_member.appendChild(new_user_name);
+              const new_meeting_name = document.createElement("p");
+              new_meeting_name.classList.add("profile-user-name");
+              new_meeting_name.textContent = `${meeting_name}`;
+              new_member.appendChild(new_meeting_name);
 
               new_member.style.height = "50px";
               new_member.style.width = "43px";
@@ -687,7 +688,9 @@ return: err_msg
           prviate_plans_array.forEach((plan, i) => {
             if (already.indexOf(`${plan.fields.owner}`) == -1) {
               const new_member = document.createElement("div");
-              new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+              new_member.innerHTML = `<img class="profileImagePreview"src="${
+                user_img[plan.fields.owner]
+              }" border-radius="25px" width="32px" height="32px" />`;
 
               const new_user_name = document.createElement("p");
               new_user_name.classList.add("profile-user-name");
@@ -714,7 +717,7 @@ return: err_msg
 
             let new_plan = document.createElement("a");
             const width = parseInt(hours) * 60 + parseInt(minutes);
-            new_plan.href = `/plan/${plan.pk}`;
+
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
@@ -732,8 +735,10 @@ return: err_msg
             new_plan.style.textOverflow = "ellipsis";
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
+              new_plan.href = `/plan/${plan.pk}`;
             } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
+              new_plan.style.pointerEvents = "none";
             }
 
             document

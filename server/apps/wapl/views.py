@@ -187,7 +187,8 @@ def create_private_plan(request, *args, **kwargs):
 
       new_plan=model_to_dict(new_plan)
 
-      return JsonResponse({'plan':new_plan, 'userimg':userimg, 'err_msg': err_msg})
+      return JsonResponse({'plan':new_plan, 'userimg':userimg,
+                           'username':request.user.name, 'err_msg': err_msg})
     else:
       return JsonResponse({'plan': None, 'userimg': None, 'err_msg': err_msg})
 
@@ -215,7 +216,7 @@ def create_public_plan(request, *args, **kwargs):
         meeting_img = meeting.image.url
 
       new_plan=model_to_dict(new_plan)
-      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg, 'user_name': request.user.name})
+      return JsonResponse({'plan': new_plan, 'meeting_img': meeting_img, 'err_msg' : err_msg, 'meeting_name': meeting.meeting_name})
     else:
       return JsonResponse({'plan': None, 'meeting_img': None, 'err_msg' : err_msg})
 
@@ -677,7 +678,7 @@ def view_explan(request):
 
   public_user_names = {}
   for i in range(len(public_plans)):
-    public_user_names[public_plans[i].owner.pk] = public_plans[i].owner.name  
+    public_user_names[public_plans[i].meetings.pk] = public_plans[i].meetings.meeting_name
     
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -753,6 +754,7 @@ def view_team_explan(request):
     return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans,
                          'share_list' : share_list,
+                         'meeting_name' : meeting.meeting_name,
                          'user_name' : user_name,
                          'user_img':user_img,
                          'meeting_img':meeting_img})

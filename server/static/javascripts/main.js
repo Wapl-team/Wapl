@@ -290,7 +290,9 @@ const plan_create = () => {
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, userimg, err_msg } = JSON.parse(requestNewPlan.response);
+        const { plan, userimg, username, err_msg } = JSON.parse(
+          requestNewPlan.response
+        );
 
         //validation 통과하여 일정 등록이 가능한 경우
         if (plan != null && userimg != null) {
@@ -414,9 +416,13 @@ const plan_create = () => {
               else {
                 // 개인 일정 라인추가
                 const newmember = document.createElement("div");
-                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/><p>${plan.owner}</p>`;
+                newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/>`;
                 newmember.style.height = "50px";
                 newmember.style.width = "43px";
+                const new_user_name = document.createElement("p");
+                new_user_name.classList.add("profile-user-name");
+                new_user_name.textContent = `${username}`;
+                newmember.appendChild(new_user_name);
                 memberlist.firstChild.before(newmember);
 
                 [start, hours, minutes] = calcTime(
@@ -455,10 +461,13 @@ const plan_create = () => {
             else {
               // 개인 일정 라인추가
               const newmember = document.createElement("div");
-              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/> <p>123${plan.owner}123</p>`;
-              console.log("gdgd");
+              newmember.innerHTML = `<img class="profileImagePreview" src="${userimg}" border-radius="25px" width="32px" height="32px"/>`;
               newmember.style.height = "50px";
               newmember.style.width = "43px";
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${username}`;
+              newmember.appendChild(new_user_name);
               memberlist.appendChild(newmember);
 
               [start, hours, minutes] = calcTime(
@@ -540,6 +549,7 @@ window.onload = function () {
         // 개인일정이 위쪽에 와야하므로 먼저 추가
         thismonthDates.forEach((day) => {
           let count = 0;
+
           privatePlansArray.forEach((plan) => {
             const startTime = new Date(plan.fields.startTime);
             const endTime = new Date(plan.fields.endTime);
@@ -724,7 +734,7 @@ window.onload = function () {
               const new_user_name = document.createElement("p");
               new_user_name.classList.add("profile-user-name");
               new_user_name.textContent = `${
-                public_user_names[plan.fields.owner]
+                public_user_names[plan.fields.meetings]
               }`;
               newmember.appendChild(new_user_name);
 

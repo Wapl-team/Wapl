@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+:root {
+  --main-bg-color: #e1ef6c;
+}
+
 html,
 body,
 div,

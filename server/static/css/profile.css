@@ -1,6 +1,9 @@
+@import url("./reset.css");
+
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -10,7 +13,7 @@
   padding: 0;
   font-family: sans-serif;
   box-sizing: border-box;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
 }
 
 body {
@@ -56,18 +59,18 @@ body {
 }
 
 .profile-form p {
-  padding:0.3em;
+  padding: 0.3em;
   text-align: center;
-  color: #FFD83D;
+  color: #ffd83d;
   font-size: 17px;
   font-weight: bold;
 }
 
 .profile-form p input {
-  width:240px;
+  width: 240px;
   height: 3em;
-  border:none;
-  padding:0.3em;
+  border: none;
+  padding: 0.3em;
   text-align: center;
   margin-top: 1vh;
   border-radius: 3px;
@@ -87,14 +90,14 @@ body {
 }
 
 .profile-btn {
-  background-color: #FFD83D;
-  border:none;
+  background-color: var(--main-bg-color);
+  border: none;
   border-radius: 5px;
-  color: white;
+  color: black;
   padding: 0.5vh 0;
   font-size: 1.3rem;
   margin-bottom: 1em;
-  width:240px;
+  width: 240px;
   font-weight: bold;
 }
 
@@ -102,18 +105,18 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin:10px;
+  margin: 10px;
 }
 
 .update_password {
-  padding:0.3em;
+  padding: 0.3em;
   font-weight: bold;
-  color: #FFD83D;
+  color: #ffd83d;
   font-size: 17px;
 }
 
 .return {
-  width:240px;
+  width: 240px;
   height: 30px;
   text-align: center;
   text-decoration: none;
@@ -121,7 +124,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFD83D;
+  color: #ffd83d;
   font-size: 16px;
-  padding:0.3em;
+  padding: 0.3em;
 }

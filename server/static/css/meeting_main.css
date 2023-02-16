@@ -252,7 +252,7 @@ hr {
   margin-top: 10px;
   width: 210px;
   padding: 10px;
-  background-color: #f58b30;
+  background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
   transition: 0.3s;
@@ -376,7 +376,7 @@ hr {
 
 #closeModal {
   margin-top: 0.5rem;
-  background-color: orange;
+  background-color: var(--main-bg-color);
   color: white;
   border-radius: 10px;
   cursor: pointer;

@@ -1,11 +1,9 @@
-/*
-@import url("./font.css");
 @import url("./reset.css");
-*/
 
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -13,7 +11,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   box-sizing: border-box;
 }
 
@@ -91,18 +89,19 @@ body {
   align-items: center;
 }
 
-.signup-input{
-  width:240px;
+.signup-input {
+  width: 240px;
   height: 3em;
   border:none;
   padding:0.3em;
   margin-bottom: 5px;
+
   text-align: center;
   border-radius: 5px;
   background-color:#f8f8f8;
 }
 
-.signup-form span{
+.signup-form span {
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -110,17 +109,17 @@ body {
 }
 
 .signup-btn {
-  background-color: #FFD83D;
+  background-color: var(--main-bg-color);
   border: none;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-size: 1rem;
   width: 240px;
   height: 5vh;
 }
 
-.signup-notice p{
-  font-size:10px;
-  margin:3px;
+.signup-notice p {
+  font-size: 10px;
+  margin: 3px;
   margin-top: 0.5vh;
 }

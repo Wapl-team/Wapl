@@ -1,18 +1,16 @@
-/*
-@import url("./font.css");
 @import url("./reset.css");
-*/
 
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
 * {
   margin: 0;
   padding: 0;
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   box-sizing: border-box;
 }
 
@@ -46,7 +44,7 @@ body {
   font-size: 2rem;
   color: #395165;
   font-weight: bold;
-  margin:1em;
+  margin: 1em;
 }
 
 .error__msg{
@@ -62,25 +60,25 @@ body {
   margin: 2vh 0;
 }
 
-.login-form input{
-  width:240px;
+.login-form input {
+  width: 240px;
   height: 4em;
-  border:none;
-  padding:0.3em;
+  border: none;
+  padding: 0.3em;
   text-align: center;
   border-radius: 5px;
-  border: 1px solid #1A2634;
+  border: 1px solid #1a2634;
 }
 
 .login-btn {
-  background-color: #FFD83D;
-  border:none;
+  background-color: var(--main-bg-color);
+  border: none;
   border-radius: 5px;
-  color: white;
+  color: black;
   padding: 1vh 5vw;
   font-size: 1.3rem;
   margin-bottom: 1vh;
-  width:240px;
+  width: 240px;
   margin-top: 1vh;
 }
 
@@ -88,17 +86,17 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin:10px;
+  margin: 10px;
 }
 
-.main a{
+.main a {
   text-decoration: none;
   text-align: center;
   font-size: 1.2em;
   color: #395165;
   border-radius: 5px;
-  padding:3px;
-  width:240px;
+  padding: 3px;
+  width: 240px;
   height: 2em;
   margin-bottom: 0.6em;
 }

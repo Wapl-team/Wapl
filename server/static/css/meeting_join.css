@@ -1,63 +1,66 @@
+@import url("./reset.css");
+
 @font-face {
-    font-family: 'S-CoreDream-3Light';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
 
-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 80vh;
-    font-family: 'S-CoreDream-3Light';
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+  font-family: "S-CoreDream-3Light";
 }
 
-h2{
-    color:#395165;
-    font-size: 25px;
+h2 {
+  color: #395165;
+  font-size: 25px;
 }
 
-.meetingJoin{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: orange;
-    font-size: 17px;
-    font-weight: bold;
+.meetingJoin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: orange;
+  font-size: 17px;
+  font-weight: bold;
 }
 
-.meetingJoin input{
-    width:240px;
-    height: 30px;
-    text-align: center;
-    border-radius: 10px;
+.meetingJoin input {
+  width: 240px;
+  height: 30px;
+  text-align: center;
+  border-radius: 10px;
 }
 
-.meetingJoin div input{
-    background-color: #FFD83D;
-    color:white;
-    width:240px;
-    height: 36px;
-    text-align: center;
-    border-radius: 10px;
-    border: none;
-    font-size: 18px;
+.meetingJoin div input {
+  background-color: var(--main-bg-color);
+  color: white;
+  width: 240px;
+  height: 36px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
 }
 
-.meetingJoin div a{
-    color:#FFD83D;
-    width:240px;
-    height: 30px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2vh;
-    font-weight: normal;
-    font-size: 17px;
+.meetingJoin div a {
+  color: #ffd83d;
+  width: 240px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vh;
+  font-weight: normal;
+  font-size: 17px;
 }

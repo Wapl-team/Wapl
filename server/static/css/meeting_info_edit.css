@@ -32,7 +32,7 @@ body{
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #FBFBFB;
+    background-color: white;
 }
 
 .meeting__info{
@@ -54,7 +54,7 @@ body{
 }
 
 .profile__container{
-    background-color: rgba(173,168,168,0.1);
+    background-color:var(--main-bg-color);
     border-radius: 20px;
     padding: 30px 0;
     margin-bottom: 5px;

@@ -12,21 +12,20 @@
     <nav class="nav">
       <div class="nav-side">
         <button onclick="openToggle()" class="nav_bar_button">
-          <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em;"></i>
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em"></i>
         </button>
       </div>
       <div>WAPL</div>
       <div>
         <button class="modalButton">
-          <i class="fa-solid fa-plus fa-2x" style="font-size: 2.3em;"></i>
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 2.3em"></i>
         </button>
-      </div>  
-  </nav>
-    <hr>
+      </div>
+    </nav>
+    <hr />
 
     <div class="meeting-name">개인 달력</div>
     <div class="year-month">{{view_year}}년 {{view_month}}월</div>
-    
 
     <form action="/main" class="year_month_display" method="post">
       <select name="year_category" class="year_category">
@@ -43,7 +42,7 @@
         {% endfor %}
       </select>
       <p>월</p>
-      <input type="submit" value="선택하기" />
+      <input class="change-day-btn" type="submit" value="선택하기" />
     </form>
 
     <div class="modal hidden">
@@ -78,7 +77,8 @@
           />
 
           <div class="share">
-            <span>공개범위 
+            <span
+              >공개범위
               <!-- <i class="fa-solid fa-chevron-right"></i> -->
               <i class="fa-regular fa-hand-pointer"></i>
             </span>
@@ -88,8 +88,8 @@
             id="closeModal"
             class="closeModal2"
             onclick="plan_create()"
-            >일정 추가하기 </a
-          >
+            >일정 추가하기
+          </a>
         </form>
         <button class="closeModal">
           <i class="fa-solid fa-x"></i>
@@ -199,7 +199,6 @@
     </div>
 
     <div class="main">
-      
       <!-- 요일 영역 -->
       <div class="days">
         <div class="day">일</div>

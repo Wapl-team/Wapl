@@ -543,13 +543,13 @@ def login(request:HttpRequest, *args, **kwargs):
             user = form.get_user()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('wapl:main')
-         else:
+        else:
             err_msg="잘못된 ID 또는 패스워드입니다"
             context={
             'err_msg':err_msg
             }
             return render(request, template_name='login.html',context=context)
-     else:
+    else:
          return render(request, template_name='login.html')
 
 

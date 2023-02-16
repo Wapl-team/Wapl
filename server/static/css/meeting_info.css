@@ -101,7 +101,7 @@ body {
   width: 0;
   height: 0;
   border: 29px solid transparent;
-  border-right-color: #eee;
+  border-right-color: var(--main-bg-color);
   border-left: 0;
   border-top: 0;
   margin-top: -14.5px;
@@ -153,10 +153,10 @@ span {
   transition: 0.1s;
 }
 
-.meeting__footer a:hover{
-    color:#F58B30;
+.meeting__footer a:hover {
+  color: #f58b30;
 }
 
-.drag__code{
-    cursor: move;
+.drag__code {
+  cursor: move;
 }

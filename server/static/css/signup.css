@@ -25,12 +25,18 @@ body {
   flex-direction: column;
 }
 
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .signup-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 100vw;
+    width: 80vw;
     height:100vh;
     border-radius: 10px;
 }
@@ -39,8 +45,15 @@ body {
   font-size: 2rem;
   color: #395165;
   font-weight: bold;
-  margin-bottom: 1vh;
+  margin-bottom: 3vh;
 }
+
+.error__msg{
+  color:red;
+  font-weight: 600;
+  margin:15px 0;
+}
+
 
 .signup-form {
   display: flex;
@@ -49,9 +62,33 @@ body {
   align-items: center;
 }
 
-.profileImage{
+.signup-form-content{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup__profile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding:15px;
   width:240px;
-  padding: 0.6em;
+  background-color: rgba(173, 168, 168, 0.1);
+  border-radius: 50px;
+}
+
+.profileImage{
+  width:190px;
+}
+.signup__body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .signup-input{
@@ -59,14 +96,17 @@ body {
   height: 3em;
   border:none;
   padding:0.3em;
+  margin-bottom: 5px;
   text-align: center;
   border-radius: 5px;
+  background-color:#f8f8f8;
 }
 
 .signup-form span{
   font-weight: bold;
   display: flex;
   justify-content: center;
+  margin-bottom: 5px;
 }
 
 .signup-btn {
@@ -75,7 +115,7 @@ body {
   border-radius: 5px;
   color: white;
   font-size: 1rem;
-  width: 62vw;
+  width: 240px;
   height: 5vh;
 }
 

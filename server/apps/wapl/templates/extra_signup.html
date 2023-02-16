@@ -14,6 +14,7 @@
       <!-- 회원가입 영역 -->
       <div class="signup-container">
         <p class="signup">추가 정보 입력</p>
+        <div class="error__msg">{{err_msg}}</div>
         {% block content %}
         <form method="POST" action="" class="signup-form" enctype="multipart/form-data">
           {% csrf_token %}

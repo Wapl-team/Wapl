@@ -173,9 +173,12 @@ const makeCalendar = (viewYear, viewMonth) => {
   }
 };
 
+
 const viewDate = document.querySelector(".year-month").innerHTML.split("년");
 const viewYear = parseInt(viewDate[0]);
 const viewMonth = parseInt(viewDate[1].substring(0, 2));
+
+console.log(viewMonth, viewYear)
 makeCalendar(viewYear, viewMonth);
 
 // // 이전 달 그리는 함수
@@ -394,7 +397,7 @@ const plan_create = () => {
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
                 // newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "#fffdf5";
+                newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
                 newplan.style.height = "40px";
                 newplan.style.borderRadius = "10px";
@@ -433,7 +436,7 @@ const plan_create = () => {
                 newplan.style.width = `${width}px`;
                 newplan.style.left = `${start}px`;
                 // newplan.style.border = "1px solid orange";
-                newplan.style.backgroundColor = "#fffdf5";
+                newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
                 newplan.style.height = "40px";
                 newplan.style.borderRadius = "10px";
@@ -474,7 +477,7 @@ const plan_create = () => {
               newplan.style.width = `${width}px`;
               newplan.style.left = `${start}px`;
               // newplan.style.border = "1px solid orange";
-              newplan.style.backgroundColor = "#fffdf5";
+              newplan.style.backgroundColor = "#FBFBFB";
               newplan.style.color = "#1A2634";
               newplan.style.height = "40px";
               newplan.style.borderRadius = "10px";
@@ -697,7 +700,7 @@ window.onload = function () {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
             // newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "#fffdf5";
+            newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
             newplan.style.height = "40px";
             newplan.style.borderRadius = "10px";
@@ -750,7 +753,7 @@ window.onload = function () {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${start}px`;
             // newplan.style.border = "1px solid orange";
-            newplan.style.backgroundColor = "#fffdf5";
+            newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
             newplan.style.height = "40px";
             newplan.style.borderRadius = "10px";

@@ -352,7 +352,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.padding = "8px";
@@ -400,7 +400,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
@@ -450,7 +450,7 @@ const plan_create = (meeting_pk) => {
               new_plan.style.width = `${width}px`;
               new_plan.style.left = `${start}px`;
               // new_plan.style.border = "1px solid orange";
-              new_plan.style.backgroundColor = "#fffdf5";
+              new_plan.style.backgroundColor = "#FBFBFB";
               new_plan.style.color = "black";
               new_plan.style.height = "50px";
               new_plan.style.borderRadius = "20px";
@@ -670,7 +670,7 @@ return: err_msg
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
             new_plan.style.height = "40px";
             new_plan.style.borderRadius = "10px";
@@ -719,7 +719,7 @@ return: err_msg
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
             new_plan.style.height = "40px";
             new_plan.style.borderRadius = "10px";

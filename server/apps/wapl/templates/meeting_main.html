@@ -12,21 +12,39 @@
     <nav class="nav">
       <div class="nav-side">
         <button onclick="openToggle()" class="nav_bar_button">
-          <i class="fa-solid fa-bars fa-2x"></i>
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em;"></i>
         </button>
       </div>
-      <div class="meeting-name">{{cur_meeting.meeting_name}}'s</div>
-      <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
-      <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+      <div>WAPL</div>
 
       <div>
         <button class="modalButton">
-          <i class="fa-solid fa-plus fa-2x"></i>
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 2.3em;"></i>
         </button>
       </div>
     </nav>
-    <form action="{% url 'wapl:meeting_calendar' cur_meeting.id %}">
-      <input type="date" name="select-date" />
+
+    <hr>
+
+    <div class="meeting-name">{{cur_meeting.meeting_name}} 달력</div>
+    <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
+    <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+
+    <form action="{% url 'wapl:meeting_calendar' cur_meeting.pk %}" class="year_month_display" method="post">
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
       <input type="submit" value="선택하기" />
     </form>
 
@@ -158,7 +176,7 @@
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
 
-      <p style="text-align: center">Timeline</p>
+      <p class="timeline_name">Timeline</p>
 
       <div class="detail">
         <div class="detail-member"></div>

@@ -136,3 +136,8 @@ class PublicComment(Comment):
   
 class replyPublicComment(Comment):
   comment_post=models.ForeignKey(PublicComment, on_delete=models.CASCADE, related_name='public_comment')
+  
+class inputTime(models.Model):
+  now = datetime.now()
+  input_year=models.CharField(default=now.year, max_length=20)
+  input_month=models.CharField(default=now.month, max_length=20)

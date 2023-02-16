@@ -217,7 +217,7 @@ closeModal2.addEventListener("click", () => {
 //새로운 팀 일정 추가하는 함수:
 // ajax 사용해서 썸네일 띄우고
 // 현재 보고있는 preview 날짜에 일정 추가시 ajax
-const plan_create = (meeting_name, meeting_pk) => {
+const plan_create = (meeting_pk) => {
   const requestNewPlan = new XMLHttpRequest();
   const url = "/create-public-plan";
   requestNewPlan.open("POST", url, true);
@@ -231,21 +231,20 @@ const plan_create = (meeting_name, meeting_pk) => {
   const startTime = document.getElementById("plan_startTime").value;
   const endTime = document.getElementById("plan_endTime").value;
   const content = document.getElementById("plan_content").value;
-
   requestNewPlan.send(
     JSON.stringify({
-      meeting_name: meeting_name,
       title: title,
       location: location,
       startTime: startTime,
       endTime: endTime,
       content: content,
+      meeting_pk: meeting_pk,
     })
   );
   requestNewPlan.onreadystatechange = () => {
     if (requestNewPlan.readyState === XMLHttpRequest.DONE) {
       if (requestNewPlan.status < 400) {
-        const { plan, meeting_img, err_msg } = JSON.parse(
+        const { plan, meeting_img, err_msg, meeting_name } = JSON.parse(
           requestNewPlan.response
         );
         //validation 통과한 경우
@@ -284,6 +283,28 @@ const plan_create = (meeting_name, meeting_pk) => {
                 newimg.style.height = "12px";
                 newimg.style.margin = "0px 1px";
                 day.after(newimg);
+                if (day.parentNode.childNodes.length == 6) {
+                  day.parentNode.childNodes[5].remove();
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                } else if (day.parentNode.childNodes.length > 6) {
+                  day.parentNode.childNodes[5].remove();
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${day.parentNode.childNodes.length - 4}`;
+                }
               }
             }
             if (
@@ -331,10 +352,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
-                new_plan.style.borderRadius = "20px";
                 new_plan.style.padding = "8px";
                 new_plan.style.color = "#1A2634";
                 new_plan.style.height = "40px";
@@ -342,6 +362,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
                 new_plan.style.fontSize = "17px";
+                new_plan.style.overflow = "hidden";
+                new_plan.style.whiteSpace = "nowrap";
+                new_plan.style.textOverflow = "ellipsis";
                 new_plan.innerText = `${plan.title}`;
                 timeline.childNodes[0].appendChild(new_plan);
               }
@@ -350,6 +373,12 @@ const plan_create = (meeting_name, meeting_pk) => {
                 // 개인 일정 라인추가
                 const new_member = document.createElement("div");
                 new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+                const new_user_name = document.createElement("p");
+                new_user_name.classList.add("profile-user-name");
+                new_user_name.textContent = `${meeting_name}`;
+                new_member.appendChild(new_user_name);
+
                 new_member.style.height = "50px";
                 new_member.style.width = "43px";
                 memberlist.firstChild.before(new_member);
@@ -371,7 +400,7 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.width = `${width}px`;
                 new_plan.style.left = `${start}px`;
                 // new_plan.style.border = "1px solid orange";
-                new_plan.style.backgroundColor = "#fffdf5";
+                new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
                 new_plan.style.height = "50px";
                 new_plan.style.borderRadius = "20px";
@@ -382,6 +411,9 @@ const plan_create = (meeting_name, meeting_pk) => {
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
                 new_plan.style.fontSize = "17px";
+                new_plan.style.overflow = "hidden";
+                new_plan.style.whiteSpace = "nowrap";
+                new_plan.style.textOverflow = "ellipsis";
                 new_plan.innerText = `${plan.title}`;
                 new_div.appendChild(new_plan);
                 timeline.childNodes[0].before(new_div);
@@ -392,6 +424,12 @@ const plan_create = (meeting_name, meeting_pk) => {
               // 개인 일정 라인추가
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview" src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${meeting_name}`;
+              new_member.appendChild(new_user_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);
@@ -412,7 +450,7 @@ const plan_create = (meeting_name, meeting_pk) => {
               new_plan.style.width = `${width}px`;
               new_plan.style.left = `${start}px`;
               // new_plan.style.border = "1px solid orange";
-              new_plan.style.backgroundColor = "#fffdf5";
+              new_plan.style.backgroundColor = "#FBFBFB";
               new_plan.style.color = "black";
               new_plan.style.height = "50px";
               new_plan.style.borderRadius = "20px";
@@ -423,6 +461,9 @@ const plan_create = (meeting_name, meeting_pk) => {
               new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               new_plan.style.padding = "11px";
               new_plan.style.fontSize = "17px";
+              new_plan.style.overflow = "hidden";
+              new_plan.style.whiteSpace = "nowrap";
+              new_plan.style.textOverflow = "ellipsis";
               new_plan.innerText = `${plan.title}`;
               new_div.appendChild(new_plan);
               timeline.appendChild(new_div);
@@ -459,13 +500,12 @@ window.onload = function () {
       if (requestPlan.status < 400) {
         const { public_plans, private_plans, user_img, meeting_img } =
           JSON.parse(requestPlan.response);
-
         const public_plans_array = JSON.parse(public_plans);
         const private_plans_array = JSON.parse(private_plans);
-
         const month_dates = document.querySelectorAll(".this");
 
         month_dates.forEach((day) => {
+          let count = 0;
           public_plans_array.forEach((plan) => {
             const start_time = new Date(plan.fields.startTime);
             const end_time = new Date(plan.fields.endTime);
@@ -487,6 +527,7 @@ window.onload = function () {
                 new_img.style.height = "12px";
                 new_img.style.margin = "0px 1px";
                 day.parentElement.appendChild(new_img);
+                count += 1;
               }
             }
           });
@@ -504,14 +545,38 @@ window.onload = function () {
               today <= end_time.setHours(0, 0, 0, 0)
             ) {
               if (already.indexOf(`${plan.fields.owner}`) == -1) {
-                const new_img = document.createElement("img");
-                new_img.src = `${user_img[plan.fields.owner]}`;
-                new_img.classList.add("profileImagePlan");
-                new_img.style.width = "12px";
-                new_img.style.height = "12px";
-                new_img.style.margin = "0px 1px";
-                day.parentElement.appendChild(new_img);
-                already.push(`${plan.fields.owner}`);
+                if (count <= 3) {
+                  const new_img = document.createElement("img");
+                  new_img.src = `${user_img[plan.fields.owner]}`;
+                  new_img.classList.add("profileImagePlan");
+                  new_img.style.width = "12px";
+                  new_img.style.height = "12px";
+                  new_img.style.margin = "0px 1px";
+                  day.parentElement.appendChild(new_img);
+                  already.push(`${plan.fields.owner}`);
+                  count += 1;
+                } else if (count == 4) {
+                  const thumbnail_overflow = document.createElement("div");
+                  thumbnail_overflow.style.width = "30px";
+                  thumbnail_overflow.style.height = "12px";
+                  thumbnail_overflow.style.margin = "0px 1px";
+                  thumbnail_overflow.style.fontSize = "0.7rem";
+                  thumbnail_overflow.classList.add(
+                    `thumbnail-overflow-${day.innerText}`
+                  );
+                  thumbnail_overflow.style.borderRadius = "5px";
+                  thumbnail_overflow.style.backgroundColor = "white";
+                  thumbnail_overflow.style.boxShadow =
+                    "1px 1px 2px rgb(0 0 0 / 14%)";
+                  thumbnail_overflow.innerText = "+1";
+                  day.parentElement.appendChild(thumbnail_overflow);
+                  count += 1;
+                } else {
+                  document.querySelector(
+                    `.thumbnail-overflow-${day.innerText}`
+                  ).innerText = `+${count - 3}`;
+                  count += 1;
+                }
               }
             }
           });
@@ -557,6 +622,7 @@ return: err_msg
             public_plans,
             private_plans,
             share_list,
+            meeting_name,
             user_name,
             user_img,
             meeting_img,
@@ -578,6 +644,12 @@ return: err_msg
               timeline.appendChild(new_div);
               const new_member = document.createElement("div");
               new_member.innerHTML = `<img class="profileImagePreview"src="${meeting_img}" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_meeting_name = document.createElement("p");
+              new_meeting_name.classList.add("profile-user-name");
+              new_meeting_name.textContent = `${meeting_name}`;
+              new_member.appendChild(new_meeting_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);
@@ -599,7 +671,7 @@ return: err_msg
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
             new_plan.style.height = "40px";
             new_plan.style.borderRadius = "10px";
@@ -607,7 +679,8 @@ return: err_msg
             new_plan.style.padding = "11px";
             new_plan.style.fontSize = "17px";
             new_plan.style.overflow = "hidden";
-            new_plan.style.whiteSpace = "normal";
+            new_plan.style.whiteSpace = "nowrap";
+            new_plan.style.textOverflow = "ellipsis";
             new_plan.innerText = `${plan.fields.title}`;
             document.querySelector(".public-timeline").appendChild(new_plan);
           });
@@ -618,6 +691,12 @@ return: err_msg
               new_member.innerHTML = `<img class="profileImagePreview"src="${
                 user_img[plan.fields.owner]
               }" border-radius="25px" width="32px" height="32px" />`;
+
+              const new_user_name = document.createElement("p");
+              new_user_name.classList.add("profile-user-name");
+              new_user_name.textContent = `${user_name[plan.fields.owner]}`;
+              new_member.appendChild(new_user_name);
+
               new_member.style.height = "50px";
               new_member.style.width = "43px";
               memberlist.appendChild(new_member);
@@ -638,12 +717,12 @@ return: err_msg
 
             let new_plan = document.createElement("a");
             const width = parseInt(hours) * 60 + parseInt(minutes);
-            new_plan.href = `/plan/${plan.pk}`;
+
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
             new_plan.style.left = `${start}px`;
             // new_plan.style.border = "1px solid orange";
-            new_plan.style.backgroundColor = "#fffdf5";
+            new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
             new_plan.style.height = "40px";
             new_plan.style.borderRadius = "10px";
@@ -652,11 +731,14 @@ return: err_msg
             new_plan.style.fontSize = "17px";
             new_plan.innerText = `${plan.fields.title}`;
             new_plan.style.overflow = "hidden";
-            new_plan.style.whiteSpace = "normal";
+            new_plan.style.whiteSpace = "nowrap";
+            new_plan.style.textOverflow = "ellipsis";
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
+              new_plan.href = `/plan/${plan.pk}`;
             } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
+              new_plan.style.pointerEvents = "none";
             }
 
             document

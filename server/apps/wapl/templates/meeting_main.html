@@ -12,21 +12,39 @@
     <nav class="nav">
       <div class="nav-side">
         <button onclick="openToggle()" class="nav_bar_button">
-          <i class="fa-solid fa-bars fa-2x"></i>
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em;"></i>
         </button>
       </div>
-      <div class="meeting-name">{{cur_meeting.meeting_name}}'s</div>
-      <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
-      <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+      <div>WAPL</div>
 
       <div>
         <button class="modalButton">
-          <i class="fa-solid fa-plus fa-2x"></i>
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 2.3em;"></i>
         </button>
       </div>
     </nav>
-    <form action="{% url 'wapl:meeting_calendar' cur_meeting.id %}">
-      <input type="date" name="select-date" />
+
+    <hr>
+
+    <div class="meeting-name">{{cur_meeting.meeting_name}} 달력</div>
+    <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
+    <div class="year-month">{{view_year}}년 {{view_month}}월</div>
+
+    <form action="{% url 'wapl:meeting_calendar' cur_meeting.pk %}" class="year_month_display" method="post">
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
       <input type="submit" value="선택하기" />
     </form>
 
@@ -65,10 +83,8 @@
             href="#"
             id="closeModal__meeting"
             class="closeModal2"
-            onclick="plan_create(
-                `{{cur_meeting.meeting_name}}`
-              )"
-            >일정 추가하기</a
+            onclick="plan_create({{cur_meeting.id}})"
+            >추가</a
           >
         </form>
         <button class="closeModal">
@@ -77,57 +93,71 @@
       </div>
     </div>
 
-<!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
+    <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
 
-<div id="sidebar" class="sidebar-menu">
-  <div class="profile">
-    <div class="closeSidebar">
-      <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"><i class="fa-solid fa-x"></i></a>
-    </div>
-    <div class="profileSidebar">
-      <a href="{% url 'wapl:profile' %}">
-        {% if user.image %}
-        <img src="{{ user.profile.image.url }}" width="65" class="profileImage" />
-        {% else %}
-        <img src="{{ user.default_image }}" width="65" class="profileImage" />
-        {% endif %}
-      </a>
-      <a href="{% url 'wapl:profile' %}" class="profile__username">{{user.nickname}}</a>
-      <div class="nim">님</div>
-    </div>
-  </div>
-  <hr>
+    <div id="sidebar" class="sidebar-menu">
+      <div class="profile">
+        <div class="closeSidebar">
+          <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+            ><i class="fa-solid fa-x"></i
+          ></a>
+        </div>
+        <div class="profileSidebar">
+          <a href="{% url 'wapl:profile' %}">
+            {% if user.profile.image %}
+            <img
+              src="{{ user.profile.image.url }}"
+              width="65"
+              class="profileImage"
+            />
+            {% else %}
+            <img
+              src="{{ user.default_image }}"
+              width="65"
+              class="profileImage"
+            />
+            {% endif %}
+          </a>
+          <a href="{% url 'wapl:profile' %}" class="profile__username"
+            >{{user.username}}</a
+          >
+          <div class="nim">님</div>
+        </div>
+      </div>
+      <hr />
 
-  <div class="groupBtn">
-    <button class="createGroup">
-      <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
-    </button>
+      <div class="groupBtn">
+        <button class="createGroup">
+          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+        </button>
 
-    <button class="joinGroup">
-      <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
-    </button>
-  </div>
-
-  <div class="groups">
-    <div class="privategroup">
-      <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
+        <button class="joinGroup">
+          <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+        </button>
+      </div>
+      <div class="groups">
+        <div class="privategroup">
+          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+        </div>
+        {% for meeting in meetings %}
+        <div class="groupName">
+          <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+            <i
+              class="fa-solid fa-circle-info white"
+              style="color: #1a2634; font-size: smaller; margin-left: 5px"
+            ></i>
+          </a>
+          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+            {{meeting.meeting_name}}
+            <i class="fa-solid fa-angles-right"></i>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="goto-home">
+        <a href="{% url 'wapl:start' %}">홈으로 가기</a>
+      </div>
     </div>
-    {% for meeting in meetings %}
-    <div class="groupName">
-      <a href="{% url 'wapl:meeting_info' meeting.pk %}">
-        <i class="fa-solid fa-circle-info white" style="color: #1a2634; font-size: smaller; margin-left: 5px;"></i>
-      </a>
-      <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
-        {{meeting.meeting_name}}
-        <i class="fa-solid fa-angles-right"></i>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-  <div class="goto-home">
-    <a href="{% url 'wapl:start' %}">홈으로 가기</a>
-  </div>
-</div>
 
     <div class="main">
       <!-- 요일 영역 -->
@@ -145,7 +175,7 @@
         <!-- 자바스크립트로 넣어줄거에요 ! -->
       </div>
 
-      <p style="text-align: center;">Timeline</p>
+      <p class="timeline_name">Timeline</p>
 
       <div class="detail">
         <div class="detail-member"></div>

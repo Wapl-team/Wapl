@@ -1,15 +1,16 @@
 @import url(./reset.css);
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
-
 @font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -20,29 +21,28 @@
   box-sizing: border-box;
 }
 
-* a,input,option,button{
-  font-family: 'S-CoreDream-3Light';
+* a,
+input,
+option {
+  font-family: "S-CoreDream-3Light";
 }
 
 body {
   /* display: flex;
   justify-content: center;
   align-items: center; */
-  font-family: 'S-CoreDream-3Light';
+  font-family: "S-CoreDream-3Light";
   min-height: 100vh;
   flex-direction: column;
   font-family: 'S-CoreDream-3Light';
-  background-color: #fffbeb;
+  background-color: white;
 }
 
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 8vh;
-  margin-top: 0.5em;
-  margin-bottom: 1em;
-
+  height: 6vh;
 }
 
 .nav-side {
@@ -51,12 +51,12 @@ body {
 }
 
 .nav_bar_button{
-  color: #1A2634;
+  color: black;
 }
 
 .nav-side button {
   background-color: white;
-  color:#1a2634;
+  color: #1a2634;
   border: 0;
   margin: 0.7rem;
 }
@@ -69,10 +69,20 @@ body {
 }
 
 .year-month {
-  font-size: 1.5rem;
-  color: #1A2634;
+  font-size: 30px;
+  font-size: 0em;
+}
+
+.year_month_display{
+  color: black;
+
   font-weight: 700;
   font-size: 25px;
+  padding-left: 1.3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0.1em;
 }
 
 .nav-btn {
@@ -94,7 +104,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color:#fbfbfb;
+  background-color: #fbfbfb;
   overflow-x: hidden;
   transition: 0.3s;
   border: none;
@@ -107,45 +117,45 @@ body {
   background-color: #fbfbfb;
 }
 
-.closeSidebar{
+.closeSidebar {
   display: flex;
   justify-content: end;
 }
 
 .closeSidebar .closeBtn {
   font-size: 21px;
-  color:#1a2634;
-  padding-top:20px;
+  color: #1a2634;
+  padding-top: 20px;
   padding-right: 20px;
 }
 
-.closeSidebar .closeBtn:hover{
-  color:#f58b30;
+.closeSidebar .closeBtn:hover {
+  color: #f58b30;
 }
 
-.profileSidebar{
+.profileSidebar {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top:50px;
+  margin-top: 50px;
   margin-bottom: 70px;
 }
 
-.profile__username{
+.profile__username {
   transition: 0.2s;
 }
 
-.profile__username:hover{
-  color:#f58b30;
+.profile__username:hover {
+  color: #f58b30;
 }
 
-.profileSidebar a>img{
-  border:2px solid lightgray;
+.profileSidebar a > img {
+  border: 2px solid lightgray;
 }
 
-.profile a{
+.profile a {
   text-decoration: none;
-  color:#1a2634;
+  color: #1a2634;
   font-size: 22px;
   font-weight: bold;
   margin-right: 3px;
@@ -153,7 +163,7 @@ body {
 
 .nim {
   text-decoration: none;
-  color:black;
+  color: black;
   font-size: 22px;
 }
 
@@ -189,12 +199,11 @@ body {
   transition: 0.3s;
 }
 
-
 /* sidebar End */
 
-hr{
-  width:100%;
-  border:1px solid rgba(173,168,168,0.5);
+hr {
+  width: 100%;
+  border: 1px solid rgba(173, 168, 168, 0.5);
 }
 
 /* --------모임 생성/참가 ------- */
@@ -223,8 +232,8 @@ hr{
   transition: 0.2s;
 }
 
-.groupBtn a:hover{
-  color:#f58b30;
+.groupBtn a:hover {
+  color: #f58b30;
 }
 
 .groups {
@@ -235,7 +244,7 @@ hr{
 
 .groupName {
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   margin-top: 10px;
   width: 210px;
   padding: 10px;
@@ -245,8 +254,8 @@ hr{
   transition: 0.3s;
 }
 
-.groupName:hover{
-  transform: scale(.95);
+.groupName:hover {
+  transform: scale(0.95);
 }
 
 .groupName a {
@@ -262,20 +271,20 @@ hr{
   margin-top: 10px;
   width: 210px;
   padding: 10px;
-  background-color:#f58b30;
+  background-color: #f58b30;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
   transition: 0.3s;
 }
 
-.privategroup:hover{
-  transform: scale(.95);
+.privategroup:hover {
+  transform: scale(0.95);
 }
 
 .privategroup a {
   justify-content: center;
   text-decoration: none;
-  color:black;
+  color: black;
   font-size: 20px;
 }
 .orange {
@@ -289,10 +298,10 @@ hr{
 }
 
 .modalButton {
-  background-color: #fbfbfb;
+  background-color: white;
   border: 0;
   margin: 0.5rem;
-  color: #1A2634;;
+  color: black;
 }
 
 .modal {
@@ -526,20 +535,20 @@ hr{
   border-right: 1px solid orange;
 }
 
-
 .days {
-  margin-top: 10px;
+  margin-top: 5px;
   display: flex;
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
   padding-top: 15px;
   padding-bottom: 15px;
   /* border-bottom: 1px solid lightgrey;
   border-top: 1px solid lightgrey; */
   font-weight: bold;
-  background-color: #ffeda2;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: #cacaca;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
 } 
 
 .day {
@@ -551,21 +560,25 @@ hr{
   display: flex;
   flex-flow: row wrap;
   height: 55vh;
-  background-color: white;
-  border-radius: 5px;
-  margin-left: 1em;
-  margin-right: 1em;
+  background-color: #fbfbfb;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
   padding: 0.5em 0.5em;
   margin-bottom: 1.5em;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
 }
 
 .date {
   width: calc(100% / 7);
-  height: calc(100% / 5);
+  height: 80px;
   padding: 8px;
   text-align: center;
+}
+
+.date p{
+  margin-bottom: 2px;
 }
 
 .date-onclick{
@@ -573,9 +586,13 @@ hr{
   padding: 8px;
   text-align: center;
   box-shadow: none;
-  background-color: #fffbeb;
-  border-radius: 10px;
+  background-color: #cacaca;
+  border-radius: 5px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.14);
+}
+
+.date-onclick p{
+  margin-bottom: 2px;
 }
 
 /* .date-onclick .this{
@@ -587,7 +604,6 @@ hr{
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 } */
 
-
 /* 일요일은 빨간색, 토요일은 파란색으로 */
 .day:nth-child(7n + 1),
 .date:nth-child(7n + 1) {
@@ -596,7 +612,7 @@ hr{
 
 .day:nth-child(7n),
 .date:nth-child(7n) {
-  color: #4A7EA9;
+  color: #4a7ea9;
 }
 
 .other {
@@ -604,8 +620,7 @@ hr{
 }
 
 .today {
-  color: #ffc01f;
-  padding-bottom: 2px;
+  color: #F58B30;
   font-weight: bold;
 }
 
@@ -624,11 +639,13 @@ hr{
 } */
 
 .detail {
-  background-color: #ffeda2;
+  background-color: #FFDAB8;
   padding-bottom: 0.1em;
   display: flex;
-  border-radius: 15px;
-  margin: 1em 1em;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin: 0em 1.5em 1em 1.5em;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
 }
 
 .detail-member {
@@ -677,5 +694,55 @@ hr{
 
 .background {
   background-color: white;
+}
+
+.timeline_name{
+  text-align: center;
+  padding: 0.6em 1em;
+  margin: 0em 1.35em;
+  background: #F58B30;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: 18px;
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  font-weight: 700;
+}
+
+.month_category{
+  margin: 0;
+  background-color: #fff;
+  border: none;
+  color: black;
+  font-weight: 700;
+  font-size: 25px;
+  font-family: 'S-CoreDream-3Light';
+  width: 54px;
+}
+
+.year_category{
+  margin: 0;
+  background-color: #fff;
+  border: none;
+  color: black;
+  font-weight: 700;
+  font-size: 25px;
+  font-family: 'S-CoreDream-3Light';
+  width: 85px;
+}
+
+.year_month_display p{
+  margin-right: 10px;
+}
+
+.meeting-name{
+  margin-left: 1.9em;
+  margin-top: 1em;
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(87, 87, 87);
+}
+.profile-user-name {
+  font-size: 2px;
+  padding-top: 2.5px;
 }
 

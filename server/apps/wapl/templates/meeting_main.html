@@ -105,69 +105,77 @@
     <!-- 사이드바 => 모임 생성/참가 버튼 + 모임 목록 출력 -->
 
     <div id="sidebar" class="sidebar-menu">
-      <div class="profile">
-        <div class="closeSidebar">
-          <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
-            ><i class="fa-solid fa-x"></i
-          ></a>
+      <div class="sidebar__main">
+        <div class="profile">
+          <div class="closeSidebar">
+            <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+              ><i class="fa-solid fa-x"></i
+            ></a>
+          </div>
+          <div class="profileSidebar">
+            <a href="{% url 'wapl:profile' %}">
+              {% if user.profile.image %}
+              <img
+                src="{{ user.profile.image.url }}"
+                width="65"
+                class="profileImage"
+              />
+              {% else %}
+              <img
+                src="{{ user.default_image }}"
+                width="65"
+                class="profileImage"
+              />
+              {% endif %}
+            </a>
+            <a href="{% url 'wapl:profile' %}" class="profile__username"
+              >{{user.nickname}}</a
+            >
+            <div class="nim">님</div>
+          </div>
         </div>
-        <div class="profileSidebar">
-          <a href="{% url 'wapl:profile' %}">
-            {% if user.profile.image %}
-            <img
-              src="{{ user.profile.image.url }}"
-              width="65"
-              class="profileImage"
-            />
-            {% else %}
-            <img
-              src="{{ user.default_image }}"
-              width="65"
-              class="profileImage"
-            />
-            {% endif %}
-          </a>
-          <a href="{% url 'wapl:profile' %}" class="profile__username"
-            >{{user.username}}</a
-          >
-          <div class="nim">님</div>
+        <hr />
+  
+        <div class="groupBtn">
+          <button class="createGroup">
+            <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+          </button>
+  
+          <button class="joinGroup">
+            <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+          </button>
+        </div>
+  
+        <div class="groups">
+          <div class="privategroup">
+            <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
+          </div>
+          {% for meeting in meetings %}
+          <div class="groupName">
+            <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+              <i
+                class="fa-solid fa-circle-info white"
+                style="color: #1a2634; font-size: smaller; margin-left: 5px"
+              ></i>
+            </a>
+            <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+              {{meeting.meeting_name}}
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </div>
+          {% endfor %}
         </div>
       </div>
-      <hr />
-
-      <div class="groupBtn">
-        <button class="createGroup">
-          <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
-        </button>
-
-        <button class="joinGroup">
-          <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
-        </button>
-      </div>
-      <div class="groups">
-        <div class="privategroup">
-          <a href="{% url 'wapl:main' %}">{{ user.username }}님의 달력</a>
+      
+      <div class="sidebar__footer">
+        <div class="goto-home">
+          <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
         </div>
-        {% for meeting in meetings %}
-        <div class="groupName">
-          <a href="{% url 'wapl:meeting_info' meeting.pk %}">
-            <i
-              class="fa-solid fa-circle-info white"
-              style="color: #1a2634; font-size: smaller; margin-left: 5px"
-            ></i>
-          </a>
-          <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
-            {{meeting.meeting_name}}
-            <i class="fa-solid fa-angles-right"></i>
-          </a>
+        <div class="logout">
+          <a href="{% url 'wapl:logout' %}">로그아웃</a>
         </div>
-        {% endfor %}
-      </div>
-      <div class="goto-home">
-        <a href="{% url 'wapl:start' %}">홈으로 가기</a>
       </div>
     </div>
-
     <div class="main">
       <!-- 요일 영역 -->
       <div class="days">

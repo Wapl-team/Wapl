@@ -58,7 +58,7 @@ class Meeting(models.Model):
     meeting_name = models.CharField(max_length=20)
     content = models.TextField()
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
-    owner = models.ForeignKey(User, related_name="meetings", on_delete=models.DO_NOTHING, default=1)
+    owner = models.ForeignKey(User, related_name="meetings", on_delete=models.CASCADE, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
     invitation_code = models.CharField(max_length=20, null=True)
     image = models.ImageField(blank=True, upload_to='team_profile')

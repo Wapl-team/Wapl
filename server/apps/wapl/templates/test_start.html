@@ -11,3 +11,9 @@
 <a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">로그인하러가기</a>
 <br />
 {% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+    {% endfor %}
+{% endif %}

@@ -63,6 +63,7 @@
               >비밀번호 변경</a
             >
           </div>
+          <a href="{% url 'wapl:withdraw' %}">회원 탈퇴</a>
           <div>
             <input type="submit" value="저장" class="profile-btn" />
             <a href="{% url 'wapl:main' %}">돌아가기</a>
@@ -70,5 +71,10 @@
         </form>
       </div>
     </div>
+    {% if messages %}
+        {% for message in messages %}
+          {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
   </body>
 </html>

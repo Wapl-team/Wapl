@@ -232,6 +232,14 @@ def create_public_plan(request, *args, **kwargs):
     else:
       return JsonResponse({'plan': None, 'meeting_img': None, 'err_msg' : err_msg})
 
+def update_share_list(user, plan):
+  meeting_list = list(user.user_meetings.all())
+  for meeting in meeting_list:
+    # 유저가 속한 모임에 대한 Share모델이 없는 경우
+    if not Share.objects.filter(meeting = meeting, plan = plan).exists(): 
+      new_share = Share.objects.create(plan = plan, meeting = meeting, is_share = 'close')
+
+
 # 개인 일정 수정 함수
 # POST로 넘어온 데이터로 updatedPlan 모델 객체 저장
 # 리턴하는 값: 에러 메세지 -> 딕셔너리 형태 {key: (Plan 모델 필드)_err, value: (에러 메세지)}
@@ -240,8 +248,10 @@ def update(request:HttpRequest, pk, *args, **kwargs):
   plan = get_object_or_404(PrivatePlan, id=pk)
   plan_sT = plan.startTime.strftime('%Y-%m-%d %H:%M:%S')
   plan_eT = plan.endTime.strftime('%Y-%m-%d %H:%M:%S')
+  login_user = request.user
+  update_share_list(login_user, plan)
   share_list = list(Share.objects.filter(plan = plan))
-  
+
   if request.method == "POST":
     if plan.owner == request.user:
       plan.startTime = request.POST["startTime"]

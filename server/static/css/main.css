@@ -113,7 +113,7 @@ body {
   border: none;
   border-left: none;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
@@ -123,7 +123,7 @@ body {
   flex-direction: column;
   /* background-color: #1a2634; */
   background-color: #fbfbfb;
-  padding:10px;
+  padding: 10px;
 }
 
 .closeSidebar {
@@ -195,9 +195,9 @@ body {
   text-align: center;
 }
 
-.goto-home i{
+.goto-home i {
   font-size: 2rem;
-  color:var(--main-bg-color);
+  color: var(--main-bg-color);
 }
 
 .sidebar-menu p {
@@ -297,21 +297,21 @@ hr {
   font-size: 20px;
 }
 
-.sidebar__footer{
-  width:250px;
+.sidebar__footer {
+  width: 250px;
   display: flex;
   justify-content: space-between;
   align-items: end;
-  padding:30px;
+  padding: 30px;
 }
 
-.logout{
-  padding:7px 15px;
+.logout {
+  padding: 7px 15px;
   border-radius: 50px;
   background-color: var(--main-bg-color);
 }
 
-.logout a{
+.logout a {
   text-decoration: none;
   color: #1a2634;
 }
@@ -513,8 +513,9 @@ hr {
 }
 
 .closeModal {
-  position: relative;
-  right: -1em;
+  position: absolute;
+  top: 17%;
+  right: 5%;
   display: flex;
   width: 100%;
   justify-content: end;
@@ -541,7 +542,6 @@ hr {
   cursor: pointer;
   text-decoration: none;
   font-size: 1.2em;
-  margin-left: 5vw;
 }
 
 #closeModal__meeting {

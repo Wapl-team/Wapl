@@ -257,6 +257,11 @@
         </div>
       </div>
     </div>
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+      {% endfor %}
+    {% endif %}
     <script
       src="https://kit.fontawesome.com/6fbcf91afd.js"
       crossorigin="anonymous"

@@ -491,7 +491,7 @@ def start(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def signup(request:HttpRequest, *args, **kwargs):
-    default_image_index = random.randint(1, 4)
+    default_image_index = random.randint(1, 10)
     if request.method == 'POST':
       form = forms.SignupForm(request.POST, request.FILES)
 
@@ -519,7 +519,7 @@ def signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def extra_signup(request:HttpRequest, *args, **kwargs):
-    default_image_index = random.randint(1, 4)
+    default_image_index = random.randint(1, 10)
     if request.method == 'POST':
         form = forms.SocialSignupForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
@@ -571,6 +571,21 @@ def logout(request:HttpRequest, *args, **kwargs):
     login_user.save()
     auth.logout(request)
     return redirect('wapl:start')
+
+def withdraw(request:HttpRequest, *args, **kwargs):
+    if request.method == 'POST':
+        password_form = forms.CheckPasswordForm(request.user, request.POST)
+        
+        if password_form.is_valid():
+            request.user.delete()
+            auth.logout(request)
+            messages.info(request, '회원 탈퇴 성공')
+            return redirect('wapl:start')
+    else:
+        password_form = forms.CheckPasswordForm(request.user)
+
+    return render(request, 'withdraw.html', {'password_form':password_form})
+
 
 # 모임 별 일정들 union 하는 함수
 # 추후 더 좋은 방법 있으면 수정 예정
@@ -819,8 +834,10 @@ def profile(request:HttpRequest, *args, **kwargs):
             if image or len(check) > 0:
                 profile.image = image
                 profile.save()
+            messages.info(request, '수정 성공')
             return render(request, 'profile.html')
         else:
+            messages.info(request, '수정 실패')
             return redirect('wapl:profile')
     else:
         context = {
@@ -837,9 +854,11 @@ def update_password(request, *args, **kwargs):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
+            messages.info(request, '수정 성공')
             return redirect('wapl:profile')
         else:
-            redirect('wapl:update_password')
+            messages.info(request, '수정 실패')
+            return redirect('wapl:update_password')
     else:
         return render(request, 'update_password.html')
 

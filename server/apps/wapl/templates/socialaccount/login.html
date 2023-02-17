@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   {% load i18n %} {% load static %}
   <head>
     <meta charset="UTF-8" />
@@ -9,8 +9,7 @@
     <title>와플</title>
   </head>
   <body>
-    {% block content %}
-    {% if process == "connect"%}
+    {% block content %} {% if process == "connect"%}
     <!--
     <h1>
       {% blocktrans with provider.name as provider %} Connect {{ provider }}
@@ -22,21 +21,17 @@
       You are about to connect a new third party account from {{ provider }}.
     </p>
     -->
-    {% endblocktrans %}
-    
-    {% else %}
+    {% endblocktrans %} {% else %}
     <div class="header"></div>
     <div class="main">
       <div class="login-container">
         <p class="login">
-          {% blocktrans with provider.name as provider %}
-          {{ provider }}을 통한 로그인
-          {% endblocktrans %}
+          {% blocktrans with provider.name as provider %} {{ provider }}을 통한
+          로그인 {% endblocktrans %}
         </p>
         <p class="contents">
-          {% blocktrans with provider.name as provider %}
-          서드파티 {{ provider }}의 계정을 사용해 로그인을 진행하려 합니다.
-          {% endblocktrans %}
+          {% blocktrans with provider.name as provider %} 서드파티 {{ provider
+          }}의 계정을 사용해 로그인을 진행하려 합니다. {% endblocktrans %}
         </p>
         {% endif %}
 
@@ -47,6 +42,9 @@
           </button>
         </form>
         {% endblock %}
+        <div>
+          <a href="/login">돌아가기</a>
+        </div>
       </div>
     </div>
   </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   {% load static %}
   <head>
     <meta charset="UTF-8" />
@@ -11,7 +11,7 @@
   <body>
     <h2>모임 참가</h2>
     <div class = 'err-text-container'>
-      <p class = "err-msg">{{err_msg}}</p>
+      <p class = "error__msg">{{err_msg}}</p>
     </div>
     <form
       action="{% url 'wapl:meeting_join' %}"

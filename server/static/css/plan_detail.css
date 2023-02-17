@@ -65,6 +65,7 @@ body {
 .plan-detail-time {
   margin: 1em 0;
   text-align: center;
+  line-height: 3vh;
 }
 
 .plan-detail-time i{
@@ -200,9 +201,6 @@ hr {
   border-radius: 4px;
   background-color: var(--main-bg-color);
   padding: 5px;
-}
-
-/* ================================= */
 
 .control-container {
   display: flex;
@@ -230,6 +228,7 @@ hr {
   padding: 0.5em;
   padding-top:0.7rem;
   margin: 0.2em;
+  padding-top: 11px;
 }
 
 .control-container .home{

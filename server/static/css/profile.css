@@ -61,19 +61,17 @@ body {
 .profile-form p {
   padding: 0.3em;
   text-align: center;
-  color: #ffd83d;
   font-size: 17px;
-  font-weight: bold;
 }
 
 .profile-form p input {
   width: 240px;
   height: 3em;
-  border: none;
+  border: 1px solid rgba(173,168,168,0.5);
   padding: 0.3em;
   text-align: center;
   margin-top: 1vh;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 #profileImage {
@@ -110,21 +108,13 @@ body {
 
 .update_password {
   padding: 0.3em;
-  font-weight: bold;
-  color: #ffd83d;
+  color: black;
   font-size: 17px;
 }
 
 .return {
-  width: 240px;
-  height: 30px;
+  color: #395165;
   text-align: center;
   text-decoration: none;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffd83d;
-  font-size: 16px;
-  padding: 0.3em;
+  font-size: 17px;
 }

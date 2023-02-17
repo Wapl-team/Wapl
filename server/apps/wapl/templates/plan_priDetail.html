@@ -10,19 +10,14 @@
   </head>
   <body>
     <div class="plan-detail-container">
-      <div class="header">
-        <a href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
-        <br />
-      </div>
       <div class="main">
         <div class="plan-detail-title">{{plan.title}}</div>
         <div class="plan-detail-place">
-          <i class="fa-solid fa-location-dot orange"></i>
+          <i class="fa-solid fa-location-dot"></i>
           <span>{{plan.location}}</span>
         </div>
         <div class="plan-detail-time">
-          {{plan.startTime}} ~ <br />
-          {{plan.endTime}}
+          {{plan.startTime}} <br /> ~ {{plan.endTime}}
         </div>
         <div class="plan-detail-content">{{plan.content}}</div>
       </div>
@@ -35,9 +30,9 @@
           style="display: flex; margin: 10px 0"
         >
           {% csrf_token %}
-          <textarea name="content" placeholder="댓글 남기기"></textarea>
+          <textarea name="content" placeholder="댓글 달기..."></textarea>
           <div>
-            <input type="submit" , value="작성" />
+            <input type="submit" , value="게시" />
           </div>
         </form>
       </div>
@@ -80,10 +75,13 @@
         <!-- 대댓글 보여주는 구간 -->
         <div>
           {% for reply in replys %} {% if reply.comment_post.id == comment.id %}
-          <div class="show-comment">
+          <div class="show-reply-comment">
             <div class="user-comment">
               <div class="user-comment-info">
-                <div class="user-comment-user">↪ {{reply.user}}</div>
+                <div class="user-comment-user">
+                  <i class="fa-solid fa-arrow-turn-up fa-rotate-90"></i>
+                  {{reply.user}}
+                </div>
                 {% if reply.created_string == False %} {% csrf_token %}
                 <span class="user-comment-time"
                   >{{ reply.created_at|date:'m월 d일' }}</span
@@ -94,7 +92,7 @@
                 >
                 {% endif %}
               </div>
-              <div class="user-comment-content">&emsp;{{reply.content}}</div>
+              <div class="user-reply-content">{{reply.content}}</div>
             </div>
 
             <div class="delete-comment">
@@ -129,8 +127,10 @@
       </div>
       <hr />
 
-      {% if request.user == plan.owner %}
+      
       <div class="control-container">
+        <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
+        {% if request.user == plan.owner %}
         <form
           action="{% url 'wapl:delete' plan.pk %}"
           method="post"
@@ -139,6 +139,7 @@
           {% csrf_token %}
           <input type="submit" , value="삭제하기" />
         </form>
+        
         <a href="{% url 'wapl:update' plan.pk %}" class="update-plan"
           >수정하기</a
         >

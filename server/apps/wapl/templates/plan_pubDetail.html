@@ -10,13 +10,6 @@
   </head>
   <body>
     <div class="plan-detail-container">
-      <div class="header">
-        <a href="{% url 'wapl:meeting_calendar' meeting.id %}"
-          ><i class="fa-solid fa-house"></i
-        ></a>
-        <br />
-      </div>
-
       <div class="main">
         <div class="plan-detail-title">{{plan.title}}</div>
         <div class="plan-detail-place">
@@ -131,8 +124,10 @@
       </div>
       <hr />
 
-      {% if request.user == plan.user or request.user == meeting.owner%}
+      
       <div class="control-container">
+        <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
+        {% if request.user == plan.user or request.user == meeting.owner%}
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"
           method="post"

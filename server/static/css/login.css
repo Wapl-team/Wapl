@@ -45,6 +45,7 @@ body {
   color: #395165;
   font-weight: bold;
   margin: 1em;
+  margin-bottom: 0;
 }
 
 .error__msg{
@@ -77,8 +78,8 @@ body {
   color: black;
   padding: 1vh 5vw;
   font-size: 1.3rem;
-  margin-bottom: 1vh;
   width: 240px;
+  margin-bottom: 1vh;
   margin-top: 1vh;
 }
 

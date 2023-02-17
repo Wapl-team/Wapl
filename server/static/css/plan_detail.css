@@ -55,8 +55,8 @@ body {
 
 .plan-detail-time {
   margin: 1em 0;
-  font-weight: bold;
   text-align: center;
+  line-height: 3vh;
 }
 
 .plan-detail-content {
@@ -129,10 +129,8 @@ hr {
 .reply-container textarea {
   width: 100%;
   height: 2em;
-  border: none;
   resize: none;
   border-radius: 10px;
-  background-color: #fff1ba;
   padding: 0.3em;
 }
 
@@ -162,4 +160,5 @@ hr {
   color: white;
   padding: 0.5em;
   margin: 0.2em;
+  padding-top: 11px;
 }

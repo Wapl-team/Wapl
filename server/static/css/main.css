@@ -68,6 +68,10 @@ body {
   width: 100vw;
 }
 
+.WAPL {
+  font-weight: bold;
+}
+
 .year-month {
   font-size: 30px;
   font-size: 0em;
@@ -75,10 +79,9 @@ body {
 
 .year_month_display {
   color: black;
-
   font-weight: 700;
   font-size: 25px;
-  padding-left: 1.3em;
+  padding-left: 0.8em;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -507,6 +510,7 @@ hr {
   cursor: pointer;
   text-decoration: none;
   font-size: 1.2em;
+  margin-left: 5vw;
 }
 
 #closeModal__meeting {
@@ -520,6 +524,7 @@ hr {
   cursor: pointer;
   text-decoration: none;
   font-size: 1.2em;
+  margin-left: 5vw;
 }
 
 .go-today {
@@ -722,13 +727,13 @@ hr {
 }
 
 .year_month_display p {
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 
 .meeting-name {
-  margin-left: 1.9em;
+  margin-left: 1em;
   margin-top: 1em;
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: rgb(87, 87, 87);
 }
@@ -740,4 +745,5 @@ hr {
 .change-day-btn {
   border: 0;
   background-color: transparent;
+  font-weight: bold;
 }

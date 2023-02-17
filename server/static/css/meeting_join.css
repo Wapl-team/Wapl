@@ -20,7 +20,10 @@ body {
 
 h2 {
   color: #395165;
-  font-size: 25px;
+  margin: 3em;
+  margin-bottom: 1em;
+  font-size: 30px;
+  font-weight: bold;
 }
 
 .meetingJoin {
@@ -41,17 +44,17 @@ h2 {
 
 .meetingJoin div input {
   background-color: var(--main-bg-color);
-  color: white;
+  color: black;
   width: 240px;
   height: 36px;
   text-align: center;
   border-radius: 10px;
   border: none;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .meetingJoin div a {
-  color: #ffd83d;
+  color: black;
   width: 240px;
   height: 30px;
   text-align: center;
@@ -63,4 +66,10 @@ h2 {
   margin-top: 2vh;
   font-weight: normal;
   font-size: 17px;
+}
+
+.error__msg{
+  color:red;
+  font-weight: 600;
+  margin-bottom: 1vh;
 }

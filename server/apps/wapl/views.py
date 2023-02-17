@@ -284,6 +284,7 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
         plan.title = request.POST["title"]
         plan.content = request.POST["content"]
         plan.save()
+        return redirect('wapl:pubdetail',pk)
       else:
         err_msg = "수정 권한이 없습니다."
         messages.warning(request, err_msg)

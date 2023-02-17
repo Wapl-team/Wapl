@@ -758,4 +758,5 @@ return: err_msg
   date_target.forEach((target) =>
     target.parentNode.addEventListener("click", viewDetail)
   );
+  document.querySelector(".today").parentNode.click();
 };

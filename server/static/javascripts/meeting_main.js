@@ -738,7 +738,7 @@ return: err_msg
               new_plan.href = `/plan/${plan.pk}`;
             } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
-              new_plan.style.pointerEvents = "none";
+              new_plan.style.touchAction = "none";
             }
 
             document

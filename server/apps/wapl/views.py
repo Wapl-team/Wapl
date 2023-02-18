@@ -218,6 +218,8 @@ def create_public_plan(request, *args, **kwargs):
 
     meeting = get_object_or_404(Meeting, id=meeting_pk)
 
+    print(meeting.users)
+
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
       new_plan = PublicPlan.objects.create(meetings = meeting, owner = request.user , startTime = startTime, endTime = endTime, location = location, title = title, content = content)

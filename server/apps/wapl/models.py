@@ -99,6 +99,17 @@ class Share(models.Model):
   meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='meeting_shares', default=1)
   is_share = models.CharField(choices=SHARE_CHOICE, max_length=20)
 
+class Attend(models.Model):
+   
+  ATTEND_CHOICE = [
+        ('attend', '참석'),
+        ('absence', '불참'),
+        ('standby', '대기상태'),
+  ]
+  plan = models.ForeignKey(PublicPlan, on_delete=models.CASCADE, related_name='plan_attend', default=1)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_attend', default=1)
+  is_attend = models.CharField(choices=ATTEND_CHOICE, max_length=10)
+
 # 댓글
 # 필드: 내용, 생성시간, 작성 유저, 일정
 class Comment(models.Model):

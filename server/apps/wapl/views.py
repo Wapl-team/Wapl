@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, Attend
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -35,8 +35,10 @@ from django.db.models import Q
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  year_num = ['2021', '2022', '2023', '2024', '2025']
+  # month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  month_num = list(range(1, 13))
+  cur_year = datetime.now().year
+  year_num = list(range(cur_year - 50, cur_year + 51))
   
   
   if request.method == 'POST':
@@ -48,14 +50,12 @@ def main(request:HttpRequest,*args, **kwargs):
   
   year = inputTime.objects.last().input_year
   month = inputTime.objects.last().input_month
-  year_num.remove(year)
-  month_num.remove(month)
 
   context = {
             'meetings' : meetings,
             'meeting_name': '',
-            'view_year': year,
-            'view_month': month,
+            'view_year': int(year),
+            'view_month': int(month),
             'month_num': month_num,
             'year_num' : year_num,
             }
@@ -570,10 +570,15 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
             }
             return render(request, "extra_signup.html", context=context)
     else:
+        profile_set = Profile.objects.filter(user=request.user)
+        if profile_set.exists():
+          return redirect('wapl:main')
+
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
-    return render(request, 'extra_signup.html', context=context)
+        return render(request, 'extra_signup.html', context=context)
+
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
@@ -589,7 +594,8 @@ def login(request:HttpRequest, *args, **kwargs):
         else:
             err_msg="잘못된 ID 또는 패스워드입니다"
             context={
-            'err_msg':err_msg
+            'err_msg': err_msg,
+            'form': form,
             }
             return render(request, template_name='login.html',context=context)
     else:
@@ -609,14 +615,40 @@ def withdraw(request:HttpRequest, *args, **kwargs):
         password_form = forms.CheckPasswordForm(request.user, request.POST)
         
         if password_form.is_valid():
-            request.user.delete()
-            auth.logout(request)
-            messages.info(request, '회원 탈퇴 성공')
-            return redirect('wapl:start')
+            return redirect('wapl:withdraw_transfer')
     else:
         password_form = forms.CheckPasswordForm(request.user)
 
     return render(request, 'withdraw.html', {'password_form':password_form})
+
+def withdraw_transfer(request:HttpRequest, *args, **kwargs):
+    meetings = Meeting.objects.filter(owner=request.user)
+    users = []
+    for meeting in meetings:
+        users.append(meeting.users)
+    if request.method == 'POST':
+      # 선택한 새 주인들 받아와서 owner 바꾸고 탈퇴
+        for meeting in meetings:
+          new_owner = int(request.POST.get(f'new_owner_{meeting.id}'))
+          if new_owner == request.user.id:
+            print("deleteeeee")
+            print(meeting)
+            meeting.delete()
+          else:
+            meeting.owner = User.objects.get(id=new_owner)
+            print(meeting.owner.nickname)
+            meeting.users.remove(request.user)
+            meeting.save()
+
+        request.user.delete()
+        auth.logout(request)
+        messages.info(request, '회원 탈퇴 성공')
+        return redirect('wapl:start')
+    datas = zip(meetings, users)
+    context={
+      'datas': datas,      
+    }
+    return render(request, 'withdraw_transfer.html', context=context)
 
 
 # 모임 별 일정들 union 하는 함수

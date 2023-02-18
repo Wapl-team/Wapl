@@ -10,6 +10,7 @@ urlpatterns= [
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),
     path("withdraw", views.withdraw, name="withdraw"),
+    path("withdraw/transfer", views.withdraw_transfer, name="withdraw_transfer"),
     path("social/signup", views.extra_signup, name="extra_signup"),
     path("", views.start, name="start"),
     path("create-private-plan", views.create_private_plan, name="create_private_plan"), 

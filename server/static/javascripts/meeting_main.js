@@ -207,9 +207,9 @@ modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
 });
 
-closeModal.addEventListener("click", () => {
-  modal.classList.add("hidden");
-});
+// closeModal.addEventListener("click", () => {
+//   modal.classList.add("hidden");
+// });
 
 closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");

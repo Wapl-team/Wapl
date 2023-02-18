@@ -34,6 +34,10 @@ urlpatterns= [
     path("pubplan/<int:ak>/<int:pk>/delete", views.pub_comment_delete, name="pubcomment_delete"),
     path("pubplan/<int:pk>/comment/<int:ck>", views.pub_reply_create, name="pubreply_create"),
     path("pubplan/<int:pk>/comment/<int:ck>/delete", views.pub_reply_delete, name="pubreply_delete"),
+    path('pubplan/<int:pk>/attend', views.public_attend, name='pubattend'),
+    path('pubplan/<int:pk>/absense', views.public_absense, name='pubabsense'),
+    
+    
 
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),

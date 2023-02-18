@@ -22,9 +22,16 @@
         </div>
         <div class="plan-detail-content">{{plan.content}}</div>
         {% if is_standby == "standby" %}
-        <div>
-          <a href="{% url 'wapl:pubattend' plan.pk %}">참석</a
-          ><a href="{% url 'wapl:pubabsense' plan.pk%}">불참</a>
+        <div class="plan-detail-decide">
+          <a
+            class="plan-detail-attend"
+            href="{% url 'wapl:pubattend' plan.pk %}"
+            >참석</a
+          ><a
+            class="plan-detail-absence"
+            href="{% url 'wapl:pubabsense' plan.pk%}"
+            >불참</a
+          >
         </div>
         {% endif %}
       </div>

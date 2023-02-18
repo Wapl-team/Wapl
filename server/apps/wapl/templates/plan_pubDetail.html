@@ -10,6 +10,9 @@
   </head>
   <body>
     <div class="plan-detail-container">
+      <a class="home" href="{% url 'wapl:main' %}"
+        ><i class="fa-solid fa-house"></i
+      ></a>
       <div class="main">
         <div class="plan-detail-title">{{plan.title}}</div>
         <div class="plan-detail-place">
@@ -81,7 +84,8 @@
               <div class="user-comment-info">
                 <div class="user-comment-user">
                   <i class="fa-solid fa-arrow-turn-up fa-rotate-90"></i>
-                  {{reply.user}}</div>
+                  {{reply.user}}
+                </div>
                 {% if reply.created_string == False %} {% csrf_token %}
                 <span class="user-comment-time"
                   >{{ reply.created_at|date:'m월 d일' }}</span
@@ -126,9 +130,7 @@
       </div>
       <hr />
 
-      
       <div class="control-container">
-        <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
         {% if request.user == plan.user or request.user == meeting.owner%}
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"
@@ -144,11 +146,11 @@
       </div>
       {% endif %}
     </div>
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/5658349e28.js"
       crossorigin="anonymous"

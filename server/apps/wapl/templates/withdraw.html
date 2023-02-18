@@ -1,40 +1,66 @@
-<form method="POST" novalidate>
-    {% csrf_token %}
-    <p><strong>{{ user.nickname }}</strong> 회원님의 계정이 삭제됩니다.<br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다. <br>본인의 비밀번호를 입력한 후 하단의 유의사항 동의에 체크하세요.</p>
-    <div>
-        <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
-        {{ password_form.password }}
-        {% if password_form.password.errors %}
-        <script type="text/javascript">
-            document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
-        </script>
-        {% for error in password_form.password.errors %}
-        <div class="invalid-feedback">
-            {{ error }}
+<!DOCTYPE html>
+<html lang="ko">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/withdraw.css' %}" />
+        <title>와플 : 회원 탈퇴</title>
+    </head>
+    <body>
+        <div class="header"></div>
+        <div class="main">
+        <!-- 회원 탈퇴 영역 -->
+        <div class="withdraw-container">
+            <p class="withdraw">회원 탈퇴</p>
+            <form method="POST" novalidate class="withdraw-form">
+                {% csrf_token %}
+                <p>{{ user.nickname }} 회원님의 계정이 삭제됩니다.
+                    <br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다. 
+                    <br>본인의 비밀번호를 입력한 후 하단의 유의사항 동의에 체크하세요.
+                </p>
+                <div>
+                    <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
+                    {{ password_form.password }}
+                    {% if password_form.password.errors %}
+                    <script type="text/javascript">
+                        document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
+                    </script>
+                    {% for error in password_form.password.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <small>
+                        본인인증을 위해 비밀번호를 입력해주세요.
+                    </small>
+                </div>
+                <label>
+                    <input type="checkbox" name="ck" onClick="checkDisable(this.form)">
+                    <span>유의사항 동의</span>
+                </label>
+                <a href="{% url 'wapl:profile' %}">돌아가기</a>
+                <button type="submit" name="bt" disabled="true" >탈퇴하기</button>
+            </form>
         </div>
-        {% endfor %}
-        {% endif %}
-        <small>
-            본인인증을 위해 비밀번호를 입력해주세요.
-        </small>
-    </div>
-
-    <label>
-        <input type="checkbox" name="ck" onClick="checkDisable(this.form)">
-        <span>유의사항 동의</span>
-    </label>
-    
-    <a href="{% url 'wapl:profile' %}">돌아가기</a>
-    <button type="submit" name="bt" disabled="true" >탈퇴하기</button>
-</form>
+        </div>
+        {% if messages %} {% for message in messages %} {% if message.tags %}
+        <script>
+        alert("{{ message }}");
+        </script>
 
 
-<script type="text/javascript">
-    function checkDisable(form) {
-        if (form.ck.checked == true) {
-            form.bt.disabled = false;
-        } else {
-            form.bt.disabled = true;
-        }
-    }
-</script>
+        {% endif %} {% endfor %} {% endif %}
+        <script type="text/javascript">
+            function checkDisable(form) {
+                if (form.ck.checked == true) {
+                    form.bt.disabled = false;
+                } else {
+                    form.bt.disabled = true;
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -16,10 +16,12 @@
             <p class="withdraw">회원 탈퇴</p>
             <form method="POST" novalidate class="withdraw-form">
                 {% csrf_token %}
-                <p>{{ user.nickname }} 회원님의 계정이 삭제됩니다.
-                    <br>탈퇴시 개인정보 및 이용정보가 삭제되며 복구할 수 없습니다. 
-                    <br>본인의 비밀번호를 입력한 후 하단의 유의사항 동의에 체크하세요.
-                </p>
+                <span>유의 사항</span>
+                <p>회원 탈퇴 전에 꼭 확인하세요!</p>
+                <p>회원 탈퇴 진행 시 <span>{{ user.nickname }}</span> 회원님의 계정이 삭제됩니다.</p>
+                <p>탈퇴 시 개인 정보 및 이용 정보가 모두 삭제되며 복구할 수 없습니다. </p>
+                <p>모임에 참가한 경우, 모임 참여자에서 자동으로 삭제됩니다. </p>
+                <p>본인의 비밀번호를 입력한 후 하단의 유의 사항 동의에 체크하여 진행해 주세요.</p>
                 <div>
                     <label name="label_password" for="{{ password_form.password.id_for_label }}">{{ password_form.password.label }}</label>
                     {{ password_form.password }}
@@ -28,31 +30,25 @@
                         document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
                     </script>
                     {% for error in password_form.password.errors %}
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback red">
                         {{ error }}
                     </div>
                     {% endfor %}
                     {% endif %}
-                    <small>
-                        본인인증을 위해 비밀번호를 입력해주세요.
-                    </small>
+                    <p>
+                        본인인증을 위해 비밀번호를 입력해 주세요.
+                    </p>
                 </div>
                 <label>
                     <input type="checkbox" name="ck" onClick="checkDisable(this.form)">
-                    <span>유의사항 동의</span>
+                    <span>유의 사항 동의</span>
                 </label>
-                <a href="{% url 'wapl:profile' %}">돌아가기</a>
-                <button type="submit" name="bt" disabled="true" >탈퇴하기</button>
+                <div>
+                    <input type="submit" name="bt" disabled="true" value="탈퇴하기" class="withdraw-btn" />
+                    <a href="{% url 'wapl:profile' %}" class="return">취소</a>
+                </div>
             </form>
         </div>
-        </div>
-        {% if messages %} {% for message in messages %} {% if message.tags %}
-        <script>
-        alert("{{ message }}");
-        </script>
-
-
-        {% endif %} {% endfor %} {% endif %}
         <script type="text/javascript">
             function checkDisable(form) {
                 if (form.ck.checked == true) {

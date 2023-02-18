@@ -392,11 +392,12 @@ const plan_create = () => {
                   current_preview.getDate()
                 );
                 let newplan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
+                const width =
+                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
                 newplan.href = `plan/${plan.id}`;
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
+                newplan.style.left = `${(start / 3) * 2}px`;
                 // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
@@ -404,7 +405,7 @@ const plan_create = () => {
                 newplan.style.borderRadius = "10px";
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
-                newplan.style.fontSize = "17px";
+                newplan.style.fontSize = "0.7rem";
                 newplan.style.overflow = "hidden";
                 newplan.style.whiteSpace = "nowrap";
                 newplan.style.textOverflow = "ellipsis";
@@ -435,11 +436,12 @@ const plan_create = () => {
                 newDiv.classList.add("private");
                 newDiv.style.height = "50px";
                 let newplan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
+                const width =
+                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
                 newplan.href = `plan/${plan.id}`;
                 newplan.style.position = "absolute";
                 newplan.style.width = `${width}px`;
-                newplan.style.left = `${start}px`;
+                newplan.style.left = `${(start / 3) * 2}px`;
                 // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
@@ -447,7 +449,7 @@ const plan_create = () => {
                 newplan.style.borderRadius = "10px";
                 newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 newplan.style.padding = "11px";
-                newplan.style.fontSize = "17px";
+                newplan.style.fontSize = "0.7rem";
                 newplan.style.overflow = "hidden";
                 newplan.style.whiteSpace = "nowrap";
                 newplan.style.textOverflow = "ellipsis";
@@ -479,11 +481,12 @@ const plan_create = () => {
               newDiv.classList.add("private-timeline");
               newDiv.style.height = "50px";
               let newplan = document.createElement("a");
-              const width = parseInt(hours) * 60 + parseInt(minutes);
+              const width =
+                ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
               newplan.href = `plan/${plan.id}`;
               newplan.style.position = "absolute";
               newplan.style.width = `${width}px`;
-              newplan.style.left = `${start}px`;
+              newplan.style.left = `${(start / 3) * 2}px`;
               // newplan.style.border = "1px solid orange";
               newplan.style.backgroundColor = "#FBFBFB";
               newplan.style.color = "#1A2634";
@@ -491,7 +494,7 @@ const plan_create = () => {
               newplan.style.borderRadius = "10px";
               newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               newplan.style.padding = "11px";
-              newplan.style.fontSize = "17px";
+              newplan.style.fontSize = "0.7rem";
               newplan.style.overflow = "hidden";
               newplan.style.whiteSpace = "nowrap";
               newplan.style.textOverflow = "ellipsis";
@@ -703,11 +706,11 @@ window.onload = function () {
             [start, hours, minutes] = calcTime(startDate, endDate, today);
 
             let newplan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
+            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
             newplan.href = `plan/${plan.pk}`;
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
-            newplan.style.left = `${start}px`;
+            newplan.style.left = `${(start / 3) * 2}px`;
             // newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
@@ -715,7 +718,7 @@ window.onload = function () {
             newplan.style.borderRadius = "10px";
             newplan.style.boxShadow = "1px 1px 2px rgb(0 f0 0 / 14%)";
             newplan.style.padding = "11px";
-            newplan.style.fontSize = "17px";
+            newplan.style.fontSize = "0.7rem";
             newplan.style.overflow = "hidden";
             newplan.style.whiteSpace = "nowrap";
             newplan.style.textOverflow = "ellipsis";
@@ -756,11 +759,11 @@ window.onload = function () {
             [start, hours, minutes] = calcTime(startDate, endDate, today);
 
             let newplan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
+            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
             newplan.href = `/pubplan/${plan.pk}`;
             newplan.style.position = "absolute";
             newplan.style.width = `${width}px`;
-            newplan.style.left = `${start}px`;
+            newplan.style.left = `${(start / 3) * 2}px`;
             // newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
@@ -768,7 +771,7 @@ window.onload = function () {
             newplan.style.borderRadius = "10px";
             newplan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             newplan.style.padding = "11px";
-            newplan.style.fontSize = "17px";
+            newplan.style.fontSize = "0.7rem";
             newplan.style.overflow = "hidden";
             newplan.style.whiteSpace = "nowrap";
             newplan.style.textOverflow = "ellipsis";

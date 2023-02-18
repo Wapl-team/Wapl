@@ -232,3 +232,24 @@ hr {
   padding-top: 0.7rem;
   margin: 0.2em;
 }
+
+.plan-detail-decide {
+  margin-top: 10px;
+}
+.plan-detail-attend {
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--main-bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.plan-detail-absence {
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--main-bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-left: 5px;
+}

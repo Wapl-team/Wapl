@@ -351,7 +351,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${start}px`;
+                new_plan.style.left = `${(start / 3) * 2}px`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -400,7 +400,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${start}px`;
+                new_plan.style.left = `${(start / 3) * 2}px`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -451,7 +451,7 @@ const plan_create = (meeting_pk) => {
               new_plan.href = `/pubplan/${plan.id}`;
               new_plan.style.position = "absolute";
               new_plan.style.width = `${width}px`;
-              new_plan.style.left = `${start}px`;
+              new_plan.style.left = `${(start / 3) * 2}px`;
               // new_plan.style.border = "1px solid orange";
               new_plan.style.backgroundColor = "#FBFBFB";
               new_plan.style.color = "black";
@@ -672,7 +672,7 @@ return: err_msg
             new_plan.href = `/pubplan/${plan.pk}`;
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${start}px`;
+            new_plan.style.left = `${(start / 3) * 2}px`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
@@ -723,7 +723,7 @@ return: err_msg
 
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${start}px`;
+            new_plan.style.left = `${(start / 3) * 2}px`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";

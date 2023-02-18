@@ -42,7 +42,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.2em;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
 }
 
 .nav-side {
@@ -56,7 +57,7 @@ body {
 }
 
 .nav-side button {
-  background-color: white;
+  background-color: transparent;
   color: black;
   border: 0;
   margin: 0.7rem;
@@ -86,7 +87,6 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 1em;
 }
 
 .nav-btn {
@@ -330,7 +330,7 @@ hr {
 }
 
 .modalButton {
-  background-color: white;
+  background-color: transparent;
   border: 0;
   margin: 0.5rem;
   color: black;
@@ -772,6 +772,7 @@ hr {
   font-weight: bold;
   color: black;
   font-size: 16px;
+  cursor: pointer;
 }
 
 #create {
@@ -785,4 +786,17 @@ hr {
 
 #create > input {
   margin-top: 1rem;
+}
+
+.calendar_top{
+  display: flex;
+}
+
+.reset-btn{
+  margin-top: 1.6em;
+  padding-left: 15px;
+  font-size: 17px;
+  color: #919191;
+  margin-left: 1.5em;
+  cursor: pointer;
 }

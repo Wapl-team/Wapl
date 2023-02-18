@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
+from .models import inputTime,change_inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -37,18 +37,32 @@ def main(request:HttpRequest,*args, **kwargs):
   month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
   year_num = ['2021', '2022', '2023', '2024', '2025']
   
-  
+  #여기부터 inputTime 개선
+  changers = change_inputTime.objects.filter(user=request.user)
+
+    
   if request.method == 'POST':
-      inputTime.objects.create(
+    if changers.count() > 0:
+      changers.last().delete()
+    
+    change_inputTime.objects.create(
+        user = request.user,
         input_year = request.POST["year_category"],
         input_month = request.POST["month_category"],
         )
-      return redirect('wapl:main')
+    return redirect('wapl:main')
   
-  year = inputTime.objects.last().input_year
-  month = inputTime.objects.last().input_month
-  year_num.remove(year)
-  month_num.remove(month)
+  if changers.count() == 0:
+    year = inputTime.objects.last().input_year
+    month = inputTime.objects.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)
+    
+  else:
+    year = changers.last().input_year
+    month = changers.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)  
 
   context = {
             'meetings' : meetings,
@@ -61,8 +75,14 @@ def main(request:HttpRequest,*args, **kwargs):
 
   return render(request, "main.html", context=context)
 
+def main_reset(request:HttpRequest,*args, **kwargs):
+  changers = change_inputTime.objects.filter(user=request.user)
+  if changers.count() > 0 :
+    changers.last().delete()
+  return redirect('wapl:main')
+  
 @csrf_exempt
-def meeting_calendar(request, pk, *args, **kwargs):
+def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
   login_user = request.user
   # Review : login_user가 없으면 에러 발생. 핸들링 필요
   # Review : 혹은 @login_required 데코레이터 필요
@@ -72,18 +92,31 @@ def meeting_calendar(request, pk, *args, **kwargs):
   month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
   year_num = ['2021', '2022', '2023', '2024', '2025']
   
+#여기부터 inputTime 개선
+  changers = change_inputTime.objects.filter(user=request.user)
+
   if request.method == 'POST':
-      inputTime.objects.create(
+    if changers.count() > 0:
+        changers.last().delete()
+    change_inputTime.objects.create(
+        user = request.user,
         input_year = request.POST["year_category"],
         input_month = request.POST["month_category"],
-        )
-      return redirect('wapl:meeting_calendar', pk)
+          )  
+    return redirect('wapl:meeting_calendar', pk)
   
-  year = inputTime.objects.last().input_year
-  month = inputTime.objects.last().input_month
-  year_num.remove(year)
-  month_num.remove(month)
-       
+  if changers.count() == 0:
+    year = inputTime.objects.last().input_year
+    month = inputTime.objects.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)
+    
+  else:
+    year = changers.last().input_year
+    month = changers.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)  
+    
   context = {'cur_meeting': cur_meeting,
             'meetings': meetings,
             'view_year': year,
@@ -545,7 +578,9 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
-
+    if inputTime.objects.all().count() > 0:
+      inputTime.objects.last().delete()
+      
     inputTime.objects.create()
 
     if request.method == 'POST':
@@ -566,6 +601,8 @@ def login(request:HttpRequest, *args, **kwargs):
 
 
 def logout(request:HttpRequest, *args, **kwargs):
+    changers = change_inputTime.objects.filter(user=request.user)
+    changers.last().delete()
     login_user = request.user
     login_user.current_date = f'{datetime.now().year}-{datetime.now().month}-01'
     login_user.save()

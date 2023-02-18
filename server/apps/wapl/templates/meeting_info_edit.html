@@ -10,6 +10,9 @@
   </head>
   <body>
     <div class="meeting__info">
+      <a class="home" href="{% url 'wapl:main' %}">
+        <i class="fa-solid fa-house"></i>
+      </a>
       <div class="meeting__detail">모임 정보 </div>
       <div class="meeting__body">
         <form action="{% url 'wapl:meeting_info_edit' meeting.id %}" method="post" class="profile__form" enctype="multipart/form-data">
@@ -62,12 +65,16 @@
   </div>
   <div class="meetingedit__footer">
     <div class="meetingedit__back">
-      <a href="{{ request.META.HTTP_REFERER }}">돌아가기</a>
+      <a href="{% url 'wapl:meeting_info' meeting.pk %}">취소</a>
     </div>
     <div class="meetingedit__save">
       <input type="submit" value="저장하기" class="profile-btn" />
     </div>
   </div>
 </form>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

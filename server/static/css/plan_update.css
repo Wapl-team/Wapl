@@ -129,13 +129,14 @@ hr {
   margin: 0.2em;
 }
 
-.control-container .home {
+.control-container {
   font-size: 16px;
   text-decoration: none;
   color: var(--main-bg-color);
   padding-top: 0.7rem;
   padding-right: 1rem;
   margin: 0.2em;
+  justify-content: space-between;
 }
 
 .share {
@@ -252,4 +253,15 @@ hr {
 
 .bottom {
   position: relative;
+}
+
+.home {
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding: 0.5em;
+  padding-top: 0.7rem;
+  margin: 0.2em;
+  position: relative;
+  left: -34vw;
 }

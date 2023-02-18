@@ -224,13 +224,25 @@ hr {
   margin: 0.2em;
 }
 
-.control-container .home {
+.control-container {
   font-size: 16px;
   text-decoration: none;
   color: var(--main-bg-color);
   padding: 0.5em;
   padding-top: 0.7rem;
   margin: 0.2em;
+}
+
+.home {
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding: 0.5em;
+  padding-top: 0.7rem;
+  margin: 0.2em;
+  position: relative;
+  left: 4vw;
+  top: 3vh;
 }
 
 .plan-detail-decide {

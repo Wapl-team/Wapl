@@ -13,6 +13,9 @@
     <div class="main">
       <!-- 개인 정보 수정 페이지 영역 -->
       <div class="profile-container">
+        <a class="home" href="{% url 'wapl:main' %}">
+          <i class="fa-solid fa-house"></i>
+        </a>
         <p class="profile">개인 정보 페이지</p>
         <form
           action=""
@@ -63,18 +66,23 @@
               >비밀번호 변경</a
             >
           </div>
-          <a href="{% url 'wapl:withdraw' %}">회원 탈퇴</a>
+          <a href="{% url 'wapl:withdraw' %}" class="update_password"
+            >회원 탈퇴</a
+          >
           <div>
             <input type="submit" value="저장" class="profile-btn" />
-            <a href="{% url 'wapl:main' %}" class="return">돌아가기</a>
           </div>
         </form>
       </div>
     </div>
-    {% if messages %}
-        {% for message in messages %}
-          {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

@@ -51,6 +51,7 @@ h2 {
   border-radius: 10px;
   border: none;
   font-size: 17px;
+  margin: 2vh;
 }
 
 .meetingJoin div a {
@@ -72,4 +73,16 @@ h2 {
   color:red;
   font-weight: 600;
   margin-bottom: 1vh;
+}
+
+.home {
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding: 0.5em;
+  padding-top: 0.7rem;
+  margin: 0.2em;
+  position: relative;
+  left: -34vw;
+  top: 8vh;
 }

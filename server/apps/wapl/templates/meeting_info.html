@@ -10,6 +10,9 @@
   </head>
   <body>
     <div class="meeting__info">
+      <a class="home" href="{% url 'wapl:main' %}">
+        <i class="fa-solid fa-house"></i>
+      </a>
       <div class="meeting__detail">모임 정보</div>
       <div class="meeting__body">
         <div class="meeting__profile">
@@ -47,9 +50,6 @@
       </div>
     </div>
     <div class="meeting__footer">
-      <div class="meeting_back">
-        <a href="{% url 'wapl:main' %}">돌아가기</a>
-      </div>
       {% if meeting.owner == request.user %}
       <div class="meeting_edit">
         <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"
@@ -61,11 +61,11 @@
       </div>
       {% endif %}
     </div>
-    {% if messages %}
-      {% for message in messages %}
-      {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/6fbcf91afd.js"
       crossorigin="anonymous"

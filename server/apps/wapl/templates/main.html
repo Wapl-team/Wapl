@@ -12,19 +12,19 @@
     <nav class="nav">
       <div class="nav-side">
         <button onclick="openToggle()" class="nav_bar_button">
-          <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em"></i>
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 1.5rem"></i>
         </button>
       </div>
-      <div class="WAPL">WAPL</div>
+      <div class="meeting-name">{{user.nickname}}님의 달력</div>
       <div>
         <button class="modalButton">
-          <i class="fa-solid fa-plus fa-2x" style="font-size: 2.3em"></i>
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 1.5rem"></i>
         </button>
       </div>
     </nav>
     <hr />
 
-    <div class="meeting-name">개인 달력</div>
+
     <div class="year-month">{{view_year}}년 {{view_month}}월</div>
 
     <form action="/main" class="year_month_display" method="post">
@@ -47,6 +47,11 @@
 
     <div class="modal hidden">
       <div class="modal__content">
+
+        <button class="closeModal">
+          <i class="fa-solid fa-x closeModal_x" style="font-size: 1.5rem"></i>
+        </button>
+
         <form id="create" name="create" method="post" class="planRegister">
           <input
             type="text"
@@ -91,9 +96,7 @@
             >일정 추가하기
           </a>
         </form>
-        <button class="closeModal">
-          <i class="fa-solid fa-x"></i>
-        </button>
+
       </div>
       <div class="modal-share hidden">
         <div class="share-box">
@@ -138,8 +141,7 @@
         <div class="profile">
           <div class="closeSidebar">
             <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
-              ><i class="fa-solid fa-x"></i
-            ></a>
+              ><i class="fa-solid fa-x" style="font-size: 1.5rem"></i></a>
           </div>
           <div class="profileSidebar">
             <a href="{% url 'wapl:profile' %}">
@@ -188,7 +190,7 @@
               ></i>
             </a>
             <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
-              {{meeting.meeting_name}}
+              {{meeting.meeting_name}}의 달력
               <i class="fa-solid fa-angles-right"></i>
             </a>
           </div>

@@ -538,6 +538,7 @@ window.onload = function () {
           userimg,
           meetingimg,
           meetingList,
+          attend_dict,
         } = JSON.parse(requestPlan.response);
         // makeMeetingList(JSON.parse(meetingList));
 
@@ -601,6 +602,9 @@ window.onload = function () {
                   newImg.style.width = "12px";
                   newImg.style.height = "12px";
                   newImg.style.margin = "0px 1px";
+                  if (attend_dict[plan.pk] == "standby") {
+                    newImg.style.border = "1px solid red";
+                  }
                   day.parentElement.appendChild(newImg);
                   already.push(`${plan.fields.meetings}`);
                   count += 1;
@@ -668,11 +672,13 @@ window.onload = function () {
             meetingimg,
             private_user_names,
             public_user_names,
+            attend_dict,
           } = JSON.parse(requestExplan.response);
           const publicPlansArray = JSON.parse(public_plans);
           const privatePlansArray = JSON.parse(private_plans);
           memberlist.innerHTML = "";
           timeline.innerHTML = ``;
+
           // 이미 타임라인에 있는 라인인지 확인
           let already = [];
           privatePlansArray.forEach((plan) => {
@@ -717,6 +723,7 @@ window.onload = function () {
             newplan.style.height = "40px";
             newplan.style.borderRadius = "10px";
             newplan.style.boxShadow = "1px 1px 2px rgb(0 f0 0 / 14%)";
+
             newplan.style.padding = "11px";
             newplan.style.fontSize = "0.7rem";
             newplan.style.overflow = "hidden";
@@ -765,6 +772,9 @@ window.onload = function () {
             newplan.style.width = `${width}px`;
             newplan.style.left = `${(start / 3) * 2}px`;
             // newplan.style.border = "1px solid orange";
+            if (attend_dict[plan.pk] == "standby") {
+              newplan.style.border = "1px solid red";
+            }
             newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
             newplan.style.height = "40px";

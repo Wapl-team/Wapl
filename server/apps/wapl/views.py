@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, Attend
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -21,6 +21,7 @@ import base64
 import codecs
 from datetime import datetime
 from django.contrib import messages
+from django.db.models import Q
 
 #진짜 시간 전역 변수
 
@@ -218,11 +219,17 @@ def create_public_plan(request, *args, **kwargs):
 
     meeting = get_object_or_404(Meeting, id=meeting_pk)
 
-    print(meeting.users)
+    
+       
 
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
       new_plan = PublicPlan.objects.create(meetings = meeting, owner = request.user , startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+
+      users = meeting.users.all()
+
+      for user in users:
+         Attend.objects.create(plan=new_plan, user=user, is_attend="standby")
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -378,7 +385,13 @@ def public_detail(request, pk, *args, **kwargs):
         else:
           messages.warning(request, err_msg)
           return redirect('wapl:pubdetail', pk)
-    
+        
+    is_standby = ""
+    if len(Attend.objects.filter(plan=plan, user=request.user, is_attend="standby"))==1:
+       is_standby = "standby"
+    else:
+       is_standby = "none"
+
     comments = PublicComment.objects.all().filter(plan_post=plan)
     replys = replyPublicComment.objects.all()
     context = {
@@ -387,6 +400,7 @@ def public_detail(request, pk, *args, **kwargs):
         "replys": replys,
         'meeting': plan.meetings,
         "err_msg": err_msg,
+        "is_standby" : is_standby,
         }
     return render(request, 'plan_pubDetail.html', context=context)
 
@@ -486,6 +500,22 @@ def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
         return redirect('wapl:detail', pk)
       
     return redirect('wapl:pubdetail', ak)
+
+def public_attend(request:HttpRequest, pk, *args, **kwargs):
+   plan = PublicPlan.objects.get(id=pk)
+   attend = Attend.objects.get(plan=plan, user=request.user)
+
+   attend.is_attend = "attend"
+   attend.save()
+   return redirect('wapl:main')
+
+def public_absense(request:HttpRequest, pk, *args, **kwargs):
+   plan = PublicPlan.objects.get(id=pk)
+   attend = Attend.objects.get(plan=plan, user=request.user)
+   
+   attend.is_attend = "absence"
+   attend.save()
+   return redirect('wapl:main')
 
 # -------------------------------------------------------------------------
 def start(request:HttpRequest, *args, **kwargs):
@@ -638,8 +668,23 @@ def view_plan(request):
        userimg = request.user.profile.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="standby", plan_attend__user=login_user)
       public_plans += list(public_plan)
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="attend", plan_attend__user=login_user)
+      public_plans += list(public_plan)
+
+  # for meeting in meetings :
+  #     public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="attend")
+  #     public_plans += list(public_plan)
+
+  attends = Attend.objects.filter(user=login_user)
+
+  attend_dict = {}
+
+  for attend in attends:
+    attend_dict[attend.plan.pk] = attend.is_attend;
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -647,10 +692,12 @@ def view_plan(request):
 
 
 
+
   return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans,'userimg':userimg,
                          'meetingimg':meeting_img,
-                         'meetingList': meeting_list})
+                         'meetingList': meeting_list,
+                         'attend_dict':attend_dict})
 
 
 @csrf_exempt
@@ -735,8 +782,19 @@ def view_explan(request):
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today).filter(plan_attend__is_attend="standby", plan_attend__user=login_user)
       public_plans += list(public_plan)
+  
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today).filter(plan_attend__is_attend="attend", plan_attend__user=login_user)
+      public_plans += list(public_plan)
+
+  attends = Attend.objects.filter(user=login_user)
+
+  attend_dict = {}
+
+  for attend in attends:
+    attend_dict[attend.plan.pk] = attend.is_attend;
 
   public_user_names = {}
   for i in range(len(public_plans)):
@@ -750,6 +808,7 @@ def view_explan(request):
                         'meetingimg':meeting_img,
                         'private_user_names': private_user_names,
                         'public_user_names': public_user_names,
+                        'attend_dict':attend_dict,
                         })
 
 def list_to_queryset(model, data):

@@ -84,11 +84,46 @@ function clearPlanForm() {
 
 function openToggle() {
   document.getElementById("sidebar").style.width = "250px";
+  document.getElementById("sidebar").style.paddingTop = "2rem";
+  document.getElementById("sidebar").style.paddingBottom = "2rem";
 }
 
 function closeToggle() {
   document.getElementById("sidebar").style.width = "0";
+  document.getElementById("sidebar").style.paddingTop = "0";
+  document.getElementById("sidebar").style.paddingBottom = "0";
 }
+const navBtn = document.querySelector(".nav_bar_button");
+const sidebarMenu = document.querySelector(".sidebar-menu");
+const closeBtn = document.querySelector(".closeBtn");
+const mainCalendar=document.querySelector(".main");
+const meetingName=document.querySelector(".meeting-name");
+const displayYM=document.querySelector(".year_month_display");
+
+
+navBtn.addEventListener("click",()=>{
+  openToggle()
+});
+
+closeBtn.addEventListener("click",()=>{
+  closeToggle()
+})
+
+sidebarMenu.addEventListener("click",(e)=>{
+  closeToggle()
+})
+
+mainCalendar.addEventListener("click",(e)=>{
+  closeToggle()
+})
+
+meetingName.addEventListener("click",(e)=>{
+  closeToggle()
+})
+displayYM.addEventListener("click",(e)=>{
+  closeToggle()
+})
+
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해
 // const viewYear = date.getFullYear();

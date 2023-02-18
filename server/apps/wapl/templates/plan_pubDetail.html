@@ -122,9 +122,11 @@
           >
             {% csrf_token %}
             <textarea name="content" placeholder="답글 남기기"></textarea>
-            <div>
-              <input type="submit" , value="작성" />
-            </div>
+            <input 
+            type="submit" 
+            value="게시"
+            style="color:black;"
+            />
           </form>
         </div>
         {% endfor %}

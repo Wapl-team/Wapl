@@ -124,7 +124,7 @@ hr {
   border: none;
   border-radius: 15px;
   background-color: var(--main-bg-color);
-  color: white;
+  color: black;
   padding: 0.5em;
   margin: 0.2em;
 }

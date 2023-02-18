@@ -119,6 +119,7 @@ body {
 }
 
 .profile {
+  width: 250px;
   display: flex;
   flex-direction: column;
   /* background-color: #1a2634; */
@@ -135,6 +136,7 @@ body {
   font-size: 21px;
   color: #1a2634;
   padding-top: 10px;
+  padding-right: 10px;
 }
 
 .closeSidebar .closeBtn:hover {
@@ -150,6 +152,8 @@ body {
 
 .profile__username {
   transition: 0.2s;
+  max-width: 6rem;
+  word-break: break-all;
 }
 
 .profile__username:hover {
@@ -168,13 +172,14 @@ body {
   color: #1a2634;
   font-size: 22px;
   font-weight: bold;
-  margin-right: 3px;
+  margin-right: 0.3rem;
+  text-align: center;
 }
 
 .nim {
   text-decoration: none;
   color: black;
-  font-size: 22px;
+  font-size: 1.5rem;
 }
 
 .profileImage {

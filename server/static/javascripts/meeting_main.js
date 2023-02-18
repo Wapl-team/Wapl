@@ -207,9 +207,9 @@ modalButton.addEventListener("click", () => {
   modal.classList.remove("hidden");
 });
 
-closeModal.addEventListener("click", () => {
-  modal.classList.add("hidden");
-});
+// closeModal.addEventListener("click", () => {
+//   modal.classList.add("hidden");
+// });
 
 closeModal2.addEventListener("click", () => {
   modal.classList.add("hidden");
@@ -346,11 +346,12 @@ const plan_create = (meeting_pk) => {
                   current_preview.getDate()
                 );
                 let new_plan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
+                const width =
+                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${start}px`;
+                new_plan.style.left = `${(start / 3) * 2}px`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -361,7 +362,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.style.borderRadius = "10px";
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
-                new_plan.style.fontSize = "17px";
+                new_plan.style.fontSize = "0.7rem";
                 new_plan.style.overflow = "hidden";
                 new_plan.style.whiteSpace = "nowrap";
                 new_plan.style.textOverflow = "ellipsis";
@@ -394,11 +395,12 @@ const plan_create = (meeting_pk) => {
                 new_div.classList.add("private");
                 new_div.style.height = "50px";
                 let new_plan = document.createElement("a");
-                const width = parseInt(hours) * 60 + parseInt(minutes);
+                const width =
+                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${start}px`;
+                new_plan.style.left = `${(start / 3) * 2}px`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -410,7 +412,7 @@ const plan_create = (meeting_pk) => {
                 new_plan.style.borderRadius = "10px";
                 new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
                 new_plan.style.padding = "11px";
-                new_plan.style.fontSize = "17px";
+                new_plan.style.fontSize = "0.7rem";
                 new_plan.style.overflow = "hidden";
                 new_plan.style.whiteSpace = "nowrap";
                 new_plan.style.textOverflow = "ellipsis";
@@ -444,11 +446,12 @@ const plan_create = (meeting_pk) => {
               new_div.classList.add("public-timeline");
               new_div.style.height = "50px";
               let new_plan = document.createElement("a");
-              const width = parseInt(hours) * 60 + parseInt(minutes);
+              const width =
+                ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
               new_plan.href = `/pubplan/${plan.id}`;
               new_plan.style.position = "absolute";
               new_plan.style.width = `${width}px`;
-              new_plan.style.left = `${start}px`;
+              new_plan.style.left = `${(start / 3) * 2}px`;
               // new_plan.style.border = "1px solid orange";
               new_plan.style.backgroundColor = "#FBFBFB";
               new_plan.style.color = "black";
@@ -460,7 +463,7 @@ const plan_create = (meeting_pk) => {
               new_plan.style.borderRadius = "10px";
               new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
               new_plan.style.padding = "11px";
-              new_plan.style.fontSize = "17px";
+              new_plan.style.fontSize = "0.7rem";
               new_plan.style.overflow = "hidden";
               new_plan.style.whiteSpace = "nowrap";
               new_plan.style.textOverflow = "ellipsis";
@@ -665,11 +668,11 @@ return: err_msg
             [start, hours, minutes] = calcTime(start_date, end_date, day);
 
             let new_plan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
+            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
             new_plan.href = `/pubplan/${plan.pk}`;
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${start}px`;
+            new_plan.style.left = `${(start / 3) * 2}px`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
@@ -677,7 +680,7 @@ return: err_msg
             new_plan.style.borderRadius = "10px";
             new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             new_plan.style.padding = "11px";
-            new_plan.style.fontSize = "17px";
+            new_plan.style.fontSize = "0.7rem";
             new_plan.style.overflow = "hidden";
             new_plan.style.whiteSpace = "nowrap";
             new_plan.style.textOverflow = "ellipsis";
@@ -716,11 +719,11 @@ return: err_msg
             [start, hours, minutes] = calcTime(start_date, end_date, day);
 
             let new_plan = document.createElement("a");
-            const width = parseInt(hours) * 60 + parseInt(minutes);
+            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
 
             new_plan.style.position = "absolute";
             new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${start}px`;
+            new_plan.style.left = `${(start / 3) * 2}px`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
@@ -728,7 +731,7 @@ return: err_msg
             new_plan.style.borderRadius = "10px";
             new_plan.style.boxShadow = "1px 1px 2px rgb(0 0 0 / 14%)";
             new_plan.style.padding = "11px";
-            new_plan.style.fontSize = "17px";
+            new_plan.style.fontSize = "0.7rem";
             new_plan.innerText = `${plan.fields.title}`;
             new_plan.style.overflow = "hidden";
             new_plan.style.whiteSpace = "nowrap";

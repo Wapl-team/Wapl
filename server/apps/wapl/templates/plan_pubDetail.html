@@ -21,6 +21,19 @@
           {{plan.endTime}}
         </div>
         <div class="plan-detail-content">{{plan.content}}</div>
+        {% if is_standby == "standby" %}
+        <div class="plan-detail-decide">
+          <a
+            class="plan-detail-attend"
+            href="{% url 'wapl:pubattend' plan.pk %}"
+            >참석</a
+          ><a
+            class="plan-detail-absence"
+            href="{% url 'wapl:pubabsense' plan.pk%}"
+            >불참</a
+          >
+        </div>
+        {% endif %}
       </div>
       <hr />
       <!-- 여기부터 Comment------------------------------------------------ -->
@@ -81,7 +94,8 @@
               <div class="user-comment-info">
                 <div class="user-comment-user">
                   <i class="fa-solid fa-arrow-turn-up fa-rotate-90"></i>
-                  {{reply.user}}</div>
+                  {{reply.user}}
+                </div>
                 {% if reply.created_string == False %} {% csrf_token %}
                 <span class="user-comment-time"
                   >{{ reply.created_at|date:'m월 d일' }}</span
@@ -126,9 +140,10 @@
       </div>
       <hr />
 
-      
       <div class="control-container">
-        <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
+        <a class="home" href="{% url 'wapl:main' %}"
+          ><i class="fa-solid fa-house"></i
+        ></a>
         {% if request.user == plan.user or request.user == meeting.owner%}
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"
@@ -144,11 +159,11 @@
       </div>
       {% endif %}
     </div>
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/5658349e28.js"
       crossorigin="anonymous"

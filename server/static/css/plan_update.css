@@ -118,17 +118,7 @@ hr {
   margin-top: 1rem;
 }
 
-.control-container input {
-  font-size: 16px;
-  border: none;
-  border-radius: 15px;
-  background-color: var(--main-bg-color);
-  color: white;
-  padding: 0.5em;
-  margin: 0.2em;
-}
-
-.control-container .back {
+.control-container input,.control-container .back{
   font-size: 16px;
   text-decoration: none;
   border: none;
@@ -136,9 +126,7 @@ hr {
   background-color: var(--main-bg-color);
   color: white;
   padding: 0.5em;
-  padding-top: 0.7rem;
   margin: 0.2em;
-  padding-top: 11px;
 }
 
 .control-container .home {

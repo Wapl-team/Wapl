@@ -96,9 +96,11 @@
             >추가</a
           >
         </form>
+        {% comment %}
         <button class="closeModal">
           <i class="fa-solid fa-x"></i>
         </button>
+        {% endcomment %}
       </div>
     </div>
 
@@ -108,7 +110,10 @@
       <div class="sidebar__main">
         <div class="profile">
           <div class="closeSidebar">
-            <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+            <a
+              href="javascript:void(0)"
+              class="closeBtn"
+              onclick="closeToggle()"
               ><i class="fa-solid fa-x"></i
             ></a>
           </div>
@@ -135,17 +140,17 @@
           </div>
         </div>
         <hr />
-  
+
         <div class="groupBtn">
           <button class="createGroup">
             <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
           </button>
-  
+
           <button class="joinGroup">
             <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
           </button>
         </div>
-  
+
         <div class="groups">
           <div class="privategroup">
             <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
@@ -166,7 +171,7 @@
           {% endfor %}
         </div>
       </div>
-      
+
       <div class="sidebar__footer">
         <div class="goto-home">
           <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
@@ -227,11 +232,11 @@
         </div>
       </div>
     </div>
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/6fbcf91afd.js"
       crossorigin="anonymous"

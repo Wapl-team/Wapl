@@ -24,6 +24,19 @@
           {{plan.endTime}}
         </div>
         <div class="plan-detail-content">{{plan.content}}</div>
+        {% if is_standby == "standby" %}
+        <div class="plan-detail-decide">
+          <a
+            class="plan-detail-attend"
+            href="{% url 'wapl:pubattend' plan.pk %}"
+            >참석</a
+          ><a
+            class="plan-detail-absence"
+            href="{% url 'wapl:pubabsense' plan.pk%}"
+            >불참</a
+          >
+        </div>
+        {% endif %}
       </div>
       <hr />
       <!-- 여기부터 Comment------------------------------------------------ -->
@@ -35,9 +48,11 @@
         >
           {% csrf_token %}
           <textarea name="content" placeholder="댓글 남기기"></textarea>
-          <div>
-            <input type="submit" , value="작성" />
-          </div>
+          <input 
+          type="submit" 
+          value="게시"
+          style="color:black;"
+          />
         </form>
       </div>
       <div class="comment-container">
@@ -65,7 +80,10 @@
               method="post"
             >
               {% csrf_token %}
-              <input type="submit" value="삭제" />
+              <input 
+              type="submit" 
+              value="삭제"
+              style="color: black" />
             </form>
             <input
               type="submit"
@@ -121,9 +139,11 @@
           >
             {% csrf_token %}
             <textarea name="content" placeholder="답글 남기기"></textarea>
-            <div>
-              <input type="submit" , value="작성" />
-            </div>
+            <input 
+            type="submit" 
+            value="게시"
+            style="color:black;"
+            />
           </form>
         </div>
         {% endfor %}
@@ -131,6 +151,9 @@
       <hr />
 
       <div class="control-container">
+        <a class="home" href="{% url 'wapl:main' %}"
+          ><i class="fa-solid fa-house"></i
+        ></a>
         {% if request.user == plan.user or request.user == meeting.owner%}
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"

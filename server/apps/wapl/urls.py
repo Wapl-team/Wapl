@@ -10,6 +10,7 @@ urlpatterns= [
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),
     path("withdraw", views.withdraw, name="withdraw"),
+    path("withdraw/transfer", views.withdraw_transfer, name="withdraw_transfer"),
     path("social/signup", views.extra_signup, name="extra_signup"),
     path("", views.start, name="start"),
     path("create-private-plan", views.create_private_plan, name="create_private_plan"), 
@@ -34,6 +35,10 @@ urlpatterns= [
     path("pubplan/<int:ak>/<int:pk>/delete", views.pub_comment_delete, name="pubcomment_delete"),
     path("pubplan/<int:pk>/comment/<int:ck>", views.pub_reply_create, name="pubreply_create"),
     path("pubplan/<int:pk>/comment/<int:ck>/delete", views.pub_reply_delete, name="pubreply_delete"),
+    path('pubplan/<int:pk>/attend', views.public_attend, name='pubattend'),
+    path('pubplan/<int:pk>/absense', views.public_absense, name='pubabsense'),
+    
+    
 
     path('profile', views.profile, name='profile'),
     path('password/update', views.update_password, name='update_password'),

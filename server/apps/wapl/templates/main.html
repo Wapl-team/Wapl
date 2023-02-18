@@ -11,7 +11,7 @@
   <body>
     <nav class="nav">
       <div class="nav-side">
-        <button onclick="openToggle()" class="nav_bar_button">
+        <button class="nav_bar_button">
           <i class="fa-solid fa-bars fa-2x" style="font-size: 2.3em"></i>
         </button>
       </div>
@@ -29,16 +29,22 @@
 
     <form action="/main" class="year_month_display" method="post">
       <select name="year_category" class="year_category">
-        <option>{{view_year}}</option>
         {% for i in year_num %}
-        <option value="{{ i }}">{{ i }}</option>
+          {% if i == view_year %}
+          <option value="{{ i }}" selected>{{ i }}</option>
+          {% else %}
+          <option value="{{ i }}">{{ i }}</option>
+          {% endif %}
         {% endfor %}
       </select>
       <p class="nyun">년</p>
       <select name="month_category" class="month_category">
-        <option>{{view_month}}</option>
         {% for i in month_num %}
-        <option value="{{ i }}">{{ i }}</option>
+          {% if i == view_month %}
+          <option value="{{ i }}" selected>{{ i }}</option>
+          {% else %}
+          <option value="{{ i }}">{{ i }}</option>
+          {% endif %}
         {% endfor %}
       </select>
       <p>월</p>
@@ -91,15 +97,15 @@
             >일정 추가하기
           </a>
         </form>
-        <button class="closeModal">
+        <!-- <button class="closeModal">
           <i class="fa-solid fa-x"></i>
-        </button>
+        </button> -->
       </div>
       <div class="modal-share hidden">
         <div class="share-box">
           {% for meeting in meetings %}
           <div>
-            <span>{{meeting.meeting_name}}</span>
+            <p>{{meeting.meeting_name}}</p>
 
             <div class="share-select">
               <input
@@ -137,7 +143,7 @@
       <div class="sidebar__main">
         <div class="profile">
           <div class="closeSidebar">
-            <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
+            <a href="javascript:void(0)" class="closeBtn"
               ><i class="fa-solid fa-x"></i
             ></a>
           </div>
@@ -164,17 +170,17 @@
           </div>
         </div>
         <hr />
-  
+
         <div class="groupBtn">
           <button class="createGroup">
             <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
           </button>
-  
+
           <button class="joinGroup">
             <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
           </button>
         </div>
-  
+
         <div class="groups">
           <div class="privategroup">
             <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
@@ -195,7 +201,7 @@
           {% endfor %}
         </div>
       </div>
-      
+
       <div class="sidebar__footer">
         <div class="goto-home">
           <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
@@ -257,11 +263,11 @@
         </div>
       </div>
     </div>
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/6fbcf91afd.js"
       crossorigin="anonymous"

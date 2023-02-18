@@ -36,9 +36,11 @@
         >
           {% csrf_token %}
           <textarea name="content" placeholder="댓글 달기..."></textarea>
-          <div>
-            <input type="submit" , value="게시" />
-          </div>
+          <input 
+          type="submit" 
+          value="게시"
+          style="color:black;"
+          />
         </form>
       </div>
       <div class="comment-container">
@@ -66,8 +68,12 @@
               method="post"
             >
               {% csrf_token %}
-              <input type="submit" value="삭제" />
+              <input 
+              type="submit" 
+              value="삭제"
+              style="color: black" />
             </form>
+            
             <input
               type="submit"
               value="답글"
@@ -123,9 +129,11 @@
           >
             {% csrf_token %}
             <textarea name="content" placeholder="답글 남기기"></textarea>
-            <div>
-              <input type="submit" , value="작성" />
-            </div>
+            <input 
+            type="submit" 
+            value="게시"
+            style="color:black;"
+            />
           </form>
         </div>
         {% endfor %}

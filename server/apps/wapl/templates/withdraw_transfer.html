@@ -1,24 +1,41 @@
-<form action="{% url 'wapl:withdraw_transfer' %}" method="post">
-    {% csrf_token %}
-    <p>회원 탈퇴 마지막 단계입니다! 현재 관리자로 설정된 모임의 관리자를 새로 설정해주세요!</p>
-    <p>관리자로 설정된 모임이 없다면, 바로 버튼을 누르시면 됩니다.</p>
-    <p>본인을 선택하면, 해당 모임은 탈퇴와 함께 삭제됩니다.</p>
-    {% for meeting, users in datas %}
-        <div>
-            {{ meeting.meeting_name }}
-            <br />
-            {{ meeting.get_category_display }}
-            <br />
-            {{ meeting.content }}
-            <br />
-            <select name="new_owner_{{ meeting.id }}" id="">
-                {% for meeting_user in users.all %}
-                    <option value="{{ meeting_user.id }}">{{ meeting_user.nickname }}</option>
+<!DOCTYPE html>
+<html lang="ko">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/withdraw_transfer.css' %}" />
+        <title>와플 : 관리자 변경</title>
+    </head>
+    <body>
+        <div class="header"></div>
+        <div class="main">
+        <!-- 관리자 변경 영역 -->
+        <div class="withdraw_transfer-container">
+            <p class="withdraw_transfer">관리자 변경</p>
+            <form action="{% url 'wapl:withdraw_transfer' %}" method="post" class="withdraw_transfer-form">
+                {% csrf_token %}
+                <p>회원 탈퇴를 위해 현재 본인이 관리자로 설정된 모임의 관리자를 변경해 주세요.</p>
+                <p>관리자로 설정된 모임이 없다면, 바로 '설정 완료' 버튼을 눌러 주세요.</p>
+                <p>관리자인 본인을 선택할 시, 해당 모임은 회원 탈퇴와 함께 모임 삭제가 됩니다.</p>
+                <div class="meeting_scroll">
+                {% for meeting, users in datas %}
+                    <div class="meeting_info">
+                        <p class="name">{{ meeting.meeting_name }} ({{ meeting.get_category_display }})</p>
+                        <p>{{ meeting.content }}</p>
+                        <select name="new_owner_{{ meeting.id }}" id="">
+                            {% for meeting_user in users.all %}
+                                <option value="{{ meeting_user.id }}">{{ meeting_user.nickname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br />
                 {% endfor %}
-            </select>
+                </div>
+                <input type="submit" value="설정 완료" class="withdraw_transfer-btn"/>
+                <a href="{% url 'wapl:withdraw' %}" class="return">취소</a>
+            </form>
         </div>
-        <br />
-        <br />
-    {% endfor %}
-    <input type="submit" value="설정 완료" />
-</form>
+    </body>
+</html>

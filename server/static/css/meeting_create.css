@@ -48,6 +48,7 @@ select {
   border-radius: 10px;
   padding: 0.3vh;
   background: white;
+  font-family: "S-CoreDream-3Light";
 }
 
 .meetingCreate div input {

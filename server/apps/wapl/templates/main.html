@@ -75,6 +75,24 @@
             {% endfor %}
           </div>
         </div>
+    <form action="/main" class="year_month_display" method="post">
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
+      <input class="change-day-btn" type="submit" value="선택하기" />
+    </form>
+    <!-- 여기 form 부분 바꾸면 오류나요 -->
 
         <div class="sidebar__footer">
           <div class="goto-home">

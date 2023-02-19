@@ -7,6 +7,7 @@ urlpatterns= [
     # Review : Restful한 CRUD 패턴을 준수하는 게 좋습니다!
     path("main", views.main, name="main"),
     path("main/reset", views.main_reset, name="main_reset"),
+    path("meeting/<int:pk>/reset", views.meeting_calendar_reset, name="meeting_calendar_reset"),
     path("login", views.login, name="login"),
     path("logout", views.logout, name="logout"),
     path("signup", views.signup, name="signup"),

@@ -104,6 +104,9 @@
         </nav>
 
         <hr />
+    <form action="{% url 'wapl:meeting_calendar_reset' cur_meeting.pk %}">
+      <input class="change-day-btn reset-btn" type="submit" value="reset" />
+    </form>
 
         <form action="/main/reset">
           <input class="change-day-btn reset-btn" type="submit" value="reset" />
@@ -112,6 +115,31 @@
         <div class="meeting-pk hidden">{{cur_meeting.id}}</div>
         <div class="year-month">{{view_year}}년 {{view_month}}월</div>
 
+    <form
+      action="{% url 'wapl:meeting_calendar' cur_meeting.pk %}"
+      class="year_month_display"
+      method="post"
+    >
+      <select name="year_category" class="year_category">
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p class="nyun">년</p>
+      <select name="month_category" class="month_category">
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+      <p>월</p>
+      <input class="change-day-btn" type="submit" value="선택하기" />
+    </form>
+    <!-- 여기 form 부분 바꾸면 오류나요 -->
+    
+    <div class="modal hidden">
+      <div class="modal__content">
         <form
           action="{% url 'wapl:meeting_calendar' cur_meeting.pk %}"
           class="year_month_display"

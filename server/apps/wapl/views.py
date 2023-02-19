@@ -35,60 +35,57 @@ from django.db.models import Q
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  # month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  month_num = list(range(1, 13))
-  cur_year = datetime.now().year
-  year_num = list(range(cur_year - 50, cur_year + 51))
-  
+  # 이거 바꾸면 오류나요(year_num, month_num)
+  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  year_num = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030',
+              '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
+              '2041', '2042', '2043', '2044', '2045', '2046', '2047', '2048', '2049', '2050',
+              '2051', '2052', '2053', '2054', '2055', '2056', '2057', '2058', '2059', '2060',]
+
   #여기부터 inputTime 개선
   changers = change_inputTime.objects.filter(user=request.user)
 
-    
+
   if request.method == 'POST':
     if changers.count() > 0:
       changers.last().delete()
-    
+
     change_inputTime.objects.create(
         user = request.user,
         input_year = request.POST["year_category"],
         input_month = request.POST["month_category"],
         )
     return redirect('wapl:main')
-  
+
   if changers.count() == 0:
     year = inputTime.objects.last().input_year
     month = inputTime.objects.last().input_month
-    
-    # year_num.remove(int(year))
-    # month_num.remove(int(month))
-   
+    year_num.remove(year)
+    month_num.remove(month)
+
   else:
     year = changers.last().input_year
-    
     month = changers.last().input_month
-    # year_num.remove(int(year))
-    # month_num.remove(int(month))  
-
-  print(year_num)
-  print(month_num)
+    year_num.remove(year)
+    month_num.remove(month)  
 
   context = {
             'meetings' : meetings,
             'meeting_name': '',
-            'view_year': int(year),
-            'view_month': int(month),
+            'view_year': year,
+            'view_month': month,
             'month_num': month_num,
             'year_num' : year_num,
             }
 
   return render(request, "main.html", context=context)
 
-def main_reset(request:HttpRequest,*args, **kwargs):
+def main_reset(request:HttpRequest, *args, **kwargs):
   changers = change_inputTime.objects.filter(user=request.user)
   if changers.count() > 0 :
     changers.last().delete()
   return redirect('wapl:main')
-  
+
 @csrf_exempt
 def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
   login_user = request.user
@@ -98,8 +95,11 @@ def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
 #   cur_meeting = Meeting.objects.all().get(id=pk)
   meetings = login_user.user_meetings.all()
   month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  year_num = ['2021', '2022', '2023', '2024', '2025']
-  
+  year_num = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030',
+              '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
+              '2041', '2042', '2043', '2044', '2045', '2046', '2047', '2048', '2049', '2050',
+              '2051', '2052', '2053', '2054', '2055', '2056', '2057', '2058', '2059', '2060',]
+  # 이거 바꾸면 오류나요(year_num, month_num)
 #여기부터 inputTime 개선
   changers = change_inputTime.objects.filter(user=request.user)
 
@@ -112,19 +112,19 @@ def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
         input_month = request.POST["month_category"],
           )  
     return redirect('wapl:meeting_calendar', pk)
-  
+
   if changers.count() == 0:
     year = inputTime.objects.last().input_year
     month = inputTime.objects.last().input_month
     year_num.remove(year)
     month_num.remove(month)
-    
+
   else:
     year = changers.last().input_year
     month = changers.last().input_month
     year_num.remove(year)
     month_num.remove(month)  
-    
+
   context = {'cur_meeting': cur_meeting,
             'meetings': meetings,
             'view_year': year,
@@ -133,6 +133,12 @@ def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
             'year_num' : year_num,
             }
   return render(request, "meeting_main.html", context=context)
+
+def meeting_calendar_reset(request:HttpRequest, pk, *args, **kwargs):
+  changers = change_inputTime.objects.filter(user=request.user)
+  if changers.count() > 0 :
+    changers.last().delete()
+  return redirect('wapl:meeting_calendar', pk)
 
 
 # 미팅 pt 입니다--------------------------------------------------------------

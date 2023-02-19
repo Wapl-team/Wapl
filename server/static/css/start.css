@@ -1,0 +1,110 @@
+@import url(./reset.css);
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "S-CoreDream-3Light";
+    background: #fbfbfb;
+    }
+
+
+.logo-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 3em;
+
+}
+
+.black-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+}
+
+.black{
+    background-color: black;
+    height: 14em;
+    width: 0.3em;
+}
+
+.address{
+    transform: rotate( 270deg );
+    color: black;
+    padding-right: 6em;
+    font-size: 0.7em;
+}
+
+.wapl-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wapl-subcontainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.pl-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+}
+
+.plan{
+    display: flex;
+    flex-direction: row;
+}
+
+.w-st{
+    color: #e1ef6c;
+    font-size: 4.2em;
+    font-weight: 700;
+    font-family: 'GmarketSansMedium';
+}
+
+.b-st{
+    color: black;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: 'GmarketSansMedium';
+}
+
+.tisyour{
+    margin-bottom: 0.3em;
+}
+
+.an{
+    margin-top: 1.6em;
+    margin-left: 0.3em;
+}
+
+.intro-detail-1{
+    font-size: 0.8em;
+    color: #5b5b5b;
+    margin-bottom: 3em;
+    margin-left: 7em;
+    margin-top: 0.5em;
+}
+
+.intro-detail-2{
+    font-size: 1.2em;
+    color: black;
+    margin-bottom: 2.5em;
+    margin-top: 3em;
+}

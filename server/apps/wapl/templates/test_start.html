@@ -1,19 +1,58 @@
-{% load socialaccount%} {% providers_media_js %} {% if user.is_authenticated %}
-<p>로그인중</p>
-<a href="{% url 'wapl:main' %}">메인으로가기</a>
-<div><a href="{% url 'wapl:logout' %}">로그아웃</a></div>
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/start.css' %}" />
+    <title>소개 페이지</title>
+</head>
+<body>
+    {% load socialaccount%} {% providers_media_js %} {% if user.is_authenticated %}
+    <p>로그인중</p>
+    <a href="{% url 'wapl:main' %}">메인으로가기</a>
+    <div><a href="{% url 'wapl:logout' %}">로그아웃</a></div>
 
-{% comment %} {{ user.nickname }}님이 로그인 중
-<br />
-<a href="{% url 'wapl:logout' %}">로그아웃</a> {% endcomment %} {% else %} 설명
-페이지
-<br />
-<a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">로그인하러가기</a>
-<br />
-{% endif %}
+    {% comment %} {{ user.nickname }}님이 로그인 중
+    <br />
+    <a href="{% url 'wapl:logout' %}">로그아웃</a> {% endcomment %} {% else %} 설명
+    페이지
+    <br />
+    <a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">로그인하러가기</a>
+    <br />
+    {% endif %}
 
-{% if messages %}
-    {% for message in messages %}
-    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-    {% endfor %}
-{% endif %}
+    {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="logo-container">
+        
+        <div class="black-container">
+            <div class="black"></div>
+            <div class="address"><p>wapl.com</p></div>
+        </div>
+        <div class="wapl-container">
+            <div class="intro-detail-2">당신을 위한 공유 달력 서비스</div>
+            <div class="wapl-subcontainer">
+                <div class="wa w-st">WA</div>    
+                <div class="pl-container">
+                    <div class="tisyour b-st">t is your</div>
+                    <div class="plan">
+                        <div class="pl w-st">PL</div>
+                        <div class="an b-st">an</div>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-detail-1">개인의 일정과 모임의 일정을 동시에</div>
+
+        </div>
+    </div>
+</body>
+</html>
+
+

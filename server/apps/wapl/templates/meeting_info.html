@@ -41,14 +41,33 @@
           <div class="meeting__submenu">
             <span>멤버</span>
             <div class="meeting__members">
-              {% for user in users %}
-              <div class="meeting__member">{{ user.nickname }}</div>
-              {% endfor %}
+              전체보기&nbsp;<i class="fa-regular fa-hand-pointer"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- 멤버 모달 Start-->
+    <div class="modal-member hidden">
+      <div class="modal-member-box">
+        {% for user in users %}
+        <div class="meeting__member__container">
+          {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" />
+          {% else %}
+          <img src="{{ user.default_image }}" />
+          {% endif %}
+          <div class="meeting__member">{{ user.nickname }}</div>
+          <div class="meeting__owner__notice">
+            {% if meeting.owner == user %}
+            관리자
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+    <!-- 멤버 모달 End-->
     <div class="meeting__footer">
       {% if meeting.owner == request.user %}
       <div class="meeting_edit">
@@ -70,5 +89,6 @@
       src="https://kit.fontawesome.com/6fbcf91afd.js"
       crossorigin="anonymous"
     ></script>
+    <script src="{% static 'javascripts/meeting_info.js' %}"></script>
   </body>
 </html>

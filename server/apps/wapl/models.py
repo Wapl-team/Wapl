@@ -58,7 +58,7 @@ class Meeting(models.Model):
     meeting_name = models.CharField(max_length=20)
     content = models.TextField()
     category = models.CharField(choices=MEETING_CHOICE, max_length=20)
-    owner = models.ForeignKey(User, related_name="meetings", on_delete=models.CASCADE, default=1)
+    owner = models.ForeignKey(User, null=True, related_name="meetings", on_delete=models.SET_NULL, default=1)
     users = models.ManyToManyField(User, related_name="user_meetings")
     invitation_code = models.CharField(max_length=20, null=True)
     image = models.ImageField(blank=True, upload_to='team_profile')
@@ -66,6 +66,7 @@ class Meeting(models.Model):
 
     def __str__(self):
         return self.meeting_name
+
       
 # 일정
 # 필드: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(owner)
@@ -98,6 +99,17 @@ class Share(models.Model):
   plan = models.ForeignKey(PrivatePlan, on_delete=models.CASCADE, related_name='plan_shares', default=1)
   meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE, related_name='meeting_shares', default=1)
   is_share = models.CharField(choices=SHARE_CHOICE, max_length=20)
+
+class Attend(models.Model):
+   
+  ATTEND_CHOICE = [
+        ('attend', '참석'),
+        ('absence', '불참'),
+        ('standby', '대기상태'),
+  ]
+  plan = models.ForeignKey(PublicPlan, on_delete=models.CASCADE, related_name='plan_attend', default=1)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_attend', default=1)
+  is_attend = models.CharField(choices=ATTEND_CHOICE, max_length=10)
 
 # 댓글
 # 필드: 내용, 생성시간, 작성 유저, 일정

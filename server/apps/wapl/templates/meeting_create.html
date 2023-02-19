@@ -9,6 +9,9 @@
     <title>와플 : 모임 생성</title>
   </head>
   <body>
+    <a class="home" href="{% url 'wapl:main' %}">
+      <i class="fa-solid fa-house"></i>
+    </a>
     <h2>모임 생성</h2>
     <div class="error__msg">{{err_msg}}</div>
     <form
@@ -41,9 +44,10 @@
       <div>
         <input type="submit" value="모임 생성" />
       </div>
-      <div>
-        <a href="{% url 'wapl:main' %}">돌아가기</a>
-      </div>
     </form>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

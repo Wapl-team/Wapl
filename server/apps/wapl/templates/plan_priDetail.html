@@ -9,6 +9,9 @@
     <title>와플 : 개인 일정</title>
   </head>
   <body>
+    <!--<a class="home" href="{% url 'wapl:main' %}"
+      ><i class="fa-solid fa-house"></i
+    ></a>--><!--일정표시 안돼서 수정 못함-->
     <div class="plan__detail">일정 정보</div>
     <div class="plan-detail-container">
       <div class="main">
@@ -18,7 +21,8 @@
           <span>{{plan.location}}</span>
         </div>
         <div class="plan-detail-time">
-          {{plan.startTime}} <br /> ~ {{plan.endTime}}
+          {{plan.startTime}} <br />
+          ~ {{plan.endTime}}
         </div>
         <div class="plan-detail-content">{{plan.content}}</div>
       </div>
@@ -32,9 +36,11 @@
         >
           {% csrf_token %}
           <textarea name="content" placeholder="댓글 달기..."></textarea>
-          <div>
-            <input type="submit" , value="게시" />
-          </div>
+          <input 
+          type="submit" 
+          value="게시"
+          style="color:black;"
+          />
         </form>
       </div>
       <div class="comment-container">
@@ -62,8 +68,12 @@
               method="post"
             >
               {% csrf_token %}
-              <input type="submit" value="삭제" />
+              <input 
+              type="submit" 
+              value="삭제"
+              style="color: black" />
             </form>
+            
             <input
               type="submit"
               value="답글"
@@ -119,17 +129,17 @@
           >
             {% csrf_token %}
             <textarea name="content" placeholder="답글 남기기"></textarea>
-            <div>
-              <input type="submit" , value="작성" />
-            </div>
+            <input 
+            type="submit" 
+            value="게시"
+            style="color:black;"
+            />
           </form>
         </div>
         {% endfor %}
       </div>
 
-      
       <div class="control-container">
-        <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
         {% if request.user == plan.owner %}
         <form
           action="{% url 'wapl:delete' plan.pk %}"
@@ -139,18 +149,18 @@
           {% csrf_token %}
           <input type="submit" , value="삭제하기" />
         </form>
-        
+
         <a href="{% url 'wapl:update' plan.pk %}" class="update-plan"
           >수정하기</a
         >
       </div>
       {% endif %}
     </div>
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-      {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
     <script
       src="https://kit.fontawesome.com/5658349e28.js"
       crossorigin="anonymous"

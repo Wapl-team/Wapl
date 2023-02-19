@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime,change_inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend, change_inputTime, 
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -21,6 +21,7 @@ import base64
 import codecs
 from datetime import datetime
 from django.contrib import messages
+from django.db.models import Q
 
 #진짜 시간 전역 변수
 
@@ -34,8 +35,10 @@ from django.contrib import messages
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  year_num = ['2021', '2022', '2023', '2024', '2025']
+  # month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  month_num = list(range(1, 13))
+  cur_year = datetime.now().year
+  year_num = list(range(cur_year - 50, cur_year + 51))
   
   #여기부터 inputTime 개선
   changers = change_inputTime.objects.filter(user=request.user)
@@ -67,8 +70,8 @@ def main(request:HttpRequest,*args, **kwargs):
   context = {
             'meetings' : meetings,
             'meeting_name': '',
-            'view_year': year,
-            'view_month': month,
+            'view_year': int(year),
+            'view_month': int(month),
             'month_num': month_num,
             'year_num' : year_num,
             }
@@ -251,9 +254,17 @@ def create_public_plan(request, *args, **kwargs):
 
     meeting = get_object_or_404(Meeting, id=meeting_pk)
 
+    
+       
+
     result, err_msg = validate_plan(startTime = startTime, endTime = endTime, title = req['title'])
     if result:
       new_plan = PublicPlan.objects.create(meetings = meeting, owner = request.user , startTime = startTime, endTime = endTime, location = location, title = title, content = content)
+
+      users = meeting.users.all()
+
+      for user in users:
+         Attend.objects.create(plan=new_plan, user=user, is_attend="standby")
 
       if meeting.image == "":
         meeting_img = meeting.default_image
@@ -409,7 +420,13 @@ def public_detail(request, pk, *args, **kwargs):
         else:
           messages.warning(request, err_msg)
           return redirect('wapl:pubdetail', pk)
-    
+        
+    is_standby = ""
+    if len(Attend.objects.filter(plan=plan, user=request.user, is_attend="standby"))==1:
+       is_standby = "standby"
+    else:
+       is_standby = "none"
+
     comments = PublicComment.objects.all().filter(plan_post=plan)
     replys = replyPublicComment.objects.all()
     context = {
@@ -418,6 +435,7 @@ def public_detail(request, pk, *args, **kwargs):
         "replys": replys,
         'meeting': plan.meetings,
         "err_msg": err_msg,
+        "is_standby" : is_standby,
         }
     return render(request, 'plan_pubDetail.html', context=context)
 
@@ -518,6 +536,22 @@ def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
       
     return redirect('wapl:pubdetail', ak)
 
+def public_attend(request:HttpRequest, pk, *args, **kwargs):
+   plan = PublicPlan.objects.get(id=pk)
+   attend = Attend.objects.get(plan=plan, user=request.user)
+
+   attend.is_attend = "attend"
+   attend.save()
+   return redirect('wapl:main')
+
+def public_absense(request:HttpRequest, pk, *args, **kwargs):
+   plan = PublicPlan.objects.get(id=pk)
+   attend = Attend.objects.get(plan=plan, user=request.user)
+   
+   attend.is_attend = "absence"
+   attend.save()
+   return redirect('wapl:main')
+
 # -------------------------------------------------------------------------
 def start(request:HttpRequest, *args, **kwargs):
     return render(request, "test_start.html")
@@ -571,10 +605,15 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
             }
             return render(request, "extra_signup.html", context=context)
     else:
+        profile_set = Profile.objects.filter(user=request.user)
+        if profile_set.exists():
+          return redirect('wapl:main')
+
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'
         }
-    return render(request, 'extra_signup.html', context=context)
+        return render(request, 'extra_signup.html', context=context)
+
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
@@ -592,7 +631,8 @@ def login(request:HttpRequest, *args, **kwargs):
         else:
             err_msg="잘못된 ID 또는 패스워드입니다"
             context={
-            'err_msg':err_msg
+            'err_msg': err_msg,
+            'form': form,
             }
             return render(request, template_name='login.html',context=context)
     else:
@@ -615,14 +655,40 @@ def withdraw(request:HttpRequest, *args, **kwargs):
         password_form = forms.CheckPasswordForm(request.user, request.POST)
         
         if password_form.is_valid():
-            request.user.delete()
-            auth.logout(request)
-            messages.info(request, '회원 탈퇴 성공')
-            return redirect('wapl:start')
+            return redirect('wapl:withdraw_transfer')
     else:
         password_form = forms.CheckPasswordForm(request.user)
 
     return render(request, 'withdraw.html', {'password_form':password_form})
+
+def withdraw_transfer(request:HttpRequest, *args, **kwargs):
+    meetings = Meeting.objects.filter(owner=request.user)
+    users = []
+    for meeting in meetings:
+        users.append(meeting.users)
+    if request.method == 'POST':
+      # 선택한 새 주인들 받아와서 owner 바꾸고 탈퇴
+        for meeting in meetings:
+          new_owner = int(request.POST.get(f'new_owner_{meeting.id}'))
+          if new_owner == request.user.id:
+            print("deleteeeee")
+            print(meeting)
+            meeting.delete()
+          else:
+            meeting.owner = User.objects.get(id=new_owner)
+            print(meeting.owner.nickname)
+            meeting.users.remove(request.user)
+            meeting.save()
+
+        request.user.delete()
+        auth.logout(request)
+        messages.info(request, '회원 탈퇴 성공')
+        return redirect('wapl:start')
+    datas = zip(meetings, users)
+    context={
+      'datas': datas,      
+    }
+    return render(request, 'withdraw_transfer.html', context=context)
 
 
 # 모임 별 일정들 union 하는 함수
@@ -674,8 +740,23 @@ def view_plan(request):
        userimg = request.user.profile.image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="standby", plan_attend__user=login_user)
       public_plans += list(public_plan)
+
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="attend", plan_attend__user=login_user)
+      public_plans += list(public_plan)
+
+  # for meeting in meetings :
+  #     public_plan = PublicPlan.objects.all().filter(meetings = meeting,startTime__year__lte=year, endTime__year__gte=year).filter(plan_attend__is_attend="attend")
+  #     public_plans += list(public_plan)
+
+  attends = Attend.objects.filter(user=login_user)
+
+  attend_dict = {}
+
+  for attend in attends:
+    attend_dict[attend.plan.pk] = attend.is_attend;
 
   private_plans = serializers.serialize('json', private_plans)
   public_plans = serializers.serialize('json', public_plans)
@@ -683,10 +764,12 @@ def view_plan(request):
 
 
 
+
   return JsonResponse({'public_plans': public_plans,
                          'private_plans':private_plans,'userimg':userimg,
                          'meetingimg':meeting_img,
-                         'meetingList': meeting_list})
+                         'meetingList': meeting_list,
+                         'attend_dict':attend_dict})
 
 
 @csrf_exempt
@@ -771,8 +854,19 @@ def view_explan(request):
         meeting_img[meetings[i].pk] = meetings[i].image.url
 
   for meeting in meetings :
-      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today)
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today).filter(plan_attend__is_attend="standby", plan_attend__user=login_user)
       public_plans += list(public_plan)
+  
+  for meeting in meetings :
+      public_plan = PublicPlan.objects.all().filter(meetings = meeting, startTime__lte = today + timedelta(days=1), endTime__gte = today).filter(plan_attend__is_attend="attend", plan_attend__user=login_user)
+      public_plans += list(public_plan)
+
+  attends = Attend.objects.filter(user=login_user)
+
+  attend_dict = {}
+
+  for attend in attends:
+    attend_dict[attend.plan.pk] = attend.is_attend;
 
   public_user_names = {}
   for i in range(len(public_plans)):
@@ -786,6 +880,7 @@ def view_explan(request):
                         'meetingimg':meeting_img,
                         'private_user_names': private_user_names,
                         'public_user_names': public_user_names,
+                        'attend_dict':attend_dict,
                         })
 
 def list_to_queryset(model, data):

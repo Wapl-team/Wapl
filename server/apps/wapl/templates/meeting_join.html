@@ -9,9 +9,12 @@
     <title>와플 : 모임 참가</title>
   </head>
   <body>
+    <a class="home" href="{% url 'wapl:main' %}">
+      <i class="fa-solid fa-house"></i>
+    </a>
     <h2>모임 참가</h2>
-    <div class = 'err-text-container'>
-      <p class = "error__msg">{{err_msg}}</p>
+    <div class="err-text-container">
+      <p class="error__msg">{{err_msg}}</p>
     </div>
     <form
       action="{% url 'wapl:meeting_join' %}"
@@ -24,9 +27,10 @@
       <div>
         <input type="submit" value="모임 참가" />
       </div>
-      <div>
-        <a href={% url 'wapl:main' %}>돌아가기</a>
-      </div>
     </form>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

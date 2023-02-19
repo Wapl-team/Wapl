@@ -70,7 +70,7 @@ body {
 .profile-form p input {
   width: 240px;
   height: 3em;
-  border: 1px solid rgba(173,168,168,0.5);
+  border: 1px solid rgba(173, 168, 168, 0.5);
   padding: 0.3em;
   text-align: center;
   margin-top: 1vh;
@@ -131,9 +131,8 @@ body {
   margin: 0.2em;
   position: relative;
   left: -34vw;
-  top: 10vh;
+  top: 13vh;
 }
-
 
 .profile-form img {
   border-radius: 50%;

@@ -35,7 +35,7 @@ from django.db.models import Q
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  # 이거 바꾸면 오류나요
+  # 이거 바꾸면 오류나요(year_num, month_num)
   month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
   year_num = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030',
               '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
@@ -99,7 +99,7 @@ def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
               '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
               '2041', '2042', '2043', '2044', '2045', '2046', '2047', '2048', '2049', '2050',
               '2051', '2052', '2053', '2054', '2055', '2056', '2057', '2058', '2059', '2060',]
-
+  # 이거 바꾸면 오류나요(year_num, month_num)
 #여기부터 inputTime 개선
   changers = change_inputTime.objects.filter(user=request.user)
 

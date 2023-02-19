@@ -62,7 +62,6 @@ def main(request:HttpRequest,*args, **kwargs):
     # year_num.remove(int(year))
     # month_num.remove(int(month))
    
-    
   else:
     year = changers.last().input_year
     
@@ -348,7 +347,7 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
       else:
         err_msg = "수정 권한이 없습니다."
         messages.warning(request, err_msg)
-        return redirect('wapl:detail', pk) 
+        return redirect('wapl:pubdetail', pk) 
         
     return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
@@ -480,7 +479,7 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
           )
         else:
           messages.warning(request, err_msg)
-          return redirect('wapl:detail', pk)
+          return redirect('wapl:pubdetail', pk)
         
     return redirect('wapl:pubdetail', pk)
 
@@ -538,7 +537,7 @@ def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
       else:
         err_msg = '댓글을 삭제할 수 없습니다.'
         messages.warning(request, err_msg)
-        return redirect('wapl:detail', pk)
+        return redirect('wapl:pubdetail', pk)
       
     return redirect('wapl:pubdetail', ak)
 

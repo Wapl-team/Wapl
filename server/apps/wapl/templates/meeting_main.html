@@ -55,13 +55,8 @@
       <input class="change-day-btn" type="submit" value="선택하기" />
     </form>
 
-
-
     <div class="modal hidden">
       <div class="modal__content">
-        <button class="closeModal">
-          <i class="fa-solid fa-x closeModal_x" style="font-size: 1.5rem"></i>
-        </button>
         <form
           id="create"
           name="create"
@@ -113,8 +108,12 @@
       <div class="sidebar__main">
         <div class="profile">
           <div class="closeSidebar">
-            <a href="javascript:void(0)" class="closeBtn" onclick="closeToggle()"
-              ><i class="fa-solid fa-x" style="font-size: 1.5rem"></i></a>
+            <a
+              href="javascript:void(0)"
+              class="closeBtn"
+              onclick="closeToggle()"
+              ><i class="fa-solid fa-x" style="font-size: 1.5rem"></i
+            ></a>
           </div>
           <div class="profileSidebar">
             <a href="{% url 'wapl:profile' %}">

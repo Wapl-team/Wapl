@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend, change_inputTime, 
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend, change_inputTime
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -58,14 +58,20 @@ def main(request:HttpRequest,*args, **kwargs):
   if changers.count() == 0:
     year = inputTime.objects.last().input_year
     month = inputTime.objects.last().input_month
-    year_num.remove(year)
-    month_num.remove(month)
+    
+    # year_num.remove(int(year))
+    # month_num.remove(int(month))
+   
     
   else:
     year = changers.last().input_year
+    
     month = changers.last().input_month
-    year_num.remove(year)
-    month_num.remove(month)  
+    # year_num.remove(int(year))
+    # month_num.remove(int(month))  
+
+  print(year_num)
+  print(month_num)
 
   context = {
             'meetings' : meetings,

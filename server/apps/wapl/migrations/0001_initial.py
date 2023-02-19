@@ -190,6 +190,7 @@ class Migration(migrations.Migration):
                 ('is_attend', models.CharField(choices=[('attend', '참석'), ('absence', '불참'), ('standby', '대기상태')], max_length=10)),
                 ('plan', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='plan_attend', to='wapl.publicplan')),
                 ('user', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='user_attend', to=settings.AUTH_USER_MODEL)),
+
             ],
         ),
     ]

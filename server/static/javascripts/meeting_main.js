@@ -229,7 +229,7 @@ makeCalendar(viewYear, viewMonth);
 const modalButton = document.querySelector(".modalButton");
 const modal = document.querySelector(".modal");
 const modal_content = document.querySelector(".modal__content");
-const closeModal = document.querySelector(".closeModal");
+const closeModal = document.querySelector(".closeModal_x");
 const closeModal2 = document.querySelector(".closeModal2");
 
 modal.addEventListener("click", (e) => {

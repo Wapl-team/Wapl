@@ -127,9 +127,18 @@ body {
   text-decoration: none;
   color: var(--main-bg-color);
   padding: 0.5em;
-  padding-top: 0.7rem;
+  padding-top: 2.7rem;
   margin: 0.2em;
   position: relative;
   left: -34vw;
   top: 10vh;
+}
+
+
+.profile-form img {
+  border-radius: 50%;
+  border: 2px solid lightgray;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
 }

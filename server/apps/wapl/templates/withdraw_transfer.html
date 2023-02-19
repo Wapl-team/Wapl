@@ -19,20 +19,18 @@
                 <p>회원 탈퇴를 위해 현재 본인이 관리자로 설정된 모임의 관리자를 변경해 주세요.</p>
                 <p>관리자로 설정된 모임이 없다면, 바로 '설정 완료' 버튼을 눌러 주세요.</p>
                 <p>관리자인 본인을 선택할 시, 해당 모임은 회원 탈퇴와 함께 모임 삭제가 됩니다.</p>
-                <br />
                 <div class="meeting_scroll">
                 {% for meeting, users in datas %}
                     <div class="meeting_info">
-                        <p>{{ meeting.meeting_name }}</p>
-                        <p>{{ meeting.get_category_display }}</p>
+                        <p class="name">{{ meeting.meeting_name }} ({{ meeting.get_category_display }})</p>
                         <p>{{ meeting.content }}</p>
                         <select name="new_owner_{{ meeting.id }}" id="">
                             {% for meeting_user in users.all %}
                                 <option value="{{ meeting_user.id }}">{{ meeting_user.nickname }}</option>
                             {% endfor %}
                         </select>
-                        <br />
                     </div>
+                    <br />
                 {% endfor %}
                 </div>
                 <input type="submit" value="설정 완료" class="withdraw_transfer-btn"/>

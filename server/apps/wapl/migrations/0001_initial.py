@@ -184,12 +184,13 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.CreateModel(
-            name='change_inputTime',
+            name='Attend',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('input_year', models.CharField(default=2023, max_length=20)),
-                ('input_month', models.CharField(default=2, max_length=20)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('is_attend', models.CharField(choices=[('attend', '참석'), ('absence', '불참'), ('standby', '대기상태')], max_length=10)),
+                ('plan', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='plan_attend', to='wapl.publicplan')),
+                ('user', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='user_attend', to=settings.AUTH_USER_MODEL)),
+
             ],
         ),
         migrations.CreateModel(

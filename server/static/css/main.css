@@ -162,7 +162,6 @@ body {
 
 .profile__username {
   transition: 0.2s;
-  max-width: 6rem;
   word-break: break-all;
 }
 

@@ -602,7 +602,8 @@ def login(request:HttpRequest, *args, **kwargs):
 
 def logout(request:HttpRequest, *args, **kwargs):
     changers = change_inputTime.objects.filter(user=request.user)
-    changers.last().delete()
+    if changers.count() > 0:
+      changers.last().delete()
     login_user = request.user
     login_user.current_date = f'{datetime.now().year}-{datetime.now().month}-01'
     login_user.save()

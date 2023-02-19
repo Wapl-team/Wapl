@@ -118,7 +118,6 @@ body {
   left: 0;
   background-color: #fbfbfb;
   overflow-x: hidden;
-  transition: 0.3s;
   border: none;
   border-left: none;
   display: flex;
@@ -167,7 +166,6 @@ body {
 }
 
 .profile__username {
-  transition: 0.2s;
   word-break: break-all;
 }
 
@@ -225,7 +223,6 @@ body {
   text-decoration: none;
   font-size: 20px;
   display: block;
-  transition: 0.3s;
 }
 
 /* sidebar End */
@@ -258,7 +255,6 @@ hr {
   color: black;
   font-size: 17px;
   font-weight: 600;
-  transition: 0.2s;
 }
 
 .groupBtn a:hover {
@@ -280,7 +276,6 @@ hr {
   background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
-  transition: 0.3s;
 }
 
 .groupName:hover {
@@ -303,7 +298,6 @@ hr {
   background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
-  transition: 0.3s;
 }
 
 .privategroup:hover {
@@ -845,7 +839,8 @@ hr {
 
 @media (min-width: 1024px) {
   #sidebar {
-    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     padding-top: 4rem !important;
     position: static;
   }

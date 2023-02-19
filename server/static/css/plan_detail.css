@@ -241,7 +241,7 @@ hr {
   padding-top: 0.7rem;
   margin: 0.2em;
   position: relative;
-  left: 4vw;
+  left: 2vw;
   top: 3vh;
 }
 
@@ -264,4 +264,10 @@ hr {
   padding: 0.5rem 1rem;
   border-radius: 5px;
   margin-left: 5px;
+}
+
+@media (min-width: 390px) {
+  .home {
+    left: 1vw;
+  }
 }

@@ -32,23 +32,22 @@
 
     <form action="/main" class="year_month_display" method="post">
       <select name="year_category" class="year_category">
-        {% for i in year_num %} {% if i == view_year %}
-        <option value="{{ i }}" selected>{{ i }}</option>
-        {% else %}
+        <option>{{view_year}}</option>
+        {% for i in year_num %}
         <option value="{{ i }}">{{ i }}</option>
-        {% endif %} {% endfor %}
+        {% endfor %}
       </select>
       <p class="nyun">년</p>
       <select name="month_category" class="month_category">
-        {% for i in month_num %} {% if i == view_month %}
-        <option value="{{ i }}" selected>{{ i }}</option>
-        {% else %}
+        <option>{{view_month}}</option>
+        {% for i in month_num %}
         <option value="{{ i }}">{{ i }}</option>
-        {% endif %} {% endfor %}
+        {% endfor %}
       </select>
       <p>월</p>
       <input class="change-day-btn" type="submit" value="선택하기" />
     </form>
+    <!-- 여기 form 부분 바꾸면 오류나요 -->
 
     <div class="modal hidden">
       <div class="modal__content">

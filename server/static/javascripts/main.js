@@ -72,8 +72,6 @@ function calcTime(startDatetime, endDatetime, currentDatetime) {
   return [start, hours, minutes];
 }
 
-
-
 function clearPlanForm() {
   document.getElementById("plan_title").value = "";
   document.getElementById("plan_location").value = "";
@@ -83,48 +81,47 @@ function clearPlanForm() {
 }
 
 function openToggle() {
-  document.getElementById("sidebar").style.width = "250px";
-  document.getElementById("sidebar").style.paddingTop = "2rem";
-  document.getElementById("sidebar").style.paddingBottom = "2rem";
+  // document.getElementById("sidebar").style.width = "250px";
+  // document.getElementById("sidebar").style.paddingTop = "2rem";
+  // document.getElementById("sidebar").style.paddingBottom = "2rem";
+  document.getElementById("sidebar").style.display = "block";
 }
 
 function closeToggle() {
-  document.getElementById("sidebar").style.width = "0";
-  document.getElementById("sidebar").style.paddingTop = "0";
-  document.getElementById("sidebar").style.paddingBottom = "0";
+  // document.getElementById("sidebar").style.width = "0";
+  // document.getElementById("sidebar").style.paddingTop = "0";
+  // document.getElementById("sidebar").style.paddingBottom = "0";
+  document.getElementById("sidebar").style.display = "none";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
 const closeBtn = document.querySelector(".closeBtn");
-const mainCalendar=document.querySelector(".main");
-const meetingName=document.querySelector(".meeting-name");
-const displayYM=document.querySelector(".year_month_display");
+const mainCalendar = document.querySelector(".main");
+const meetingName = document.querySelector(".meeting-name");
+const displayYM = document.querySelector(".year_month_display");
 
-
-navBtn.addEventListener("click",()=>{
-  openToggle()
+navBtn.addEventListener("click", () => {
+  openToggle();
 });
 
-closeBtn.addEventListener("click",()=>{
-  closeToggle()
-})
+closeBtn.addEventListener("click", () => {
+  closeToggle();
+});
 
-sidebarMenu.addEventListener("click",(e)=>{
-  closeToggle()
-})
+sidebarMenu.addEventListener("click", (e) => {
+  closeToggle();
+});
 
-mainCalendar.addEventListener("click",(e)=>{
-  closeToggle()
-})
+mainCalendar.addEventListener("click", (e) => {
+  closeToggle();
+});
 
-meetingName.addEventListener("click",(e)=>{
-  closeToggle()
-})
-displayYM.addEventListener("click",(e)=>{
-  closeToggle()
-})
-
-
+meetingName.addEventListener("click", (e) => {
+  closeToggle();
+});
+displayYM.addEventListener("click", (e) => {
+  closeToggle();
+});
 
 // const makeMeetingList = (meetingList) => {
 //   const menu = document.querySelector("#share");
@@ -430,12 +427,11 @@ const plan_create = () => {
                   current_preview.getDate()
                 );
                 let newplan = document.createElement("a");
-                const width =
-                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+                const width = parseInt(hours) * 60 + parseInt(minutes);
                 newplan.href = `plan/${plan.id}`;
                 newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${(start / 3) * 2}px`;
+                newplan.style.width = `${(width * 100) / 1440}%`;
+                newplan.style.left = `${(start * 100) / 1440}%`;
                 // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
@@ -474,12 +470,11 @@ const plan_create = () => {
                 newDiv.classList.add("private");
                 newDiv.style.height = "50px";
                 let newplan = document.createElement("a");
-                const width =
-                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+                const width = parseInt(hours) * 60 + parseInt(minutes);
                 newplan.href = `plan/${plan.id}`;
                 newplan.style.position = "absolute";
-                newplan.style.width = `${width}px`;
-                newplan.style.left = `${(start / 3) * 2}px`;
+                newplan.style.width = `${(width * 100) / 1440}%`;
+                newplan.style.left = `${(start * 100) / 1440}%`;
                 // newplan.style.border = "1px solid orange";
                 newplan.style.backgroundColor = "#FBFBFB";
                 newplan.style.color = "#1A2634";
@@ -519,12 +514,11 @@ const plan_create = () => {
               newDiv.classList.add("private-timeline");
               newDiv.style.height = "50px";
               let newplan = document.createElement("a");
-              const width =
-                ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+              const width = parseInt(hours) * 60 + parseInt(minutes);
               newplan.href = `plan/${plan.id}`;
               newplan.style.position = "absolute";
-              newplan.style.width = `${width}px`;
-              newplan.style.left = `${(start / 3) * 2}px`;
+              newplan.style.width = `${(width * 100) / 1440}%`;
+              newplan.style.left = `${(start * 100) / 1440}%`;
               // newplan.style.border = "1px solid orange";
               newplan.style.backgroundColor = "#FBFBFB";
               newplan.style.color = "#1A2634";
@@ -750,11 +744,11 @@ window.onload = function () {
             [start, hours, minutes] = calcTime(startDate, endDate, today);
 
             let newplan = document.createElement("a");
-            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+            const width = parseInt(hours) * 60 + parseInt(minutes);
             newplan.href = `plan/${plan.pk}`;
             newplan.style.position = "absolute";
-            newplan.style.width = `${width}px`;
-            newplan.style.left = `${(start / 3) * 2}px`;
+            newplan.style.width = `${(width * 100) / 1440}%`;
+            newplan.style.left = `${(start * 100) / 1440}%`;
             // newplan.style.border = "1px solid orange";
             newplan.style.backgroundColor = "#FBFBFB";
             newplan.style.color = "#1A2634";
@@ -804,11 +798,11 @@ window.onload = function () {
             [start, hours, minutes] = calcTime(startDate, endDate, today);
 
             let newplan = document.createElement("a");
-            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+            const width = parseInt(hours) * 60 + parseInt(minutes);
             newplan.href = `/pubplan/${plan.pk}`;
             newplan.style.position = "absolute";
-            newplan.style.width = `${width}px`;
-            newplan.style.left = `${(start / 3) * 2}px`;
+            newplan.style.width = `${(width * 100) / 1440}%`;
+            newplan.style.left = `${(start * 100) / 1440}%`;
             // newplan.style.border = "1px solid orange";
             if (attend_dict[plan.pk] == "standby") {
               newplan.style.border = "1px solid red";

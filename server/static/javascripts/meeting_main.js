@@ -83,47 +83,47 @@ function clearPlanForm() {
 }
 
 function openToggle() {
-  document.getElementById("sidebar").style.width = "250px";
-  document.getElementById("sidebar").style.paddingTop = "2rem";
-  document.getElementById("sidebar").style.paddingBottom = "2rem";
+  // document.getElementById("sidebar").style.width = "250px";
+  // document.getElementById("sidebar").style.paddingTop = "2rem";
+  // document.getElementById("sidebar").style.paddingBottom = "2rem";
+  document.getElementById("sidebar").style.display = "block";
 }
 
 function closeToggle() {
-  document.getElementById("sidebar").style.width = "0";
-  document.getElementById("sidebar").style.paddingTop = "0";
-  document.getElementById("sidebar").style.paddingBottom = "0";
+  // document.getElementById("sidebar").style.width = "0";
+  // document.getElementById("sidebar").style.paddingTop = "0";
+  // document.getElementById("sidebar").style.paddingBottom = "0";
+  document.getElementById("sidebar").style.display = "none";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
 const closeBtn = document.querySelector(".closeBtn");
-const mainCalendar=document.querySelector(".main");
-const meetingName=document.querySelector(".meeting-name");
-const displayYM=document.querySelector(".year_month_display");
+const mainCalendar = document.querySelector(".main");
+const meetingName = document.querySelector(".meeting-name");
+const displayYM = document.querySelector(".year_month_display");
 
-
-navBtn.addEventListener("click",()=>{
-  openToggle()
+navBtn.addEventListener("click", () => {
+  openToggle();
 });
 
-closeBtn.addEventListener("click",()=>{
-  closeToggle()
-})
+closeBtn.addEventListener("click", () => {
+  closeToggle();
+});
 
-sidebarMenu.addEventListener("click",(e)=>{
-  closeToggle()
-})
+sidebarMenu.addEventListener("click", (e) => {
+  closeToggle();
+});
 
-mainCalendar.addEventListener("click",(e)=>{
-  closeToggle()
-})
+mainCalendar.addEventListener("click", (e) => {
+  closeToggle();
+});
 
-meetingName.addEventListener("click",(e)=>{
-  closeToggle()
-})
-displayYM.addEventListener("click",(e)=>{
-  closeToggle()
-})
-
+meetingName.addEventListener("click", (e) => {
+  closeToggle();
+});
+displayYM.addEventListener("click", (e) => {
+  closeToggle();
+});
 
 // 캘린더에 보이는 년도와 달을 보여주기 위해
 // const viewYear = date.getFullYear();
@@ -381,12 +381,11 @@ const plan_create = (meeting_pk) => {
                   current_preview.getDate()
                 );
                 let new_plan = document.createElement("a");
-                const width =
-                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+                const width = parseInt(hours) * 60 + parseInt(minutes);
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
-                new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${(start / 3) * 2}px`;
+                new_plan.style.width = `${(width * 100) / 1440}%`;
+                new_plan.style.left = `${(start * 100) / 1440}%`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -434,8 +433,8 @@ const plan_create = (meeting_pk) => {
                   ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
-                new_plan.style.width = `${width}px`;
-                new_plan.style.left = `${(start / 3) * 2}px`;
+                new_plan.style.width = `${(width * 100) / 1440}%`;
+                new_plan.style.left = `${(start * 100) / 1440}%`;
                 // new_plan.style.border = "1px solid orange";
                 new_plan.style.backgroundColor = "#FBFBFB";
                 new_plan.style.color = "black";
@@ -481,12 +480,11 @@ const plan_create = (meeting_pk) => {
               new_div.classList.add("public-timeline");
               new_div.style.height = "50px";
               let new_plan = document.createElement("a");
-              const width =
-                ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+              const width = parseInt(hours) * 60 + parseInt(minutes);
               new_plan.href = `/pubplan/${plan.id}`;
               new_plan.style.position = "absolute";
-              new_plan.style.width = `${width}px`;
-              new_plan.style.left = `${(start / 3) * 2}px`;
+              new_plan.style.width = `${(width * 100) / 1440}%`;
+              new_plan.style.left = `${(start * 100) / 1440}%`;
               // new_plan.style.border = "1px solid orange";
               new_plan.style.backgroundColor = "#FBFBFB";
               new_plan.style.color = "black";
@@ -703,11 +701,11 @@ return: err_msg
             [start, hours, minutes] = calcTime(start_date, end_date, day);
 
             let new_plan = document.createElement("a");
-            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+            const width = parseInt(hours) * 60 + parseInt(minutes);
             new_plan.href = `/pubplan/${plan.pk}`;
             new_plan.style.position = "absolute";
-            new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${(start / 3) * 2}px`;
+            new_plan.style.width = `${(width * 100) / 1440}%`;
+            new_plan.style.left = `${(start * 100) / 1440}%`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";
@@ -754,11 +752,11 @@ return: err_msg
             [start, hours, minutes] = calcTime(start_date, end_date, day);
 
             let new_plan = document.createElement("a");
-            const width = ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+            const width = parseInt(hours) * 60 + parseInt(minutes);
 
             new_plan.style.position = "absolute";
-            new_plan.style.width = `${width}px`;
-            new_plan.style.left = `${(start / 3) * 2}px`;
+            new_plan.style.width = `${(width * 100) / 1440}%`;
+            new_plan.style.left = `${(start * 100) / 1440}%`;
             // new_plan.style.border = "1px solid orange";
             new_plan.style.backgroundColor = "#FBFBFB";
             new_plan.style.color = "#1A2634";

@@ -572,7 +572,6 @@ def signup(request:HttpRequest, *args, **kwargs):
     default_image_index = random.randint(1, 10)
     if request.method == 'POST':
       form = forms.SignupForm(request.POST, request.FILES)
-
       if form.is_valid():
           user = form.save()
           image = request.FILES.get("image")
@@ -581,8 +580,11 @@ def signup(request:HttpRequest, *args, **kwargs):
           auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
           return redirect('wapl:main')
       else:
-          # 오류 메세지 띄워야 함 (이름, 닉네임, 아이디, 비밀번호를 정확히 입력해주세요 같은 내용)
           err_msg="모든 항목을 정확하게 입력해 주세요"
+          try:
+              id_exist = User.objects.get(id=request.POST.get('username'))
+          except:
+              err_msg="이미 존재하는 아이디입니다"
           context = {
               'default_src': f'/static/default_image/{default_image_index}.png',
               "form": form,

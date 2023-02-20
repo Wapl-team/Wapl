@@ -32,11 +32,11 @@ body {
     }
 
 .nav {
-    width: 57%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fbfbfb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
 }
 
 .nav_bar_button{
@@ -48,6 +48,8 @@ body {
 
 .WAPL{
     font-weight: bold;
+    font-size: 1.3rem;
+    color: black;
 }
 
 .logo-container{
@@ -413,9 +415,9 @@ span{
     .closeBtn{
         padding-right: 1rem !important;
     }
-    .nav{
+    /* .nav{
         width:50%;
-    }
+    } */
 
     .logo-container{
       justify-content: center;

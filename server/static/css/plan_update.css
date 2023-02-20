@@ -118,8 +118,9 @@ hr {
   margin-top: 1rem;
 }
 
-.control-container input,.control-container .back{
-  font-size: 16px;
+.control-container input,
+.control-container .back {
+  font-size: 1rem;
   text-decoration: none;
   border: none;
   border-radius: 15px;
@@ -130,7 +131,7 @@ hr {
 }
 
 .control-container {
-  font-size: 16px;
+  font-size: 1rem;
   text-decoration: none;
   color: var(--main-bg-color);
   padding-top: 0.7rem;
@@ -156,7 +157,7 @@ hr {
   padding: 1rem 1rem;
   position: absolute;
   bottom: 30%;
-  width:18rem;
+  width: 18rem;
   z-index: 2;
   background-color: white;
   border: 1px solid var(--main-bg-color);
@@ -263,5 +264,4 @@ hr {
   padding-top: 0.7rem;
   margin: 0.2em;
   position: relative;
-  left: -34vw;
 }

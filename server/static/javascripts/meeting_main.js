@@ -86,18 +86,18 @@ function openToggle() {
   // document.getElementById("sidebar").style.width = "250px";
   // document.getElementById("sidebar").style.paddingTop = "2rem";
   // document.getElementById("sidebar").style.paddingBottom = "2rem";
-  document.getElementById("sidebar").style.visibility="visible";
-  document.getElementById("sidebar").style.transition="all 0.1s";
-  document.getElementById("sidebar").style.opacity="1";
+  document.getElementById("sidebar").style.visibility = "visible";
+  document.getElementById("sidebar").style.transition = "all 0.1s";
+  document.getElementById("sidebar").style.opacity = "1";
 }
 
 function closeToggle() {
   // document.getElementById("sidebar").style.width = "0";
   // document.getElementById("sidebar").style.paddingTop = "0";
   // document.getElementById("sidebar").style.paddingBottom = "0";
-  document.getElementById("sidebar").style.visibility="hidden";
-  document.getElementById("sidebar").style.transition="all 0.1s";
-  document.getElementById("sidebar").style.opacity="0";
+  document.getElementById("sidebar").style.visibility = "hidden";
+  document.getElementById("sidebar").style.transition = "all 0.1s";
+  document.getElementById("sidebar").style.opacity = "0";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
@@ -666,6 +666,7 @@ return: err_msg
             user_name,
             user_img,
             meeting_img,
+            login_user_id,
           } = JSON.parse(requestExplan.response);
 
           const public_plans_array = JSON.parse(public_plans);
@@ -776,6 +777,11 @@ return: err_msg
             if (share_list_array[i].fields.is_share == "open") {
               new_plan.innerText = `${plan.fields.title}`;
               new_plan.href = `/plan/${plan.pk}`;
+            } else if (share_list_array[i].fields.is_share == "untitled") {
+              if (login_user_id == plan.fields.owner) {
+                new_plan.innerText = `${plan.fields.title}`;
+                new_plan.href = `/plan/${plan.pk}`;
+              }
             } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
               new_plan.style.touchAction = "none";

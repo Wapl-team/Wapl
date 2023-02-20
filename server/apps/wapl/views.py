@@ -614,8 +614,8 @@ def start(request: HttpRequest, *args, **kwargs):
         # }
         return redirect('wapl:main')
         # return render(request, "introduction.html", context=context)
-  else:
-    return render(request, "start.html")
+    else:
+        return render(request, "introduction.html")
 
 @csrf_exempt
 def signup(request: HttpRequest, *args, **kwargs):

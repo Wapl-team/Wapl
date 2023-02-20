@@ -123,7 +123,6 @@ body {
 hr {
   width: 20rem;
   border: 1px solid rgba(173, 168, 168, 0.5);
-  margin: 0.5em 0;
 }
 
 .leave-comment {
@@ -531,7 +530,8 @@ hr {
   #sidebar {
     visibility: visible !important;
     opacity: 1 !important;
-    padding-top: 4rem !important;
+    padding-top:4rem !important;
+    padding-bottom: 3rem !important;
   }
 .closeSidebar .closeBtn {
     display: none;

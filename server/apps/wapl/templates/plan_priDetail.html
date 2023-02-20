@@ -114,9 +114,9 @@
                 <input type="submit" value="삭제" style="color: black" />
               </form>
               {% endif %}
-            {% endif %}
             </div>
           </div>
+          {% endif %}
           {% endfor %}
         </div>
 
@@ -164,15 +164,15 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       const $buttons = document.querySelectorAll(".reply_button");
+      
       $buttons.forEach(($button) => {
         $button.addEventListener("click", (e) => replyToggle(e, $button));
       });
 
       function replyToggle(e, $button) {
         // 눌러진 답글 버튼에서 가장 가까운 class reply-container 고른 것
-        let content =
-          $button.parentElement.parentElement.nextElementSibling
-            .nextElementSibling;
+        let content = $button.parentElement.parentElement.nextElementSibling.nextElementSibling;
+        console.log( $button.parentElement.parentElement.nextElementSibling)
         // 답글 버튼 누르면 class reply-container 의 display 속성이 none<=>block 바뀌도록
         if (content.style.display !== "none") {
           content.style.display = "none";

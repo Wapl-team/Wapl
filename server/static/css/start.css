@@ -275,11 +275,11 @@ body {
     text-align: center;
   }
 
-  .goto-home{
+  .goto-home-nologin{
     padding:1rem 0;
   }
   
-  .goto-home i {
+  .goto-home i , .goto-home-nologin i{
     font-size: 2rem;
     color: var(--main-bg-color);
   }

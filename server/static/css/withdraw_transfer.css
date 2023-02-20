@@ -57,6 +57,7 @@ body {
   width: 65vw;
   height: 74vh;
   line-height: 3vh;
+  align-items: center;
 }
 
 .withdraw_transfer-form p {
@@ -114,6 +115,7 @@ label {
 .meeting_info {
   border: 1px solid var(--main-bg-color);
   border-radius: 6px;
+  width: 15.5em;
 }
 
 .meeting_info p {

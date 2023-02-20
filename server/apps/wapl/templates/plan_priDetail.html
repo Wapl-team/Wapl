@@ -62,6 +62,7 @@
           </div>
 
           <div class="delete-comment">
+            {% if request.user == comment.user or request.user == plan.owner %}
             <form
               action="{% url 'wapl:comment_delete' plan.pk comment.pk %}"
               method="post"
@@ -69,7 +70,7 @@
               {% csrf_token %}
               <input type="submit" value="삭제" style="color: black" />
             </form>
-
+            {% endif %}
             <input
               type="submit"
               value="답글"
@@ -81,7 +82,8 @@
 
         <!-- 대댓글 보여주는 구간 -->
         <div>
-          {% for reply in replys %} {% if reply.comment_post.id == comment.id %}
+          {% for reply in replys %} 
+          {% if reply.comment_post.id == comment.id %}
           <div class="show-reply-comment">
             <div class="user-comment">
               <div class="user-comment-info">
@@ -103,17 +105,19 @@
             </div>
 
             <div class="delete-comment">
+              {% if request.user == reply.user or request.user == plan.owner %}
               <form
                 action="{% url 'wapl:reply_delete' plan.pk reply.pk %}"
                 method="post"
               >
                 {% csrf_token %}
-                <input type="submit" value="삭제" style="color:black" />
+                <input type="submit" value="삭제" style="color: black" />
               </form>
+              {% endif %}
+            {% endif %}
             </div>
           </div>
-
-          {% endif %} {% endfor %}
+          {% endfor %}
         </div>
 
         <!-- 대댓글을 생성하는 input 구간 -->
@@ -132,7 +136,7 @@
       </div>
 
       <div class="control-container">
-        {% if request.user == plan.owner %}
+        {% if request.user == plan.owner%}
         <form
           action="{% url 'wapl:delete' plan.pk %}"
           method="post"

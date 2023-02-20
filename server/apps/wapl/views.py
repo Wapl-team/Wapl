@@ -566,11 +566,12 @@ def public_absense(request:HttpRequest, pk, *args, **kwargs):
 # -------------------------------------------------------------------------
 def start(request:HttpRequest, *args, **kwargs):
   if request.user.is_authenticated:
-    meetings = request.user.user_meetings.all()
-    context = { 
-      "meetings":meetings
-    }
-    return render(request, "test_start.html", context=context)
+    # meetings = request.user.user_meetings.all()
+    # context = { 
+    #   "meetings":meetings
+    # }
+    return redirect('wapl:main')
+    # return render(request, "test_start.html", context=context)
   else:
     return render(request, "test_start.html")
 
@@ -970,7 +971,8 @@ def view_team_explan(request):
                          'meeting_name' : meeting.meeting_name,
                          'user_name' : user_name,
                          'user_img':user_img,
-                         'meeting_img':meeting_img})
+                         'meeting_img':meeting_img,
+                         'login_user_id': request.user.id})
 
 # 프로필 업데이트 함수
 def profile(request:HttpRequest, *args, **kwargs):

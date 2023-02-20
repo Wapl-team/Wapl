@@ -86,18 +86,18 @@ function openToggle() {
   // document.getElementById("sidebar").style.width = "250px";
   // document.getElementById("sidebar").style.paddingTop = "2rem";
   // document.getElementById("sidebar").style.paddingBottom = "2rem";
-  document.getElementById("sidebar").style.visibility="visible";
-  document.getElementById("sidebar").style.transition="all 0.1s";
-  document.getElementById("sidebar").style.opacity="1";
+  document.getElementById("sidebar").style.visibility = "visible";
+  document.getElementById("sidebar").style.transition = "all 0.1s";
+  document.getElementById("sidebar").style.opacity = "1";
 }
 
 function closeToggle() {
   // document.getElementById("sidebar").style.width = "0";
   // document.getElementById("sidebar").style.paddingTop = "0";
   // document.getElementById("sidebar").style.paddingBottom = "0";
-  document.getElementById("sidebar").style.visibility="hidden";
-  document.getElementById("sidebar").style.transition="all 0.1s";
-  document.getElementById("sidebar").style.opacity="0";
+  document.getElementById("sidebar").style.visibility = "hidden";
+  document.getElementById("sidebar").style.transition = "all 0.1s";
+  document.getElementById("sidebar").style.opacity = "0";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
@@ -433,8 +433,7 @@ const plan_create = (meeting_pk) => {
                 new_div.classList.add("private");
                 new_div.style.height = "50px";
                 let new_plan = document.createElement("a");
-                const width =
-                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+                const width = parseInt(hours) * 60 + parseInt(minutes);
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${(width * 100) / 1440}%`;

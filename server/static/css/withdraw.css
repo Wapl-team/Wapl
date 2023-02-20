@@ -56,11 +56,16 @@ body {
   width: 65vw;
   height: 50vh;
   line-height: 3vh;
+  align-items: center;
 }
 
 .withdraw-form p {
   margin: 0.7vh 0;
   font-size: 16px;
+}
+
+.input{
+  width: 18em;
 }
 
 .withdraw-btn {
@@ -104,6 +109,8 @@ body {
 
 label {
   margin-top: 2vh;
+  display: flex;
+  justify-content: center;
 }
 
 .red {
@@ -112,4 +119,8 @@ label {
 
 .withdraw-form span {
   font-weight: bold;
+}
+
+.margin {
+  margin-right: 1em;
 }

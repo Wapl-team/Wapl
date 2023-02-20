@@ -20,6 +20,8 @@ const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
 const closeBtn = document.querySelector(".closeBtn");
 const logo= document.querySelector(".logo-container");
+const introContainer = document.querySelector(".introduction-container");
+const introContainerReverse = document.querySelector(".introduction-container-reverse");
 
 navBtn.addEventListener("click", () => {
   openToggle();
@@ -34,5 +36,11 @@ sidebarMenu.addEventListener("click", (e) => {
 });
 
 logo.addEventListener("click", (e) => {
+  closeToggle();
+});
+introContainer.addEventListener("click", (e) => {
+  closeToggle();
+});
+introContainerReverse.addEventListener("click", (e) => {
   closeToggle();
 });

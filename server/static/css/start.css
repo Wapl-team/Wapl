@@ -147,7 +147,7 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: var(--main-bg-color);
+    background-color: #FBFBFB;
     overflow-x: hidden;
     border: none;
     border-left: none;
@@ -165,7 +165,8 @@ body {
     display: flex;
     flex-direction: column;
     /* background-color: #1a2634; */
-    background-color: var(--main-bg-color);
+    background-color: #fbfbfb;
+    padding: 10px;
   }
   
   .closeSidebar {
@@ -176,17 +177,31 @@ body {
   .closeSidebar .closeBtn {
     font-size: 21px;
     color: black;
-    padding-top: 10px;
-    padding-right: 10px;
+    padding-right: 1rem;
   }
   
   .closeSidebar .closeBtn:hover {
     color: white;
   }
 
+.profile__nologin {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 0 3rem;
+}
+
+  .profile__nologin > img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border: 2px solid lightgray;
+  }
+
   .gotoLogin{
     width: 250px;
-    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -196,8 +211,15 @@ body {
 
   .gotoLogin a{
     text-decoration: none;
-    color:white;
+    color:var(--main-bg-color);
+    margin-bottom: 1rem;
   }
+
+.need__login{
+  font-size: 1.5rem;
+  text-decoration: none;
+  color:black;
+}  
 
   .profileSidebar {
     display: flex;
@@ -250,13 +272,16 @@ body {
   }
   
   .goto-home {
-    margin-top: 20px;
     text-align: center;
   }
+
+  .goto-home-nologin{
+    padding:1rem 0;
+  }
   
-  .goto-home i {
+  .goto-home i , .goto-home-nologin i{
     font-size: 2rem;
-    color: white;
+    color: var(--main-bg-color);
   }
   
   .sidebar-menu p {
@@ -314,7 +339,7 @@ body {
     margin-top: 10px;
     width: 210px;
     padding: 10px;
-    background-color: white;
+    background-color: var(--main-bg-color);
     box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
     border-radius: 5px;
     word-break: break-all;
@@ -337,7 +362,7 @@ body {
     margin-top: 10px;
     width: 210px;
     padding: 10px;
-    background-color:white;
+    background-color:var(--main-bg-color);
     box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
     border-radius: 5px;
     word-break: break-all;
@@ -365,7 +390,7 @@ body {
   .logout {
     padding: 7px 15px;
     border-radius: 50px;
-    background-color: white;
+    background-color: var(--main-bg-color);
   }
   
   .logout a {
@@ -408,7 +433,8 @@ span{
 @media (min-width: 1024px) {
     #sidebar {
         visibility:"hidden" !important;
-        padding: 3rem 0 !important;
+        padding-top:1rem !important;
+        padding-bottom: 3rem 0 !important;
     }
     .closeBtn{
         padding-right: 1rem !important;

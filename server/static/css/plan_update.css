@@ -69,7 +69,7 @@ body {
   margin: 0.1rem 0;
   border: none;
   border-radius: 5px;
-  background-color: rgba(225, 239, 108, 0.3);
+  background-color: var(--main-bg-color);
 }
 
 .center {
@@ -82,7 +82,7 @@ body {
   margin: 0.1rem 0;
   border: none;
   border-radius: 5px;
-  background-color: rgba(225, 239, 108, 0.3);
+  background-color: var(--main-bg-color);
 }
 
 .center-submenu,

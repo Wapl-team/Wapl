@@ -79,7 +79,7 @@ body {
   word-break: break-all;
   max-height: 10rem;
   overflow-y: auto;
-  background-color: rgba(225, 239, 108, 0.3);
+  background-color: var(--main-bg-color);
   border-radius: 20px;
   margin: 0.5rem 0;
   padding: 10px;

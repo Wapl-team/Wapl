@@ -95,6 +95,8 @@ function closeToggle() {
   document.getElementById("sidebar").style.visibility="hidden";
   document.getElementById("sidebar").style.transition="all 0.1s";
   document.getElementById("sidebar").style.opacity="0";
+  document.getElementById("sidebar").style.paddingTop="1rem";
+  document.getElementById("sidebar").style.paddingBottom="3rem";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");

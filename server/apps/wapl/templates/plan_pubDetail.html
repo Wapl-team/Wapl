@@ -71,6 +71,7 @@
           </div>
 
           <div class="delete-comment">
+            {% if request.user == comment.user or request.user == plan.owner%}
             <form
               action="{% url 'wapl:pubcomment_delete' plan.pk comment.pk %}"
               method="post"
@@ -78,6 +79,7 @@
               {% csrf_token %}
               <input type="submit" value="삭제" style="color: black" />
             </form>
+            {% endif %}
             <input
               type="submit"
               value="답글"
@@ -111,6 +113,7 @@
             </div>
 
             <div class="delete-comment">
+              {% if request.user == reply.user or request.user == plan.owner%}
               <form
                 action="{% url 'wapl:pubreply_delete' plan.pk reply.pk %}"
                 method="post"
@@ -118,6 +121,7 @@
                 {% csrf_token %}
                 <input type="submit" value="삭제" />
               </form>
+              {% endif %}
             </div>
           </div>
           {% endif %} {% endfor %}
@@ -147,7 +151,7 @@
           class="delete-plan"
         >
           {% csrf_token %}
-          <input type="submit" , value="삭제하기" style="color:black" />
+          <input type="submit" , value="삭제하기" style="color: black" />
         </form>
         <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan"
           >수정하기</a

@@ -380,7 +380,7 @@ span{
 
 .introduction-container{
   background-color: var(--main-bg-color);
-  padding: 1rem 1rem;
+  padding: 1rem 1rem 1rem 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;

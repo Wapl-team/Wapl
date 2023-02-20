@@ -783,7 +783,10 @@ return: err_msg
               if (login_user_id == plan.fields.owner) {
                 new_plan.innerText = `${plan.fields.title}`;
                 new_plan.href = `/plan/${plan.pk}`;
-              }
+              }else{
+                new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
+                new_plan.style.touchAction = "none";
+              }        
             } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
               new_plan.style.touchAction = "none";

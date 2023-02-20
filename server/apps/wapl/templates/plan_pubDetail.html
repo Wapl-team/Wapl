@@ -178,8 +178,7 @@
       function replyToggle(e, $button) {
         // 눌러진 답글 버튼에서 가장 가까운 class reply-container 고른 것
         let content =
-          $button.parentElement.parentElement.nextElementSibling
-            .nextElementSibling;
+          $button.parentElement.parentElement.nextElementSibling.nextElementSibling;
         // 답글 버튼 누르면 class reply-container 의 display 속성이 none<=>block 바뀌도록
         console.log(content);
         if (content.style.display !== "none") {

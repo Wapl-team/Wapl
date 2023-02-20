@@ -579,26 +579,27 @@ def start(request:HttpRequest, *args, **kwargs):
 def signup(request:HttpRequest, *args, **kwargs):
     default_image_index = random.randint(1, 10)
     if request.method == 'POST':
-      form = forms.SignupForm(request.POST, request.FILES)
-      if form.is_valid():
-          user = form.save()
-          image = request.FILES.get("image")
-          profile = Profile(user=user, image=image)
-          profile.save()
-          auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-          return redirect('wapl:main')
-      else:
-          err_msg="모든 항목을 정확하게 입력해 주세요"
-          try:
-              id_exist = User.objects.get(id=request.POST.get('username'))
-          except:
-              err_msg="이미 존재하는 아이디입니다"
-          context = {
-              'default_src': f'/static/default_image/{default_image_index}.png',
-              "form": form,
-              "err_msg":err_msg
-          }
-      return render(request, "signup.html", context=context)
+        form = forms.SignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            image = request.FILES.get("image")
+            profile = Profile(user=user, image=image)
+            profile.save()
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('wapl:main')
+        else:
+            try:
+                id_exist = User.objects.get(username=request.POST.get('username'))
+            except:
+                err_msg="빈 항목이 있거나 비밀번호가 올바르지 않습니다"
+            else:
+                err_msg="이미 존재하는 아이디입니다"
+            context = {
+                'default_src': f'/static/default_image/{default_image_index}.png',
+                "form": form,
+                "err_msg":err_msg
+            }
+            return render(request, "signup.html", context=context)
     else:
         context = {
             'default_src': f'/static/default_image/{default_image_index}.png'

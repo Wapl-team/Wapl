@@ -52,7 +52,6 @@ body {
 
 .logo-container{
     display: flex;
-    justify-content: center;
     flex-direction: row;
     margin-bottom: 4em;
 }
@@ -416,5 +415,13 @@ span{
     }
     .nav{
         width:50%;
+    }
+
+    .logo-container{
+      justify-content: center;
+    }
+
+    .black-container{
+      display: none;
     }
   }

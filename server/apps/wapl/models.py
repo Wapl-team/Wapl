@@ -67,20 +67,6 @@ class Meeting(models.Model):
     def __str__(self):
         return self.meeting_name
 
-      
-# 일정
-# 필드: 시작시간, 끝시간, 제목, 장소, 내용, 작성자(owner)
-class Plan(models.Model):
-  startTime = models.DateTimeField()
-  endTime = models.DateTimeField()
-  location = models.CharField(max_length=20, blank=True)
-  title = models.CharField(max_length=20)
-  content = models.TextField(blank=True)  
-  class Meta:
-    abstract = True
-  def __str__(self):
-    return self.title
-
 class PrivatePlan(Plan):
   owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='private_plan', default=1)
 

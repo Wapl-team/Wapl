@@ -33,7 +33,7 @@ h2 {
 }
 
 span {
-  width: 34vw;
+  width: 9em;
   font-weight: 900;
 }
 
@@ -55,7 +55,7 @@ select {
   background-color: var(--main-bg-color);
   color: black;
   font-size: 17px;
-  width: 15em;
+  width: 14em;
   height: 2.5em;
   border: none;
   border-radius: 5px;

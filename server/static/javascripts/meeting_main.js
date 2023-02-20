@@ -433,8 +433,7 @@ const plan_create = (meeting_pk) => {
                 new_div.classList.add("private");
                 new_div.style.height = "50px";
                 let new_plan = document.createElement("a");
-                const width =
-                  ((parseInt(hours) * 60 + parseInt(minutes)) / 3) * 2;
+                const width = parseInt(hours) * 60 + parseInt(minutes);
                 new_plan.href = `/pubplan/${plan.id}`;
                 new_plan.style.position = "absolute";
                 new_plan.style.width = `${(width * 100) / 1440}%`;

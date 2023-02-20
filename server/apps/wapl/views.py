@@ -519,6 +519,13 @@ def public_absense(request:HttpRequest, pk, *args, **kwargs):
 
 # -------------------------------------------------------------------------
 def start(request:HttpRequest, *args, **kwargs):
+  if request.user.is_authenticated:
+    meetings = request.user.user_meetings.all()
+    context = { 
+      "meetings":meetings
+    }
+    return render(request, "test_start.html", context=context)
+  else:
     return render(request, "test_start.html")
 
 @csrf_exempt

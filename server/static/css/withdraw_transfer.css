@@ -11,7 +11,6 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
   box-sizing: border-box;
   font-family: "S-CoreDream-3Light";
 }
@@ -32,7 +31,7 @@ body {
   width: 100vw;
 }
 
-.profile-container {
+.withdraw_transfer-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,103 +40,100 @@ body {
   height: 80vh;
   border-radius: 5px;
   flex-direction: column;
-  padding: 6vh;
+  padding: 10vh 0vw;
+  margin-top: 9vh;
 }
 
-.profile {
+.withdraw_transfer {
   font-size: 25px;
   color: #395165;
   font-weight: bold;
-  margin-top: 15vh;
+  margin-bottom: 3vh;
 }
 
-.profile-form {
+.withdraw_transfer-form {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  width: 72vw;
-  margin: 2vh 0;
-  margin-bottom: 0;
+  width: 65vw;
+  height: 74vh;
+  line-height: 3vh;
 }
 
-.profile-form p {
-  padding: 0.3em;
-  text-align: center;
-  font-size: 17px;
-  margin: 1vh;
+.withdraw_transfer-form p {
+  margin: 0.4vh 0;
+  font-size: 16px;
 }
 
-.profile-form p input {
-  width: 240px;
-  height: 3em;
-  border: 1px solid rgba(173, 168, 168, 0.5);
-  padding: 0.3em;
-  text-align: center;
-  margin-top: 1vh;
-  border-radius: 10px;
-}
-
-#profileImage {
-  color: black;
-}
-
-#profileCheckbox {
-  flex-direction: row;
-  margin-bottom: 0;
-}
-
-.clear {
-  margin-left: 4vw;
-}
-
-.profile-btn {
+.withdraw_transfer-btn {
   background-color: var(--main-bg-color);
   border: none;
   border-radius: 5px;
   color: black;
   padding: 0.5vh 0;
   font-size: 1.3rem;
-  margin-top: 1em;
-  width: 240px;
-  font-weight: bold;
+  margin-bottom: 1em;
+  width: 255px;
+  margin-top: 2vh;
 }
 
 .main div {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 10px;
 }
 
-.update_password {
+.main a {
   padding: 0.3em;
   color: black;
   font-size: 17px;
 }
 
 .return {
-  color: #395165;
+  width: 255px;
+  height: 30px;
   text-align: center;
   text-decoration: none;
-  font-size: 17px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.home {
-  font-size: 16px;
-  text-decoration: none;
-  color: var(--main-bg-color);
-  padding: 0.5em;
-  padding-top: 2.7rem;
-  margin: 0.2em;
-  position: relative;
-  left: -34vw;
-  top: 13vh;
+label {
+  margin-top: 2vh;
 }
 
-.profile-form img {
-  border-radius: 50%;
-  border: 2px solid lightgray;
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
+.red {
+  color: red;
+}
+
+.withdraw_transfer-form span {
+  font-weight: bold;
+}
+
+.meeting_info {
+  border: 1px solid var(--main-bg-color);
+  border-radius: 6px;
+}
+
+.meeting_info p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.meeting_info select {
+  text-align: center;
+}
+
+.meeting_scroll {
+  overflow: auto;
+  padding-top: 10px;
+}
+
+.name {
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg-color);
+  border-radius: 5px;
 }

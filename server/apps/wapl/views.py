@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.http.request import HttpRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend
+from .models import inputTime, PrivatePlan, PublicPlan, Comment, Meeting, Share, PrivateComment, PublicComment, replyPrivateComment, replyPublicComment, Profile, User, Attend, change_inputTime
 import json
 from django.core import serializers
 from datetime import date, timedelta, datetime
@@ -35,35 +35,59 @@ from django.db.models import Q
 def main(request:HttpRequest,*args, **kwargs):
   login_user = request.user
   meetings = login_user.user_meetings.all()
-  # month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  month_num = list(range(1, 13))
-  cur_year = datetime.now().year
-  year_num = list(range(cur_year - 50, cur_year + 51))
-  
-  
+  # 이거 바꾸면 오류나요(year_num, month_num)
+  month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+  year_num = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030',
+              '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
+              '2041', '2042', '2043', '2044', '2045', '2046', '2047', '2048', '2049', '2050',
+              '2051', '2052', '2053', '2054', '2055', '2056', '2057', '2058', '2059', '2060',]
+
+  #여기부터 inputTime 개선
+  changers = change_inputTime.objects.filter(user=request.user)
+
+
   if request.method == 'POST':
-      inputTime.objects.create(
+    if changers.count() > 0:
+      changers.last().delete()
+
+    change_inputTime.objects.create(
+        user = request.user,
         input_year = request.POST["year_category"],
         input_month = request.POST["month_category"],
         )
-      return redirect('wapl:main')
-  
-  year = inputTime.objects.last().input_year
-  month = inputTime.objects.last().input_month
+    return redirect('wapl:main')
+
+  if changers.count() == 0:
+    year = inputTime.objects.last().input_year
+    month = inputTime.objects.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)
+
+  else:
+    year = changers.last().input_year
+    month = changers.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)  
 
   context = {
             'meetings' : meetings,
             'meeting_name': '',
-            'view_year': int(year),
-            'view_month': int(month),
+            'view_year': year,
+            'view_month': month,
             'month_num': month_num,
             'year_num' : year_num,
             }
 
   return render(request, "main.html", context=context)
 
+def main_reset(request:HttpRequest, *args, **kwargs):
+  changers = change_inputTime.objects.filter(user=request.user)
+  if changers.count() > 0 :
+    changers.last().delete()
+  return redirect('wapl:main')
+
 @csrf_exempt
-def meeting_calendar(request, pk, *args, **kwargs):
+def meeting_calendar(request:HttpRequest, pk, *args, **kwargs):
   login_user = request.user
   # Review : login_user가 없으면 에러 발생. 핸들링 필요
   # Review : 혹은 @login_required 데코레이터 필요
@@ -71,20 +95,36 @@ def meeting_calendar(request, pk, *args, **kwargs):
 #   cur_meeting = Meeting.objects.all().get(id=pk)
   meetings = login_user.user_meetings.all()
   month_num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  year_num = ['2021', '2022', '2023', '2024', '2025']
-  
+  year_num = ['2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030',
+              '2031', '2032', '2033', '2034', '2035', '2036', '2037', '2038', '2039', '2040',
+              '2041', '2042', '2043', '2044', '2045', '2046', '2047', '2048', '2049', '2050',
+              '2051', '2052', '2053', '2054', '2055', '2056', '2057', '2058', '2059', '2060',]
+  # 이거 바꾸면 오류나요(year_num, month_num)
+#여기부터 inputTime 개선
+  changers = change_inputTime.objects.filter(user=request.user)
+
   if request.method == 'POST':
-      inputTime.objects.create(
+    if changers.count() > 0:
+        changers.last().delete()
+    change_inputTime.objects.create(
+        user = request.user,
         input_year = request.POST["year_category"],
         input_month = request.POST["month_category"],
-        )
-      return redirect('wapl:meeting_calendar', pk)
-  
-  year = inputTime.objects.last().input_year
-  month = inputTime.objects.last().input_month
-  year_num.remove(year)
-  month_num.remove(month)
-       
+          )  
+    return redirect('wapl:meeting_calendar', pk)
+
+  if changers.count() == 0:
+    year = inputTime.objects.last().input_year
+    month = inputTime.objects.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)
+
+  else:
+    year = changers.last().input_year
+    month = changers.last().input_month
+    year_num.remove(year)
+    month_num.remove(month)  
+
   context = {'cur_meeting': cur_meeting,
             'meetings': meetings,
             'view_year': year,
@@ -93,6 +133,12 @@ def meeting_calendar(request, pk, *args, **kwargs):
             'year_num' : year_num,
             }
   return render(request, "meeting_main.html", context=context)
+
+def meeting_calendar_reset(request:HttpRequest, pk, *args, **kwargs):
+  changers = change_inputTime.objects.filter(user=request.user)
+  if changers.count() > 0 :
+    changers.last().delete()
+  return redirect('wapl:meeting_calendar', pk)
 
 
 # 미팅 pt 입니다--------------------------------------------------------------
@@ -307,7 +353,7 @@ def pub_update(request:HttpRequest, pk, *args, **kwargs):
       else:
         err_msg = "수정 권한이 없습니다."
         messages.warning(request, err_msg)
-        return redirect('wapl:detail', pk) 
+        return redirect('wapl:pubdetail', pk) 
         
     return render(request, "plan_pubUpdate.html", {"plan":plan, "plan_sT":plan_sT, "plan_eT":plan_eT})
 
@@ -439,7 +485,7 @@ def pub_reply_create(request, pk, ck, *args, **kwargs):
           )
         else:
           messages.warning(request, err_msg)
-          return redirect('wapl:detail', pk)
+          return redirect('wapl:pubdetail', pk)
         
     return redirect('wapl:pubdetail', pk)
 
@@ -497,7 +543,7 @@ def pub_comment_delete(request:HttpRequest, pk, ak, *args, **kwargs):
       else:
         err_msg = '댓글을 삭제할 수 없습니다.'
         messages.warning(request, err_msg)
-        return redirect('wapl:detail', pk)
+        return redirect('wapl:pubdetail', pk)
       
     return redirect('wapl:pubdetail', ak)
 
@@ -533,7 +579,6 @@ def signup(request:HttpRequest, *args, **kwargs):
     default_image_index = random.randint(1, 10)
     if request.method == 'POST':
       form = forms.SignupForm(request.POST, request.FILES)
-
       if form.is_valid():
           user = form.save()
           image = request.FILES.get("image")
@@ -542,8 +587,11 @@ def signup(request:HttpRequest, *args, **kwargs):
           auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
           return redirect('wapl:main')
       else:
-          # 오류 메세지 띄워야 함 (이름, 닉네임, 아이디, 비밀번호를 정확히 입력해주세요 같은 내용)
           err_msg="모든 항목을 정확하게 입력해 주세요"
+          try:
+              id_exist = User.objects.get(id=request.POST.get('username'))
+          except:
+              err_msg="이미 존재하는 아이디입니다"
           context = {
               'default_src': f'/static/default_image/{default_image_index}.png',
               "form": form,
@@ -589,7 +637,9 @@ def extra_signup(request:HttpRequest, *args, **kwargs):
 
 @csrf_exempt
 def login(request:HttpRequest, *args, **kwargs):
-
+    if inputTime.objects.all().count() > 0:
+      inputTime.objects.last().delete()
+      
     inputTime.objects.create()
 
     if request.method == 'POST':
@@ -611,6 +661,9 @@ def login(request:HttpRequest, *args, **kwargs):
 
 
 def logout(request:HttpRequest, *args, **kwargs):
+    changers = change_inputTime.objects.filter(user=request.user)
+    if changers.count() > 0:
+      changers.last().delete()
     login_user = request.user
     login_user.current_date = f'{datetime.now().year}-{datetime.now().month}-01'
     login_user.save()

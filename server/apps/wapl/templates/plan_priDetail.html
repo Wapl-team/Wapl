@@ -14,6 +14,9 @@
     ></a>--><!--일정표시 안돼서 수정 못함-->
     <div class="plan__detail">일정 정보</div>
     <div class="plan-detail-container">
+      <a class="home" href="{% url 'wapl:main' %}"
+        ><i class="fa-solid fa-house"></i
+      ></a>
       <div class="main">
         <div class="plan-detail-title">{{plan.title}}</div>
         <div class="plan-detail-place">
@@ -36,11 +39,7 @@
         >
           {% csrf_token %}
           <textarea name="content" placeholder="댓글 달기..."></textarea>
-          <input 
-          type="submit" 
-          value="게시"
-          style="color:black;"
-          />
+          <input type="submit" value="게시" style="color: black" />
         </form>
       </div>
       <div class="comment-container">
@@ -68,12 +67,9 @@
               method="post"
             >
               {% csrf_token %}
-              <input 
-              type="submit" 
-              value="삭제"
-              style="color: black" />
+              <input type="submit" value="삭제" style="color: black" />
             </form>
-            
+
             <input
               type="submit"
               value="답글"
@@ -129,11 +125,7 @@
           >
             {% csrf_token %}
             <textarea name="content" placeholder="답글 남기기"></textarea>
-            <input 
-            type="submit" 
-            value="게시"
-            style="color:black;"
-            />
+            <input type="submit" value="게시" style="color: black" />
           </form>
         </div>
         {% endfor %}

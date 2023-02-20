@@ -38,11 +38,19 @@ body {
   background-color: white;
 }
 
+.main-section {
+  display: flex;
+}
+
+.calendar {
+  width: 100vw;
+}
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6vh;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
 }
 
 .nav-side {
@@ -52,11 +60,12 @@ body {
 
 .nav_bar_button {
   color: black;
+  font-size: 1.5rem;
 }
 
 .nav-side button {
-  background-color: white;
-  color: #1a2634;
+  background-color: transparent;
+  color: black;
   border: 0;
   margin: 0.7rem;
 }
@@ -80,12 +89,11 @@ body {
 .year_month_display {
   color: black;
   font-weight: 700;
-  font-size: 25px;
-  padding-left: 0.8em;
+  font-size: 22px;
+  margin-left: 1.5em;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 0.1em;
 }
 
 .nav-btn {
@@ -102,14 +110,14 @@ body {
 
 .sidebar-menu {
   height: 100vh;
-  width: 0;
+  min-width: 250px;
+  width: 250px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
   background-color: #fbfbfb;
   overflow-x: hidden;
-  transition: 0.3s;
   border: none;
   border-left: none;
   display: flex;
@@ -143,6 +151,13 @@ body {
   color: var(--main-bg-color);
 }
 
+.modalButton:hover,
+.nav_bar_button:hover,
+.closeModal_x:hover {
+  color: var(--main-bg-color);
+  cursor: pointer;
+}
+
 .profileSidebar {
   display: flex;
   justify-content: center;
@@ -151,8 +166,6 @@ body {
 }
 
 .profile__username {
-  transition: 0.2s;
-  max-width: 6rem;
   word-break: break-all;
 }
 
@@ -210,14 +223,13 @@ body {
   text-decoration: none;
   font-size: 20px;
   display: block;
-  transition: 0.3s;
 }
 
 /* sidebar End */
 
 hr {
   width: 100%;
-  border: 1px solid rgba(173, 168, 168, 0.5);
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
 }
 
 /* --------모임 생성/참가 ------- */
@@ -243,7 +255,6 @@ hr {
   color: black;
   font-size: 17px;
   font-weight: 600;
-  transition: 0.2s;
 }
 
 .groupBtn a:hover {
@@ -265,7 +276,6 @@ hr {
   background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
-  transition: 0.3s;
 }
 
 .groupName:hover {
@@ -288,7 +298,6 @@ hr {
   background-color: var(--main-bg-color);
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   border-radius: 5px;
-  transition: 0.3s;
 }
 
 .privategroup:hover {
@@ -332,7 +341,7 @@ hr {
 }
 
 .modalButton {
-  background-color: white;
+  background-color: transparent;
   border: 0;
   margin: 0.5rem;
   color: black;
@@ -367,9 +376,9 @@ hr {
   border: 2px solid var(--main-bg-color);
   background-color: white;
   position: absolute;
-  top: 6vh;
+  top: 8vh;
   width: 100%;
-  height: 40vh;
+  height: 54vh;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
   box-shadow: 11px 10px 9px rgb(173 168 168 / 30%);
@@ -407,7 +416,7 @@ hr {
 .time-span {
   font-size: 0.8rem;
   padding-right: 1rem;
-  border-right: 1px solid var(--main-bg-color);
+  border-right: 1px solid rgba(173, 168, 168, 0.5);
 }
 
 .share span {
@@ -440,7 +449,7 @@ hr {
   width: 20%;
   cursor: pointer;
   color: white;
-  border: 1px solid var(--main-bg-color);
+  border: solid var(--main-bg-color);
   border-radius: 5px;
   background-color: var(--main-bg-color);
 }
@@ -490,8 +499,8 @@ hr {
   color: #fff;
 }
 .planRegister > div input {
-  border: 1px solid var(--main-bg-color);
-  border-radius: 5px;
+  /* border: 1px solid var(--main-bg-color);
+  border-radius: 5px; */
   padding: 0.2rem;
 }
 
@@ -502,8 +511,8 @@ hr {
 
 .planRegister > div input,
 .planRegister__meeting > div input {
-  border: 2px solid var(--main-bg-color);
-  border-radius: 50px;
+  border: none;
+  /* border-radius: 50px; */
   padding: 0.3rem 1rem;
 }
 .planRegister > input,
@@ -532,9 +541,7 @@ hr {
 }
 
 .closeModal {
-  position: absolute;
-  top: 17%;
-  right: 5%;
+  padding-right: 2em;
   display: flex;
   width: 100%;
   justify-content: end;
@@ -543,7 +550,7 @@ hr {
 }
 .closeModal i {
   font-size: 21px;
-  color: var(--main-bg-color);
+  color: black;
 }
 
 .hidden {
@@ -596,6 +603,8 @@ hr {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
+  border-bottom: none;
 }
 
 .day {
@@ -614,6 +623,8 @@ hr {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
+  border-top: none;
 }
 
 .date {
@@ -690,8 +701,10 @@ hr {
   display: flex;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  margin: 0em 1.5em 1em 1.5em;
+  margin: 0em 1.5em 3em 1.5em;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
+  border-top: none;
 }
 
 .detail-member {
@@ -751,6 +764,8 @@ hr {
   font-size: 18px;
   box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
   font-weight: 700;
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
+  border-bottom: none;
 }
 
 .month_category {
@@ -759,9 +774,8 @@ hr {
   border: none;
   color: black;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 22px;
   font-family: "S-CoreDream-3Light";
-  width: 54px;
 }
 
 .year_category {
@@ -770,9 +784,8 @@ hr {
   border: none;
   color: black;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 22px;
   font-family: "S-CoreDream-3Light";
-  width: 85px;
 }
 
 .year_month_display p {
@@ -780,12 +793,11 @@ hr {
 }
 
 .meeting-name {
-  margin-left: 1em;
-  margin-top: 1em;
   font-size: 1.5rem;
+  color: black;
   font-weight: bold;
-  color: rgb(87, 87, 87);
 }
+
 .profile-user-name {
   font-size: 0.5rem;
   padding-top: 2.5px;
@@ -795,6 +807,9 @@ hr {
   border: 0;
   background-color: transparent;
   font-weight: bold;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 #create {
@@ -807,4 +822,49 @@ hr {
 
 #create > input {
   margin-top: 1rem;
+}
+
+.calendar_top {
+  display: flex;
+}
+
+.reset-btn {
+  margin-top: 1.6em;
+  padding-left: 15px;
+  font-size: 17px;
+  color: #919191;
+  margin-left: 1.5em;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  #sidebar {
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding-top: 4rem !important;
+    position: static;
+  }
+  .closeSidebar .closeBtn {
+    display: none;
+  }
+
+  .nav-side {
+    display: none;
+  }
+
+  .detail-timeline {
+    width: 100%;
+  }
+
+  .detail-time {
+    width: 100% !important;
+  }
+
+  .detail-timeline div {
+    width: 100% !important;
+  }
+
+  .detail-time div {
+    width: calc(100% / 24);
+  }
 }

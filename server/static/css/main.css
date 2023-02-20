@@ -91,7 +91,7 @@ body {
   color: black;
   font-weight: 700;
   font-size: 22px;
-  margin-left: 1.5em;
+  margin-left: 1.7rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -795,7 +795,7 @@ hr {
 }
 
 .meeting-name {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: black;
   font-weight: bold;
 }
@@ -808,7 +808,7 @@ hr {
 .change-day-btn {
   border: 0;
   background-color: transparent;
-  font-weight: bold;
+  /* font-weight: bold; */
   color: black;
   font-size: 16px;
   cursor: pointer;
@@ -832,10 +832,10 @@ hr {
 
 .reset-btn {
   margin-top: 1.6em;
-  padding-left: 15px;
+  padding-left: 10px;
   font-size: 17px;
-  color: #919191;
-  margin-left: 1.5em;
+  color: #818181;
+  margin-left: 1.3em;
   cursor: pointer;
 }
 

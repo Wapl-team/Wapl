@@ -32,11 +32,11 @@ body {
     }
 
 .nav {
-    width: 57%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fbfbfb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
 }
 
 .nav_bar_button{
@@ -48,6 +48,8 @@ body {
 
 .WAPL{
     font-weight: bold;
+    font-size: 1.3rem;
+    color: black;
 }
 
 .logo-container{
@@ -127,7 +129,7 @@ body {
     font-size: 0.8em;
     color: #5b5b5b;
     margin-bottom: 3em;
-    margin-left: 7em;
+    margin-left: 6.3em;
     margin-top: 0.5em;
 }
 
@@ -405,7 +407,7 @@ span{
 
 .introduction-container{
   background-color: var(--main-bg-color);
-  padding: 1rem 1rem;
+  padding: 1rem 1rem 1rem 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -439,9 +441,9 @@ span{
     .closeBtn{
         padding-right: 1rem !important;
     }
-    .nav{
+    /* .nav{
         width:50%;
-    }
+    } */
 
     .logo-container{
       justify-content: center;
@@ -451,3 +453,26 @@ span{
       display: none;
     }
   }
+
+.footer {
+    padding: 1rem;
+    background-color: #fbfbfb;
+    color: gray;
+    font-family: "S-CoreDream-3Light";
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+.main_foot_flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.pretendfont{
+  font-size: 0.6rem;
+  padding: 0.3rem 0em;
+}

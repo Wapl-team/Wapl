@@ -9,10 +9,99 @@
     <title>와플 : 모임 정보</title>
   </head>
   <body>
+    <div id="sidebar" class="sidebar-menu">
+      <div class="sidebar__main">
+        <div class="profile">
+          <div class="closeSidebar">
+            <a
+              href="javascript:void(0)"
+              class="closeBtn"
+              onclick="closeToggle()"
+              ><i class="fa-solid fa-x" style="font-size: 1.5rem"></i
+            ></a>
+          </div>
+          <div class="profileSidebar">
+            <a href="{% url 'wapl:profile' %}">
+              {% if user.profile.image %}
+              <img
+                src="{{ user.profile.image.url }}"
+                width="65"
+                class="profileImage"
+              />
+              {% else %}
+              <img
+                src="{{ user.default_image }}"
+                width="65"
+                class="profileImage"
+              />
+              {% endif %}
+            </a>
+            <a href="{% url 'wapl:profile' %}" class="profile__username"
+              >{{user.nickname}}</a
+            >
+            <div class="nim">님</div>
+          </div>
+        </div>
+        <hr />
+
+        <div class="groupBtn">
+          <button class="createGroup">
+            <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+          </button>
+
+          <button class="joinGroup">
+            <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+          </button>
+        </div>
+
+        <div class="groups">
+          <div class="privategroup">
+            <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
+          </div>
+          {% for meeting in meetings %}
+          <div class="groupName">
+            <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+              <i
+                class="fa-solid fa-circle-info white"
+                style="color: #1a2634; font-size: smaller; margin-left: 5px"
+              ></i>
+            </a>
+            <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+              {{meeting.meeting_name}}의 달력
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      <div class="sidebar__footer">
+        <div class="goto-home">
+          <a href="{% url 'wapl:start' %}"
+            ><i class="fa-solid fa-house"></i
+          ></a>
+        </div>
+        <div class="logout">
+          <a href="{% url 'wapl:logout' %}">로그아웃</a>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-side">
+          <button class="nav_bar_button">
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 1.7rem"></i>
+          </button>
+      </div>
+      <div class="WAPL">WAPL</div>
+      <div>
+      <div class="modalButton">
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 1.7rem; color: #fbfbfb"></i>
+        </div>
+      </div>
+  </nav>
+  <hr class="nav-hr" />
     <div class="meeting__info">
-      <a class="home" href="{% url 'wapl:main' %}">
-        <i class="fa-solid fa-house"></i>
-      </a>
       <div class="meeting__detail">모임 정보</div>
       <div class="meeting__body">
         <div class="meeting__profile">
@@ -46,6 +135,18 @@
           </div>
         </div>
       </div>
+      <div class="meeting__footer">
+        {% if meeting.owner == request.user %}
+        <div class="meeting_edit">
+          <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"
+            ><p>수정하기</p></a
+          >
+        </div>
+        <div class="meeting_edit">
+          <a href="{% url 'wapl:meeting_delete' meeting.id %}"><p>삭제하기</p></a>
+        </div>
+        {% endif %}
+      </div>
     </div>
     <!-- 멤버 모달 Start-->
     <div class="modal-member hidden">
@@ -68,18 +169,7 @@
       </div>
     </div>
     <!-- 멤버 모달 End-->
-    <div class="meeting__footer">
-      {% if meeting.owner == request.user %}
-      <div class="meeting_edit">
-        <a href="{% url 'wapl:meeting_info_edit' meeting.id %}"
-          ><p>수정하기</p></a
-        >
-      </div>
-      <div class="meeting_edit">
-        <a href="{% url 'wapl:meeting_delete' meeting.id %}"><p>삭제하기</p></a>
-      </div>
-      {% endif %}
-    </div>
+
     {% if messages %} {% for message in messages %} {% if message.tags %}
     <script>
       alert("{{ message }}");

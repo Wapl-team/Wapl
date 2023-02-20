@@ -386,7 +386,8 @@ def pub_delete(request:HttpRequest, pk, *args, **kwargs):
 #개인 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def detail(request, pk, *args, **kwargs):
     plan = get_object_or_404(PrivatePlan, pk=pk)
-    
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     err_msg = ''
     if request.user.is_authenticated:
       if request.method == "POST":
@@ -406,6 +407,7 @@ def detail(request, pk, *args, **kwargs):
     comments = PrivateComment.objects.all().filter(plan_post=plan)
     replys = replyPrivateComment.objects.all()
     context = {
+        "meetings":meetings,
         "plan": plan,
         "comments": comments,
         "replys": replys,
@@ -416,6 +418,8 @@ def detail(request, pk, *args, **kwargs):
 #모임 일정 상세보기 함수 + 댓글 생성/리스트 출력까지
 def public_detail(request, pk, *args, **kwargs):
     plan = get_object_or_404(PublicPlan, pk=pk)
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     err_msg = ''
     if request.user.is_authenticated:
       if request.method == "POST":
@@ -441,6 +445,7 @@ def public_detail(request, pk, *args, **kwargs):
     comments = PublicComment.objects.all().filter(plan_post=plan)
     replys = replyPublicComment.objects.all()
     context = {
+        "meetings":meetings,
         "plan": plan,
         "comments" : comments,
         "replys": replys,
@@ -573,7 +578,7 @@ def start(request:HttpRequest, *args, **kwargs):
     return redirect('wapl:main')
     # return render(request, "test_start.html", context=context)
   else:
-    return render(request, "test_start.html")
+    return render(request, "start.html")
 
 @csrf_exempt
 def signup(request:HttpRequest, *args, **kwargs):
@@ -1021,9 +1026,12 @@ def update_password(request, *args, **kwargs):
 def meeting_info(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 볼 수 있는데, 의도한 바가 맞나요?
     # meeting = Meeting.objects.get(id=pk)
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     meeting = get_object_or_404(Meeting, id=pk)
     users = meeting.users.all()
     context = {
+        'meetings':meetings,
         'meeting': meeting,
         'users': users,
     }

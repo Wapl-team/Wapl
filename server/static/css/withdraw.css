@@ -40,7 +40,6 @@ body {
   height: 80vh;
   border-radius: 5px;
   flex-direction: column;
-  padding: 5vh 0vw;
 }
 
 .withdraw {

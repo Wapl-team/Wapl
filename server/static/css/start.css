@@ -54,7 +54,7 @@ body {
     display: flex;
     flex-direction: row;
     margin-top: 3em;
-
+    margin-bottom: 4em;
 }
 
 .black-container{
@@ -102,7 +102,7 @@ body {
 }
 
 .w-st{
-    color: #e1ef6c;
+    color: var(--main-bg-color);
     font-size: 4.2em;
     font-weight: 700;
     font-family: 'GmarketSansMedium';
@@ -120,7 +120,7 @@ body {
 }
 
 .an{
-    margin-top: 1.6em;
+    margin-top: 2.1em;
     margin-left: 0.3em;
 }
 
@@ -386,4 +386,36 @@ body {
     .nav{
         width:50%;
     }
+
+
+span{
+    color: var(--main-bg-color);
+    font-weight: bold;
+}
+
+.introduction-container{
+    background-color: var(--main-bg-color);
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3rem;
+}
+
+.introduction-container-reverse{
+    background-color: #fbfbfb;
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    line-height: 1.3rem;
+    justify-content: center;
+}
+
+.introduction-title{
+    font-size: 16px;
+}
+
+.introductionImage{
+    width: 9rem;
+    height: 8rem;
 }

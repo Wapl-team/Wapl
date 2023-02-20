@@ -69,8 +69,8 @@ h2 {
   font-size: 17px;
 }
 
-.error__msg{
-  color:red;
+.error__msg {
+  color: red;
   font-weight: 600;
   margin-bottom: 1vh;
 }
@@ -85,4 +85,10 @@ h2 {
   position: relative;
   left: -34vw;
   top: 8vh;
+}
+
+@media (min-width: 1024px) {
+  .home {
+    left: -9vw;
+  }
 }

@@ -138,9 +138,9 @@
         {% endfor %}
       </div>
       <hr />
-
       <div class="control-container">
-        {% if request.user == plan.user or request.user == meeting.owner%}
+        {% if request.user == plan.owner or request.user == meeting.owner%}
+
         <form
           action="{% url 'wapl:pubdelete' plan.pk %}"
           method="post"

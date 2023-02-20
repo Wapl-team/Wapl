@@ -52,6 +52,7 @@ body {
 
 .logo-container{
     display: flex;
+    justify-content: center;
     flex-direction: row;
     margin-bottom: 4em;
 }

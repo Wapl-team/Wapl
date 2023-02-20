@@ -14,6 +14,28 @@
   box-sizing: border-box;
 }
 
+.nav {
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
+}
+
+.nav_bar_button{
+    background-color: transparent;
+    color:black;
+    border:none;
+    margin:0.7rem;
+}
+
+.WAPL{
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: black;
+}
+
 .meeting__detail {
   font-size: 30px;
   margin-bottom: 30px;
@@ -35,6 +57,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
 }
 
 .meeting__body {
@@ -146,15 +171,6 @@ span {
   cursor: move;
 }
 
-.home {
-  font-size: 16px;
-  text-decoration: none;
-  color: var(--main-bg-color);
-  padding: 0.5em;
-  padding-top: 0.7rem;
-  margin: 0.2em;
-  position: relative;
-}
 
 /* 멤버 모달 */
 
@@ -177,7 +193,7 @@ span {
   background-color: white;
   border:3px solid var(--main-bg-color);
   border-radius: 20px;
-  padding:10px;
+  padding:0.3rem;
 }
 
 .hidden {
@@ -212,3 +228,245 @@ span {
 }
 
 /* 멤버 모달 */
+
+/* sidebar */
+
+.sidebar-menu {
+  height: 100vh;
+  min-width: 250px;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #fbfbfb;
+  overflow-x: hidden;
+  border: none;
+  border-left: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  visibility: hidden;
+}
+
+.profile {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #1a2634; */
+  background-color: #fbfbfb;
+  padding: 10px;
+}
+
+.closeSidebar {
+  display: flex;
+  justify-content: end;
+}
+
+.closeSidebar .closeBtn {
+  font-size: 21px;
+  color: #1a2634;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
+.closeSidebar .closeBtn:hover {
+  color: var(--main-bg-color);
+}
+
+.modalButton:hover,
+.nav_bar_button:hover,
+.closeModal_x:hover {
+  color: var(--main-bg-color);
+  cursor: pointer;
+}
+
+.profileSidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.profile__username {
+  word-break: break-all;
+}
+
+.profile__username:hover {
+  color: var(--main-bg-color);
+}
+
+.profileSidebar a > img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  border: 2px solid lightgray;
+}
+
+.profile a {
+  text-decoration: none;
+  color: #1a2634;
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 0.3rem;
+  text-align: center;
+}
+
+.nim {
+  text-decoration: none;
+  color: black;
+  font-size: 1.5rem;
+}
+
+.profileImage {
+  margin-right: 10px;
+  border-radius: 70%;
+}
+
+.profileImagePlan {
+  border-radius: 10px;
+}
+
+.profileImagePreview {
+  border-radius: 40px;
+}
+
+.goto-home {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.goto-home i {
+  font-size: 2rem;
+  color: var(--main-bg-color);
+}
+
+.sidebar-menu p {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+}
+
+/* sidebar End */
+
+hr {
+  width: 100%;
+  border: 0.5px solid rgba(173, 168, 168, 0.5);
+}
+
+/* --------모임 생성/참가 ------- */
+
+.groupBtn {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.groupBtn button {
+  width: 90px;
+  height: 30px;
+  margin: 3px;
+  border: none;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.groupBtn a {
+  text-decoration: none;
+  color: black;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.groupBtn a:hover {
+  color: var(--main-bg-color);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.groupName {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  width: 210px;
+  padding: 10px;
+  background-color: var(--main-bg-color);
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border-radius: 5px;
+}
+
+.groupName:hover {
+  transform: scale(0.95);
+}
+
+.groupName a {
+  text-decoration: none;
+  color: #1a2634;
+  font-size: 20px;
+  margin-right: 3px;
+}
+
+.privategroup {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  width: 210px;
+  padding: 10px;
+  background-color: var(--main-bg-color);
+  box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+  border-radius: 5px;
+}
+
+.privategroup:hover {
+  transform: scale(0.95);
+}
+
+.privategroup a {
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+
+.sidebar__footer {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding: 30px;
+}
+
+.logout {
+  padding: 7px 15px;
+  border-radius: 50px;
+  background-color: var(--main-bg-color);
+}
+
+.logout a {
+  text-decoration: none;
+  color: #1a2634;
+}
+
+
+@media (min-width: 1024px) {
+  #sidebar {
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding-top:4rem !important;
+    padding-bottom: 3rem !important;
+  }
+.closeSidebar .closeBtn {
+    display: none;
+  }
+
+  .nav , .nav-hr{
+    display: none;
+  }
+}

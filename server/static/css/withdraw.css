@@ -87,6 +87,10 @@ body {
   font-size: 17px;
 }
 
+.withdraw__footer{
+  align-items: center;
+}
+
 .return {
   width: 240px;
   height: 30px;

@@ -408,7 +408,8 @@ def pub_delete(request: HttpRequest, pk, *args, **kwargs):
 
 def detail(request, pk, *args, **kwargs):
     plan = get_object_or_404(PrivatePlan, pk=pk)
-
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     err_msg = ''
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -428,6 +429,7 @@ def detail(request, pk, *args, **kwargs):
     comments = PrivateComment.objects.all().filter(plan_post=plan)
     replys = replyPrivateComment.objects.all()
     context = {
+        "meetings":meetings,
         "plan": plan,
         "comments": comments,
         "replys": replys,
@@ -440,6 +442,8 @@ def detail(request, pk, *args, **kwargs):
 
 def public_detail(request, pk, *args, **kwargs):
     plan = get_object_or_404(PublicPlan, pk=pk)
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     err_msg = ''
     if request.user.is_authenticated:
         if request.method == "POST":
@@ -465,6 +469,7 @@ def public_detail(request, pk, *args, **kwargs):
     comments = PublicComment.objects.all().filter(plan_post=plan)
     replys = replyPublicComment.objects.all()
     context = {
+        "meetings":meetings,
         "plan": plan,
         "comments": comments,
         "replys": replys,
@@ -600,10 +605,7 @@ def public_absense(request: HttpRequest, pk, *args, **kwargs):
     attend.is_attend = "absence"
     attend.save()
     return redirect('wapl:main')
-
-# -------------------------------------------------------------------------
-
-
+    
 def start(request: HttpRequest, *args, **kwargs):
     if request.user.is_authenticated:
         # meetings = request.user.user_meetings.all()
@@ -612,9 +614,8 @@ def start(request: HttpRequest, *args, **kwargs):
         # }
         return redirect('wapl:main')
         # return render(request, "introduction.html", context=context)
-    else:
-        return render(request, "introduction.html")
-
+  else:
+    return render(request, "start.html")
 
 @csrf_exempt
 def signup(request: HttpRequest, *args, **kwargs):
@@ -1086,9 +1087,12 @@ def update_password(request, *args, **kwargs):
 def meeting_info(request, pk, *args, **kwargs):
     # Review : pk만 있으면 누구나 미팅을 볼 수 있는데, 의도한 바가 맞나요?
     # meeting = Meeting.objects.get(id=pk)
+    login_user = request.user
+    meetings = login_user.user_meetings.all()
     meeting = get_object_or_404(Meeting, id=pk)
     users = meeting.users.all()
     context = {
+        'meetings':meetings,
         'meeting': meeting,
         'users': users,
     }

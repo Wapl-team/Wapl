@@ -89,6 +89,8 @@ function openToggle() {
   document.getElementById("sidebar").style.visibility="visible";
   document.getElementById("sidebar").style.transition="all 0.1s";
   document.getElementById("sidebar").style.opacity="1";
+  document.getElementById("sidebar").style.paddingTop="1rem";
+  document.getElementById("sidebar").style.paddingBottom="3rem";
 }
 
 function closeToggle() {

@@ -5,6 +5,7 @@ function openToggle() {
     document.getElementById("sidebar").style.visibility="visible";
     document.getElementById("sidebar").style.transition="all s0.1s";
     document.getElementById("sidebar").style.opacity="1";
+    document.getElementById("sidebar").style.borderRight="2px solid rgba(173,168,168,0.5)";
   }
   
   function closeToggle() {

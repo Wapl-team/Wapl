@@ -90,14 +90,24 @@
                     ><i class="fa-solid fa-x"></i
                 ></a>
             </div>
+            <div class="profile__nologin">
+                <img
+                    src="{% static 'default_image/Group 1.png' %}"
+                    width="65"
+                    class="profileImage"
+                />
+                <a href="{% url 'wapl:login' %}" class="need__login">WAPL</a>
+            </div>
+            <hr/>
             <div class="gotoLogin">
-                <a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">로그인하러가기</a>
+                <a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">WAPL 시작하기</a>
+                <hr />
                 <div class="goto-home">
                     <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
                 </div>
+                <hr />
             </div>
         </div>
-        <hr>
 
     </div>
 

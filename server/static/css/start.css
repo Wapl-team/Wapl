@@ -427,3 +427,26 @@ span{
       display: none;
     }
   }
+
+.footer {
+    padding: 1rem;
+    background-color: #fbfbfb;
+    color: gray;
+    font-family: "S-CoreDream-3Light";
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+.main_foot_flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.pretendfont{
+  font-size: 0.6rem;
+  padding: 0.3rem 0em;
+}

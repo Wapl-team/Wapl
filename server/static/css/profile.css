@@ -141,3 +141,9 @@ body {
   height: 90px;
   object-fit: cover;
 }
+
+@media (min-width: 1024px) {
+  .home {
+    left: -13vw;
+  }
+}

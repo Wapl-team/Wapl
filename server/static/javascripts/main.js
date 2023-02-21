@@ -146,11 +146,6 @@ const makeCalendar = (viewYear, viewMonth) => {
   currentMonth = viewMonth;
   viewMonth -= 1;
 
-  // 캘린더 년도 달 채우기
-  // document.querySelector(".year-month").textContent = `${viewYear}년 ${
-  //   viewMonth + 1
-  // }월`;
-
   // 지난 달 마지막 날짜와 요일
   const prevLast = new Date(viewYear, viewMonth, 0);
   const prevDate = prevLast.getDate();

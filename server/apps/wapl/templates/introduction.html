@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/introduction.css' %}" />
+    <title>wapl : 소개 페이지</title>
+</head>
+<body>
+    
+    {% load socialaccount%} {% providers_media_js %} {% if user.is_authenticated %}
+    <div id="sidebar" class="sidebar-menu">
+        <div class="sidebar__main">
+            <div class="profile">
+            <div class="closeSidebar">
+                <a href="javascript:void(0)" class="closeBtn"
+                ><i class="fa-solid fa-x"></i
+                ></a>
+            </div>
+            <div class="profileSidebar">
+                <a href="{% url 'wapl:profile' %}">
+                {% if user.profile.image %}
+                <img
+                    src="{{ user.profile.image.url }}"
+                    width="65"
+                    class="profileImage"
+                />
+                {% else %}
+                <img
+                    src="{{ user.default_image }}"
+                    width="65"
+                    class="profileImage"
+                />
+                {% endif %}
+                </a>
+                <a href="{% url 'wapl:profile' %}" class="profile__username"
+                >{{user.nickname}}</a
+                >
+                <div class="nim">님</div>
+            </div>
+            </div>
+            <hr />
+    
+            <div class="groupBtn">
+            <button class="createGroup">
+                <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+            </button>
+    
+            <button class="joinGroup">
+                <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+            </button>
+            </div>
+    
+            <div class="groups">
+            <div class="privategroup">
+                <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
+            </div>
+            {% for meeting in meetings %}
+            <div class="groupName">
+                <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+                <i
+                    class="fa-solid fa-circle-info white"
+                    style="color: #1a2634; font-size: smaller; margin-left: 5px"
+                ></i>
+                </a>
+                <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+                {{meeting.meeting_name}}
+                <i class="fa-solid fa-angles-right"></i>
+                </a>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="sidebar__footer">
+            <div class="goto-home">
+            <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
+            </div>
+            <div class="logout">
+            <a href="{% url 'wapl:logout' %}">로그아웃</a>
+            </div>
+        </div>
+        </div>
+    {% else %}
+    <div id="sidebar" class="sidebar-menu">
+        <div class="sidebar__main">
+            <div class="closeSidebar">
+                <a href="javascript:void(0)" class="closeBtn"
+                    ><i class="fa-solid fa-x"></i
+                ></a>
+            </div>
+            <div class="profile__nologin">
+                <img
+                    src="{% static 'default_image/Group 1.png' %}"
+                    width="65"
+                    class="profileImage"
+                />
+                <a href="{% url 'wapl:login' %}" class="need__login">WAPL</a>
+            </div>
+            <hr/>
+            <div class="gotoLogin">
+                <a style="font-size: 1.5rem" href="{% url 'wapl:login' %}">WAPL 시작하기</a>
+                <hr />
+                <div class="goto-home-nologin">
+                    <a href="{% url 'wapl:start' %}"><i class="fa-solid fa-house"></i></a>
+                </div>
+                <hr />
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+    <div class="intro__main">
+        <nav class="nav">
+            <div class="nav-side">
+                <button class="nav_bar_button">
+                <i class="fa-solid fa-bars fa-2x" style="font-size: 1.7rem"></i>
+                </button>
+            </div>
+            <div class="WAPL">WAPL</div>
+            <div>
+            <div class="modalButton">
+                <i class="fa-solid fa-plus fa-2x" style="font-size: 1.7rem; color: #fbfbfb"></i>
+              </div>
+            </div>
+        </nav>
+        <hr />
+    </div>
+
+    
+    {% if messages %}
+        {% for message in messages %}
+        {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="logo-container">
+        <div class="black-container">
+            <div class="black"></div>
+            <div class="address"><p>wapl.co.kr</p></div>
+        </div>
+        <div class="wapl-container">
+            <div class="intro-detail-2">당신을 위한 <span>공유 달력</span> 서비스</div>
+            <div class="wapl-subcontainer">
+                <div class="wa w-st">WA</div>    
+                <div class="pl-container">
+                    <div class="tisyour b-st">t is your</div>
+                    <div class="plan">
+                        <div class="pl w-st">PL</div>
+                        <div class="an b-st">an</div>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-detail-1">
+                <span>개인</span>의 일정과 <span>모임</span>의 일정을 동시에
+            </div>
+        </div>
+    </div>
+    <div class="introduction-container">
+        <div class="introduction-title">
+            개인 일정과 모임 일정을 한눈에 볼 수 있어요
+        </div>
+        <div>
+            <img src="static\default_image\45.svg" class="introductionImage" style="margin-right: 1.3rem;"/>
+        </div>
+    </div>
+    <div class="introduction-container-reverse">
+        <div>
+            <img src="static\default_image\44.svg" class="introductionImage"/>
+        </div>
+        <div class="introduction-title">
+            공유하고 싶은 일정만 모임에 공유할 수 있어요
+        </div>
+    </div>
+    <div class="introduction-container">
+        <div class="introduction-title">
+            상대방의 일정에 댓글을 남길 수 있어요
+        </div>
+        <div>
+            <img src="static\default_image\87.svg" class="introductionImage" style="margin-right: 1.3rem;"/>
+        </div>
+    </div>
+
+    <hr>
+    <div class="footer main_foot_flex">
+        <div>
+            <h6 class="pretendfont">개발자 | 조준서 이윤정 박신빈 한다은 김용현 김서영 </h6>
+            <h6 class="pretendfont">문의 | waplsodaldal@gmail.com </h6>
+            <h6 class="pretendfont">ⓒ2023. WAPL All rights reserved</h6>
+        </div>
+    </div>
+
+    <script
+    src="https://kit.fontawesome.com/6fbcf91afd.js"
+    crossorigin="anonymous"></script>
+    <script src="{% static 'javascripts/start.js' %}"></script>
+</body>
+</html>

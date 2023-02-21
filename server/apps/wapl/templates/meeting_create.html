@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/meeting_create.css' %}" />
+    <title>와플 : 모임 생성</title>
+  </head>
+  <body>
+    <a class="home" href="{% url 'wapl:main' %}">
+      <i class="fa-solid fa-house"></i>
+    </a>
+    <h2>모임 생성</h2>
+    <div class="error__msg">{{err_msg}}</div>
+    <form
+      action="{% url 'wapl:meeting_create' %}"
+      method="post"
+      class="meetingCreate"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <span>모임 프로필 이미지</span><br />
+      <input type="file" name="image" accept="image/*" class="profileImage" />
+      <br />
+      <input
+        name="meeting_name"
+        placeholder="모임 이름"
+        value="{{ meeting_name }}"
+      />
+      <br />
+      <select name="category" class="categorySelect">
+        <option>==카테고리 선택==</option>
+        {% for t1,t2 in category_list %} {% if t1 == category %}
+        <option value="{{ t1 }}" selected>{{ t2 }}</option>
+        {% else %}
+        <option value="{{ t1 }}">{{ t2 }}</option>
+        {% endif %} {% endfor %}
+      </select>
+      <br />
+      <textarea name="content" placeholder="모임 소개">{{ content }}</textarea>
+      <br />
+      <div>
+        <input type="submit" value="모임 생성" />
+      </div>
+    </form>
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

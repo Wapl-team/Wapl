@@ -1,0 +1,267 @@
+@import url("./reset.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "S-CoreDream-3Light";
+}
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "S-CoreDream-3Light";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.plan__detail__update {
+  font-size: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.plan_update_container {
+  border-radius: 20px;
+  width: 20rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0px 3px 9px rgba(173, 168, 168, 0.3);
+}
+
+.main form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.submenu-span {
+  font-weight: bold;
+  width: 5rem;
+  text-align: start;
+  padding: 5px 0;
+}
+
+.plan-title {
+  display: flex;
+  flex-direction: column;
+  width: 12.3rem;
+}
+
+.plan-title input {
+  padding: 0.3rem;
+  margin: 0.1rem 0;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--main-bg-color);
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+}
+
+.center input {
+  padding: 0.3rem;
+  margin: 0.1rem 0;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--main-bg-color);
+}
+
+.center-submenu,
+.center-startTime,
+.center-endTime {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan_update_content {
+  padding: 0.2rem;
+  margin: 0.1rem 0;
+  height: auto;
+  resize: none;
+}
+
+.orange {
+  color: #ffd83d;
+  font-size: 1.3rem;
+}
+
+.plan_update_time {
+  text-align: center;
+}
+
+hr {
+  border: 1px solid rgba(173, 168, 168, 0.5);
+  margin: 0.5em 0;
+}
+
+.control-container {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.control-container input,
+.control-container .back {
+  font-size: 1rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 15px;
+  background-color: var(--main-bg-color);
+  color: black;
+  padding: 0.5em;
+  margin: 0.2em;
+}
+
+.control-container {
+  font-size: 1rem;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding-top: 0.7rem;
+  padding-right: 1rem;
+  margin: 0.2em;
+  justify-content: space-between;
+}
+
+.share {
+  margin-top: 1rem;
+}
+
+.share span {
+  font-weight: bold;
+}
+
+.share i {
+  color: var(--main-bg-color);
+  margin-left: 0.5rem;
+}
+
+.share-box {
+  padding: 1rem 1rem;
+  position: absolute;
+  bottom: 30%;
+  width: 18rem;
+  z-index: 2;
+  background-color: white;
+  border: 1px solid var(--main-bg-color);
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.share-box input {
+  margin: 0 0.2rem 0 0;
+}
+
+.share-box button {
+  cursor: pointer;
+  color: white;
+  border: 1px solid var(--main-bg-color);
+  border-radius: 5px;
+  background-color: var(--main-bg-color);
+}
+
+.share-box > div {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.share-select {
+  width: 70%;
+}
+.share-box span {
+  padding-right: 0.5rem;
+}
+
+.share-select input[type="radio"] {
+  display: none;
+}
+
+.share-select input[type="radio"] + label {
+  display: inline-block;
+  cursor: pointer;
+  height: 24px;
+  width: 30%;
+  border: 1px solid var(--main-bg-color);
+  border-radius: 50px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.share-select input[type="radio"]:checked + label {
+  background-color: var(--main-bg-color);
+  color: #fff;
+}
+
+.closeModal {
+  position: relative;
+  right: -1em;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  margin-top: 15px;
+  background-color: transparent;
+  border: none;
+}
+
+.modal-share {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.closeModal i {
+  font-size: 21px;
+  color: orange;
+}
+
+.hidden {
+  display: none;
+}
+
+#closeModal {
+  background-color: var(--main-bg-color);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.bottom {
+  position: relative;
+}
+
+.home {
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding: 0.5em;
+  padding-top: 0.7rem;
+  margin: 0.2em;
+  position: relative;
+}

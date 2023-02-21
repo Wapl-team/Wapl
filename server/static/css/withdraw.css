@@ -1,0 +1,125 @@
+@import url("./reset.css");
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "S-CoreDream-3Light";
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  flex-direction: column;
+  font-family: "S-CoreDream-3Light";
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+}
+
+.withdraw-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 80vh;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.withdraw {
+  font-size: 25px;
+  color: #395165;
+  font-weight: bold;
+  margin-bottom: 3vh;
+}
+
+.withdraw-form {
+  display: flex;
+  flex-direction: column;
+  width: 65vw;
+  height: 50vh;
+  line-height: 3vh;
+  align-items: center;
+}
+
+.withdraw-form p {
+  margin: 0.7vh 0;
+  font-size: 16px;
+}
+
+.input{
+  width: 18em;
+}
+
+.withdraw-btn {
+  background-color: var(--main-bg-color);
+  border: none;
+  border-radius: 5px;
+  color: black;
+  padding: 0.5vh 0;
+  font-size: 1.3rem;
+  margin-bottom: 1em;
+  width: 240px;
+  margin-top: 3vh;
+}
+
+.main div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main a {
+  padding: 0.3em;
+  color: black;
+  font-size: 17px;
+}
+
+.withdraw__footer{
+  align-items: center;
+}
+
+.return {
+  width: 240px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label {
+  margin-top: 2vh;
+  display: flex;
+  justify-content: center;
+}
+
+.red {
+  color: red;
+}
+
+.withdraw-form span {
+  font-weight: bold;
+}
+
+.margin {
+  margin-right: 1em;
+}

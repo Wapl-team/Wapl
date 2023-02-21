@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/plan_detail.css' %}" />
+    <title>와플 : 모임 일정</title>
+  </head>
+  <body>
+    <div id="sidebar" class="sidebar-menu">
+      <div class="sidebar__main">
+        <div class="profile">
+          <div class="closeSidebar">
+            <a
+              href="javascript:void(0)"
+              class="closeBtn"
+              onclick="closeToggle()"
+              ><i class="fa-solid fa-x" style="font-size: 1.5rem"></i
+            ></a>
+          </div>
+          <div class="profileSidebar">
+            <a href="{% url 'wapl:profile' %}">
+              {% if user.profile.image %}
+              <img
+                src="{{ user.profile.image.url }}"
+                width="65"
+                class="profileImage"
+              />
+              {% else %}
+              <img
+                src="{{ user.default_image }}"
+                width="65"
+                class="profileImage"
+              />
+              {% endif %}
+            </a>
+            <a href="{% url 'wapl:profile' %}" class="profile__username"
+              >{{user.nickname}}</a
+            >
+            <div class="nim">님</div>
+          </div>
+        </div>
+        <hr style="margin:0;" />
+
+        <div class="groupBtn">
+          <button class="createGroup">
+            <a href="{% url 'wapl:meeting_create' %}">모임 생성</a>
+          </button>
+
+          <button class="joinGroup">
+            <a href="{% url 'wapl:meeting_join' %}">모임 참가</a>
+          </button>
+        </div>
+
+        <div class="groups">
+          <div class="privategroup">
+            <a href="{% url 'wapl:main' %}">{{ user.nickname }}님의 달력</a>
+          </div>
+          {% for meeting in meetings %}
+          <div class="groupName">
+            <a href="{% url 'wapl:meeting_info' meeting.pk %}">
+              <i
+                class="fa-solid fa-circle-info white"
+                style="color: #1a2634; font-size: smaller; margin-left: 5px"
+              ></i>
+            </a>
+            <a href="{% url 'wapl:meeting_calendar' meeting.pk %}">
+              {{meeting.meeting_name}}의 달력
+              <i class="fa-solid fa-angles-right"></i>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      <div class="sidebar__footer">
+        <div class="goto-home">
+          <a href="{% url 'wapl:start' %}"
+            ><i class="fa-solid fa-house"></i
+          ></a>
+        </div>
+        <div class="logout">
+          <a href="{% url 'wapl:logout' %}">로그아웃</a>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-side">
+          <button class="nav_bar_button">
+          <i class="fa-solid fa-bars fa-2x" style="font-size: 1.7rem"></i>
+          </button>
+      </div>
+      <div class="WAPL">WAPL</div>
+      <div>
+      <div class="modalButton">
+          <i class="fa-solid fa-plus fa-2x" style="font-size: 1.7rem; color: #fbfbfb"></i>
+        </div>
+      </div>
+    </nav>
+    <hr class="nav-hr" />
+    <div class="detail__info">
+      <div class="plan-detail-container">
+        <a class="home" href="{% url 'wapl:main' %}"
+          ><i class="fa-solid fa-house"></i
+        ></a>
+        <div class="main">
+          <div class="plan-detail-title">{{plan.title}}</div>
+          <div class="plan-detail-place">
+            <i class="fa-solid fa-location-dot orange"></i>
+            <span>{{plan.location}}</span>
+          </div>
+          <div class="plan-detail-time">
+            {{plan.startTime}}~<br />
+            {{plan.endTime}}
+          </div>
+          <div class="plan-detail-content">{{plan.content}}</div>
+          {% if is_standby == "standby" %}
+          <div class="plan-detail-decide">
+            <a
+              class="plan-detail-attend"
+              href="{% url 'wapl:pubattend' plan.pk %}"
+              >수락</a
+            ><a
+              class="plan-detail-absence"
+              href="{% url 'wapl:pubabsense' plan.pk%}"
+              >거절</a
+            >
+          </div>
+          {% endif %}
+        </div>
+        <hr />
+        <!-- 여기부터 Comment------------------------------------------------ -->
+        <div class="leave-comment">
+          <form
+            action="{% url 'wapl:pubdetail' plan.pk %}"
+            method="post"
+            style="display: flex; margin: 10px 0"
+          >
+            {% csrf_token %}
+            <textarea name="content" placeholder="댓글 남기기"></textarea>
+            <input type="submit" value="게시" style="color: black" />
+          </form>
+        </div>
+        <div class="comment-container">
+          {% for comment in comments %}
+          <div class="show-comment">
+            <div class="user-comment">
+              <div class="user-comment-info">
+                <div class="user-comment-user">{{comment.user.name}}</div>
+                {% if comment.created_string == False %} {% csrf_token %}
+                <span class="user-comment-time"
+                  >{{ comment.created_at|date:'m월 d일' }}</span
+                >
+                {% else %}
+                <span class="user-comment-time"
+                  >{{ comment.created_string }}</span
+                >
+                {% endif %}
+              </div>
+              <div class="user-comment-content">{{comment.content}}</div>
+            </div>
+  
+            <div class="delete-comment">
+              {% if request.user == comment.user or request.user == plan.owner%}
+              <form
+                action="{% url 'wapl:pubcomment_delete' plan.pk comment.pk %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <input type="submit" value="삭제" style="color: black" />
+              </form>
+              {% endif %}
+              <input
+                type="submit"
+                value="답글"
+                class="reply_button"
+                style="color: darkgray"
+              />
+            </div>
+          </div>
+  
+          <!-- 대댓글 보여주는 구간 -->
+          <div>
+            {% for reply in replys %} {% if reply.comment_post.id == comment.id %}
+            <div class="show-comment">
+              <div class="user-comment">
+                <div class="user-comment-info">
+                  <div class="user-comment-user">
+                    <i class="fa-solid fa-arrow-turn-up fa-rotate-90"></i>
+                    {{reply.user.name}}
+                  </div>
+                  {% if reply.created_string == False %} {% csrf_token %}
+                  <span class="user-comment-time"
+                    >{{ reply.created_at|date:'m월 d일' }}</span
+                  >
+                  {% else %}
+                  <span class="user-comment-time"
+                    >{{ reply.created_string }}</span
+                  >
+                  {% endif %}
+                </div>
+                <div class="user-reply-content">{{reply.content}}</div>
+              </div>
+  
+              <div class="delete-comment">
+                {% if request.user == reply.user or request.user == plan.owner%}
+                <form
+                  action="{% url 'wapl:pubreply_delete' plan.pk reply.pk %}"
+                  method="post"
+                >
+                  {% csrf_token %}
+                  <input type="submit" value="삭제" />
+                </form>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+  
+          <!-- 대댓글을 생성하는 input 구간 -->
+          <div class="reply-container" style="display: none">
+            <form
+              action="{% url 'wapl:pubreply_create' plan.pk comment.pk %}"
+              method="post"
+              style="display: flex; margin: 10px 0"
+            >
+              {% csrf_token %}
+              <textarea name="content" placeholder="답글 남기기"></textarea>
+              <input type="submit" value="게시" style="color: black" />
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        <hr />
+        <div class="control-container">
+          {% if request.user == plan.owner or request.user == meeting.owner%}
+  
+          <form
+            action="{% url 'wapl:pubdelete' plan.pk %}"
+            method="post"
+            class="delete-plan"
+          >
+            {% csrf_token %}
+            <input type="submit" , value="삭제하기" style="color: black" />
+          </form>
+          <a href="{% url 'wapl:pubupdate' plan.pk %}" class="update-plan"
+            >수정하기</a
+          >
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const $buttons = document.querySelectorAll(".reply_button");
+      $buttons.forEach(($button) => {
+        $button.addEventListener("click", (e) => replyToggle(e, $button));
+      });
+
+      function replyToggle(e, $button) {
+        // 눌러진 답글 버튼에서 가장 가까운 class reply-container 고른 것
+        let content =
+          $button.parentElement.parentElement.nextElementSibling.nextElementSibling;
+        // 답글 버튼 누르면 class reply-container 의 display 속성이 none<=>block 바뀌도록
+        console.log(content);
+        if (content.style.display !== "none") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      }
+    </script>
+    <script src="{% static 'javascripts/meeting_detail.js' %}"></script>
+  </body>
+</html>

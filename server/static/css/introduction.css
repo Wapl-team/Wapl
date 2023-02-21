@@ -1,0 +1,478 @@
+@import url(./reset.css);
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* a,
+input,
+option {
+    font-family: "S-CoreDream-3Light";
+}
+
+body {
+    font-family: "S-CoreDream-3Light";
+    background: #fbfbfb;
+    }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: #fbfbfb;
+}
+
+.nav_bar_button{
+    background-color: transparent;
+    color:black;
+    border:none;
+    margin:0.7rem;
+}
+
+.WAPL{
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: black;
+}
+
+.logo-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4em;
+}
+
+.black-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+}
+
+.black{
+    background-color: black;
+    height: 14em;
+    width: 0.3em;
+}
+
+.address{
+    transform: rotate( 270deg );
+    color: black;
+    padding-right: 6em;
+    font-size: 0.7em;
+}
+
+.wapl-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wapl-subcontainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.pl-container{
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+}
+
+.plan{
+    display: flex;
+    flex-direction: row;
+}
+
+.w-st{
+    color: var(--main-bg-color);
+    font-size: 4.2em;
+    font-weight: 700;
+    font-family: 'GmarketSansMedium';
+}
+
+.b-st{
+    color: black;
+    font-size: 1.2em;
+    font-weight: 700;
+    font-family: 'GmarketSansMedium';
+}
+
+.tisyour{
+    margin-bottom: 0.3em;
+}
+
+.an{
+    margin-top: 2.1em;
+    margin-left: 0.3em;
+}
+
+.intro-detail-1{
+    font-size: 0.8em;
+    color: #5b5b5b;
+    margin-bottom: 3em;
+    margin-left: 6.3em;
+    margin-top: 0.5em;
+}
+
+.intro-detail-2{
+    font-size: 1.2em;
+    color: black;
+    margin-bottom: 2.5em;
+    margin-top: 3em;
+}
+
+/* sidebar Start */
+.sidebar-menu {
+    height: 100vh;
+    min-width: 250px;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #FBFBFB;
+    overflow-x: hidden;
+    border: none;
+    border-left: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    visibility: hidden;
+    padding-top:1rem;
+    padding-bottom: 3rem;
+  }
+  
+  .profile {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: #1a2634; */
+    background-color: #fbfbfb;
+    padding: 10px;
+  }
+  
+  .closeSidebar {
+    display: flex;
+    justify-content: end;
+  }
+  
+  .closeSidebar .closeBtn {
+    font-size: 21px;
+    color: black;
+    padding-right: 1rem;
+  }
+  
+  .closeSidebar .closeBtn:hover {
+    color: white;
+  }
+
+.profile__nologin {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 0 3rem;
+}
+
+  .profile__nologin > img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border: 2px solid lightgray;
+  }
+
+  .gotoLogin{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:1rem 0;
+  }
+
+  .gotoLogin a{
+    text-decoration: none;
+    color:var(--main-bg-color);
+    margin-bottom: 1rem;
+  }
+
+.need__login{
+  font-size: 1.5rem;
+  text-decoration: none;
+  color:black;
+}  
+
+  .profileSidebar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  .profile__username {
+    word-break: break-all;
+  }
+  
+  .profile__username:hover {
+    color: white;
+  }
+  
+  .profileSidebar a > img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border: 2px solid lightgray;
+  }
+  
+  .profile a {
+    text-decoration: none;
+    color: black;
+    font-size: 22px;
+    font-weight: bold;
+    margin-right: 0.3rem;
+    text-align: center;
+  }
+  
+  .nim {
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+  }
+  
+  .profileImage {
+    margin-right: 10px;
+    border-radius: 70%;
+  }
+  
+  .profileImagePlan {
+    border-radius: 10px;
+  }
+  
+  .profileImagePreview {
+    border-radius: 40px;
+  }
+  
+  .goto-home {
+    text-align: center;
+  }
+
+  .goto-home-nologin{
+    padding:1rem 0;
+  }
+  
+  .goto-home i , .goto-home-nologin i{
+    font-size: 2rem;
+    color: var(--main-bg-color);
+  }
+  
+  .sidebar-menu p {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+  }
+  
+  /* sidebar End */
+  
+  hr {
+    width: 100%;
+    border: 1px solid rgba(173,168,168,0.5);
+  }
+  
+  /* --------모임 생성/참가 ------- */
+  
+  .groupBtn {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 30px 0;
+  }
+  
+  .groupBtn button {
+    width: 90px;
+    height: 30px;
+    margin: 3px;
+    border: none;
+    border-radius: 10px;
+    background-color: transparent;
+  }
+  
+  .groupBtn a {
+    text-decoration: none;
+    color: black;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  
+  .groupBtn a:hover {
+    color: white;
+  }
+  
+  .groups {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .groupName {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 210px;
+    padding: 10px;
+    background-color: var(--main-bg-color);
+    box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+    border-radius: 5px;
+    word-break: break-all;
+  }
+  
+  .groupName:hover {
+    transform: scale(0.95);
+  }
+  
+  .groupName a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin-right: 3px;
+  }
+  
+  .privategroup {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    width: 210px;
+    padding: 10px;
+    background-color:var(--main-bg-color);
+    box-shadow: 0px 3px 6px rgb(173 168 168 / 30%);
+    border-radius: 5px;
+    word-break: break-all;
+  }
+  
+  .privategroup:hover {
+    transform: scale(0.95);
+  }
+  
+  .privategroup a {
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+  }
+  
+  .sidebar__footer {
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    padding: 30px;
+  }
+  
+  .logout {
+    padding: 7px 15px;
+    border-radius: 50px;
+    background-color: var(--main-bg-color);
+  }
+  
+  .logout a {
+    text-decoration: none;
+    color: black;
+  }
+/* sidebar End */
+span{
+  color: var(--main-bg-color);
+  font-weight: bold;
+}
+
+.introduction-container{
+  background-color: var(--main-bg-color);
+  padding: 1rem 1rem 1rem 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3rem;
+}
+
+.introduction-container-reverse{
+  background-color: #fbfbfb;
+  padding: 1rem 1rem;
+  display: flex;
+  align-items: center;
+  line-height: 1.3rem;
+  justify-content: center;
+}
+
+.introduction-title{
+  font-size: 16px;
+}
+
+.introductionImage{
+  width: 9rem;
+  height: 8rem;
+}
+
+@media (min-width: 1024px) {
+    #sidebar {
+        visibility:"hidden" !important;
+        padding-top:1rem !important;
+        padding-bottom: 3rem 0 !important;
+    }
+    .closeBtn{
+        padding-right: 1rem !important;
+    }
+    /* .nav{
+        width:50%;
+    } */
+
+    .logo-container{
+      justify-content: center;
+    }
+
+    .black-container{
+      display: none;
+    }
+  }
+
+.footer {
+    padding: 1rem;
+    background-color: #fbfbfb;
+    color: gray;
+    font-family: "S-CoreDream-3Light";
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+.main_foot_flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.pretendfont{
+  font-size: 0.6rem;
+  padding: 0.3rem 0em;
+}

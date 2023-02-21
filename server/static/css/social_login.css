@@ -1,0 +1,89 @@
+@import url("./reset.css");
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "S-CoreDream-3Light";
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  flex-direction: column;
+  font-family: "S-CoreDream-3Light";
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 90vh;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.login {
+  font-size: 2rem;
+  color: #395165;
+  font-weight: bold;
+  margin: 1em;
+}
+
+.contents {
+  font-size: 1rem;
+  color: black;
+  margin: 2em;
+  text-align: center;
+  line-height: 3vh;
+}
+
+.login-btn {
+  background-color: var(--main-bg-color);
+  border: none;
+  border-radius: 5px;
+  color: black;
+  padding: 1vh 5vw;
+  font-size: 1.3rem;
+  margin-bottom: 1vh;
+  width: 240px;
+  margin-top: 1vh;
+}
+
+.main div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+}
+
+div a {
+  color: #395165;
+  width: 253px;
+  height: 33px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

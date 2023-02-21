@@ -1,0 +1,140 @@
+@import url("./reset.css");
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "S-CoreDream-3Light";
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  flex-direction: column;
+  font-family: "S-CoreDream-3Light";
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+}
+
+.withdraw_transfer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 100vw;
+  height: 80vh;
+  border-radius: 5px;
+  flex-direction: column;
+  margin-top: 9vh;
+}
+
+.withdraw_transfer {
+  font-size: 25px;
+  color: #395165;
+  font-weight: bold;
+  margin-bottom: 3vh;
+}
+
+.withdraw_transfer-form {
+  display: flex;
+  flex-direction: column;
+  width: 65vw;
+  height: 74vh;
+  line-height: 3vh;
+  align-items: center;
+}
+
+.withdraw_transfer-form p {
+  margin: 0.4vh 0;
+  font-size: 16px;
+}
+
+.withdraw_transfer-btn {
+  background-color: var(--main-bg-color);
+  border: none;
+  border-radius: 5px;
+  color: black;
+  padding: 0.5vh 0;
+  font-size: 1.3rem;
+  margin-bottom: 1em;
+  width: 255px;
+  margin-top: 2vh;
+}
+
+.main div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.main a {
+  padding: 0.3em;
+  color: black;
+  font-size: 17px;
+}
+
+.return {
+  width: 255px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label {
+  margin-top: 2vh;
+}
+
+.red {
+  color: red;
+}
+
+.withdraw_transfer-form span {
+  font-weight: bold;
+}
+
+.meeting_info {
+  border: 1px solid var(--main-bg-color);
+  border-radius: 6px;
+  width: 15.5em;
+}
+
+.meeting_info p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.meeting_info select {
+  text-align: center;
+}
+
+.meeting_scroll {
+  overflow: auto;
+  padding-top: 10px;
+}
+
+.name {
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg-color);
+  border-radius: 5px;
+}

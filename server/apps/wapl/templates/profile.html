@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <title>와플 : 프로필 수정</title>
+  </head>
+  <body>
+    <div class="header"></div>
+    <div class="main">
+      <!-- 개인 정보 수정 페이지 영역 -->
+      <div class="profile-container">
+        <a class="home" href="{% url 'wapl:main' %}">
+          <i class="fa-solid fa-house"></i>
+        </a>
+        <p class="profile">개인 정보 페이지</p>
+        <form
+          action=""
+          method="post"
+          class="profile-form"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %} {% if user.profile.image %}
+          <img src="{{ user.profile.image.url }}" width="100" />
+          <div id="profileCheckbox">
+            <input type="checkbox" name="image-clear" id="image-clear_id" />
+            <label for="image-clear_id" class="clear">기본 프로필로 변경</label>
+          </div>
+
+          <br />
+          {% else %}
+          <!-- 프로필 사진 등록 안 했을 때 기본 프로필 이미지 -->
+          <img src="{{ user.default_image }}" width="100" />
+          {% endif %}
+          <p>
+            새 프로필 이미지
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              id="profileImage"
+            />
+          </p>
+          <p>
+            사용자 이름 <input type="text" name="name" value="{{user.name}}" />
+          </p>
+          <p>
+            닉네임
+            <input type="text" name="nickname" value="{{user.nickname}}" />
+          </p>
+          <p>
+            아이디
+            <input
+              type="text"
+              name="username"
+              value="{{user.username}}"
+              readonly
+            />
+          </p>
+          <!-- <p>비밀번호: <input type="password" name="password" value="{{user.password}}"/></p> -->
+          <div>
+            <a href="{% url 'wapl:update_password' %}" class="update_password"
+              >비밀번호 변경</a
+            >
+          </div>
+          <a href="{% url 'wapl:withdraw' %}" class="update_password"
+            >회원 탈퇴</a
+          >
+          <div>
+            <input type="submit" value="저장" class="profile-btn" />
+          </div>
+        </form>
+      </div>
+    </div>
+    {% if messages %} {% for message in messages %} {% if message.tags %}
+    <script>
+      alert("{{ message }}");
+    </script>
+    {% endif %} {% endfor %} {% endif %}
+    <script
+      src="https://kit.fontawesome.com/5658349e28.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

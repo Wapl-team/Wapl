@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/plan_update.css' %}" />
+        <title>와플 : 모임 일정 수정</title>
+    </head>
+    <body>
+      <a class="home" href="{% url 'wapl:main' %}"><i class="fa-solid fa-house"></i></a>
+        <div class="plan__detail__update">일정 정보 편집</div>
+        <div class="plan_update_container">
+            <div class="main">
+                <form
+                action="{% url 'wapl:pubupdate' plan.pk %}"
+                method="post"
+                enctype="multipart/form-data"
+                >
+                {% csrf_token %}
+                <div class="plan-title">
+                  <span class="submenu-span">일정명</span>
+                  <input type="text" name="title" value="{{plan.title}}" class="plan_update_title"/>
+                </div>
+                <div class="center">
+                  <div class="center-submenu">
+                    <span class="submenu-span">장소</span>
+                    <input class="submenu-input" type="text" name="location" value="{{plan.location}}" class="plan_update_place"/>
+                  </div>
+                  <div class="center-startTime">
+                    <span class="submenu-span">시작 시간</span>
+                    <input class="submenu-input" type="datetime-local" name="startTime" value="{{plan_sT}}" class="plan_update_time" />
+                  </div>
+                  <div class="center-endTime">
+                    <span class="submenu-span">종료 시간</span>
+                    <input class="submenu-input" type="datetime-local" name="endTime" value="{{plan_eT}}" class="plan_update_time"/>
+                  </div>
+                  <div class="center-submenu">
+                    <span class="submenu-span">일정 내용</span>
+                    <input
+                    type="textarea"
+                    name="content"
+                    value="{{plan.content}}"
+                    class="plan_update_content"
+                    />   
+                  </div> 
+                  <div class="control-container">
+                    <a class="back" href="{% url 'wapl:pubdetail' plan.pk %}">돌아가기</a>
+                      <input type="submit" , value="저장하기" />
+                  </div>
+                </form>
+            </div>
+        <script
+        src="https://kit.fontawesome.com/5658349e28.js"
+        crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

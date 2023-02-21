@@ -1,0 +1,137 @@
+@import url("./reset.css");
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "S-CoreDream-3Light";
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10vh;
+  flex-direction: column;
+  font-family: "S-CoreDream-3Light";
+}
+
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80vw;
+    height: 95vh;
+    border-radius: 10px;
+}
+
+.signup {
+  font-size: 2rem;
+  color: #395165;
+  font-weight: bold;
+}
+
+.error__msg{
+  color:red;
+  font-weight: 600;
+  margin:15px 0;
+}
+
+
+.signup-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-form-content{
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup__profile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 240px;
+  background-color: rgba(173, 168, 168, 0.1);
+  border-radius: 50px;
+}
+
+.profileImage{
+  width:190px;
+}
+.signup__body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-input {
+  width: 240px;
+  height: 3em;
+  border: 1px solid rgba(173,168,168,0.5);
+  padding: 0.3em;
+  margin-bottom: 5px;
+  text-align: center;
+  border-radius: 5px;
+  background-color:#f8f8f8;
+}
+
+.signup-form span {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.signup-btn {
+  background-color: var(--main-bg-color);
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-size: 1.2rem;
+  width: 240px;
+  height: 5vh;
+}
+
+.signup-notice p {
+  font-size: 10px;
+  margin: 3px;
+  margin-top: 0.5vh;
+}
+
+div a {
+  color: #395165;
+  width: 253px;
+  height: 33px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  margin-top: 2vh;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

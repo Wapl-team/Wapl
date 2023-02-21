@@ -1,0 +1,95 @@
+@import url("./reset.css");
+
+@font-face {
+  font-family: "S-CoreDream-3Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+  font-family: "S-CoreDream-3Light";
+}
+
+h2 {
+  color: #395165;
+  margin: 3em;
+  margin-bottom: 1em;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.meetingJoin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: orange;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.meetingJoin input {
+  width: 240px;
+  height: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.meetingJoin div input {
+  background-color: var(--main-bg-color);
+  color: black;
+  width: 240px;
+  height: 36px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  font-size: 17px;
+  margin: 2vh;
+  font-family: "S-CoreDream-3Light";
+}
+
+.meetingJoin div a {
+  color: black;
+  width: 240px;
+  height: 30px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vh;
+  font-weight: normal;
+  font-size: 17px;
+}
+
+.error__msg {
+  color: red;
+  font-weight: 600;
+  margin-bottom: 1vh;
+}
+
+.home {
+  font-size: 16px;
+  text-decoration: none;
+  color: var(--main-bg-color);
+  padding: 0.5em;
+  padding-top: 0.7rem;
+  margin: 0.2em;
+  position: relative;
+  left: -34vw;
+  top: 8vh;
+}
+
+@media (min-width: 1024px) {
+  .home {
+    left: -9vw;
+  }
+}

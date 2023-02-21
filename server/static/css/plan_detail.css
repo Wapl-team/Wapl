@@ -34,24 +34,24 @@ body {
   background-color: #fbfbfb;
 }
 
-.nav_bar_button{
-    background-color: transparent;
-    color:black;
-    border:none;
-    margin:0.7rem;
+.nav_bar_button {
+  background-color: transparent;
+  color: black;
+  border: none;
+  margin: 0.7rem;
 }
 
-.WAPL{
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: black;
+.WAPL {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: black;
 }
 
-.nav-hr{
-  margin:0;
+.nav-hr {
+  margin: 0;
 }
 
-.detail__info{
+.detail__info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -281,6 +281,7 @@ hr {
 
 .plan-detail-decide {
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 .plan-detail-attend {
   text-decoration: none;
@@ -299,7 +300,6 @@ hr {
   border-radius: 5px;
   margin-left: 5px;
 }
-
 
 /* sidebar */
 
@@ -530,14 +530,15 @@ hr {
   #sidebar {
     visibility: visible !important;
     opacity: 1 !important;
-    padding-top:4rem !important;
+    padding-top: 4rem !important;
     padding-bottom: 3rem !important;
   }
-.closeSidebar .closeBtn {
+  .closeSidebar .closeBtn {
     display: none;
   }
 
-  .nav , .nav-hr{
+  .nav,
+  .nav-hr {
     display: none;
   }
 }

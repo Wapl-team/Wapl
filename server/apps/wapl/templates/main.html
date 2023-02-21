@@ -76,7 +76,6 @@
           </div>
         </div>
 
-
         <div class="sidebar__footer">
           <div class="goto-home">
             <a href="{% url 'wapl:start' %}"
@@ -106,7 +105,11 @@
         <hr />
 
         <form action="/main/reset">
-          <input class="change-day-btn reset-btn" type="submit" value="go Today" />
+          <input
+            class="change-day-btn reset-btn"
+            type="submit"
+            value="go Today"
+          />
         </form>
 
         <div class="year-month">{{view_year}}년 {{view_month}}월</div>
@@ -207,7 +210,9 @@
                     name="{{meeting.meeting_name}}"
                     id="{{meeting.meeting_name}}-untitled"
                   />
-                  <label for="{{meeting.meeting_name}}-untitled">익명</label>
+                  <label for="{{meeting.meeting_name}}-untitled"
+                    >비밀일정</label
+                  >
                 </div>
               </div>
               {% endfor %}

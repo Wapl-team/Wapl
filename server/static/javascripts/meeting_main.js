@@ -86,10 +86,10 @@ function openToggle() {
   // document.getElementById("sidebar").style.width = "250px";
   // document.getElementById("sidebar").style.paddingTop = "2rem";
   // document.getElementById("sidebar").style.paddingBottom = "2rem";
-  
-  document.getElementById("sidebar").style.visibility="visible";
-  document.getElementById("sidebar").style.transition="all 0.1s";
-  document.getElementById("sidebar").style.opacity="1";
+
+  document.getElementById("sidebar").style.visibility = "visible";
+  document.getElementById("sidebar").style.transition = "all 0.1s";
+  document.getElementById("sidebar").style.opacity = "1";
 }
 
 function closeToggle() {
@@ -99,8 +99,8 @@ function closeToggle() {
   document.getElementById("sidebar").style.visibility = "hidden";
   document.getElementById("sidebar").style.transition = "all 0.1s";
   document.getElementById("sidebar").style.opacity = "0";
-  document.getElementById("sidebar").style.paddingTop="1rem";
-  document.getElementById("sidebar").style.paddingBottom="3rem";
+  document.getElementById("sidebar").style.paddingTop = "1rem";
+  document.getElementById("sidebar").style.paddingBottom = "3rem";
 }
 const navBtn = document.querySelector(".nav_bar_button");
 const sidebarMenu = document.querySelector(".sidebar-menu");
@@ -780,14 +780,6 @@ return: err_msg
               new_plan.innerText = `${plan.fields.title}`;
               new_plan.href = `/plan/${plan.pk}`;
             } else if (share_list_array[i].fields.is_share == "untitled") {
-              if (login_user_id == plan.fields.owner) {
-                new_plan.innerText = `${plan.fields.title}`;
-                new_plan.href = `/plan/${plan.pk}`;
-              }else{
-                new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
-                new_plan.style.touchAction = "none";
-              }        
-            } else {
               new_plan.innerText = `${user_name[plan.fields.owner]}의 일정`;
               new_plan.style.touchAction = "none";
             }

@@ -5,4 +5,8 @@
 
 <p align='center'>
     <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&amp;logo=HTML5&amp;logoColor=white">
+    <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&amp;logo=CSS3&amp;logoColor=white">
+    <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&amp;logo=Javascript&amp;logoColor=black">
+    <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&amp;logo=Mysql&amp;logoColor=white">
+    <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
 </p>

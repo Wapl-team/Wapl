@@ -10,3 +10,7 @@
     <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat-square&amp;logo=Mysql&amp;logoColor=white">
     <img src="https://img.shields.io/badge/django-092E20?style=flat-square&amp;logo=django&logoColor=white">
 </p>
+
+## 🏠 [와플](wapl.co.kr)
+
+개인의 일정과 모임의 일정을 동시에

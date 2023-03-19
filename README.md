@@ -36,7 +36,7 @@
 |:--:|:--:|:--:|:--:|
 |<img width="500" alt="스크린샷 2023-03-19 오후 11 51 04" src="https://user-images.githubusercontent.com/83194164/226184353-4dc6d625-1e7c-486a-95ff-4d28e256d85c.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 08" src="https://user-images.githubusercontent.com/83194164/226184462-1a974bd9-4d2c-4fab-9612-54d699d29c84.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 51 28" src="https://user-images.githubusercontent.com/83194164/226184504-885f6364-9886-4eed-bc79-484f0fd3b097.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 32" src="https://user-images.githubusercontent.com/83194164/226184539-0a43d61f-591a-4fb3-8724-f2880e6fbb54.png">|
 
-|개인일정생성,공개여부설정|모임일정 참석여부 결정|일정 페이지|모임 페이지|
+|[개인일정생성,공개여부설정](https://github.com/Wapl-team/Wapl/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C#-%EA%B0%9C%EC%9D%B8%EC%9D%BC%EC%A0%95-%EB%93%B1%EB%A1%9D-%EB%B0%8F-%EA%B3%B5%EA%B0%9C%EC%97%AC%EB%B6%80-%EC%84%A4%EC%A0%95)|모임일정 참석여부 결정|일정 페이지|모임 페이지|
 |:--:|:--:|:--:|:--:|
 |<img width="500" alt="스크린샷 2023-03-19 오후 11 54 26" src="https://user-images.githubusercontent.com/83194164/226185078-dcda2b2d-e912-4020-893e-168c2746b7b8.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 55 27" src="https://user-images.githubusercontent.com/83194164/226185165-33d0fc50-9790-4a6f-bb94-7038e66b0e84.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 53" src="https://user-images.githubusercontent.com/83194164/226185199-dfba67cb-2cc2-4747-9ad5-61f4f139aab2.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 55 47" src="https://user-images.githubusercontent.com/83194164/226185218-35d89dc9-8249-4cf1-be82-8125525220fb.png">|
 

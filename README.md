@@ -32,9 +32,12 @@
 > - 공개된 팀원의 일정이나 모임 일정에 댓글을 달고 소통할 수 있습니다.
 
 ## 📌 주요 기능
-|로그인|[🔗 가계부리스트](https://github.com/boostcamp-2020/Project16-A-Account-Book/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C#-%EA%B3%B5%EC%9C%A0-%EA%B0%80%EA%B3%84%EB%B6%80-%ED%8E%98%EC%9D%B4%EC%A7%80)|[🔗 메인페이지](https://github.com/boostcamp-2020/Project16-A-Account-Book/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C#-%EB%A9%94%EC%9D%B8-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%86%8C%EA%B0%9C)|[🔗 달력페이지](https://github.com/boostcamp-2020/Project16-A-Account-Book/wiki/%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5-%EC%86%8C%EA%B0%9C#-%EB%8B%AC%EB%A0%A5-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%86%8C%EA%B0%9C)|
+|로그인|달력 리스트|달력 페이지|타임라인|
 |:--:|:--:|:--:|:--:|
 |<img width="500" alt="스크린샷 2023-03-19 오후 11 51 04" src="https://user-images.githubusercontent.com/83194164/226184353-4dc6d625-1e7c-486a-95ff-4d28e256d85c.png">
-|<img width='500' src='https://i.imgur.com/bZW9EaG.png'>|<img width='500' src='https://i.imgur.com/kjrJCes.png'>|<img width='500' src='https://i.imgur.com/65Iq6xY.png'>|
+|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 08" src="https://user-images.githubusercontent.com/83194164/226184462-1a974bd9-4d2c-4fab-9612-54d699d29c84.png">
+|<img width="500" alt="스크린샷 2023-03-19 오후 11 51 28" src="https://user-images.githubusercontent.com/83194164/226184504-885f6364-9886-4eed-bc79-484f0fd3b097.png">
+|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 32" src="https://user-images.githubusercontent.com/83194164/226184539-0a43d61f-591a-4fb3-8724-f2880e6fbb54.png">
+|
 
 

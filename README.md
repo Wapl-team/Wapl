@@ -36,4 +36,7 @@
 |:--:|:--:|:--:|:--:|
 |<img width="500" alt="스크린샷 2023-03-19 오후 11 51 04" src="https://user-images.githubusercontent.com/83194164/226184353-4dc6d625-1e7c-486a-95ff-4d28e256d85c.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 08" src="https://user-images.githubusercontent.com/83194164/226184462-1a974bd9-4d2c-4fab-9612-54d699d29c84.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 51 28" src="https://user-images.githubusercontent.com/83194164/226184504-885f6364-9886-4eed-bc79-484f0fd3b097.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 32" src="https://user-images.githubusercontent.com/83194164/226184539-0a43d61f-591a-4fb3-8724-f2880e6fbb54.png">|
 
+|개인일정생성,공개여부설정|모임일정 참석여부 결정|일정 페이지|모임 페이지|
+|:--:|:--:|:--:|:--:|
+|<img width="500" alt="스크린샷 2023-03-19 오후 11 51 04" src="https://user-images.githubusercontent.com/83194164/226184353-4dc6d625-1e7c-486a-95ff-4d28e256d85c.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 08" src="https://user-images.githubusercontent.com/83194164/226184462-1a974bd9-4d2c-4fab-9612-54d699d29c84.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 51 28" src="https://user-images.githubusercontent.com/83194164/226184504-885f6364-9886-4eed-bc79-484f0fd3b097.png">|<img width="500" alt="스크린샷 2023-03-19 오후 11 52 32" src="https://user-images.githubusercontent.com/83194164/226184539-0a43d61f-591a-4fb3-8724-f2880e6fbb54.png">|
 
